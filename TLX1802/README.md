@@ -10,7 +10,7 @@ source code and transferred it to the PC based tool.
 These files are the two fielded versions of the software and the American
 Automation distribution tool set. 
 
-I am recovering this historical development project as will add to it as I
+I am recovering this historical development project and will add to it as I
 can or am requested, if there is any interest.
 
 I am semi-retired and don't wish all the hard work I put into this project to
