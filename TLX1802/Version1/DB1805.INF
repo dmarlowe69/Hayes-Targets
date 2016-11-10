@@ -1,0 +1,19 @@
+: db1805.inf
+
+t,Installing Debugger files from American Automation.
+t,
+b,db1805.exe,db1805.exe
+b,db1805.bug,db1805.bug
+b,db1805.hlp,db1805.hlp
+b,nop_1805.s,nop_1805.s
+b,nop_1805.i,nop_1805.i
+t,
+t,
+q,Do you want to install another American Automation Diskette?,nomore
+t,
+t,
+t,Please insert the AA disk to install now. . .
+p,Press a key to continue.
+r,
+l,nomore
+

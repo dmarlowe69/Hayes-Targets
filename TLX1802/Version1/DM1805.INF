@@ -1,0 +1,33 @@
+: dm1805.inf
+
+t,Installing Demo files from American Automation.
+
+h,read.me,read.me
+b,getsym.exe,getsym.exe
+h,getsym.doc,getsym.doc
+b,asciitbl.s,asciitbl.s
+b,auto_lo.cmd,autotest.cmd
+b,asciilo.h,ascii.h
+b,dem1805.s,demo.s
+h,dem1805.bat,demo.bat
+b,dem1805.i,demo.i
+h,d1805.bat,d.bat
+b,p1805.s,p.s
+b,p1805.bat,p.bat
+b,p1805.i,p.i
+t,
+t,For the demo to run properly, you must also install the American Automation
+t,Assembler disk, Also it's nice to have the debugger and software.
+t,
+q,Do you want to install another American Automation Diskette?,nomore
+t,
+t,
+t,Please insert the AA disk to install now. . .
+p,Press a key to continue.
+r,
+l,nomore
+t,
+t,To run the demo now, type the word  DEMO  at the dos prompt.
+t,
+p,Press a key to continue.
+

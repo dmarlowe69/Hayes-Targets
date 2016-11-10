@@ -1,0 +1,19 @@
+: 27xx.inf
+
+t,Installing 27XX files from American Automation.
+t,
+b,dbeprom.bug,dbeprom.bug
+b,eprom.bat,eprom.bat
+b,aadebug.exe,aadebug.exe
+b,pmform.exe,pmform.exe
+t,
+t,
+q,Do you want to install another American Automation Diskette?,nomore
+t,
+t,
+t,Please insert the AA disk to install now. . .
+p,Press a key to continue.
+r,
+l,nomore
+
+

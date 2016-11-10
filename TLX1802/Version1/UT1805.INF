@@ -1,0 +1,18 @@
+: UT1805.INF
+
+T,Installing Utility Files.
+
+H,AALIB.EXE,AALIB.EXE
+H,AAIM.EXE,AAIM.EXE
+H,AAMI.EXE,AAMI.EXE
+H,DO.EXE,DO.EXE
+T,
+T,
+Q,Do you want to install another American Automation Diskette?,nomore
+T,
+T,
+T,Please insert the AA disk to install now. . .
+P,Press a key to continue.
+R,
+L,nomore
+

@@ -1,0 +1,31 @@
+
+
+/%*********************************************************************
+/%                                                                    *
+/%     Program  :   PC-DRILL VERSION 8.0                              *
+/%     Date     :   Jun 22 1995                                       *
+/%     Time     :   05:56:57 AM                                       *
+/%     File In  :   95-437.pcb                                        *
+/%     File Out :   95-437.mfg                                        *
+/%     Format   :   PC-DRILL MANUFACTURING REPORT                     *
+/%                                                                    *
+/%*********************************************************************
+
+
+TOOL    COUNT    SIZE     PATH LENGTH
+
+   1       34    0.028           8320
+   2       88    0.052          16352
+   3        5    0.070           1624
+
+
+TOTAL                           26296
+
+
+PIN TYPE     COUNT     TOOL NUMBER     HOLE SIZE
+
+    0          68           1            0.028
+    8          88           2            0.052
+   10           5           3            0.070
+
+

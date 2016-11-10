@@ -1,0 +1,29 @@
+BigEmacs is our friend uemacs.exe that has been tweaked to run a little 
+faster on True-PC-Compatibles and provides a few extra features.
+
+1.  Large Data Model - You can edit very large files with no problem, provided
+you have the memory in your machine.
+
+2.  Bios screen handler.  Makes a big difference in screen updates.
+
+3.  The keypad works.  Insert is bound to 'open line', and delete is bound
+    to 'delete forward.'  Other keys work as you might expect.
+
+4.  'ALT' commands.  ALT <character> is the same as <CTL-X><CTL-<chararcter>>.
+
+NOTES
+
+If you try and suck a large amount of data into the kill buffer, things slow
+down a lot.  There is an awful lot of processing going on there, and its all
+done indirect through pointers.  If you really need to do this kind of thing,
+don't reboot - go get a cup of coffee.
+
+The default screen attribute is yellow on blue.  In order to change it,
+run the program atpatch thusly:
+
+	C>atpatch emacs.exe
+
+atpatch displays all possible attributes in a rather disgusting manner, and
+prompts you to choose one.  Once you've chosen one, it goes searching for the
+magic attribute byte to change.  This takes a minute or two, but I didn't
+figure it was worth optimizing for speed.

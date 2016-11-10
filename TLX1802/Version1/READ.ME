@@ -1,0 +1,66 @@
+To those who don't want to read the book.
+
+FIRST THING !!!!!!!!!!!
+     MAKE A BACKUP COPY OF ALL AMERICAN AUTOMATION DISKS USING DISKCOPY!!!
+
+If you have a hard disk:
+
+  Step one:
+    Create a directory on your hard disk (from the root) called AMERICAN
+
+  Step two:
+    Make a subdirectory with the name of the emulator you intend to use.
+    example:  if you are using a 6800 emulator, make a dir called 6800
+    ala AMERICAN\6800, and goto to that directory.
+
+  Step three:
+    Insert the American Automation Demo-Disk into drive A:
+
+  Step four:
+    Type the command  A:AAINSTAL  and follow the instructions.
+
+  Step five:
+    When the last diskette has been installed onto your hard disk,
+    use your editor to modify the P.BAT file as follows:
+       1. Replace "%1" with your editor's calling code.
+       2. Replace "%2" with "P.S".
+    Do not include the quotes.
+
+  Step six:
+    type the command  DEMO  and watch the fun.
+
+
+
+If you have only two floppys:
+
+  NOTE: When installing onto a floppy, there is not enough room to support
+        all the A.A. files, so only install the Assembler and the Demo Disks.
+        The debugger disk is placed into drive b: for run purposes only.
+        This note applies to the Demo package only.
+
+  Step one:
+    Create a bootable floppy using the 'format /s' command.
+
+  Step two:
+    Copy your word processor and a config.sys file, to that floppy.
+
+  Step three:
+    Insert the floppy into drive A:, and log to it.
+    Place either the American Automation Demo disk into drive B:.
+
+  Step four:
+    Type 'b:aainstal' and follow the instructions.
+
+  Step five:
+    Using your word processor, modify the P.BAT file, replaceing
+    the %1 in the file with your word processor's calling code,
+    and the %2 in the file with P.S; exit your word processor.
+
+  Step six:
+    Type 'DEMO' and follow the book from here.
+
+In ALL cases, remember that you will need a file in the root directory
+called 'CONFIG.SYS' (for bootup).  It must have a 'FILES = 15' (or more) in it.
+Also, we recommend that a 'BUFFERS = 15' (or more) be included.
+
+

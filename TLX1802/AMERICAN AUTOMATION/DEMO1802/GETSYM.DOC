@@ -1,0 +1,50 @@
+Documentation for GETSYM
+
+GETSYM is a program intended to aid in patching a file.  It extracts the
+absolute label values from the xxxxxx.H file, and creates a yyyyyy.S file
+containing a standard equate list.  The format for calling GETSYM is:
+
+	GETSYM infile outfile
+
+For example, If the following file was compiled and linked to generate a .H
+file,
+
+	Section CODE,$100
+
+BEGIN	ADD.L	TEMP,ACCUM
+		MOVEM	MASK,SAVEBLOCK
+
+LOOP1	NOP
+		NOP
+		NOP
+		JMP		LOOP1
+ENDLOOP JMP		Terminate
+		END
+
+Then the command:
+
+	 GETSYM xxxxx.H yyyy.S
+
+might yield the following yyyy.S file (assuming TEMP, Terminate, ACCUM, MASK,
+and SAVEBLOCK are defined) :
+
+BEGIN	    EQU    $100
+LOOP1	    EQU    $10C
+ENDLOOP     EQU    $116
+TEMP	    EQU    $11C
+SAVEBLOCK   EQU    $120
+MASK	    EQU    $3
+ACCUM	    EQU    $AAC2
+
+Which can be INCLUDEd into your patch source file to get the values of
+important locations, like so:
+
+	INCLUDE yyyy.S
+	SECTION PATCH,BEGIN
+
+	ADD.Q	TEMP,ACCUM		; Patch to fix an incorrect ADD.L
+
+	END
+
+We hope this provides some illumination into the use of GETSYM and patching.
+
