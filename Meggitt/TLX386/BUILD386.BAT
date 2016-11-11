@@ -1,0 +1,1 @@
+nmake MODEL=L CPU=I486 CLOCK=X MATH=A /a /f TLX386.mak

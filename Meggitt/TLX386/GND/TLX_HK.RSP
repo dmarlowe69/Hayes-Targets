@@ -1,0 +1,2 @@
+/c /AL /W2 /G2 /BATCH
+/f- /Od /Ol /Og /Oe /Oi /FPa /Gs /FoGROUND.obj GROUND.C

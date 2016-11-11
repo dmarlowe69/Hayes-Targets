@@ -1,0 +1,212 @@
++++ PWB  [C:\C\STD_BUS\APP386] Build 
+
+	NMAKE  /f C:\C\STD_BUS\APP386\APP386.MAK 
+
+Microsoft (R) Program Maintenance Utility   Version 1.40       
+Copyright (c) Microsoft Corp 1988-93. All rights reserved.
+
+MIT/LL Path Configuration
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X APP386.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+app386.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+RAM BASED CODE
+USING STANDARD ENCODER
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X platform.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+platform.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+BIRD A/D CONFIGURATION
+BIRD D/A CONFIGURATION
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X dspio.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+dspio.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X icu.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+icu.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+SLAVE_ICU
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X tcu.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+tcu.c
+I486 - STD PC Rate
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X analog.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+analog.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X ground.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+ground.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using DSPIO comm_ports 0 or 1
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X menu_ana.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+menu_ana.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X menu_rlc.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+menu_rlc.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X menu_rst.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+menu_rst.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X menu_utl.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+menu_utl.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X menu_sbx.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+menu_sbx.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X menu_sta.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+menu_sta.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X menu_tm.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+menu_tm.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X menu_gnd.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+menu_gnd.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+	cl /AL /Zi /Oi /Gs /c /G2 /W2 /FPi87 /DI486 /DCLOCK=X menu_pio.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+menu_pio.c
+Large Memory Model
+i486 Processor selected
+16 bit I/O instructions allowed
+I486 - STD PC Rate
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+	link /MAP /CODEVIEW /NOE @app386.lnk
+
+Microsoft (R) Segmented Executable Linker  Version 5.60.339 Dec  5 1994
+Copyright (C) Microsoft Corp 1984-1993.  All rights reserved.
+
+Object Modules [.obj]: /MAP /CODEVIEW /NOE c:\c\mit_ll\libx\LRAMA.obj+
+Object Modules [.obj]: APP386+
+Object Modules [.obj]: platform+
+Object Modules [.obj]: dspio+icu+tcu+analog+
+Object Modules [.obj]: rom+speaker+terminal+
+Object Modules [.obj]: ground+menu_ana+menu_rlc+menu_rst+menu_utl+
+Object Modules [.obj]: menu_sbx+menu_sta+menu_tm+menu_gnd+
+Object Modules [.obj]: menu_pio
+Run File [c:LRAMA.exe]: APP386.exe
+List File [c:APP386.map]: APP386.map
+Libraries [.lib]: c:\c\mit_ll\libx\LI486_X7.lib++c:\c\mit_ll\lib\Llibc7.lib
+Definitions File [nul.def]: NUL.DEF
+	loc @APP386.loc
+DATALIGHT 80x86 Locator v2.0
+(C) Copyright 1988-1992, Datalight Inc.
+
+All chips are RAM: file not produced

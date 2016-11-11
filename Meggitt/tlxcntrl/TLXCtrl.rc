@@ -1,0 +1,282 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\TLXCtrl.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\TLXCtrl.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 134, 64
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About TLX Controler"
+FONT 10, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,96,14,20,20
+    LTEXT           "TLX Controler",IDC_STATIC,12,10,49,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 1999",IDC_STATIC,12,44,60,8
+    DEFPUSHBUTTON   "OK",IDOK,89,42,29,13,WS_GROUP
+    LTEXT           "Verion 1.0",IDC_STATIC,12,27,36,8,SS_NOPREFIX
+END
+
+IDD_TLXCTRL_DIALOG DIALOGEX 0, 0, 254, 150
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "TLX Controler"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Height",IDC_STATIC,4,133,23,9
+    EDITTEXT        IDC_EDIT_HEIGHT,28,132,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Feet",IDC_STATIC,53,134,19,9
+    CONTROL         "Slider1",IDC_SLIDER_HEIGHT,"msctls_trackbar32",TBS_VERT | 
+                    TBS_TOP | WS_TABSTOP,18,2,19,128
+    RTEXT           "500",IDC_STATIC,5,6,13,8
+    RTEXT           "200",IDC_STATIC,5,37,13,8
+    RTEXT           "100",IDC_STATIC,5,61,13,8
+    RTEXT           "50",IDC_STATIC,8,86,10,8
+    RTEXT           "30",IDC_STATIC,8,104,10,8
+    RTEXT           "20",IDC_STATIC,8,118,10,8
+    CONTROL         "&Lamp On",IDC_CHECK_LAMPON,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | BS_PUSHLIKE | WS_TABSTOP,45,9,39,14
+    CONTROL         "&Burner On",IDC_CHECK_BURNERON,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | BS_PUSHLIKE | WS_TABSTOP,45,32,39,14
+    CONTROL         "&Fly Mode",IDC_CHECK_FLYMODE,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | BS_PUSHLIKE | WS_TABSTOP,45,55,39,14
+    GROUPBOX        "Status",IDC_STATIC,44,101,91,21
+    LTEXT           "Active",IDC_STATIC,51,110,82,8
+    LTEXT           "Lamp",IDC_STATIC,96,10,23,9
+    CTEXT           "18.2",IDC_STATIC_LAMPVOLTS,121,9,27,11,SS_CENTERIMAGE | 
+                    WS_BORDER
+    LTEXT           "Volts",IDC_STATIC,151,11,19,9
+    LTEXT           "Pump",IDC_STATIC,96,28,23,9
+    CTEXT           "24.3",IDC_STATIC_PUMPVOLTS,121,27,27,11,SS_CENTERIMAGE | 
+                    WS_BORDER
+    LTEXT           "Volts",IDC_STATIC,151,29,19,9
+    LTEXT           "Battery",IDC_STATIC,96,47,23,9
+    CTEXT           "12.1",IDC_STATIC_BATTVOLTS,121,45,27,11,SS_CENTERIMAGE | 
+                    WS_BORDER
+    LTEXT           "Volts",IDC_STATIC,151,47,19,9
+    LTEXT           "Burner",IDC_STATIC,96,65,23,9
+    CTEXT           "COLD",IDC_STATIC_BURNERSTAT,121,63,33,11,SS_CENTERIMAGE | 
+                    WS_BORDER
+    LTEXT           "Signal Strength",IDC_STATIC,96,82,49,9
+    CONTROL         "Progress1",IDC_PROGRESS_SIGNAL,"msctls_progress32",
+                    PBS_VERTICAL | PBS_SMOOTH,148,82,12,42
+    CTEXT           "8",IDC_STATIC_SQUIBSNUM,90,133,14,11,SS_CENTERIMAGE | 
+                    WS_BORDER
+    CTEXT           "of",IDC_STATIC,107,134,9,9
+    CTEXT           "8",IDC_STATIC_SQUIBSTOTAL,117,133,11,11,SS_CENTERIMAGE
+    LTEXT           "Squibs",IDC_STATIC,130,134,25,9
+    CONTROL         "Slider1",IDC_SLIDER_ALTITUDE,"msctls_trackbar32",
+                    TBS_VERT | TBS_TOP | TBS_ENABLESELRANGE | WS_TABSTOP,189,
+                    2,20,128
+    RTEXT           "1000",IDC_STATIC,174,6,15,8
+    RTEXT           "500",IDC_STATIC,176,17,13,8
+    RTEXT           "200",IDC_STATIC,176,31,13,8
+    RTEXT           "100",IDC_STATIC,176,43,13,8
+    RTEXT           "50",IDC_STATIC,179,55,10,8
+    RTEXT           "0",IDC_STATIC,179,118,10,8
+    LTEXT           "Altitude",IDC_STATIC,186,129,25,8
+    LTEXT           "Feet",IDC_STATIC,190,137,18,8
+    CONTROL         "Slider3",IDC_SLIDER_ACCEL,"msctls_trackbar32",TBS_VERT | 
+                    TBS_TOP | TBS_ENABLESELRANGE | WS_TABSTOP,227,2,19,41
+    RTEXT           "+.5",IDC_STATIC,217,5,10,8
+    RTEXT           "0",IDC_STATIC,217,18,10,8
+    RTEXT           "-.5",IDC_STATIC,217,31,10,8
+    LTEXT           "Accel",IDC_STATIC,229,42,21,8
+    CONTROL         "Slider1",IDC_SLIDER_WINGANG,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_TOP | TBS_ENABLESELRANGE | 
+                    WS_TABSTOP,227,50,19,80
+    RTEXT           "0",IDC_STATIC,217,54,10,8
+    RTEXT           "-2",IDC_STATIC,217,70,10,8
+    RTEXT           "-4",IDC_STATIC,217,86,10,8
+    RTEXT           "-6",IDC_STATIC,217,102,10,8
+    RTEXT           "-8",IDC_STATIC,217,118,10,8
+    LTEXT           "Wing",IDC_STATIC,229,129,21,8
+    LTEXT           "Angle",IDC_STATIC,229,137,21,8
+    RTEXT           "20",IDC_STATIC,179,69,10,8
+    RTEXT           "10",IDC_STATIC,179,81,10,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "Cartwright Electronics\0"
+            VALUE "FileDescription", "TLXCtrl MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "TLXCtrl\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "TLXCtrl.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "TLX Controler Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 127
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 57
+    END
+
+    IDD_TLXCTRL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 250
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 144
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About TLX Controler"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "TLX Controler"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\TLXCtrl.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,4 @@
+SET COMM=/COM1 /B19200
+comm /B19200 /com1
+
+
