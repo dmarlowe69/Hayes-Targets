@@ -1,0 +1,1136 @@
+
+Title: MANCHESTER DECODER DATA VIEWER
+American Automation Cross-Assembler 1805 9.05.11
+Assembly date:  7 Dec 1988
+Assembly time: 15:36:36
+Options in effect:expand format list object symbol errorfile uppercase 
+
+Subtitle: (C)1984,85,86,87,88 HAYES INTERNATIONAL CORPORATION
+0004 T 0000                  T          SECTION TLXTEST,$0000
+0005                           ;******************************************************************************
+0006                           ;
+0007                           ;       TLX-1 TEST SOFTWARE
+0008                           ;
+0009                           ;
+0010                           ;       (C) 1988 HAYES INTERNATIONAL CORP.
+0011                           ;
+0012                           ;       BY DENTON MARLOWE
+0013                           ;
+0014                           ;******************************************************************************
+0015        00000000           ORGIN    EQU     $0000               ; START ADDRESS OF THIS CODE
+0016        0000F000           STACK    EQU     $F000               ; TEST ROUTINE RAM
+0017        00002000           LIMIT    EQU     $2000               ; END OF TABLE PLUS 1 (USE 2000 FOR SHORT)
+0018        0000F000           DEBUG    EQU     $F000               ; BASE ADDRESS OF TERMINAL I/O ROUTINES
+0019                           ;******************************************************************************
+0020        0000F800           OSTRN1   EQU     DEBUG+$0800
+0021        0000F804           OSTRNG   EQU     DEBUG+$0804
+0022                           ;**************************
+0023        0000F810           TYPEH1   EQU     DEBUG+$0810
+0024        0000F814           TYPEHD   EQU     DEBUG+$0814
+0025        0000F816           TYPEH    EQU     DEBUG+$0816
+0026        0000F827           TYPED1   EQU     DEBUG+$0827
+0027        0000F82B           TYPED    EQU     DEBUG+$082B
+0028        0000F82D           TYPER    EQU     DEBUG+$082D
+0029                           ;**************************
+0030        0000F874           RCA1     EQU     DEBUG+$0874
+0031        0000F889           DELAY1   EQU     DEBUG+$0889
+0032                           ;**************************
+0033        0000F898           READHX   EQU     DEBUG+$0898
+0034        0000F8B8           READH1   EQU     DEBUG+$08B8
+0035        0000F8BC           READHD   EQU     DEBUG+$08BC
+0036        0000F8BE           READH    EQU     DEBUG+$08BE
+0037        0000F900           READ1    EQU     DEBUG+$0900
+0038        0000F904           READD    EQU     DEBUG+$0904
+0039        0000F906           READ     EQU     DEBUG+$0906
+0040                           ;**************************
+0041        0000F933           TYPE31   EQU     DEBUG+$0933
+0042        0000F937           TYPE3D   EQU     DEBUG+$0937
+0043        0000F939           TYPE3    EQU     DEBUG+$0939
+0044        0000F94A           TYPE61   EQU     DEBUG+$094A
+0045        0000F94E           TYPE6D   EQU     DEBUG+$094E
+0046        0000F950           TYPE6    EQU     DEBUG+$0950
+0047        0000F95F           TYPE81   EQU     DEBUG+$095F
+0048        0000F963           TYPE8D   EQU     DEBUG+$0963
+0049        0000F965           TYPE8    EQU     DEBUG+$0965
+0050                           ;**************************
+0051        0000F96E           WORD31   EQU     DEBUG+$096E
+0052        0000F972           WORD3D   EQU     DEBUG+$0972
+0053        0000F974           WORD3    EQU     DEBUG+$0974
+0054        0000F994           WORD61   EQU     DEBUG+$0994
+0055        0000F998           WORD6D   EQU     DEBUG+$0998
+0056        0000F99A           WORD6    EQU     DEBUG+$099A
+0057        0000F9AC           WORD81   EQU     DEBUG+$09AC
+0058        0000F9B0           WORD8D   EQU     DEBUG+$09B0
+0059        0000F9B2           WORD     EQU     DEBUG+$09B2
+0060                           ;**************************
+0061        0000F9C8           TOUT31   EQU     DEBUG+$09C8
+0062        0000F9CC           TOUT3D   EQU     DEBUG+$09CC
+0063        0000F9CE           TOUT3    EQU     DEBUG+$09CE
+0064        0000F9EE           MOUT31   EQU     DEBUG+$09EE
+0065        0000F9F2           MOUT3D   EQU     DEBUG+$09F2
+0066        0000F9F4           MOUT3    EQU     DEBUG+$09F4
+0067        0000FA4B           TOUT61   EQU     DEBUG+$0A4B
+0068        0000FA4F           TOUT6D   EQU     DEBUG+$0A4F
+0069        0000FA51           TOUT6    EQU     DEBUG+$0A51
+0070        0000FA76           MOUT1    EQU     DEBUG+$0A76
+0071        0000FA7A           MOUTD    EQU     DEBUG+$0A7A
+0072        0000FA7C           MOUT     EQU     DEBUG+$0A7C
+0073        0000FAB5           T8OUT1   EQU     DEBUG+$0AB5
+0074        0000FAB9           T8OUTD   EQU     DEBUG+$0AB9
+0075        0000FABB           T8OUT    EQU     DEBUG+$0ABB
+0076        0000FAD7           M8OUT1   EQU     DEBUG+$0AD7
+0077        0000FADB           M8OUTD   EQU     DEBUG+$0ADB
+0078        0000FADD           M8OUT    EQU     DEBUG+$0ADD
+0079                           ;**************************
+0080        0000FB6F           CLEAR    EQU     DEBUG+$0B6F
+0081        0000FB1B           CRLF     EQU     DEBUG+$0B1B
+0082        0000FB40           MLFCR    EQU     DEBUG+$0B40
+0083        0000FB8E           RVON     EQU     DEBUG+$0B8E
+0084        0000FB99           RVOFF    EQU     DEBUG+$0B99
+0085        0000FC18           CURON    EQU     DEBUG+$0C18
+0086        0000FC23           CUROFF   EQU     DEBUG+$0C23
+0087        0000FD0C           ITEST    EQU     DEBUG+$0D0C
+0088                           ;******************************************************************************
+0089 T 0000                             ORG     ORGIN
+0090                           ;******************************************************************************
+0091 T 0000 71                          DIS                         ; DISABLE INTERRUPTS
+0092 T 0001 00                          DB      $00                     ; SET SP AND PC = R0
+0093                           
+0094 T 0002 61                          OUT     1                       ; SELECT A/D-D/A I/O
+0095 T 0003 30                          DB      $30
+0096 T 0004 63                          OUT     3                       ; D/A CH 1
+0097 T 0005 00                          DB      $00
+0098 T 0006 64                          OUT     4                       ; D/A CH 2
+0099 T 0007 00                          DB      $00
+0100                           
+0101 T 0008 61                          OUT     1                       ; SELECT I/O GROUP 8
+0102 T 0009 08                          DB      $08                     ; I/O GROUP 8   
+0103 T 000A 62                          OUT     2
+0104 T 000B 0F                          DB      $0F                     ; A IS INPUT
+0105 T 000C 62                          OUT     2
+0106 T 000D F7                          DB      $F7                     ; B IS BIT PROG
+0107 T 000E 62                          OUT     2
+0108 T 000F F0                          DB      $F0                     ; LOW IN,HIGH OUT
+0109                           
+0110 T 0010 68C20700                    RLDI    R2,USER                 ; SETUP FOR NEW SP
+0111 T 0014 E2                          SEX     R2                      ; NEW SP IS R2
+0112 T 0015 68C3001A                    RLDI    R3,MENU                 ; SETUP FOR NEW PC
+0113 T 0019 D3                          SEP     R3                      ; NEW PC IS R3
+0114                           ;******************************************************************************
+0115                           ;
+0116                           ;       MAIN TEST AND FUNCTION MENU
+0117                           ;
+0118                           ;******************************************************************************
+0119 T 001A C4                 MENU:    NOP                         ;
+0120                           ;       SCAL    R6,CLEAR                ; CLEAR SCREEN
+0121                           ;       SCAL    R6,CLEAR                ; CLEAR SCREEN
+0122                           ;       SCAL    R6,RVOFF                ; NORMAL VIEDO
+0123                           ;       SCAL    R6,CURON                ; TURN CURSOR ON
+0124                           ;******************************************************************************
+0125 T 001B 6886F800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0126 T 001F 0A0D                        DB      $0A,$0D                 ;
+0127 T 0021 414D45524943414E            DB      'AMERICAN AUTOMATION DEVELOPMENT SYSTEM DATA REDUCTION'
+            204155544F4D4154
+            494F4E2044455645
+            4C4F504D454E5420
+            53595354454D2044
+            4154412052454455
+            4354494F4E
+0128 T 0056 0A0D                        DB      $0A,$0D
+0129 T 0058 56455253494F4E20            DB      'VERSION 1.0/25DEC88'
+            312E302F32354445
+            433838
+0130 T 006B 0A0D                        DB      $0A,$0D
+0131 T 006D 5752495454454E20            DB      'WRITTEN BY DENTON MARLOWE'
+            42592044454E544F
+            4E204D41524C4F57
+            45
+0132 T 0086 0A0D                        DB      $0A,$0D
+0133 T 0088 434F505952494748            DB      'COPYRIGHT 1988 HAYES TARGETS'
+            5420313938382048
+            4159455320544152
+            47455453
+0134 T 00A4 0A0A0A0D                    DB      $0A,$0A,$0A,$0D
+0135 T 00A8 544C582044455645            DB      'TLX DEVELOPMENT SYSTEM MAIN TEST MENU',$0A,$0D
+            4C4F504D454E5420
+            53595354454D204D
+            41494E2054455354
+            204D454E550A0D
+0136 T 00CF 0A0D                        DB      $0A,$0D 
+0137 T 00D1 28312920442F4120            DB      '(1) D/A CALIBRATION',$0A,$0D
+            43414C4942524154
+            494F4E0A0D
+0138 T 00E6 283229204445434F            DB      '(2) DECODER VIEWER',$0A,$0D
+            4445522056494557
+            45520A0D
+0139 T 00FA 283329204445434F            DB      '(3) DECODER SCANNER',$0A,$0D
+            444552205343414E
+            4E45520A0D
+0140 T 010F 283429204445434F            DB      '(4) DECODER CAPTURE',$0A,$0D
+            4445522043415054
+            5552450A0D
+0141 T 0124 283529204445434F            DB      '(5) DECODER PLAYBACK',$0A,$0D
+            44455220504C4159
+            4241434B0A0D
+0142 T 013A 0A0D                        DB      $0A,$0D
+0143 T 013C 454E544552205445            DB      'ENTER TEST NUMBER '
+            5354204E554D4245
+            5220
+0144 T 014E 00                          DB      $00
+0145                           
+0146 T 014F 6886F904                    SCAL    R6,READD                ; KEYBOARD INPUT
+0147                           
+0148 T 0153 9F                          GHI     RF                      ; GET KEYPRESS
+0149 T 0154 FF31                        SMI     '1'                     ; ONE
+0150 T 0156 C20174                      LBZ     DACAL                   ; D/A CALIBRATION
+0151                           
+0152 T 0159 9F                          GHI     RF                      ; GET KEYPRESS
+0153 T 015A FF32                        SMI     '2'                     ; TWO
+0154 T 015C C20284                      LBZ     VIEW                    ; DECODER VIEWER
+0155                           
+0156 T 015F 9F                          GHI     RF                      ; GET KEYPRESS
+0157 T 0160 FF33                        SMI     '3'                     ; THREE
+0158 T 0162 C2032E                      LBZ     SCANER                  ;
+0159                           
+0160 T 0165 9F                          GHI     RF                      ; GET KEYPRESS
+0161 T 0166 FF34                        SMI     '4'                     ; FOUR
+0162 T 0168 C203FB                      LBZ     CAPT                    ;
+0163                           
+0164 T 016B 9F                          GHI     RF                      ; GET KEYPRESS
+0165 T 016C FF35                        SMI     '5'                     ; FIVE
+0166 T 016E C204C9                      LBZ     PLAYB                   ;
+0167                           
+0168 T 0171 C0001A                      LBR     MENU                   ; TRY AGAIN
+0169                           ;******************************************************************************
+0170                           ;
+0171                           ;       END OF MENU
+0172                           ;
+0173                           ;******************************************************************************
+0174                           
+0175                           
+0176                           
+0177                           
+0178                           ;******************************************************************************
+0179                           ;
+0180                           ;       D/A OUPUT CALIBRATION
+0181                           ;
+0182                           ;******************************************************************************
+0183 T 0174 6886F800           DACAL:   SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0184 T 0178 0A0D                        DB      $0A,$0D
+0185 T 017A 524541445920544F            DB      'READY TO START D/A OUTPUT CALIBRATION'
+            2053544152542044
+            2F41204F55545055
+            542043414C494252
+            4154494F4E
+0186 T 019F 00                          DB      $00
+0187                           
+0188 T 01A0 68860264                    SCAL    R6,PRESSA               ; KEYBOARD INPUT
+0189                           ;******************************************************************************
+0190                           ;
+0191                           ;       INITIALIZE OUTPUT DATA TO ZERO
+0192                           ;
+0193                           ;******************************************************************************
+0194 T 01A4 68C10000                    RLDI    R1,$0000                ; ZERO DATA
+0195                           ;******************************************************************************
+0196                           ;
+0197                           ;       SETUP D/A I/O MODE
+0198                           ;
+0199                           ;******************************************************************************
+0200 T 01A8 E3                 DATST1:  SEX     R3                      ; SET PROGRAM COUNTER EQUAL SP
+0201 T 01A9 61                          OUT     1                       ; SET I/O GROUP
+0202 T 01AA 30                          DB      $30                     ; I/O GROUP 30
+0203 T 01AB E2                          SEX     R2                      ; RESET SP TO R2
+0204                           ;******************************************************************************
+0205                           ;
+0206                           ;       OUTPUT DATA TO D/A CHANNELS 1 AND TWO
+0207                           ;
+0208                           ;******************************************************************************
+0209 T 01AC 81                          GLO     R1                      ; GET DATA
+0210 T 01AD 52                          STR     R2                      ; STACK IT
+0211 T 01AE 63                          OUT     3                       ; OUTPUT DATA TO CHANNEL 1
+0212 T 01AF 22                          DEC     R2                      ; RESET STACK POINTER
+0213 T 01B0 64                          OUT     4                       ; OUTPUT DATA TO CHANNEL 2
+0214 T 01B1 22                          DEC     R2                      ; RESET STACK POINTER
+0215                           ;******************************************************************************
+0216                           ;
+0217                           ;       DISPLAY D/A OUTPUT DATA
+0218                           ;
+0219                           ;******************************************************************************
+0220 T 01B2 68C70001                    RLDI    R7,$0001                ; SET INITIAL CHANNEL NUMBER
+0221 T 01B6 68CB0002                    RLDI    RB,$0002                ; TWO CHANNELS
+0222                           
+0223 T 01BA 6886F800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0224 T 01BE 442F41204F555450            DB      'D/A OUTPUT'
+            5554
+0225 T 01C8 0A0A0D                      DB      $0A,$0A,$0D
+0226 T 01CB 00                          DB      $00
+0227                           
+0228 T 01CC 6886F800           01$:     SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0229 T 01D0 43482000                    DB      'CH ',$00               ; CHANNEL
+0230 T 01D4 87                          GLO     R7                      ; GET CHANNEL NUMBER
+0231 T 01D5 BF                          PHI     RF                      ; LOAD REGISTER
+0232 T 01D6 6886F816                    SCAL    R6,TYPEH                ; PRINT CHANNEL NUMBER
+0233 T 01DA 6886F800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0234 T 01DE 202000                      DB      '  ',$00                ; SPACE OVER
+0235 T 01E1 81                          GLO     R1                      ; LOAD DATA
+0236 T 01E2 BD                          PHI     RD                      ; LOAD REGISTER
+0237 T 01E3 6886F9B2                    SCAL    R6,WORD                 ; DISPLAY AS BITS
+0238 T 01E7 00                          DB      $00                     ; TERMINATION
+0239 T 01E8 6886F800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0240 T 01EC 202000                      DB      '  ',$00                ; SPACE OVER
+0241 T 01EF 81                          GLO     R1                      ; LOAD DATA
+0242 T 01F0 BF                          PHI     RF                      ; LOAD REGISTER
+0243 T 01F1 6886F816                    SCAL    R6,TYPEH                ; DISPLAY AS HEX
+0244                           
+0245 T 01F5 6886F800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0246 T 01F9 0A0D00                      DB      $0A,$0D,$00             ; NEW LINE
+0247                           
+0248 T 01FC 17                          INC     R7                      ; INCREMENT CHANNEL NUMBER
+0249 T 01FD 682B01CC                    DBNZ    RB,01$                  ; LOOP FOR 2 CHANNELS
+0250                           
+0251 T 0201 6886F800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0252 T 0205 0A0A0D00                    DB      $0A,$0A,$0D,$00         ;
+0253                           ;******************************************************************************
+0254                           ;
+0255                           ;       DELAY 3.75 SECONDS TO GIVE D/A OUTPUTS TIME TO SETTLE
+0256                           ;
+0257                           ;******************************************************************************
+0258 T 0209 68CE0004                    RLDI    RE,$04                  ; LOAD OUTER COUNTER
+0259 T 020D 68CFAFFF           02$:     RLDI    RF,$AFFF                ; LOAD INNER COUNTER
+0260 T 0211 C4                 03$:     NOP                         ; NO OPERATION
+0261 T 0212 682F0211                    DBNZ    RF,03$                  ; DECREMENT INNER COUNTER
+0262 T 0216 682E020D                    DBNZ    RE,02$                  ; DECREMENT OUTER COUNTER
+0263                           ;******************************************************************************
+0264                           ;
+0265                           ;       INCREMENT OUTPUT DATA 1/3 FULL SCALE (55)
+0266                           ;       INCREMENT OUTPUT DATA 1/5 FULL SCALE (33)
+0267                           ;       INCREMENT OUTPUT DATA 1/17 FULL SCALE (F)
+0268                           ;       INCREMENT OUTPUT DATA 1/51 FULL SCALE (5)
+0269                           ;
+0270                           ;*****************************************************************************
+0271 T 021A 81                          GLO     R1                  ; GET DATA
+0272 T 021B FFFF                        SMI     $FF                 ; OUTPUT DATA MAX
+0273 T 021D 3226                        BZ      05$                 ; IF DATA MAX, EXIT
+0274                           
+0275 T 021F 81                          GLO     R1                  ; GET DATA
+0276 T 0220 FC33                        ADI     $33                 ; ADD 1/5 FULL SCALE
+0277 T 0222 A1                          PLO     R1                  ; RESET DATA
+0278                           
+0279 T 0223 C001A8             04$:     LBR     DATST1              ; LOOP 
+0280                           ;******************************************************************************
+0281                           ;
+0282                           ;       RESET D/A OUTPUTS TO ZERO
+0283                           ;
+0284                           ;*****************************************************************************
+0285 T 0226 68C20700           05$:     RLDI    R2,USER             ; SETUP INPUT STACK
+0286 T 022A E3                          SEX     R3                  ; SET PROGRAM COUNTER EQUAL SP
+0287 T 022B 61                          OUT     1                   ; SET I/O GROUP
+0288 T 022C 30                          DB      $30                 ; I/O GROUP 30
+0289 T 022D 63                          OUT     3                   ; OUTPUT DATA TO D/C CHANNEL 1
+0290 T 022E 00                          DB      $00
+0291 T 022F 64                          OUT     4                   ; OUTPUT DATA TO D/A CHANNEL 2
+0292 T 0230 00                          DB      $00
+0293 T 0231 E2                          SEX     R2                  ; RESET SP TO R2
+0294                           ;******************************************************************************
+0295                           ;
+0296                           ;       REPEAT CALIBRATION OR RETURN TO MAIN MENU
+0297                           ;
+0298                           ;*****************************************************************************
+0299 T 0232 6886023C                    SCAL    R6,REPEAT           ; CALL REPEAT QUESTION ROUTINE
+0300 T 0236 C20174                      LBZ     DACAL               ; REPEAT TEST IF D=0
+0301                           
+0302 T 0239 C0001A                      LBR     MENU                ; RETURN MENU
+0303                           ;******************************************************************************
+0304                           ;
+0305                           ;       END OF D/A CALIBATION
+0306                           ;
+0307                           ;******************************************************************************
+0308                           ;
+0309                           ;       REPEAT PROCESS QUESTION ROUTINE
+0310                           ;
+0311                           ;******************************************************************************
+0312 T 023C 6886F800           REPEAT:  SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0313 T 0240 0A0A0D                      DB      $0A,$0A,$0D
+0314 T 0243 5245504541542054            DB      'REPEAT TEST (Y OR N) ? ',$00
+            455354202859204F
+            52204E29203F2000
+0315                           
+0316 T 025B 6886F904                    SCAL    R6,READD            ; READ AFTER DELAY
+0317 T 025F 9F                          GHI     RF                  ; GET USER INPUT
+0318 T 0260 FF59                        SMI     'Y'                 ; YES
+0319 T 0262 6896                        SRET    R6                  ; RETURN D=0 FOR YES
+0320                           ;******************************************************************************
+0321                           ;
+0322                           ;       PRESS ANY KEY ROUTINE
+0323                           ;
+0324                           ;******************************************************************************
+0325 T 0264 6886F800           PRESSA:  SCAL    R6,OSTRN1               ; OUTPUT
+0326 T 0268 0A0D                        DB      $0A,$0D
+0327 T 026A 505245535320414E            DB      'PRESS ANY KEY '
+            59204B455920
+0328 T 0278 00                          DB      $00
+0329 T 0279 6886F906                    SCAL    R6,READ                 ; GET KEYPRESS
+0330 T 027D 6886FB1B                    SCAL    R6,CRLF                 ; LINE FEED
+0331 T 0281 01                          DB      $01                     ; ONLY ONE
+0332 T 0282 6896                        SRET    R6                      ; RETURN
+0333                           ;******************************************************************************
+0334                           ;
+0335                           ;       END OF MENU ITEM 1 - D/A CALIBRATION
+0336                           ;
+0337                           ;******************************************************************************
+0338                           
+0339                           
+0340                           
+0341                           
+0342                           ;******************************************************************************
+0343                           ;
+0344                           ;       DECODER MENU ITEM 2 - DECODER CHANNEL VIEWER
+0345                           ;
+0346                           ;******************************************************************************
+0347 T 0284 6886F800           VIEW:    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0348 T 0288 0A0D                        DB      $0A,$0D
+0349 T 028A 4445434F44455220            DB      'DECODER VIEWER'
+            564945574552
+0350 T 0298 0A0D00                      DB      $0A,$0D,$00
+0351                           ;******************************************************************************
+0352                           ;
+0353                           ;
+0354                           ;
+0355                           ;******************************************************************************
+0356 T 029B 68C10001                    RLDI    R1,$0001                ; INITIALIZE TO CHANNEL ONE
+0357 T 029F 68C00000                    RLDI    R0,$0000                ; INITIALIZE LINE COUNTER
+0358                           ;******************************************************************************
+0359                           ;
+0360                           ;       INPUT PIO DATA
+0361                           ;
+0362                           ;******************************************************************************
+0363 T 02A3 E3                 PIO:     SEX     R3                      ; SET SP TO PC
+0364 T 02A4 61                          OUT     1                       ; SELECT I/O GROUP 8
+0365 T 02A5 08                          DB      $08
+0366 T 02A6 E2                          SEX     R2                      ; RESET SP TO R2
+0367 T 02A7 35A7               WAIT:    B2      WAIT                    ; WAIT FOR DATA VALID
+0368                           ;******************************************************************************
+0369 T 02A9 6E                          INP     6                       ; ADDRESS
+0370 T 02AA 60                          IRX     
+0371 T 02AB 6C                          INP     4                       ; DATA
+0372 T 02AC 22                          DEC     R2
+0373 T 02AD F0                          LDX     
+0374 T 02AE FA0F                        ANI     $0F
+0375 T 02B0 52                          STR     R2
+0376 T 02B1 B7                          PHI     R7
+0377                           ;******************************************************************************
+0378 T 02B2 81                          GLO     R1                      ; LOAD CHANNEL NUMBER
+0379 T 02B3 F7                          SM                          ; COMPARE TO INPUT CHANNEL
+0380 T 02B4 3AA7                        BNZ     WAIT                    ; IF NOT SAME WAIT FOR NEXT INPUT
+0381                           ;******************************************************************************
+0382 T 02B6 60                          IRX                         ; INCREMENT STACK TO DATA
+0383 T 02B7 F0                          LDX                         ; LOAD DATA
+0384 T 02B8 A7                          PLO     R7                      ; STASH IN REGISTER
+0385 T 02B9 22                          DEC     R2                      ; RESET STACK POINTER
+0386                           ;******************************************************************************
+0387 T 02BA 11                          INC     R1                      ; INCREMENT TO NEXT CHANNEL
+0388 T 02BB 81                          GLO     R1                      ; LOAD NEXT CHANNEL
+0389 T 02BC FF0A                        SMI     $0A                     ; $0A PAST CHANNEL 9?
+0390 T 02BE 3AC4                        BNZ     OUT                     ; IF NOT OUTPUT, OTHERWISE-
+0391 T 02C0 68C10001                    RLDI    R1,$0001                ; RESET CHANNEL TO ONE
+0392                           ;******************************************************************************
+0393                           ;
+0394                           ;       OUTPUT CHANNEL NUMBER AND INPUT BYTE TO SCREEN
+0395                           ;
+0396                           ;******************************************************************************
+0397 T 02C4 6886F800           OUT:     SCAL    R6,OSTRN1
+0398 T 02C8 0A0D                        DB      $0A,$0D
+0399 T 02CA 434820                      DB      'CH '
+0400 T 02CD 00                          DB      $00
+0401 T 02CE 97                          GHI     R7
+0402 T 02CF BD                          PHI     RD
+0403 T 02D0 6886F965                    SCAL    R6,TYPE8
+0404 T 02D4 0302                        DB      $03,$02
+0405 T 02D6 87                          GLO     R7
+0406 T 02D7 BD                          PHI     RD
+0407 T 02D8 6886F9B2                    SCAL    R6,WORD
+0408 T 02DC 0302                        DB      $03,$02
+0409 T 02DE 87                          GLO     R7
+0410 T 02DF BD                          PHI     RD
+0411 T 02E0 6886F965                    SCAL    R6,TYPE8
+0412 T 02E4 0201                        DB      $02,$01
+0413                           
+0414                           ;        BN4     04$             ; ABORT ON BREAK
+0415                           
+0416 T 02E6 10                          INC     R0                  ; INCREMENT LINE COUNTER
+0417 T 02E7 80                          GLO     R0                  ; GET COUNT
+0418 T 02E8 FF09                        SMI     $09                 ; 9 LINES
+0419 T 02EA CA02A3                      LBNZ    PIO                 ; IF LESS NEXT CHANNEL, OTHERWISE-
+0420                           
+0421                           ;       SCAL    R6,MLFCR            ; LINE UP
+0422                           ;       DB      $12                 ; 18 TIMES
+0423 T 02ED 68C00000                    RLDI    R0,$0000            ; RESET LINE COUNTER
+0424                           
+0425 T 02F1 C002A3                      LBR     PIO
+0426                           ;****************************************************************************
+0427                           ;
+0428                           ;       RTE1/RTD1 TEST ABORTED
+0429                           ;
+0430                           ;****************************************************************************
+0431 T 02F4 6886F800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0432 T 02F8 0A0D                        DB      $0A,$0D
+0433 T 02FA 2A2A2A2A20525445            DB      '**** RTE1/RTD1 TEST ABORTED ****'
+            312F525444312054
+            4553542041424F52
+            544544202A2A2A2A
+0434 T 031A 0A0D00                      DB      $0A,$0D,$00
+0435                           ;******************************************************************************
+0436                           ;
+0437                           ;       REPEAT PROCESS
+0438                           ;
+0439                           ;*****************************************************************************
+0440 T 031D 6886F800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0441 T 0321 0A0D00                      DB      $0A,$0D,$00         ; 1 LINES DOWN
+0442 T 0324 6886023C                    SCAL    R6,REPEAT           ; CALL REPEAT QUESTION ROUTINE
+0443 T 0328 C20284                      LBZ     VIEW                ; REPEAT TEST IF D=0
+0444 T 032B C0001A                      LBR     MENU                ; RETURN TO MAIN TEST MENU
+0445                           ;******************************************************************************
+0446                           ;
+0447                           ;       END OF MENU ITEM 2 - DECODER CHANNEL VIEWER
+0448                           ;
+0449                           ;******************************************************************************
+0450                           
+0451                           
+0452                           
+0453                           
+0454                           ;******************************************************************************
+0455                           ;
+0456                           ;       DECODER MENU ITEM 3 - DECODER 2 CHANNEL SCANER
+0457                           ;
+0458                           ;******************************************************************************
+0459                           ;
+0460                           ;       DECODER SCANNER
+0461                           ;
+0462                           ;******************************************************************************
+0463 T 032E 6886F800           SCANER:  SCAL    R6,OSTRN1               ;
+0464 T 0332 0A0D                        DB      $0A,$0D
+0465 T 0334 454E544552204649            DB      "ENTER FIRST CHANNEL "
+            525354204348414E
+            4E454C20
+0466 T 0348 00                          DB      $00
+0467                           
+0468 T 0349 6886F898                    SCAL    R6,READHX               ; KEYBOARD INPUT
+0469                           
+0470 T 034D 8D                          GLO     RD                      ; GET KEYPRESS
+0471 T 034E A4                          PLO     R4                      ; ONE
+0472                           
+0473 T 034F 6886F804                    SCAL    R6,OSTRNG               ;
+0474 T 0353 0A0D                        DB      $0A,$0D
+0475 T 0355 454E544552205345            DB      "ENTER SECOND CHANNEL "
+            434F4E4420434841
+            4E4E454C20
+0476 T 036A 00                          DB      $00
+0477                           
+0478 T 036B 6886F898                    SCAL    R6,READHX               ; KEYBOARD INPUT
+0479                           
+0480 T 036F 8D                          GLO     RD                      ; GET KEYPRESS
+0481 T 0370 B4                          PHI     R4                      ; TWO
+0482                           
+0483 T 0371 68860264                    SCAL    R6,PRESSA                       ;               
+0484                           ;******************************************************************************
+0485                           ;
+0486                           ;       SETUP DATA TABLE HEADER
+0487                           ;
+0488                           ;******************************************************************************
+0489 T 0375 68CD1000                    RLDI    RD,TABLE                ; POINTER TO DATA TABLE
+0490 T 0379 F802                        LDI     $02                     ; 2 CHANNELS
+0491 T 037B 5D                          STR     RD                      ; STORE IN TABLE
+0492 T 037C 1D                          INC     RD                      ;
+0493 T 037D 84                          GLO     R4                      ; FIRST CHANNEL
+0494 T 037E 5D                          STR     RD                      ; STORE IN TABLE
+0495 T 037F 1D                          INC     RD                      ;
+0496 T 0380 94                          GHI     R4                      ; SECOND CHANNEL
+0497 T 0381 5D                          STR     RD                      ; STORE IN TABLE
+0498 T 0382 68CD1020                    RLDI    RD,TABLE+$0020          ;
+0499 T 0386 68CA0000                    RLDI    RA,$0000                ; ZERO DATA COUNTER
+0500                           ;******************************************************************************
+0501                           ;
+0502                           ;       INPUT PIO DATA
+0503                           ;
+0504                           ;******************************************************************************
+0505 T 038A E3                 PIOS:    SEX     R3                      ; SET SP TO PC
+0506 T 038B 61                          OUT     1                       ; SELECT I/O GROUP 8
+0507 T 038C 08                          DB      $08
+0508 T 038D E2                          SEX     R2                      ; RESET SP TO R2
+0509                           ;******************************************************************************
+0510                           ;
+0511                           ;       FIRST CHANNEL
+0512                           ;
+0513                           ;******************************************************************************
+0514 T 038E 84                          GLO     R4
+0515 T 038F A1                          PLO     R1
+0516 T 0390 F800                        LDI     $00
+0517 T 0392 B1                          PHI     R1
+0518                           ;****************************************************************************** 
+0519 T 0393 3593               01$:     B2      01$                     ; WAIT FOR DATA VALID
+0520                           ;******************************************************************************
+0521 T 0395 6E                          INP     6                       ; ADDRESS
+0522 T 0396 60                          IRX     
+0523 T 0397 6C                          INP     4                       ; DATA
+0524 T 0398 22                          DEC     R2
+0525 T 0399 F0                          LDX     
+0526 T 039A FA0F                        ANI     $0F
+0527 T 039C 52                          STR     R2
+0528                           ;******************************************************************************
+0529 T 039D 81                          GLO     R1                      ; LOAD CHANNEL NUMBER
+0530 T 039E F7                          SM                          ; COMPARE TO INPUT CHANNEL
+0531 T 039F 3A93                        BNZ     01$                     ; IF NOT SAME WAIT FOR NEXT INPUT
+0532                           ;******************************************************************************
+0533 T 03A1 60                          IRX                         ; INCREMENT STACK TO DATA
+0534 T 03A2 F0                          LDX                         ; LOAD DATA
+0535 T 03A3 A7                          PLO     R7                      ; STASH IN REGISTER
+0536 T 03A4 22                          DEC     R2                      ; RESET STACK POINTER
+0537                           ;******************************************************************************
+0538                           ;
+0539                           ;       SECOND CHANNEL
+0540                           ;
+0541                           ;******************************************************************************
+0542 T 03A5 94                          GHI     R4                  ; INITIALIZE TO SECOND CHANNEL
+0543 T 03A6 A1                          PLO     R1
+0544 T 03A7 F800                        LDI     $00
+0545 T 03A9 B1                          PHI     R1
+0546                           ;******************************************************************************
+0547 T 03AA 35AA               WAIT2:   B2      WAIT2                   ; WAIT FOR DATA VALID
+0548                           ;******************************************************************************
+0549 T 03AC 6E                          INP     6                       ; ADDRESS
+0550 T 03AD 60                          IRX     
+0551 T 03AE 6C                          INP     4                       ; DATA
+0552 T 03AF 22                          DEC     R2
+0553 T 03B0 F0                          LDX     
+0554 T 03B1 FA0F                        ANI     $0F
+0555 T 03B3 52                          STR     R2
+0556                           ;******************************************************************************
+0557 T 03B4 81                          GLO     R1                      ; LOAD CHANNEL NUMBER
+0558 T 03B5 F7                          SM                          ; COMPARE TO INPUT CHANNEL
+0559 T 03B6 CA03AA                      LBNZ    WAIT2                   ; IF NOT SAME WAIT FOR NEXT INPUT
+0560                           ;******************************************************************************
+0561 T 03B9 60                          IRX                         ; INCREMENT STACK TO DATA
+0562 T 03BA F0                          LDX                         ; LOAD DATA
+0563 T 03BB B7                          PHI     R7                      ; STASH IN REGISTER
+0564 T 03BC 22                          DEC     R2                      ; RESET STACK POINTER
+0565                           ;******************************************************************************
+0566                           ;
+0567                           ;       OUTPUT SELECTED CHANNELS TO D/A CONVERTER
+0568                           ;
+0569                           ;******************************************************************************
+0570 T 03BD E3                 OUTS:    SEX     R3
+0571 T 03BE 61                          OUT     1
+0572 T 03BF 30                          DB      $30
+0573 T 03C0 E2                          SEX     R2
+0574                           
+0575 T 03C1 87                          GLO     R7
+0576 T 03C2 52                          STR     R2
+0577 T 03C3 63                          OUT     3
+0578 T 03C4 22                          DEC     R2
+0579                           
+0580 T 03C5 97                          GHI     R7
+0581 T 03C6 52                          STR     R2
+0582 T 03C7 64                          OUT     4
+0583 T 03C8 22                          DEC     R2
+0584                           
+0585 T 03C9 1A                          INC     RA                      ; INCREMENT DATA COUNTER
+0586                           
+0587 T 03CA C0038A                      LBR     PIOS
+0588                           
+0589                           ;******************************************************************************
+0590                           ;
+0591                           ;       STORE DATA IN TABLE
+0592                           ;
+0593                           ;****************************************************************************** 
+0594                           
+0595 T 03CD 87                          GLO     R7                      ; GET FIRST CHANNEL
+0596 T 03CE 5D                          STR     RD                      ; STORE IN TABLE
+0597 T 03CF 1D                          INC     RD                      ;
+0598 T 03D0 97                          GHI     R7                      ; GET SECOND CHANNEL
+0599 T 03D1 5D                          STR     RD                      ; STORE IN TABLE
+0600 T 03D2 1D                          INC     RD                      ;
+0601                           
+0602                           ;******************************************************************************
+0603                           ;
+0604                           ;       CHECK FOR FULL TABLE
+0605                           ;
+0606                           ;******************************************************************************
+0607                           
+0608 T 03D3 9D                          GHI     RD                      ; GET HIGH BYTE OF TABLE
+0609 T 03D4 FF20                        SMI     HIGH(LIMIT)             ; 4 KILOBYTES OF DATA
+0610 T 03D6 CB038A                      LBNF    PIOS                    ; NEXT CYCLE
+0611                           
+0612 T 03D9 F800                        LDI     $00                     ; RESET D/A TO ZERO
+0613 T 03DB 52                          STR     R2
+0614 T 03DC 63                          OUT     3
+0615 T 03DD 22                          DEC     R2
+0616 T 03DE 64                          OUT     4
+0617 T 03DF 22                          DEC     R2
+0618                           
+0619 T 03E0 6886F800                    SCAL    R6,OSTRN1               ; OUTPUT MESSAGE
+0620 T 03E4 0A0D                        DB      $0A,$0D
+0621 T 03E6 454E44204F462053            DB      "END OF SAMPLE"
+            414D504C45
+0622 T 03F3 00                          DB      $00
+0623                           
+0624 T 03F4 68860264                    SCAL    R6,PRESSA                       ;
+0625 T 03F8 C0001A                      LBR     MENU                    ; RETURN TO MENU
+0626                           ;******************************************************************************
+0627                           ;
+0628                           ;       END OF MENU ITEM 3 - DECODER 2 CHANNEL SCANER
+0629                           ;
+0630                           ;******************************************************************************
+0631                           
+0632                           
+0633                           
+0634                           
+0635                           ;******************************************************************************
+0636                           ;
+0637                           ;       DECODER MENU ITEM 4 - DECODER CAPTURE
+0638                           ;
+0639                           ;******************************************************************************
+0640                           ;
+0641                           ;       DECODER CAPTURE FUNCTION - READS ALL 9 CHANNELS TO TABLE
+0642                           ;
+0643                           ;******************************************************************************
+0644 T 03FB 6886F804           CAPT:    SCAL    R6,OSTRNG               ;
+0645 T 03FF 0A0D                        DB      $0A,$0D
+0646 T 0401 454E544552204849            DB      "ENTER HIGH BYTE OF TABLE LIMIT "
+            4748204259544520
+            4F46205441424C45
+            204C494D495420
+0647 T 0420 00                          DB      $00
+0648                           
+0649 T 0421 68CD0000                    RLDI    RD,$0000                ; SET INPUT TO ZERO
+0650 T 0425 6886F898                    SCAL    R6,READHX               ; KEYBOARD INPUT
+0651                           
+0652 T 0429 68CA05C3                    RLDI    RA,TABTOP               ; POINTER TO LIMIT OF DATA TABLE
+0653 T 042D F820                        LDI     HIGH(LIMIT)             ; GET DEFAULT
+0654 T 042F 5A                          STR     RA                      ; STORE AT LOCATION
+0655                           
+0656 T 0430 8D                          GLO     RD                      ; GET INPUT BYTE
+0657 T 0431 3234                        BZ      CAPT1                   ; NO INPUT USE DEFAULT
+0658 T 0433 5A                          STR     RA                      ; STORE AT LOCATION
+0659                           
+0660 T 0434 68860264           CAPT1:   SCAL    R6,PRESSA               ; KEYBOARD INPUT
+0661                           
+0662 T 0438 6886F804                    SCAL    R6,OSTRNG               ;
+0663 T 043C 0A0D                        DB      $0A,$0D
+0664 T 043E 5343414E20535441            DB      "SCAN STARTED"
+            52544544
+0665 T 044A 0A0D                        DB      $0A,$0D
+0666 T 044C 00                          DB      $00
+0667                           ;******************************************************************************
+0668                           ;
+0669                           ;       SETUP DATA TABLE HEADER
+0670                           ;
+0671                           ;******************************************************************************
+0672 T 044D 68CD1000                    RLDI    RD,TABLE                ; POINTER TO DATA TABLE
+0673 T 0451 F809                        LDI     $09                     ; 9 CHANNELS
+0674 T 0453 5D                          STR     RD                      ; STORE IN TABLE
+0675 T 0454 1D                          INC     RD                      ;
+0676 T 0455 F801                        LDI     $01                     ; FIRST CHANNEL
+0677 T 0457 5D                          STR     RD                      ; STORE IN TABLE
+0678 T 0458 1D                          INC     RD                      ;
+0679 T 0459 F802                        LDI     $02                     ; SECOND CHANNEL
+0680 T 045B 5D                          STR     RD                      ; STORE IN TABLE
+0681 T 045C 1D                          INC     RD                      ;
+0682 T 045D F803                        LDI     $03                     ; THIRD CHANNEL
+0683 T 045F 5D                          STR     RD                      ; STORE IN TABLE
+0684 T 0460 1D                          INC     RD                      ;
+0685 T 0461 F804                        LDI     $04                     ; CHANNEL 4
+0686 T 0463 5D                          STR     RD                      ; STORE IN TABLE
+0687 T 0464 1D                          INC     RD                      ;
+0688 T 0465 F805                        LDI     $05                     ; CHANNEL 5
+0689 T 0467 5D                          STR     RD                      ; STORE IN TABLE
+0690 T 0468 1D                          INC     RD                      ;
+0691 T 0469 F806                        LDI     $06                     ; CHANNEL 6
+0692 T 046B 5D                          STR     RD                      ; STORE IN TABLE
+0693 T 046C 1D                          INC     RD                      ;
+0694 T 046D F807                        LDI     $07                     ; CHANNEL 7
+0695 T 046F 5D                          STR     RD                      ; STORE IN TABLE
+0696 T 0470 1D                          INC     RD                      ;
+0697 T 0471 F808                        LDI     $08                     ; CHANNEL 8
+0698 T 0473 5D                          STR     RD                      ; STORE IN TABLE
+0699 T 0474 1D                          INC     RD                      ;
+0700 T 0475 F809                        LDI     $09                     ; CHANNEL 9
+0701 T 0477 5D                          STR     RD                      ; STORE IN TABLE
+0702 T 0478 1D                          INC     RD                      ;
+0703                           
+0704 T 0479 68CD1020                    RLDI    RD,TABLE+$0020          ;
+0705                           ;******************************************************************************
+0706                           ;
+0707                           ;       INPUT PIO DATA
+0708                           ;
+0709                           ;******************************************************************************
+0710 T 047D E3                          SEX     R3                      ; SET SP TO PC
+0711 T 047E 61                          OUT     1                       ; SELECT I/O GROUP 8
+0712 T 047F 08                          DB      $08
+0713 T 0480 E2                          SEX     R2                      ; RESET SP TO R2
+0714                           ;******************************************************************************
+0715                           ;
+0716                           ;       FIRST CHANNEL
+0717                           ;
+0718                           ;******************************************************************************
+0719 T 0481 68C10001           CH1:     RLDI    R1,$0001
+0720                           ;******************************************************************************
+0721 T 0485 3585               VALID:   B2      VALID                   ; WAIT FOR DATA VALID
+0722                           ;******************************************************************************
+0723 T 0487 6E                          INP     6                       ; ADDRESS
+0724 T 0488 60                          IRX     
+0725 T 0489 6C                          INP     4                       ; DATA
+0726 T 048A 22                          DEC     R2
+0727 T 048B F0                          LDX     
+0728 T 048C FA0F                        ANI     $0F
+0729 T 048E 52                          STR     R2
+0730                           ;******************************************************************************
+0731 T 048F 81                          GLO     R1                      ; LOAD CHANNEL NUMBER
+0732 T 0490 F7                          SM                          ; COMPARE TO INPUT CHANNEL
+0733 T 0491 3A85                        BNZ     VALID                   ; IF NOT SAME WAIT FOR NEXT INPUT
+0734                           ;******************************************************************************
+0735 T 0493 60                          IRX                         ; INCREMENT STACK TO DATA
+0736 T 0494 F0                          LDX                         ; LOAD DATA
+0737 T 0495 A7                          PLO     R7                      ; STASH IN REGISTER
+0738 T 0496 22                          DEC     R2                      ; RESET STACK POINTER
+0739                           ;******************************************************************************
+0740                           ;
+0741                           ;       STORE DATA IN TABLE
+0742                           ;
+0743                           ;****************************************************************************** 
+0744 T 0497 87                          GLO     R7                      ; GET FIRST CHANNEL
+0745 T 0498 5D                          STR     RD                      ; STORE IN TABLE
+0746 T 0499 1D                          INC     RD                      ;
+0747                           ;******************************************************************************
+0748                           ;
+0749                           ;       CHECK FOR FULL TABLE
+0750                           ;
+0751                           ;******************************************************************************
+0752 T 049A EA                          SEX     RA                      ;
+0753 T 049B 68CA05C3                    RLDI    RA,TABTOP               ;
+0754 T 049F 9D                          GHI     RD                      ;
+0755 T 04A0 F7                          SM                          ;
+0756 T 04A1 E2                          SEX     R2                      ;
+0757 T 04A2 33AE                        BDF     EXIT                    ;
+0758                           ;******************************************************************************
+0759                           ;
+0760                           ;       INCREMENT TO NEXT CHANNEL
+0761                           ;
+0762                           ;****************************************************************************** 
+0763 T 04A4 11                          INC     R1                      ; INCREMENT TO NEXT CHANNEL
+0764 T 04A5 81                          GLO     R1                      ; GET CHANNEL
+0765 T 04A6 FF0A                        SMI     $0A                     ; PAST CHANNEL 9
+0766 T 04A8 CA0485                      LBNZ    VALID                   ; NEXT CHANNEL
+0767 T 04AB C00481                      LBR     CH1                     ; RESET TO CHANNEL 1
+0768                           ;******************************************************************************
+0769                           ;
+0770                           ;       TABLE FULL QUIT
+0771                           ;
+0772                           ;******************************************************************************
+0773 T 04AE 6886F800           EXIT:    SCAL    R6,OSTRN1               ; OUTPUT MESSAGE
+0774 T 04B2 0A0D                        DB      $0A,$0D
+0775 T 04B4 454E44204F462053            DB      "END OF SAMPLE"
+            414D504C45
+0776 T 04C1 00                          DB      $00
+0777                           
+0778 T 04C2 68860264                    SCAL    R6,PRESSA               ;
+0779                           
+0780 T 04C6 C0001A                      LBR     MENU                    ; STOP
+0781                           ;******************************************************************************
+0782                           ;
+0783                           ;       END OF MENU ITEM 4 - DECODER CAPTURE
+0784                           ;
+0785                           ;******************************************************************************
+0786                           
+0787                           
+0788                           
+0789                           ;******************************************************************************
+0790                           ;
+0791                           ;       DECODER MENU ITEM 5 - DECODER PLAYBACK
+0792                           ;
+0793                           ;******************************************************************************
+0794                           ;
+0795                           ;       TIME CYCLE
+0796                           ;
+0797                           ;******************************************************************************
+0798 T 04C9 6886F800           PLAYB:   SCAL    R6,OSTRN1               ;
+0799 T 04CD 0A0D                        DB      $0A,$0D
+0800 T 04CF 454E544552204845            DB      'ENTER HEX WORD FOR DELAY FACTOR '
+            5820574F52442046
+            4F522044454C4159
+            20464143544F5220
+0801 T 04EF 00                          DB      $00
+0802                           
+0803 T 04F0 68CD0000                    RLDI    RD,$0000                ; SET HEX INPUT TO ZERO
+0804 T 04F4 6886F898                    SCAL    R6,READHX               ;
+0805 T 04F8 68C905C4                    RLDI    R9,FACTOR               ;
+0806 T 04FC F80C                        LDI     $0C                     ;
+0807 T 04FE 59                          STR     R9                      ;
+0808 T 04FF 19                          INC     R9                      ;
+0809 T 0500 F86A                        LDI     $6A                     ;
+0810 T 0502 59                          STR     R9                      ;
+0811                           
+0812 T 0503 8D                          GLO     RD                      ;
+0813 T 0504 320A                        BZ      PLAYC                   ; HIGH BYTE MUST BE NON-ZERO
+0814 T 0506 59                          STR     R9                      ;
+0815 T 0507 29                          DEC     R9                      ;
+0816 T 0508 9D                          GHI     RD                      ;
+0817 T 0509 59                          STR     R9                      ;
+0818                           ;*****************************************************************************  
+0819 T 050A 6886F800           PLAYC:   SCAL    R6,OSTRN1               ;
+0820 T 050E 0A0D                        DB      $0A,$0D
+0821 T 0510 454E544552204649            DB      "ENTER FIRST CHANNEL "
+            525354204348414E
+            4E454C20
+0822 T 0524 00                          DB      $00
+0823                           
+0824 T 0525 6886F898                    SCAL    R6,READHX               ; KEYBOARD INPUT
+0825                           
+0826 T 0529 2D                          DEC     RD                      ;
+0827 T 052A 8D                          GLO     RD                      ; GET KEYPRESS
+0828 T 052B A4                          PLO     R4                      ; ONE
+0829                           
+0830 T 052C 6886F804                    SCAL    R6,OSTRNG               ;
+0831 T 0530 0A0D                        DB      $0A,$0D
+0832 T 0532 454E544552205345            DB      "ENTER SECOND CHANNEL "
+            434F4E4420434841
+            4E4E454C20
+0833 T 0547 00                          DB      $00
+0834                           
+0835 T 0548 6886F898                    SCAL    R6,READHX               ; KEYBOARD INPUT
+0836                           
+0837 T 054C 2D                          DEC     RD                      ;
+0838 T 054D 8D                          GLO     RD                      ; GET KEYPRESS
+0839 T 054E B4                          PHI     R4                      ; TWO
+0840                           
+0841 T 054F 6886F800                    SCAL    R6,OSTRN1               ;
+0842 T 0553 0A0D                        DB      $0A,$0D
+0843 T 0555 524541445920544F            DB      "READY TO START PLAYBACK"
+            2053544152542050
+            4C41594241434B
+0844 T 056C 00                          DB      $00
+0845                           
+0846 T 056D 68860264                    SCAL    R6,PRESSA                       ;
+0847                           ;******************************************************************************
+0848                           ;
+0849                           ;       DETERMINE ADDRESS OF FIRST TWO DATA POINTS
+0850                           ;
+0851                           ;******************************************************************************
+0852 T 0571 68CA1020                    RLDI    RA,TABLE+$0020          ; RA POINTS TO CHANNEL 1
+0853 T 0575 68CB1020                    RLDI    RB,TABLE+$0020          ; RB POINTS TO CHANNEL 2
+0854                           
+0855 T 0579 84                          GLO     R4                      ; GET FIRST CHANNEL OFFSET
+0856 T 057A 52                          STR     R2                      ; STACK IT
+0857 T 057B 8A                          GLO     RA                      ; GET POINTER TO FIRST CHANNEL
+0858 T 057C F4                          ADD                         ; ADD IN CHANNEL OFFSET
+0859 T 057D AA                          PLO     RA                      ; RESET POINTER TO FIRST CHANNEL
+0860                           
+0861 T 057E 94                          GHI     R4                      ; GET SECOND CHANNEL OFFSET
+0862 T 057F 52                          STR     R2                      ; STACK IT
+0863 T 0580 8B                          GLO     RB                      ; GET POINTER TO SECOND CHANNEL
+0864 T 0581 F4                          ADD                         ; ADD IN CHANNEL OFFSET
+0865 T 0582 AB                          PLO     RB                      ; RESET POINTER TO SECOND CHANNEL
+0866                           ;******************************************************************************
+0867                           ;
+0868                           ;       OUTPUT DATA TO D/A
+0869                           ;
+0870                           ;******************************************************************************
+0871 T 0583 E3                          SEX     R3                      ;
+0872 T 0584 61                          OUT     1                       ;
+0873 T 0585 30                          DB      $30                     ;
+0874 T 0586 E2                          SEX     R2                      ;
+0875                           ;*****************************************************************************
+0876 T 0587 0A                 PLAY:    LDN     RA                      ; GET FIRST DATA POINT
+0877 T 0588 52                          STR     R2                      ; STACK IT
+0878 T 0589 63                          OUT     3                       ; OUTPUT BYTE FROM D/A CHANNEL 1
+0879 T 058A 22                          DEC     R2                      ; RESET SP
+0880                           
+0881 T 058B 0B                          LDN     RB                      ; GET SECOND DATA POINT
+0882 T 058C 52                          STR     R2                      ; STACK IT
+0883 T 058D 64                          OUT     4                       ; OUTPUT BYTE FROM D/A CHANNEL 2
+0884 T 058E 22                          DEC     R2                      ; RESET SP
+0885                           ;******************************************************************************
+0886                           ;
+0887                           ;       DELAY LOOP
+0888                           ;
+0889                           ;******************************************************************************
+0890 T 058F 68C105C4                    RLDI    R1,FACTOR               ; POINTER TO FACTOR
+0891 T 0593 41                          LDA     R1                      ;
+0892 T 0594 B9                          PHI     R9                      ;
+0893 T 0595 01                          LDN     R1                      ;
+0894 T 0596 A9                          PLO     R9                      ;
+0895                           
+0896                           ;       RLDI    R9,$0C6A                ; EXPERIMENTAL VALUE AT 5MhZ
+0897                           
+0898 T 0597 C4                 DELAY:   NOP                         ; NO OPERATION
+0899 T 0598 68290597                    DBNZ    R9,DELAY                ; DELAY LOOP
+0900                           ;******************************************************************************
+0901                           ;
+0902                           ;       INCREMENT TO NEXT DATA POINT
+0903                           ;
+0904                           ;******************************************************************************
+0905 T 059C 68CD0009                    RLDI    RD,$0009                ; 9 TIMES
+0906 T 05A0 1A                 NEXT:    INC     RA                      ; INCREMENT POINTER TO FIRST CHANNEL
+0907 T 05A1 1B                          INC     RB                      ; INCREMENT POINTER TO SECOND CHANNEL
+0908 T 05A2 682D05A0                    DBNZ    RD,NEXT                 ;
+0909                           ;******************************************************************************
+0910                           ;
+0911                           ;       CHECK FOR END OF TABLE
+0912                           ;
+0913                           ;******************************************************************************
+0914 T 05A6 ED                          SEX     RD                      ; SET SP
+0915 T 05A7 68CD05C3                    RLDI    RD,TABTOP               ; POINTER TO END OF TABLE
+0916 T 05AB 9A                          GHI     RA                      ; GET HIGH BYTE OF TABLE POINTER
+0917 T 05AC F7                          SM                          ;
+0918 T 05AD E2                          SEX     R2                      ; RESET SP
+0919 T 05AE CB0587                      LBNF    PLAY                    ; OUTPUT NEXT DATA POINTS
+0920                           
+0921 T 05B1 E3                          SEX     R3                  ; SET PROGRAM COUNTER EQUAL SP
+0922 T 05B2 61                          OUT     1                   ; SET I/O GROUP
+0923 T 05B3 30                          DB      $30                 ; I/O GROUP 30
+0924 T 05B4 63                          OUT     3                   ; OUTPUT DATA TO D/C CHANNEL 1
+0925 T 05B5 00                          DB      $00
+0926 T 05B6 64                          OUT     4                   ; OUTPUT DATA TO D/A CHANNEL 2
+0927 T 05B7 00                          DB      $00
+0928 T 05B8 E2                          SEX     R2                  ; RESET SP TO R2
+0929                           
+0930 T 05B9 6886023C                    SCAL    R6,REPEAT           ; CALL REPEAT QUESTION ROUTINE
+0931 T 05BD C204C9                      LBZ     PLAYB               ; REPEAT TEST IF D=0
+0932                           
+0933 T 05C0 C0001A                      LBR     MENU                    ; RESTART
+0934                           ;******************************************************************************
+0935                           ;
+0936                           ;       END OF MENU ITEM 5 - DECODER PLAYBACK
+0937                           ;
+0938                           ;******************************************************************************
+0939                           
+0940                           
+0941                           ;******************************************************************************
+0942                           ;
+0943                           ;       END OF MANCHESTER DECODER SOFTWARE
+0944                           ;
+0945                           ;******************************************************************************
+0946 T 05C3 00                 TABTOP:  DB      $00                     ;
+0947 T 05C4 0000               FACTOR:  DW      $0000                   ;
+0948 T 05C6 00FF                        DS      $00FF                   ;
+0949                           ;******************************************************************************
+0950 T 0700                             CORG    $0100
+0951                           ;******************************************************************************
+0952 T 0700 C4                 USER:    NOP     
+0953                           ;******************************************************************************
+0954 T 1000                             ORG     $1000
+0955                           ;******************************************************************************
+0956 T 1000 C4                 TABLE:   NOP                         ; START OF TABLE
+0957                           ;******************************************************************************
+0958                           ;
+0959                           ;       END OF DATA REDUCTION SOFTWARE
+0960                           ;
+0961                           ;******************************************************************************
+0962   1001                             END     
+There were: 0000 Errors
+
+SECTIONS USED:
+
+ Section           Relocation   Alignment  Type     Begins       Ends
+ TLXTEST           absolute                         0000         1000
+
+
+SYMBOL TABLE
+
+SYMBOLS DEFINED:
+
+ Symbol            Section/Type        Attribute Value             Length
+ CAPT              absolute                      03FB      
+ CAPT1             absolute                      0434      
+ CH1               absolute                      0481      
+ CLEAR             local constant                FB6F      
+ CRLF              local constant                FB1B      
+ CUROFF            local constant                FC23      
+ CURON             local constant                FC18      
+ DACAL             absolute                      0174      
+ DATST1            absolute                      01A8      
+ DEBUG             local constant                F000      
+ DELAY             absolute                      0597      
+ DELAY1            local constant                F889      
+ EXIT              absolute                      04AE      
+ FACTOR            absolute                      05C4               2
+ ITEST             local constant                FD0C      
+ LIMIT             local constant                2000      
+ M8OUT             local constant                FADD      
+ M8OUT1            local constant                FAD7      
+ M8OUTD            local constant                FADB      
+ MENU              absolute                      001A      
+ MLFCR             local constant                FB40      
+ MOUT              local constant                FA7C      
+ MOUT1             local constant                FA76      
+ MOUT3             local constant                F9F4      
+ MOUT31            local constant                F9EE      
+ MOUT3D            local constant                F9F2      
+ MOUTD             local constant                FA7A      
+ NEXT              absolute                      05A0      
+ ORGIN             local constant                0000      
+ OSTRN1            local constant                F800      
+ OSTRNG            local constant                F804      
+ OUT               absolute                      02C4      
+ OUTS              absolute                      03BD      
+ PIO               absolute                      02A3      
+ PIOS              absolute                      038A      
+ PLAY              absolute                      0587      
+ PLAYB             absolute                      04C9      
+ PLAYC             absolute                      050A      
+ PRESSA            absolute                      0264      
+ RCA1              local constant                F874      
+ READ              local constant                F906      
+ READ1             local constant                F900      
+ READD             local constant                F904      
+ READH             local constant                F8BE      
+ READH1            local constant                F8B8      
+ READHD            local constant                F8BC      
+ READHX            local constant                F898      
+ REPEAT            absolute                      023C      
+ RVOFF             local constant                FB99      
+ RVON              local constant                FB8E      
+ SCANER            absolute                      032E      
+ STACK             local constant                F000      
+ T8OUT             local constant                FABB      
+ T8OUT1            local constant                FAB5      
+ T8OUTD            local constant                FAB9      
+ TABLE             absolute                      1000      
+ TABTOP            absolute                      05C3               1
+ TOUT3             local constant                F9CE      
+ TOUT31            local constant                F9C8      
+ TOUT3D            local constant                F9CC      
+ TOUT6             local constant                FA51      
+ TOUT61            local constant                FA4B      
+ TOUT6D            local constant                FA4F      
+ TYPE3             local constant                F939      
+ TYPE31            local constant                F933      
+ TYPE3D            local constant                F937      
+ TYPE6             local constant                F950      
+ TYPE61            local constant                F94A      
+ TYPE6D            local constant                F94E      
+ TYPE8             local constant                F965      
+ TYPE81            local constant                F95F      
+ TYPE8D            local constant                F963      
+ TYPED             local constant                F82B      
+ TYPED1            local constant                F827      
+ TYPEH             local constant                F816      
+ TYPEH1            local constant                F810      
+ TYPEHD            local constant                F814      
+ TYPER             local constant                F82D      
+ USER              absolute                      0700      
+ VALID             absolute                      0485      
+ VIEW              absolute                      0284      
+ WAIT              absolute                      02A7      
+ WAIT2             absolute                      03AA      
+ WORD              local constant                F9B2      
+ WORD3             local constant                F974      
+ WORD31            local constant                F96E      
+ WORD3D            local constant                F972      
+ WORD6             local constant                F99A      
+ WORD61            local constant                F994      
+ WORD6D            local constant                F998      
+ WORD81            local constant                F9AC      
+ WORD8D            local constant                F9B0      
+
+
+Assembly time: 0 min, 10 sec

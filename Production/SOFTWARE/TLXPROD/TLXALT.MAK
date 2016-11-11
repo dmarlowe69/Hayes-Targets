@@ -1,0 +1,5 @@
+tlxALT.h : tlxALT.o
+	C:\AMERICAN\1802\AALINK /S tlxALT
+
+tlxALT.o : tlxALT.s
+	C:\AMERICAN\1802\AS1805 /S tlxALT

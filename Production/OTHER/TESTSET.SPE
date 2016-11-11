@@ -1,0 +1,123 @@
+
+
+
+
+
+	SPECIFICATION TLX POWER SUPPLY/TEST SET, P/N 001-1265
+
+	1. APPLICATION
+
+		The Power Supply/Test Set is designed to allow the user to
+	power up the TLX electronics and gain access to the critical test
+	points in the autopilot computer. External power is required for
+	ground testing as the TLX is powered by an alternator/Ram Air Turbine
+	in flight. Measuring the outputs of the test points with a Digitial
+	volt meter, allows for the TLX to be functionally tested, on the
+	flight line, prior to loading on the tow aircraft.
+
+
+	2. POWER SUPLLY/TEST SET DESCRITPION
+
+		The Power Supply/Test set is composed of two functionally
+	seperate devices, the power supply, and the TLX function test set.
+	The unit contains a battery pack power supply and recharger, as well
+	as the functional test set. The two sections are detailed below. The
+	basic dimensions of the power supply/test set are:
+
+	dimensions:	14" x 10" x 8"
+	weigth: 	20 lbs (approximate)
+	
+
+
+
+
+
+	2.1 Power Supply - Detailed
+
+		The power supply section of the test set consists of a two
+	12 volt sealed lead-acid battery packs, connected in series, and two
+	12 volts battery chargers, also in series. A six foot power cable
+	connects the test set to the power input connector on the TLX computer. 
+
+		The 24 volt output is controlled by an ON/OFF switch on the
+	test set. The voltage level of the batteries is monitored by an analog
+	meter at all times. The AC power to the chargers is fused and when
+	applied, is indicated by a lamp. The AC cord is detachable and is
+	stored in the hinged cover of the test set. The TLX power cable is also
+	stowed in the hinged cover.
+
+
+	Power Supply specifications:
+
+	Power section
+
+	output:				24 volts
+	capacity:			6.0 ampere hour
+	self dischrage rate:		3-5% at 77 Deg F
+	
+
+	Charger section
+
+	output voltage:			12 volts (regulated)
+	output current:			450 milliamperes
+	charging characteristics:	cycled service voltage level
+	Maximum allowable charge time:	72 hours
+					(exceeding will de-grade battery life)
+	input:				120 VAC +/- 10%  50-60 Hz
+
+
+		The recharge time for the power supply is appoximately 14 to
+	16 hours, allowing up to four hours of continuious opertation. The
+	unit may be left on charge for longer periods on time, but should not
+	exceed 72 hours. The TLX target may be tested while the unit is on
+	charge, for a short period of time. 
+
+
+
+
+
+	2.2  Test Set - Detailed	
+		
+		The Test Set part of the Power Supply/Test Set allows for basic
+	functional flight line testing of the TLX. The test set is equiped with
+	a six foot test cable which connects to the "TEST" connector on the
+	TLX computer. The cable is stowed in the hinged cover of the test set
+	when not in use.
+
+		The test points monitored by the test set are:
+	
+	Radar Altimeter height signal (ALT SIG)
+	Radar Altimeter lock signal (RELBL)
+	Radar Altimeter Self Test switch (SELF TEST)
+
+	Accelerometer signal (ACCLRM)
+
+	Wing postion feedback potentiometer signal (FDBK SIG)
+	Scaled wing position signal (for telemetry) (WING POSN)
+	Computer commanded wing position signal (CMD)
+	Feedback commanded wing postion signal (FDBK CMD)
+
+	28 VDC power (28V)
+	12 VDC power (12V)
+	12 VDC power to feedback potentiometer (POT 12V)
+	5  VDC power (5V)
+
+	Modulation signal from Command receiver (REC SIG)
+	Modulation signal to Telemetery transmitter (MOD)
+
+	Fire 1 command lamp (F1)
+	Fire 2 command lamp (F2)
+	Fire 3 command lamp (F3)
+	Fire 4 command lamp (F4)
+
+		Most of the above test points are tip jacks for use with a
+	standard digital volt meter. The modulation test points are BNC
+	connectors for use with sheilded coxial cable and an oscilloscpe. The
+	altimeter self test switch allows the radar altimeter to be check
+	using its internal self test mode. The Fire command lamps allow the
+	four firing command sent from the control station to be verified.
+	
+		When used in conjuction with the TLX control station, the test
+	set allows the TLX target to be completely functional tested before
+	loading on the tow aircraft.
+

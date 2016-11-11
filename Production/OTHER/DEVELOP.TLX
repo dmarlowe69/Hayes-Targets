@@ -1,0 +1,395 @@
+
+
+
+
+
+
+
+			   
+		 OPERATION OF THE TLX DEVELOPMENT STATION
+			    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						      
+						      OPERATION OF THE TLX
+						      DEVELOPMENT STATION
+						      
+
+
+
+HAYES INTERNATIONAL CORPORATION				 TARGETS DIVISION
+							 
+							 Sheet	 of
+							      ---  ---
+							 Rev.
+							     ---------
+
+
+
+
+
+
+
+
+
+
+
+
+
+			    
+		OPERATION OF THE TLX DEVELOPMENT STATION
+			    
+
+
+
+
+
+
+
+	OPERATION OF THE TLX DEVELOPMENT STATION
+
+	1.0 SCOPE
+	    ---------
+
+		The purpose of this manual is the correct setup and operation
+	of the TLX Development Station. The development station was originally
+	used to write, assemble and debug the software for the TLX target. The
+	system is now configured as part of the production test procedures used
+	to verfiy proper operation of the components of the TLX autopilot
+	computer. The ERPOM programming functions of the system have been
+	retained in order to burn EPROMs in the production envoriment.The job
+	of software development and experimential EPROM programming is now done
+	on the american automation development system.
+
+	2.0 APPLICABLE DOCUMENTS
+	    --------------------
+
+		USER MANUAL FOR RCA MICROBOARD COMPUTER DEVELOPMENT SYSTEM
+			(MCDS) CDP18S693 AND CPD18S694 [MPM-293A]
+
+		USER MANUAL FOR THE CDP1802 COSMAC MICROPROCESSOR [MPM-201C]
+
+		INSTRUCTION SUMMARY FOR THE CDP1802 COSMAC MICOPROCESSOR
+			[MPM-920B]
+
+		INSTRUCTION SET FOR THE RCA CMOS MICROPROCESSOR CDP1804A,
+			CDP1805A AND CDP1806A [MPM-201C (SUPPLEMENT)]
+
+		RCA COSMAC MICROBOARD COMPUTER CDP18S606 
+
+		RCA COSMAC MICROBOARD A/D AND D/A CONVERTERS CDP18S644,CDP18S654
+
+		RCA COSMAC MICROBOARD 16-KILOBYTE RAM CDP18S621
+
+		BASIC3 HIGH-LEVEL-LANGUAGE INTERPRETER CDP18S841 USER MANUAL
+			[MPM-841A]
+
+		FIXED-POINT BINARY ARITHMETIC SUBROUTINES FOR RCA COSMAC
+			MICRPROCESSORS [MPM-206A]
+
+		FLOATING-POINT ARITHMETIC SUBROUTINES FOR RCA COSMAC
+			MICROPROCESSORS [MPM-207]
+
+		VP-3300 SERIES INTERACTIVE DATA TERMINALS USER'S MANUAL
+		
+		RCA LSI PRODUCTS - APPLICATIONS [DATA BOOK SERIES SSD-280]
+
+		MATRIC MICROBOARD PRICE LIST
+		
+		RCA SOLID STATE MICROSYSTEMS AND MICROBOARDS DEVELOPMENT
+			SYSTEMS SOFTWARE CATALOG
+
+	This material is presented in Appendix 4, volumes 1,2 and 3.
+
+
+
+
+		
+	3.0 HARWARE REQUIREMENTS
+	    --------------------
+
+		The required hardware to set up the TLX Development Station is
+	as follows:
+
+
+		RCA COSMAC Microborad Computer Development system CDP18S694V1
+
+		RCA VP3301 DATA TERMINAL
+
+		RCA TC1110 B/W Monitor
+
+		2 Panasonic RQ-2309A Cassette tape drives
+
+		RCA COSMAC Microboard Computer CDP18S606
+
+		RCA COSMAC Microborad Memory and Tape I/O
+
+		RCA COSMAC Microboard PROM Programmer CDP18S480V2
+
+		RCA COSMAC Microboard 16-Kilobyte RAM
+
+		
+		The development station should be setup as indicated in figure
+	1.
+
+
+
+
+
+		
+	4.0 MEMORY MAP REQUIRMENTS
+	    ----------------------
+
+		The RCA system is very flexible and can be setup to almost
+	any memory configuration desired. The memory of the system is contained
+	on three seperate boards, so carte must be taken to insure the correct
+	configuration. Memory is contained on the following boards:
+
+		RCA COSMAC Microboard Computer CDP18S606
+
+		RCA COSMAC Microborad Memory and Tape I/O
+
+		RCA COSMAC Microboard 16-Kilobyte RAM
+
+
+		The Computer boards contains four 2-Kilobyte rom sockets and
+	4-Kilobytes of RAM. Configurations links allow the progrmmer to set the
+	RAM and pairs of ROM sockets into any 4-kilobyte address space. The
+	required setup is:
+
+		ROM sockets U25 and U24 at address $5000-$5FFF
+
+		ROM sockets U27 and U26 at address $6000-$6FFF
+
+		RAM at address $4000-$4FFF
+
+
+		The 16-Kilbyte RAM board may be setup to any 16 kilobyte
+	address space. The required addresses are $0000-$3FFF. Normally this
+	board is removed for the development station. It is only needed for
+	the eprom programming software. The board can be installed in the
+	system with no interference, but it will cause the software which
+	checks the flight CPU board to malfunction.
+
+		The Tape I/O board contains 10 2-Kilobyte ROM sockets and
+	1-Kilobyte of RAM. The memory map for this board is pre-assigned and
+	need not be setup. However, some of the EPROM chips installed on the
+	board are replaced with the BENCH TEST software. These changes are
+	detailed in the next section.
+
+
+
+
+
+
+	5.0 BENCH TEST SOFTWARE INSTALLATION
+	    --------------------------------
+
+		As equipment from the factory, the TAPE I/O board (CDP18S62)
+	contains a version of BASIC in ROM. As this version of BASIC is of
+	little use, the ROM's are removed from the board and replaced with
+	ROM's containing the BENCH TEST software, and its support routines.
+	For the following ROM sockets on the TAPE I/O board, the exsisting
+	EPROMs were removed and replace with the indicted firmware:
+
+		socket U15	Benchtst $b000-$b7ff
+
+		socket U16	Benchtst $b800-$bfff
+
+		socket U1	Benchtst $c000-$c7ff
+
+		socket U7	EPROM PROGRAMMER $d000-$d7ff
+
+		socket U8	Debugio software $d800-$dfff
+
+		socket u2	MASTER TLX EPROM $c800-$cfff
+
+		It should be noted that the MASTER TLX EPROM and the EPROM
+	PROGRAMMER software are assembled at address $0000, but are stored
+	in at a different address. Also, the EPROM PROGRAMMER was burned on
+	an EPROM from the object data that came originaly from the factory
+	on a cassette tape. A lisiting of the Benchtst software is presented
+	in Appendix 1. The lisiting of the Debugio software is presented in
+	Appendix 2. And the object code for the ERPOM PROGRAMMER is listed in
+	Appendix 3. It should be noted that these listings were created with
+	the american automation development system and its software. The current
+	listing of the TLX MASTER EPROM can be found in the TLX computer
+	assembly test procedure, 001-5055.
+
+
+
+
+
+		
+	6.0 TERMINAL SET UP
+	    ---------------
+
+		The VP3301 DATA TERMINAL is set up by a bank of DIP switches
+	located on the side on the terminal. The required settings are as
+	follows:
+
+		X	UC	U & LC
+
+			E/O	M/S	X
+
+			E/M	O/S	X
+
+		X	2SB	1SB
+
+		X	F-DPX	H-DPX
+
+		X	CTRL	OFF
+
+		X	CD	OFF
+
+		X	40/24	20/12
+
+	
+		X	CL	EIA
+
+			LOCAL	LINE	X
+
+			110		X
+
+		X	300
+
+			1200		X
+
+			4800		X
+
+			9600		X
+
+			19.2K		X
+
+
+		Note that the terminal is setup to 300 baud. This is required
+	for the bench test software. Also note that the terminal is set up for
+	CL (current loop, sometimes called TTY) as appossed to EIA (RS-232). 
+	When connecting the terminal, use the TTY cable and connect to the TTY
+	connector on the CDP18S606 Computer board.
+
+
+	7.0 MONITOR SET UP
+	    --------------
+
+		The monitor has configuration switches on its back panel. These
+	switches should be setup as follows:
+
+		VIDEO:			NORMAL
+		
+		DC RESTORATION:		ON
+		
+		IMPEDENCE		75 ohms
+
+
+
+
+
+
+	8.0 POWER UP SEQUENCE
+	    -----------------
+
+		To power up the development system, first turn on the AC line
+	plug strip. Power on the monitor and keyboard. Power on the development
+	system card cage. Switch the reset switch on the TAPE I/O board to
+	RESET (push to the left) and then to RUN (push to the right). Press the
+	RETURN key on the keyboard. When the "*" character is diplayed on the
+	monitor, the system is running the RCA UT62 MONITOR software and is
+	ready to accept commands. See the MCDS user's manual for details on
+	the available commands. Remember that the BAISC interpreter has been
+	replaced by the Bench test software. The user's manual for this software
+	is contained within the approiate test procedures of 001-5055, the TLX
+	computer assembly test procedure.
+
+		To power off the system, turn the development system card cage
+	off and then power off the keyboard and monitor.
+
+
+
+
+
+			APPENDIX 1
+
+			BENCH TEST SOFTWARE LISTING
+
+
+
+
+
+
+			APPENDIX 2
+
+			DEBUGIO SOFTWARE LISTING
+
+
+
+
+
+			APPENDIX 3
+
+			EPROM PROGRAMMER OBJECT CODE LISTING
+
+
+
+
+
+			APPENDIX 4 VOLUME 1
+
+
+
+
+
+			APPENDIX 4 VOLUME 2
+
+
+
+
+
+			APPENDIX 4 VOLUME 3
+

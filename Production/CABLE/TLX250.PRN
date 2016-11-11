@@ -1,0 +1,38 @@
+
+
+
+
+                   TOW CABLE STEADY STATE ANALYSIS
+                            HAYES METHOD
+
+DATE 02-16-1989  TLX CABLE
+FIRST SEGMENT IS 1 X 7 STRANDED CABLE : CUT-OFF ANGLE (DEG): 53.98
+STRANDED CF: 0.007  CD0:  2  
+ANALYSIS DESIGN STEP LENGTH:  10 
+
+TARGET:TLX-1                 WEIGHT (LBS):                  68 
+AIRSPEED (KIAS):    250     DRAG COEFFICIENT               0.453
+WING ANGLE (DEG): -8          TARGET LIFT (LBS):-229.74
+SAFETY FACTOR:      1.60     G FACTOR:                      1 
+
+   DIA    LENGTH    TENSION         SAFETY FACTOR    ANGLE      SEG WT
+   (IN)    (FT)      (LBS)                           (DEG)      (LBS)
+
+ TARGET              301                              82.05
+                                      6.59    15.2%
+ 0.097     50        310   1980 RTS   6.39    15.6%   53.98        1.14
+ 0.064     50        312    880 RTS   2.82    35.5%   42.07        0.47
+ 0.050   1800        349    560 RTS   1.60    62.4%    5.63       10.37
+ 0.055   3400        425    680 RTS   1.60    62.4%    4.87       23.83
+ 0.059   1800        468    750 RTS   1.60    62.4%    4.99       14.24
+ 0.064   3000        549    880 RTS   1.60    62.4%    5.22       28.17
+ 0.070   3400        652   1040 RTS   1.60    62.7%    5.53       39.10
+ 0.076   3100        756   1210 RTS   1.60    62.5%    5.72       41.54
+ 0.082   3000        867   1390 RTS   1.60    62.4%    5.91       46.20
+ 0.087   1400        923   1570 RTS   1.70    58.8%    6.15       24.78
+
+CABLE WEIGHT (LBS): 229.8         VOLUME (CUBIC INCHES):1192.2
+CABLE DROOP  (FT) :  2483         DESIGN LENGTH (FT)   : 21000
+CABLE TRAIL  (FT) : 20728
+
+

@@ -1,0 +1,56 @@
+CASEID  TLX-2
+ $FLTCON 
+         NMACH =1., MACH =.41,
+         NALPHA=6., ALPHA=0.,1.,2.,3.,4.,5.,
+         PHI=0.0,
+         ALT=0.0,
+ $END
+ $REFQ 
+         XCG=  62.5,
+         LREF= 11.0,
+         SREF= 95.03,
+         BLAYER=NATURAL, 
+         RHR=50.0,
+         SCALE=1.0,
+ $END
+ $AXIBOD 
+         XO=0.000,
+         TNOSE=OGIVE, 
+         LNOSE=5.5,
+         DNOSE=11., 
+         BNOSE=5.5,
+         TRUNC=.FALSE.,
+         LCENTR=99.0, 
+         DCENTR=11.,
+         TAFT=OGIVE,
+         LAFT=17.,
+         DAFT=6.5,
+         DEXIT=0.,
+ $END
+ $FINSET1
+         SECTYP=NACA,
+         SSPAN= 5.5,13.0,
+         CHORD= 4., 4.,
+         XLE=  61.5, 61.5,
+         NPANEL=2.0,
+         PHIF= 90.,270.,
+ $END
+ $FINSET2
+         SECTYP=NACA,
+         SSPAN= 5.5,13.0,
+         CHORD= 20.38, 0.000,
+         XLE=  87.62,
+         SWEEP= 70.0,90.0,
+         STA=0.,0.,
+         NPANEL=8.0,
+         PHIF= 0.,45.,90.,135.,180.,225.,270.,315.,
+         GAM= 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
+ $END
+DERIV DEG
+NO LAT
+PART
+NACA 1 4 0018
+NACA 2 4 0001
+DIM IN
+BUILD
+NEXT CASE

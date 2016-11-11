@@ -1,0 +1,1091 @@
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS   
+                                                CONERR - INPUT ERROR CHECKING
+
+
+ ERROR CODES - N* DENOTES THE NUMBER OF OCCURENCES OF EACH ERROR
+
+ A - UNKNOWN VARIABLE NAME
+
+ B - MISSING EQUAL SIGN FOLLOWING VARIABLE NAME
+
+ C - NON-ARRAY VARIABLE HAS AN ARRAY ELEMENT DESIGNATION - (N)
+
+ D - NON-ARRAY VARIABLE HAS MULTIPLE VALUES ASSIGNED
+
+ E - ASSIGNED VALUES EXCEED ARRAY DIMENSION
+
+ F - SYNTAX ERROR
+
+    ******************************  INPUT DATA CARDS  ******************************
+
+  1 CASEID  TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                        
+  2  $FLTCON                                                                        
+  3          NMACH =1., MACH =.41,                                                  
+  4          NALPHA=6., ALPHA=0.,1.,2.,3.,4.,5.,                                    
+  5          PHI=0.0,                                                               
+  6          ALT=0.0,                                                               
+  7  $END                                                                           
+  8  $REFQ                                                                          
+  9          XCG=  5.21,                                                            
+ 10          LREF= 0.917,                                                           
+ 11          SREF= 0.660,                                                           
+ 12          BLAYER=NATURAL,                                                           ** SUBSTITUTING NUMERIC FOR NAME NATURAL
+ 13          RHR=50.0,                                                              
+ 14          SCALE=1.0,                                                             
+ 15  $END                                                                           
+ 16  $AXIBOD                                                                        
+ 17          XO=0.000,                                                              
+ 18          TNOSE=OGIVE,                                                              ** SUBSTITUTING NUMERIC FOR NAME OGIVE
+ 19          LNOSE=1.417,                                                           
+ 20          DNOSE= .917,                                                           
+ 21          BNOSE= .458,                                                           
+ 22          TRUNC=.FALSE.,                                                         
+ 23                                                                                    ** BLANK CARD - IGNORED
+ 24          LCENTR=7.292,                                                          
+ 25          DCENTR= .917,                                                          
+ 26                                                                                    ** BLANK CARD - IGNORED
+ 27          TAFT=OGIVE,                                                               ** SUBSTITUTING NUMERIC FOR NAME OGIVE
+ 28          LAFT=1.417,                                                            
+ 29          DAFT=.542,                                                             
+ 30          DEXIT=0.,                                                              
+ 31  $END                                                                           
+ 32  $FINSET1                                                                       
+ 33          SECTYP=NACA,                                                              ** SUBSTITUTING NUMERIC FOR NAME NACA
+ 34          SSPAN= 0.458, 1.083,                                                   
+ 35          CHORD= 0.333, 0.333,                                                   
+ 36          XLE=  5.125, 5.125,                                                    
+ 37          NPANEL=2.0,                                                            
+ 38          PHIF= 90.,270.,                                                        
+ 39  $END                                                                           
+ 40  $FINSET2                                                                       
+ 41          SECTYP=NACA,                                                              ** SUBSTITUTING NUMERIC FOR NAME NACA
+ 42          SSPAN= 0.458, 1.083,                                                   
+ 43          CHORD= 1.698, 0.000,                                                   
+ 44          XLE=  7.302,                                                           
+ 45          SWEEP= 70.0,90.0,                                                      
+ 46          STA=0.,0.,                                                             
+ 47          NPANEL=8.0,                                                            
+ 48          PHIF= 0.,45.,90.,135.,180.,225.,270.,315.,                             
+ 49          GAM= 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,                                  
+ 50  $END                                                                           
+ 51 DERIV DEG                                                                       
+ 52 NO LAT                                                                          
+ 53 PART                                                                            
+ 54 NACA 1 4 0018                                                                   
+ 55 NACA 2 4 0001                                                                   
+ 56 DIM FT                                                                          
+ 57 BUILD                                                                           
+ 58 NEXT CASE                                                                       
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   1
+                                                         CASE INPUTS
+
+FOLLOWING ARE THE CARDS INPUT FOR THIS CASE
+
+CASEID  TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                        
+ $FLTCON                                                                        
+         NMACH =1., MACH =.41,                                                  
+         NALPHA=6., ALPHA=0.,1.,2.,3.,4.,5.,                                    
+         PHI=0.0,                                                               
+         ALT=0.0,                                                               
+ $END                                                                           
+ $REFQ                                                                          
+         XCG=  5.21,                                                            
+         LREF= 0.917,                                                           
+         SREF= 0.660,                                                           
+         BLAYER=1.,                                                             
+         RHR=50.0,                                                              
+         SCALE=1.0,                                                             
+ $END                                                                           
+ $AXIBOD                                                                        
+         XO=0.000,                                                              
+         TNOSE=1.,                                                              
+         LNOSE=1.417,                                                           
+         DNOSE= .917,                                                           
+         BNOSE= .458,                                                           
+         TRUNC=.FALSE.,                                                         
+         LCENTR=7.292,                                                          
+         DCENTR= .917,                                                          
+         TAFT=1.,                                                               
+         LAFT=1.417,                                                            
+         DAFT=.542,                                                             
+         DEXIT=0.,                                                              
+ $END                                                                           
+ $FINSET1                                                                       
+         SECTYP=1.,                                                             
+         SSPAN= 0.458, 1.083,                                                   
+         CHORD= 0.333, 0.333,                                                   
+         XLE=  5.125, 5.125,                                                    
+         NPANEL=2.0,                                                            
+         PHIF= 90.,270.,                                                        
+ $END                                                                           
+ $FINSET2                                                                       
+         SECTYP=1.,                                                             
+         SSPAN= 0.458, 1.083,                                                   
+         CHORD= 1.698, 0.000,                                                   
+         XLE=  7.302,                                                           
+         SWEEP= 70.0,90.0,                                                      
+         STA=0.,0.,                                                             
+         NPANEL=8.0,                                                            
+         PHIF= 0.,45.,90.,135.,180.,225.,270.,315.,                             
+         GAM= 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,                                  
+ $END                                                                           
+DERIV DEG                                                                       
+NO LAT                                                                          
+PART                                                                            
+NACA 1 4 0018                                                                   
+NACA 2 4 0001                                                                   
+DIM FT                                                                          
+BUILD                                                                           
+NEXT CASE                                                                       
+
+THE BOUNDARY LAYER IS ASSUMED TO DEVELOP NATURALLY OVER ALL COMPONENTS OF THE CONFIGURATION
+
+THE INPUT UNITS ARE IN FEET, THE SCALE FACTOR IS   1.0000
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   2
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                 AXISYMMETRIC BODY DEFINITION  
+
+
+                                  ---- NOSE ----  ---- CENTERBODY ----  ---- AFT BODY ----  ---- TOTAL -----
+
+                 SHAPE                  OGIVE           CYLINDER               OGIVE
+
+                 LENGTH                1.4170             7.2920              1.4170           10.1260      FT
+
+                 FINENESS RATIO        1.5453             7.9520              1.5453           11.0425
+
+                 PLANFORM AREA         1.2082             6.6868              1.1235            9.0185      FT**2
+
+                 AREA CENTROID         0.7541             5.0630              9.3618            5.0212      FT FROM NOSE TIP 
+
+                 WETTED AREA           4.0794            21.0071              3.5654           28.6519      FT**2
+
+                 VOLUME                0.8340             4.8159              0.7135            6.3633      FT**3
+
+                 VOLUME CENTROID       0.7806             5.0630              9.3118            4.9781      FT FROM NOSE TIP 
+
+
+NOSE IS SPHERICALLY BLUNTED, BLUNTNESS RATIO = 0.9989
+
+                                                       MOLD LINE CONTOUR  
+
+LONGITUDINAL STATIONS   0.0000    0.0915    0.1830    0.2745    0.3660    0.4575    0.6494    0.8413    1.0332    1.2251 
+                        1.4170    2.1462    2.8754    3.6046    4.3338    5.0630    5.7922    6.5214    7.2506    7.9798 
+                        8.7090*   8.8507    8.9924    9.1341    9.2758    9.4175    9.5592    9.7009    9.8426    9.9843 
+                       10.1260*
+
+           BODY RADII   0.0000    0.2747    0.3663    0.4196    0.4487    0.4580    0.4582    0.4583    0.4584    0.4585 
+                        0.4585    0.4585    0.4585    0.4585    0.4585    0.4585    0.4585    0.4585    0.4585    0.4585 
+                        0.4585*   0.4567    0.4511    0.4419    0.4289    0.4122    0.3918    0.3674    0.3393    0.3071 
+                        0.2710*
+
+NOTE - * INDICATES SLOPE DISCONTINUOUS POINTS
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   3
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                               FIN SET NUMBER 1 AIRFOIL SECTION
+
+                                                           NACA 0018
+
+    UPPER ABSCISSA     UPPER ORDINATE     LOWER ABSCISSA     LOWER ORDINATE      X-FRACTION CHORD    MEAN LINE    THICKNESS
+        0.00000            0.00000           0.00000           0.00000              0.00000           0.00000       0.00000
+        0.00100            0.00834           0.00100          -0.00834              0.00100           0.00000       0.01667
+        0.00200            0.01172           0.00200          -0.01172              0.00200           0.00000       0.02344
+        0.00300            0.01429           0.00300          -0.01429              0.00300           0.00000       0.02859
+        0.00400            0.01644           0.00400          -0.01644              0.00400           0.00000       0.03288
+        0.00500            0.01832           0.00500          -0.01832              0.00500           0.00000       0.03664
+        0.00600            0.02001           0.00600          -0.02001              0.00600           0.00000       0.04001
+        0.00800            0.02297           0.00800          -0.02297              0.00800           0.00000       0.04595
+        0.01000            0.02556           0.01000          -0.02556              0.01000           0.00000       0.05111
+        0.02000            0.03540           0.02000          -0.03540              0.02000           0.00000       0.07079
+        0.03000            0.04260           0.03000          -0.04260              0.03000           0.00000       0.08520
+        0.04000            0.04842           0.04000          -0.04842              0.04000           0.00000       0.09683
+        0.05000            0.05332           0.05000          -0.05332              0.05000           0.00000       0.10664
+        0.06000            0.05756           0.06000          -0.05756              0.06000           0.00000       0.11513
+        0.08000            0.06461           0.08000          -0.06461              0.08000           0.00000       0.12922
+        0.10000            0.07024           0.10000          -0.07024              0.10000           0.00000       0.14048
+        0.12000            0.07482           0.12000          -0.07482              0.12000           0.00000       0.14965
+        0.14000            0.07857           0.14000          -0.07857              0.14000           0.00000       0.15714
+        0.16000            0.08163           0.16000          -0.08163              0.16000           0.00000       0.16325
+        0.18000            0.08410           0.18000          -0.08410              0.18000           0.00000       0.16820
+        0.20000            0.08606           0.20000          -0.08606              0.20000           0.00000       0.17213
+        0.22000            0.08758           0.22000          -0.08758              0.22000           0.00000       0.17516
+        0.24000            0.08870           0.24000          -0.08870              0.24000           0.00000       0.17739
+        0.26000            0.08946           0.26000          -0.08946              0.26000           0.00000       0.17891
+        0.28000            0.08989           0.28000          -0.08989              0.28000           0.00000       0.17978
+        0.30000            0.09003           0.30000          -0.09003              0.30000           0.00000       0.18005
+        0.32000            0.08989           0.32000          -0.08989              0.32000           0.00000       0.17978
+        0.34000            0.08951           0.34000          -0.08951              0.34000           0.00000       0.17902
+        0.36000            0.08889           0.36000          -0.08889              0.36000           0.00000       0.17779
+        0.38000            0.08807           0.38000          -0.08807              0.38000           0.00000       0.17614
+        0.40000            0.08705           0.40000          -0.08705              0.40000           0.00000       0.17409
+        0.42000            0.08584           0.42000          -0.08584              0.42000           0.00000       0.17168
+        0.45000            0.08371           0.45000          -0.08371              0.45000           0.00000       0.16742
+        0.50000            0.07941           0.50000          -0.07941              0.50000           0.00000       0.15882
+        0.55000            0.07429           0.55000          -0.07429              0.55000           0.00000       0.14857
+        0.60000            0.06845           0.60000          -0.06845              0.60000           0.00000       0.13690
+        0.65000            0.06199           0.65000          -0.06199              0.65000           0.00000       0.12397
+        0.70000            0.05496           0.70000          -0.05496              0.70000           0.00000       0.10992
+        0.75000            0.04740           0.75000          -0.04740              0.75000           0.00000       0.09481
+        0.80000            0.03935           0.80000          -0.03935              0.80000           0.00000       0.07869
+        0.82000            0.03598           0.82000          -0.03598              0.82000           0.00000       0.07197
+        0.84000            0.03254           0.84000          -0.03254              0.84000           0.00000       0.06508
+        0.86000            0.02902           0.86000          -0.02902              0.86000           0.00000       0.05803
+        0.88000            0.02541           0.88000          -0.02541              0.88000           0.00000       0.05082
+        0.90000            0.02172           0.90000          -0.02172              0.90000           0.00000       0.04343
+        0.92000            0.01794           0.92000          -0.01794              0.92000           0.00000       0.03587
+        0.94000            0.01407           0.94000          -0.01407              0.94000           0.00000       0.02813
+        0.96000            0.01011           0.96000          -0.01011              0.96000           0.00000       0.02021
+        0.98000            0.00605           0.98000          -0.00605              0.98000           0.00000       0.01210
+        1.00000            0.00000           1.00000           0.00000              1.00000           0.00000       0.00000
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   4
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                               FIN SET NUMBER 2 AIRFOIL SECTION
+
+                                                           NACA 0001
+
+    UPPER ABSCISSA     UPPER ORDINATE     LOWER ABSCISSA     LOWER ORDINATE      X-FRACTION CHORD    MEAN LINE    THICKNESS
+        0.00000            0.00000           0.00000           0.00000              0.00000           0.00000       0.00000
+        0.00100            0.00046           0.00100          -0.00046              0.00100           0.00000       0.00093
+        0.00200            0.00065           0.00200          -0.00065              0.00200           0.00000       0.00130
+        0.00300            0.00079           0.00300          -0.00079              0.00300           0.00000       0.00159
+        0.00400            0.00091           0.00400          -0.00091              0.00400           0.00000       0.00183
+        0.00500            0.00102           0.00500          -0.00102              0.00500           0.00000       0.00204
+        0.00600            0.00111           0.00600          -0.00111              0.00600           0.00000       0.00222
+        0.00800            0.00128           0.00800          -0.00128              0.00800           0.00000       0.00255
+        0.01000            0.00142           0.01000          -0.00142              0.01000           0.00000       0.00284
+        0.02000            0.00197           0.02000          -0.00197              0.02000           0.00000       0.00393
+        0.03000            0.00237           0.03000          -0.00237              0.03000           0.00000       0.00473
+        0.04000            0.00269           0.04000          -0.00269              0.04000           0.00000       0.00538
+        0.05000            0.00296           0.05000          -0.00296              0.05000           0.00000       0.00592
+        0.06000            0.00320           0.06000          -0.00320              0.06000           0.00000       0.00640
+        0.08000            0.00359           0.08000          -0.00359              0.08000           0.00000       0.00718
+        0.10000            0.00390           0.10000          -0.00390              0.10000           0.00000       0.00780
+        0.12000            0.00416           0.12000          -0.00416              0.12000           0.00000       0.00831
+        0.14000            0.00436           0.14000          -0.00436              0.14000           0.00000       0.00873
+        0.16000            0.00453           0.16000          -0.00453              0.16000           0.00000       0.00907
+        0.18000            0.00467           0.18000          -0.00467              0.18000           0.00000       0.00934
+        0.20000            0.00478           0.20000          -0.00478              0.20000           0.00000       0.00956
+        0.22000            0.00487           0.22000          -0.00487              0.22000           0.00000       0.00973
+        0.24000            0.00493           0.24000          -0.00493              0.24000           0.00000       0.00986
+        0.26000            0.00497           0.26000          -0.00497              0.26000           0.00000       0.00994
+        0.28000            0.00499           0.28000          -0.00499              0.28000           0.00000       0.00999
+        0.30000            0.00500           0.30000          -0.00500              0.30000           0.00000       0.01000
+        0.32000            0.00499           0.32000          -0.00499              0.32000           0.00000       0.00999
+        0.34000            0.00497           0.34000          -0.00497              0.34000           0.00000       0.00995
+        0.36000            0.00494           0.36000          -0.00494              0.36000           0.00000       0.00988
+        0.38000            0.00489           0.38000          -0.00489              0.38000           0.00000       0.00979
+        0.40000            0.00484           0.40000          -0.00484              0.40000           0.00000       0.00967
+        0.42000            0.00477           0.42000          -0.00477              0.42000           0.00000       0.00954
+        0.45000            0.00465           0.45000          -0.00465              0.45000           0.00000       0.00930
+        0.50000            0.00441           0.50000          -0.00441              0.50000           0.00000       0.00882
+        0.55000            0.00413           0.55000          -0.00413              0.55000           0.00000       0.00825
+        0.60000            0.00380           0.60000          -0.00380              0.60000           0.00000       0.00761
+        0.65000            0.00344           0.65000          -0.00344              0.65000           0.00000       0.00689
+        0.70000            0.00305           0.70000          -0.00305              0.70000           0.00000       0.00611
+        0.75000            0.00263           0.75000          -0.00263              0.75000           0.00000       0.00527
+        0.80000            0.00219           0.80000          -0.00219              0.80000           0.00000       0.00437
+        0.82000            0.00200           0.82000          -0.00200              0.82000           0.00000       0.00400
+        0.84000            0.00181           0.84000          -0.00181              0.84000           0.00000       0.00362
+        0.86000            0.00161           0.86000          -0.00161              0.86000           0.00000       0.00322
+        0.88000            0.00141           0.88000          -0.00141              0.88000           0.00000       0.00282
+        0.90000            0.00121           0.90000          -0.00121              0.90000           0.00000       0.00241
+        0.92000            0.00100           0.92000          -0.00100              0.92000           0.00000       0.00199
+        0.94000            0.00078           0.94000          -0.00078              0.94000           0.00000       0.00156
+        0.96000            0.00056           0.96000          -0.00056              0.96000           0.00000       0.00112
+        0.98000            0.00034           0.98000          -0.00034              0.98000           0.00000       0.00067
+        1.00000            0.00000           1.00000           0.00000              1.00000           0.00000       0.00000
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   5
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                GEOMETRIC RESULTS FOR FIN SETS 
+
+                                                       FIN SET NUMBER  1
+                                                   (DATA FOR ONE PANEL ONLY)
+
+      SEGMENT     PLANFORM       TAPER        ASPECT      LEADING     TRAILING        MEAN        LEADING     LATERAL    THICKNESS
+       NUMBER       AREA         RATIO         RATIO        EDGE        EDGE       AERODYNAMIC    M.A.C.      M.A.C.     TO CHORD
+                                                           SWEEP       SWEEP          CHORD       POSITION    POSITION     RATIO
+                    FT**2                                   DEG         DEG            FT           FT          FT
+          1        0.20812      1.0000       1.87688      0.00000     0.00000        0.3330        0.0000      0.7705     0.18000
+      TOTAL        0.20812      1.0000       1.87688      0.00000     0.00000        0.3330        0.0000      0.7705     0.18000
+
+                                                       FIN SET NUMBER  2
+                                                   (DATA FOR ONE PANEL ONLY)
+
+      SEGMENT     PLANFORM       TAPER        ASPECT      LEADING     TRAILING        MEAN        LEADING     LATERAL    THICKNESS
+       NUMBER       AREA         RATIO         RATIO        EDGE        EDGE       AERODYNAMIC    M.A.C.      M.A.C.     TO CHORD
+                                                           SWEEP       SWEEP          CHORD       POSITION    POSITION     RATIO
+                    FT**2                                   DEG         DEG            FT           FT          FT
+          1        0.53062      0.0000       0.73616     69.99999     1.75710        1.1320        0.5724      0.6663     0.01000
+      TOTAL        0.53062      0.0000       0.73616     69.99999     1.75710        1.1320        0.5724      0.6663     0.01000
+
+
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   6
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                FIN SET 1 SECTION AERODYNAMICS
+
+
+                                 IDEAL ANGLE OF ATTACK =   0.00000 DEG.
+
+                             ZERO LIFT ANGLE OF ATTACK =   0.00000 DEG.
+
+                                IDEAL LIFT COEFFICIENT =   0.00000
+
+                 ZERO LIFT PITCHING MOMENT COEFFICIENT =   0.00000
+
+                            MACH ZERO LIFT-CURVE-SLOPE =   0.09067 /DEG.
+
+                                   LEADING EDGE RADIUS =   0.03570 FRACTION CHORD
+
+                             MAXIMUM AIRFOIL THICKNESS =   0.18000 FRACTION CHORD
+
+                                               DELTA-Y =   4.75346 PERCENT CHORD
+
+
+
+                         MACH= 0.4100 LIFT-CURVE-SLOPE =   0.09732 /DEG.      XAC =   0.26463      MAX. LIFT =   1.03919
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   7
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                FIN SET 2 SECTION AERODYNAMICS
+
+
+                                 IDEAL ANGLE OF ATTACK =   0.00000 DEG.
+
+                             ZERO LIFT ANGLE OF ATTACK =   0.00000 DEG.
+
+                                IDEAL LIFT COEFFICIENT =   0.00000
+
+                 ZERO LIFT PITCHING MOMENT COEFFICIENT =   0.00000
+
+                            MACH ZERO LIFT-CURVE-SLOPE =   0.10109 /DEG.
+
+                                   LEADING EDGE RADIUS =   0.00011 FRACTION CHORD
+
+                             MAXIMUM AIRFOIL THICKNESS =   0.01000 FRACTION CHORD
+
+                                               DELTA-Y =   0.26408 PERCENT CHORD
+
+
+
+                         MACH= 0.4100 LIFT-CURVE-SLOPE =   0.11527 /DEG.      XAC =   0.25622      MAX. LIFT =   0.77846
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   8
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                   BODY ALONE PARTIAL OUTPUT
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+
+   ALPHA      CA-FRICTION      CA-PRESSURE/WAVE    CA-BASE        CA-ALPHA
+   0.000        0.10584           0.06004          0.02831         0.00000
+   1.000        0.10584           0.06004          0.02827        -0.00003
+   2.000        0.10584           0.06004          0.02823        -0.00010
+   3.000        0.10584           0.06004          0.02819        -0.00023
+   4.000        0.10584           0.06004          0.02816        -0.00041
+   5.000        0.10584           0.06004          0.02812        -0.00065
+
+ CROSS FLOW DRAG PROPORTIONALITY FACTOR = 0.69448
+
+
+   ALPHA      CN-POTENTIAL      CN-VISCOUS       CM-POTENTIAL    CM-VISCOUS         CDC
+   0.000         0.0000            0.0000           0.0000         0.0000         1.2000
+   1.000         0.0000            0.0035           0.0639         0.0007         1.2053
+   2.000         0.0000            0.0141           0.1277         0.0029         1.2200
+   3.000         0.0000            0.0317           0.1914         0.0065         1.2200
+   4.000         0.0000            0.0515           0.2547         0.0106         1.1157
+   5.000         0.0000            0.0713           0.3177         0.0147         0.9886
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   9
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                  FIN SET 1 CN PARTIAL OUTPUT
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+
+  POTENTIAL NORMAL FORCE SLOPE AT ALPHA ZERO (1 PANEL), CNA =  0.01944/DEG
+  SECTION CLA =   0.09732/DEG
+
+   PANEL    ALPHA      FIN       ALPHA       CNAA        CN          CN          CN
+    NO.     TOTAL      PHI       EQUIV                POTENTIAL    VISCOUS      TOTAL
+             DEG       DEG        DEG
+
+     1      0.000     90.000      0.000    -0.54409     0.00000     0.00000     0.00000
+     2      0.000    270.000      0.000    -0.54409     0.00000     0.00000     0.00000
+   SET                                                  0.00000     0.00000     0.00000
+
+     1      1.000     90.000      1.000    -0.54409     0.01943    -0.00017     0.01927
+     2      1.000    270.000      1.000    -0.54409     0.01943    -0.00017     0.01927
+   SET                                                  0.03886    -0.00033     0.03853
+
+     1      2.000     90.000      2.000    -0.54409     0.03884    -0.00066     0.03818
+     2      2.000    270.000      2.000    -0.54409     0.03884    -0.00066     0.03818
+   SET                                                  0.07768    -0.00133     0.07636
+
+     1      3.000     90.000      3.000    -0.54409     0.05820    -0.00149     0.05671
+     2      3.000    270.000      3.000    -0.54409     0.05820    -0.00149     0.05671
+   SET                                                  0.11641    -0.00298     0.11342
+
+     1      4.000     90.000      4.000    -0.54409     0.07749    -0.00265     0.07485
+     2      4.000    270.000      4.000    -0.54409     0.07749    -0.00265     0.07485
+   SET                                                  0.15499    -0.00530     0.14969
+
+     1      5.000     90.000      5.000    -0.54409     0.09669    -0.00413     0.09256
+     2      5.000    270.000      5.000    -0.54409     0.09669    -0.00413     0.09256
+   SET                                                  0.19338    -0.00827     0.18511
+
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  10
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                  FIN SET 1 CA PARTIAL OUTPUT
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+ SINGLE FIN PANEL ZERO-LIFT AXIAL FORCE COMPONENTS
+
+     SKIN FRICTION       0.00109
+     SUBSONIC PRESSURE   0.00046
+     TRANSONIC WAVE      0.00000
+     SUPERSONIC WAVE     0.00000
+     LEADING EDGE        0.00000
+     TRAILING EDGE       0.00000
+     TOTAL CAO           0.00154
+
+ FIN AXIAL FORCE DUE TO ANGLE OF ATTACK
+
+    ALPHA      CA DUE TO ALPHA   CA-TOTAL (2 FINS)
+     DEG
+    0.000            0.00000            0.00309
+    1.000           -0.00045            0.00264
+    2.000           -0.00179            0.00130
+    3.000           -0.00401           -0.00092
+    4.000           -0.00709           -0.00400
+    5.000           -0.01099           -0.00790
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  11
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                  FIN SET 1 CM PARTIAL OUTPUT
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+
+        CENTER OF PRESSURE FOR LINEAR CN =   -0.00535   (CALIBERS FROM C.G.)
+    CENTER OF PRESSURE FOR NON-LINEAR CN =   -0.08888   (CALIBERS FROM C.G.)
+
+     ALPHA        CM           CM           CM
+      DEG.      LINEAR     NON-LINEAR      TOTAL
+
+    0.00000      0.00000      0.00000      0.00000
+    1.00000     -0.00021      0.00003     -0.00018
+    2.00000     -0.00042      0.00012     -0.00030
+    3.00000     -0.00062      0.00026     -0.00036
+    4.00000     -0.00083      0.00047     -0.00036
+    5.00000     -0.00104      0.00073     -0.00030
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  12
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                  FIN SET 2 CN PARTIAL OUTPUT
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+
+  POTENTIAL NORMAL FORCE SLOPE AT ALPHA ZERO (1 PANEL), CNA =  0.02476/DEG
+  SECTION CLA =   0.11527/DEG
+
+   PANEL    ALPHA      FIN       ALPHA       CNAA        CN          CN          CN
+    NO.     TOTAL      PHI       EQUIV                POTENTIAL    VISCOUS      TOTAL
+             DEG       DEG        DEG
+
+     1      0.000      0.000      0.000     2.43169     0.00000     0.00000     0.00000
+     2      0.000     45.000      0.000     2.43169     0.00000     0.00000     0.00000
+     3      0.000     90.000      0.000     2.43169     0.00000     0.00000     0.00000
+     4      0.000    135.000      0.000     2.43169     0.00000     0.00000     0.00000
+     5      0.000    180.000      0.000     2.43169     0.00000     0.00000     0.00000
+     6      0.000    225.000      0.000     2.43169     0.00000     0.00000     0.00000
+     7      0.000    270.000      0.000     2.43169     0.00000     0.00000     0.00000
+     8      0.000    315.000      0.000     2.43169     0.00000     0.00000     0.00000
+   SET                                                  0.00000     0.00000     0.00000
+
+     1      1.000      0.000      0.000     2.43169     0.00000     0.00000     0.00000
+     2      1.000     45.000      0.707     2.43169     0.01238     0.00037     0.01275
+     3      1.000     90.000      1.000     2.43169     0.02476     0.00074     0.02550
+     4      1.000    135.000      0.707     2.43169     0.01238     0.00037     0.01275
+     5      1.000    180.000      0.000     2.43169     0.00000     0.00000     0.00000
+     6      1.000    225.000      0.707     2.43169     0.01238     0.00037     0.01275
+     7      1.000    270.000      1.000     2.43169     0.02476     0.00074     0.02550
+     8      1.000    315.000      0.707     2.43169     0.01238     0.00037     0.01275
+   SET                                                  0.09903     0.00296     0.10200
+
+     1      2.000      0.000      0.000     2.43169     0.00000     0.00000     0.00000
+     2      2.000     45.000      1.415     2.43169     0.02476     0.00148     0.02624
+     3      2.000     90.000      2.000     2.43169     0.04948     0.00296     0.05244
+     4      2.000    135.000      1.415     2.43169     0.02476     0.00148     0.02624
+     5      2.000    180.000      0.000     2.43169     0.00000     0.00000     0.00000
+     6      2.000    225.000      1.415     2.43169     0.02476     0.00148     0.02624
+     7      2.000    270.000      2.000     2.43169     0.04948     0.00296     0.05244
+     8      2.000    315.000      1.415     2.43169     0.02476     0.00148     0.02624
+   SET                                                  0.19799     0.01185     0.20984
+
+     1      3.000      0.000      0.000     2.43169     0.00000     0.00000     0.00000
+     2      3.000     45.000      2.122     2.43169     0.03713     0.00333     0.04046
+     3      3.000     90.000      3.000     2.43169     0.07415     0.00666     0.08081
+     4      3.000    135.000      2.122     2.43169     0.03713     0.00333     0.04046
+     5      3.000    180.000      0.000     2.43169     0.00000     0.00000     0.00000
+     6      3.000    225.000      2.122     2.43169     0.03713     0.00333     0.04046
+     7      3.000    270.000      3.000     2.43169     0.07415     0.00666     0.08081
+     8      3.000    315.000      2.122     2.43169     0.03713     0.00333     0.04046
+   SET                                                  0.29680     0.02665     0.32345
+
+     1      4.000      0.000      0.000     2.43169     0.00000     0.00000     0.00000
+     2      4.000     45.000      2.831     2.43169     0.04948     0.00592     0.05541
+     3      4.000     90.000      4.000     2.43169     0.09872     0.01183     0.11056
+     4      4.000    135.000      2.831     2.43169     0.04948     0.00592     0.05541
+     5      4.000    180.000      0.000     2.43169     0.00000     0.00000     0.00000
+     6      4.000    225.000      2.831     2.43169     0.04948     0.00592     0.05541
+     7      4.000    270.000      4.000     2.43169     0.09872     0.01183     0.11056
+     8      4.000    315.000      2.831     2.43169     0.04948     0.00592     0.05541
+   SET                                                  0.39538     0.04736     0.44274
+
+     1      5.000      0.000      0.000     2.43169     0.00000     0.00000     0.00000
+     2      5.000     45.000      3.540     2.43169     0.06182     0.00925     0.07108
+     3      5.000     90.000      5.000     2.43169     0.12318     0.01847     0.14165
+     4      5.000    135.000      3.540     2.43169     0.06182     0.00925     0.07108
+     5      5.000    180.000      0.000     2.43169     0.00000     0.00000     0.00000
+     6      5.000    225.000      3.540     2.43169     0.06182     0.00925     0.07108
+     7      5.000    270.000      5.000     2.43169     0.12318     0.01847     0.14165
+     8      5.000    315.000      3.540     2.43169     0.06182     0.00925     0.07108
+   SET                                                  0.49366     0.07396     0.56761
+
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  13
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                  FIN SET 2 CA PARTIAL OUTPUT
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+ SINGLE FIN PANEL ZERO-LIFT AXIAL FORCE COMPONENTS
+
+     SKIN FRICTION       0.00449
+     SUBSONIC PRESSURE   0.00009
+     TRANSONIC WAVE      0.00000
+     SUPERSONIC WAVE     0.00000
+     LEADING EDGE        0.00000
+     TRAILING EDGE       0.00000
+     TOTAL CAO           0.00458
+
+ FIN AXIAL FORCE DUE TO ANGLE OF ATTACK
+
+    ALPHA      CA DUE TO ALPHA   CA-TOTAL (8 FINS)
+     DEG
+    0.000            0.00000            0.03660
+    1.000           -0.00008            0.03640
+    2.000           -0.00034            0.03588
+    3.000           -0.00053            0.03535
+    4.000           -0.00073            0.03489
+    5.000           -0.00052            0.03482
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  14
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                                  FIN SET 2 CM PARTIAL OUTPUT
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+
+        CENTER OF PRESSURE FOR LINEAR CN =   -3.41301   (CALIBERS FROM C.G.)
+    CENTER OF PRESSURE FOR NON-LINEAR CN =   -3.52278   (CALIBERS FROM C.G.)
+
+     ALPHA        CM           CM           CM
+      DEG.      LINEAR     NON-LINEAR      TOTAL
+
+    0.00000      0.00000      0.00000      0.00000
+    1.00000     -0.33800     -0.01044     -0.34844
+    2.00000     -0.67574     -0.04174     -0.71749
+    3.00000     -1.01297     -0.09389     -1.10686
+    4.00000     -1.34943     -0.16683     -1.51626
+    5.00000     -1.68486     -0.26053     -1.94539
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  15
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                            AERODYNAMIC FORCE AND MOMENT SYNTHESIS
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+               -------------------FIN SET 1 IN PRESENCE OF THE BODY--------------------     ------PANEL CHARACTERISTICS--------
+  ANGLE OF                                                                                  PANEL      AEQ (IN PANEL AXIS SYS.)
+ATTACK, DEG.     CN           CM           CA           CY          CLN          CLL        NUMBER         DEG.           CN
+
+    0.0000       0.0000       0.0000       0.0031       0.0000      0.0000       0.0000        1           0.0000        0.0000
+                                                                                               2           0.0000        0.0000
+    1.0000       0.0527      -0.0003       0.0022       0.0000      0.0000       0.0000        1           1.3722        0.0263
+                                                                                               2          -1.3722       -0.0263
+    2.0000       0.1039      -0.0006      -0.0003       0.0000      0.0000       0.0000        1           2.7436        0.0520
+                                                                                               2          -2.7436       -0.0520
+    3.0000       0.1538      -0.0008      -0.0044       0.0000      0.0000       0.0000        1           4.1136        0.0769
+                                                                                               2          -4.1136       -0.0769
+    4.0000       0.2022      -0.0011      -0.0101       0.0000      0.0000       0.0000        1           5.4814        0.1011
+                                                                                               2          -5.4814       -0.1011
+    5.0000       0.2435      -0.0013      -0.0169       0.0000      0.0000       0.0000        1           6.7954        0.1218
+                                                                                               2          -6.7954       -0.1218
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  16
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                            AERODYNAMIC FORCE AND MOMENT SYNTHESIS
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+               -------------------FIN SET 2 IN PRESENCE OF THE BODY--------------------     ------PANEL CHARACTERISTICS--------
+  ANGLE OF                                                                                  PANEL      AEQ (IN PANEL AXIS SYS.)
+ATTACK, DEG.     CN           CM           CA           CY          CLN          CLL        NUMBER         DEG.           CN
+
+    0.0000       0.0000       0.0000       0.0366       0.0000      0.0000       0.0000        1           0.0000        0.0000
+                                                                                               2           0.0000        0.0000
+                                                                                               3           0.0000        0.0000
+                                                                                               4           0.0000        0.0000
+                                                                                               5           0.0000        0.0000
+                                                                                               6           0.0000        0.0000
+                                                                                               7           0.0000        0.0000
+                                                                                               8           0.0000        0.0000
+    1.0000       0.1010      -0.3449       0.0364       0.0000      0.0000       0.0000        1           0.0000        0.0000
+                                                                                               2           0.7373        0.0189
+                                                                                               3           0.8813        0.0227
+                                                                                               4           0.7945        0.0204
+                                                                                               5           0.0000        0.0000
+                                                                                               6          -0.7945       -0.0204
+                                                                                               7          -0.8813       -0.0227
+                                                                                               8          -0.7373       -0.0189
+    2.0000       0.2056      -0.7018       0.0359       0.0000      0.0000       0.0000        1           0.0000        0.0000
+                                                                                               2           1.4189        0.0368
+                                                                                               3           1.7819        0.0465
+                                                                                               4           1.6461        0.0428
+                                                                                               5           0.0000        0.0000
+                                                                                               6          -1.6461       -0.0428
+                                                                                               7          -1.7819       -0.0465
+                                                                                               8          -1.4189       -0.0368
+    3.0000       0.3162      -1.0793       0.0353       0.0000      0.0000       0.0000        1           0.0000        0.0000
+                                                                                               2           2.0419        0.0536
+                                                                                               3           2.7074        0.0723
+                                                                                               4           2.5495        0.0678
+                                                                                               5           0.0000        0.0000
+                                                                                               6          -2.5495       -0.0678
+                                                                                               7          -2.7074       -0.0723
+                                                                                               8          -2.0419       -0.0536
+    4.0000       0.4338      -1.4806       0.0348       0.0000      0.0000       0.0000        1           0.0000        0.0000
+                                                                                               2           2.6049        0.0694
+                                                                                               3           3.6626        0.1003
+                                                                                               4           3.5003        0.0955
+                                                                                               5           0.0000        0.0000
+                                                                                               6          -3.5003       -0.0955
+                                                                                               7          -3.6626       -0.1003
+                                                                                               8          -2.6049       -0.0694
+    5.0000       0.5440      -1.8566       0.0348       0.0000      0.0000       0.0000        1           0.0000        0.0000
+                                                                                               2           2.8825        0.0773
+                                                                                               3           4.6015        0.1291
+                                                                                               4           4.4600        0.1247
+                                                                                               5           0.0000        0.0000
+                                                                                               6          -4.4600       -0.1247
+                                                                                               7          -4.6015       -0.1291
+                                                                                               8          -2.8825       -0.0773
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  17
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                            AERODYNAMIC FORCE AND MOMENT SYNTHESIS
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                                           SYNTHESIS AERODYNAMICS FOR BODY-FIN SET 1
+                ANGLE OF
+              ATTACK, DEG.     CN           CM           CA           CY          CLN          CLL
+
+                  0.0000       0.0000       0.0000       0.1973       0.0000      0.0000       0.0000
+                  1.0000       0.0812       0.0644       0.1964       0.0000      0.0000       0.0000
+                  2.0000       0.1675       0.1302       0.1937       0.0000      0.0000       0.0000
+                  3.0000       0.2587       0.1972       0.1894       0.0000      0.0000       0.0000
+                  4.0000       0.3499       0.2644       0.1836       0.0000      0.0000       0.0000
+                  5.0000       0.4315       0.3313       0.1764       0.0000      0.0000       0.0000
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  18
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                            AERODYNAMIC FORCE AND MOMENT SYNTHESIS
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                                        SYNTHESIS AERODYNAMICS FOR BODY-FIN SET 1 AND 2
+                ANGLE OF
+              ATTACK, DEG.     CN           CM           CA           CY          CLN          CLL
+
+                  0.0000       0.0000       0.0000       0.2339       0.0000      0.0000       0.0000
+                  1.0000       0.2299      -0.4321       0.2328       0.0000      0.0000       0.0000
+                  2.0000       0.4702      -0.8801       0.2296       0.0000      0.0000       0.0000
+                  3.0000       0.7242      -1.3566       0.2248       0.0000      0.0000       0.0000
+                  4.0000       0.9885      -1.8671       0.2184       0.0000      0.0000       0.0000
+                  5.0000       1.2342      -2.3477       0.2112       0.0000      0.0000       0.0000
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  19
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                            AERODYNAMIC FORCE AND MOMENT SYNTHESIS
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                                                CARRYOVER INTERFERENCE FACTORS
+   FIN SET        K-W(B)         K-B(W)         KK-W(B)        KK-B(W)        XCP-W(B)       XCP-B(W)
+
+      1          1.362014E+00   6.530939E-01   9.358125E-01   4.364942E-01   5.354887E-03  -1.907917E-03
+      2          1.357889E+00   6.458018E-01   9.365292E-01   4.268013E-01   3.413008E+00   3.178814E+00
+
+                                                   PANEL CENTERS OF PRESSURE
+                                              FIN SET      X-CP         Y-CP/(B/2)
+
+                                                 1      5.3549E-03      4.4608E-01
+                                                 2      3.4130E+00      4.0736E-01
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  20
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                  FIN SET 1 PANEL BENDING MOMENTS (ABOUT EXPOSED ROOT CHORD)
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                ANGLE OF ATTACK,
+                      DEG.          PANEL 1         PANEL 2         PANEL 3         PANEL 4
+
+                      0.0000      0.00000E+00     0.00000E+00
+                      1.0000      8.00441E-03    -8.00441E-03
+                      2.0000      1.57989E-02    -1.57989E-02
+                      3.0000      2.33807E-02    -2.33807E-02
+                      4.0000      3.07319E-02    -3.07319E-02
+                      5.0000      3.70176E-02    -3.70176E-02
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  21
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                  FIN SET 2 PANEL BENDING MOMENTS (ABOUT EXPOSED ROOT CHORD)
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                ANGLE OF ATTACK,
+                      DEG.          PANEL 1         PANEL 2         PANEL 3         PANEL 4
+                                    PANEL 5         PANEL 6         PANEL 7         PANEL 8
+
+                      0.0000      0.00000E+00     0.00000E+00     0.00000E+00     0.00000E+00
+                                  0.00000E+00     0.00000E+00     0.00000E+00     0.00000E+00
+                      1.0000      0.00000E+00     5.26088E-03     6.29701E-03     5.67214E-03
+                                  1.17740E-09    -5.67214E-03    -6.29701E-03    -5.26089E-03
+                      2.0000      0.00000E+00     1.02116E-02     1.29115E-02     1.18954E-02
+                                  1.55962E-09    -1.18954E-02    -1.29116E-02    -1.02116E-02
+                      3.0000      0.00000E+00     1.48801E-02     2.00704E-02     1.88200E-02
+                                  3.16128E-09    -1.88200E-02    -2.00704E-02    -1.48801E-02
+                      4.0000      0.00000E+00     1.92573E-02     2.78594E-02     2.65096E-02
+                                  3.66261E-10    -2.65096E-02    -2.78594E-02    -1.92573E-02
+                      5.0000      0.00000E+00     2.14693E-02     3.58493E-02     3.46259E-02
+                                  5.83831E-09    -3.46259E-02    -3.58493E-02    -2.14693E-02
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  22
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                       FIN SET 1 PANEL HINGE MOMENTS (ABOUT HINGE LINE)
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                ANGLE OF ATTACK,
+                      DEG.          PANEL 1         PANEL 2         PANEL 3         PANEL 4
+
+                      0.0000      0.00000E+00     0.00000E+00
+                      1.0000      2.19894E-03    -2.19894E-03
+                      2.0000      4.34020E-03    -4.34020E-03
+                      3.0000      6.42307E-03    -6.42307E-03
+                      4.0000      8.44254E-03    -8.44254E-03
+                      5.0000      1.01693E-02    -1.01693E-02
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  23
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                       FIN SET 2 PANEL HINGE MOMENTS (ABOUT HINGE LINE)
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                ANGLE OF ATTACK,
+                      DEG.          PANEL 1         PANEL 2         PANEL 3         PANEL 4
+                                    PANEL 5         PANEL 6         PANEL 7         PANEL 8
+
+                      0.0000      0.00000E+00     0.00000E+00     0.00000E+00     0.00000E+00
+                                  0.00000E+00     0.00000E+00     0.00000E+00     0.00000E+00
+                      1.0000      0.00000E+00    -3.89981E-03    -4.66787E-03    -4.20467E-03
+                                 -8.72787E-10     4.20467E-03     4.66787E-03     3.89981E-03
+                      2.0000      0.00000E+00    -7.56968E-03    -9.57112E-03    -8.81784E-03
+                                 -1.15612E-09     8.81784E-03     9.57112E-03     7.56968E-03
+                      3.0000      0.00000E+00    -1.10304E-02    -1.48779E-02    -1.39510E-02
+                                 -2.34340E-09     1.39510E-02     1.48779E-02     1.10304E-02
+                      4.0000      0.00000E+00    -1.42751E-02    -2.06517E-02    -1.96512E-02
+                                 -2.71503E-10     1.96511E-02     2.06517E-02     1.42751E-02
+                      5.0000      0.00000E+00    -1.59149E-02    -2.65745E-02    -2.56676E-02
+                                 -4.32784E-09     2.56676E-02     2.65745E-02     1.59149E-02
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  24
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                         BODY ALONE STATIC AERODYNAMIC CHARACTERISTICS
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                                                                      ------------------ DERIVATIVES (PER DEGREE) -----------------
+          ------ LONGITUDINAL -----       --- LATERAL DIRECTIONAL ---          LONGITUDINAL             LATERAL DIRECTIONAL
+  ALPHA      CN       CM       CA           CY      CLN      CLL             CNA         CMA         CYB        CLNB        CLLB
+
+   0.00     0.000    0.000    0.194        0.000    0.000    0.000       -8.250E-05   6.394E-02  -3.484E-03  -6.463E-02   0.000E+00
+   1.00     0.003    0.065    0.194        0.000    0.000    0.000        7.050E-03   6.532E-02  -4.965E-03  -6.491E-02   0.000E+00
+   2.00     0.014    0.131    0.194        0.000    0.000    0.000        1.411E-02   6.663E-02  -7.924E-03  -6.546E-02   0.000E+00
+   3.00     0.032    0.198    0.194        0.000    0.000    0.000        1.871E-02   6.735E-02  -1.099E-02  -6.598E-02   0.000E+00
+   4.00     0.052    0.265    0.194        0.000    0.000    0.000        1.977E-02   6.724E-02  -1.306E-02  -6.625E-02   0.000E+00
+   5.00     0.071    0.332    0.193        0.000    0.000    0.000        1.970E-02   6.686E-02  -1.432E-02  -6.632E-02   0.000E+00
+
+                                           ALPHA      CL       CD     CL/CD   X-C.P.
+
+                                            0.00    0.000    0.194    0.000 -775.087
+                                            1.00    0.000    0.194    0.000   18.551
+                                            2.00    0.007    0.194    0.038    9.264
+                                            3.00    0.022    0.195    0.110    6.241
+                                            4.00    0.038    0.197    0.193    5.150
+                                            5.00    0.054    0.199    0.272    4.664
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  25
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                        FIN 1 ALONE STATIC AERODYNAMIC CHARACTERISTICS
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                                                                      ------------------ DERIVATIVES (PER DEGREE) -----------------
+          ------ LONGITUDINAL -----       --- LATERAL DIRECTIONAL ---          LONGITUDINAL             LATERAL DIRECTIONAL
+  ALPHA      CN       CM       CA           CY      CLN      CLL             CNA         CMA         CYB        CLNB        CLLB
+
+   0.00     0.000    0.000    0.003                                       3.889E-02  -2.082E-04                                 
+   1.00     0.039    0.000    0.003                                       3.818E-02  -1.491E-04                                 
+   2.00     0.076    0.000    0.001                                       3.745E-02  -8.989E-05                                 
+   3.00     0.113    0.000   -0.001                                       3.667E-02  -3.057E-05                                 
+   4.00     0.150    0.000   -0.004                                       3.584E-02   2.878E-05                                 
+   5.00     0.185    0.000   -0.008                                       3.500E-02   8.814E-05                                 
+
+                                           ALPHA      CL       CD     CL/CD   X-C.P.
+
+                                            0.00    0.000    0.003    0.000   -0.005
+                                            1.00    0.038    0.003   11.617   -0.005
+                                            2.00    0.076    0.004   19.263   -0.004
+                                            3.00    0.113    0.005   22.574   -0.003
+                                            4.00    0.150    0.006   23.205   -0.002
+                                            5.00    0.185    0.008   22.407   -0.002
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  26
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                        FIN 2 ALONE STATIC AERODYNAMIC CHARACTERISTICS
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                                                                      ------------------ DERIVATIVES (PER DEGREE) -----------------
+          ------ LONGITUDINAL -----       --- LATERAL DIRECTIONAL ---          LONGITUDINAL             LATERAL DIRECTIONAL
+  ALPHA      CN       CM       CA           CY      CLN      CLL             CNA         CMA         CYB        CLNB        CLLB
+
+   0.00     0.000    0.000    0.037                                       9.907E-02  -3.382E-01                                 
+   1.00     0.102   -0.348    0.036                                       1.049E-01  -3.587E-01                                 
+   2.00     0.210   -0.717    0.036                                       1.107E-01  -3.792E-01                                 
+   3.00     0.323   -1.107    0.035                                       1.164E-01  -3.994E-01                                 
+   4.00     0.443   -1.516    0.035                                       1.221E-01  -4.192E-01                                 
+   5.00     0.568   -1.945    0.035                                       1.277E-01  -4.390E-01                                 
+
+                                           ALPHA      CL       CD     CL/CD   X-C.P.
+
+                                            0.00    0.000    0.037    0.000   -3.413
+                                            1.00    0.101    0.038    2.655   -3.416
+                                            2.00    0.208    0.043    4.828   -3.419
+                                            3.00    0.321    0.052    6.149   -3.422
+                                            4.00    0.439    0.066    6.687   -3.425
+                                            5.00    0.562    0.084    6.683   -3.427
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  27
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                            STATIC AERODYNAMICS FOR BODY-FIN SET 1
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                                                                      ------------------ DERIVATIVES (PER DEGREE) -----------------
+          ------ LONGITUDINAL -----       --- LATERAL DIRECTIONAL ---          LONGITUDINAL             LATERAL DIRECTIONAL
+  ALPHA      CN       CM       CA           CY      CLN      CLL             CNA         CMA         CYB        CLNB        CLLB
+
+   0.00     0.000    0.000    0.197        0.000    0.000    0.000        7.865E-02   6.370E-02                                 
+   1.00     0.081    0.064    0.196        0.000    0.000    0.000        8.374E-02   6.509E-02                                 
+   2.00     0.167    0.130    0.194        0.000    0.000    0.000        8.876E-02   6.641E-02                                 
+   3.00     0.259    0.197    0.189        0.000    0.000    0.000        9.120E-02   6.713E-02                                 
+   4.00     0.350    0.264    0.184        0.000    0.000    0.000        8.641E-02   6.705E-02                                 
+   5.00     0.432    0.331    0.176        0.000    0.000    0.000        7.688E-02   6.670E-02                                 
+
+                                           ALPHA      CL       CD     CL/CD   X-C.P.
+
+                                            0.00    0.000    0.197    0.000    0.810
+                                            1.00    0.078    0.198    0.393    0.793
+                                            2.00    0.161    0.199    0.805    0.777
+                                            3.00    0.248    0.203    1.226    0.762
+                                            4.00    0.336    0.208    1.620    0.756
+                                            5.00    0.415    0.213    1.943    0.768
+
+                                               PANEL DEFLECTION ANGLES (DEGREES)
+                                       FIN SET   FIN 1      FIN 2      FIN 3      FIN 4
+                                          1       0.00       0.00
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE  28
+                                        TLX-2 (5.5R hemi nose, 87.5" body, 17" tailcone)                                          
+                                         STATIC AERODYNAMICS FOR BODY-FIN SET 1 AND 2
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/FT**2     DEG R      1/FT        DEG      DEG      FT**2     FT       FT        FT         FT
+ 0.41        0.00     457.67   2.116E+03     518.67   2.898E+06      0.00     0.00     0.660    0.917    0.917     5.210      0.000
+
+
+                                                                      ------------------ DERIVATIVES (PER DEGREE) -----------------
+          ------ LONGITUDINAL -----       --- LATERAL DIRECTIONAL ---          LONGITUDINAL             LATERAL DIRECTIONAL
+  ALPHA      CN       CM       CA           CY      CLN      CLL             CNA         CMA         CYB        CLNB        CLLB
+
+   0.00     0.000    0.000    0.234        0.000    0.000    0.000        2.248E-01  -4.242E-01                                 
+   1.00     0.230   -0.432    0.233        0.000    0.000    0.000        2.351E-01  -4.400E-01                                 
+   2.00     0.470   -0.880    0.230        0.000    0.000    0.000        2.471E-01  -4.622E-01                                 
+   3.00     0.724   -1.357    0.225        0.000    0.000    0.000        2.591E-01  -4.934E-01                                 
+   4.00     0.988   -1.867    0.218        0.000    0.000    0.000        2.550E-01  -4.954E-01                                 
+   5.00     1.234   -2.348    0.211        0.000    0.000    0.000        2.365E-01  -4.657E-01                                 
+
+                                           ALPHA      CL       CD     CL/CD   X-C.P.
+
+                                            0.00    0.000    0.234    0.000   -1.887
+                                            1.00    0.226    0.237    0.954   -1.879
+                                            2.00    0.462    0.246    1.878   -1.872
+                                            3.00    0.711    0.262    2.712   -1.873
+                                            4.00    0.971    0.287    3.385   -1.889
+                                            5.00    1.211    0.318    3.809   -1.902
+
+                                               PANEL DEFLECTION ANGLES (DEGREES)
+                                       FIN SET   FIN 1      FIN 2      FIN 3      FIN 4
+                                                 FIN 5      FIN 6      FIN 7      FIN 8
+                                          1       0.00       0.00
+                                          2       0.00       0.00       0.00       0.00
+                                                  0.00       0.00       0.00       0.00
+*** END OF JOB ***

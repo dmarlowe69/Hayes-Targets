@@ -1,0 +1,413 @@
+
+Title: 1805 CPU / A/D-D/A TEST
+American Automation Cross-Assembler 1805 9.05.11
+Assembly date: 17 May 1989
+Assembly time:  6:05:32
+Options in effect:expand format list object symbol errorfile uppercase 
+
+Subtitle: (C)1984,85,86,87,88 HAYES INTERNATIONAL CORPORATION
+0004 L 0000                  L          SECTION LINKTEST,$0000
+0005                           ;*************************************
+0006                           ;
+0007                           ; TLX-1 COMMAND LINK SOFTWARE TEST
+0008                           ;
+0009                           ;
+0010                           ; DATA VALID : EF2
+0011                           ; AND GATE   : EF3
+0012                           ;
+0013                           ; (C) 1987 HAYES INTERNATIONAL CORP.
+0014                           ;
+0015                           ; BY DENTON MARLOWE
+0016                           ;
+0017                           ;*************************************
+0018        00000000           ORGIN    EQU     $0000
+0019        00004000           RAM      EQU     $4000
+0020        0000D000           DEBUG    EQU     $D000               ; changed form 1000
+0021                           ;*************************************
+0022        0000D898           READHX   EQU     DEBUG+$0898
+0023        0000D904           READD    EQU     DEBUG+$0904
+0024        0000D800           OSTRN1   EQU     DEBUG+$0800
+0025        0000D965           TYPE8    EQU     DEBUG+$0965
+0026        0000DAB5           T8OUT1   EQU     DEBUG+$0AB5
+0027        0000D9AC           WORD     EQU     DEBUG+$09AC
+0028                           ;*************************************
+0029 L 0000                             ORG     ORGIN
+0030                           ;*************************************
+0031 L 0000 71                          DIS     
+0032 L 0001 00                          DB      $00
+0033 L 0002 68C24FFF                    RLDI    R2,RAM+$0FFF
+0034 L 0006 E2                          SEX     R2
+0035 L 0007 68C3000C                    RLDI    R3,HELLO
+0036 L 000B D3                          SEP     R3
+0037                           ;*************************************
+0038        00004EFF           COMM     EQU     RAM+$0EFF
+0039                           ;*************************************
+0040                           ; SET-UP FOR PIO PORTS
+0041                           ;
+0042                           ; PORT A FOR DATA INPUT
+0043                           ; PORT B LOW NIBBLE ADDRESS INPUT
+0044                           ; PORT B HIGH NIBBLE OUTPUT ECHO
+0045                           ;*************************************
+0046 L 000C 68C24EFF           HELLO:   RLDI    R2,COMM
+0047 L 0010 E3                          SEX     R3
+0048 L 0011 61                          OUT     1
+0049 L 0012 08                          DB      $08                 ; I/O GROUP 8
+0050 L 0013 62                          OUT     2
+0051 L 0014 0F                          DB      $0F                 ; A IS INPUT
+0052 L 0015 62                          OUT     2
+0053 L 0016 F7                          DB      $F7                 ; B IS BIT PROG
+0054 L 0017 62                          OUT     2
+0055 L 0018 F0                          DB      $F0                 ; LOW IN,HIGH OUT
+0056 L 0019 E2                          SEX     R2
+0057 L 001A 6886D800                    SCAL    R6,OSTRN1
+0058 L 001E 0A0D                        DB      $0A,$0D
+0059 L 0020 544C5820544D2054            DB      'TLX TM TEST'
+            455354
+0060 L 002B 0A0D                        DB      $0A,$0D
+0061 L 002D 444154412056414C            DB      'DATA VALID : EF2'
+            4944203A20454632
+0062 L 003D 0A0D                        DB      $0A,$0D
+0063 L 003F 414E442047415445            DB      'AND GATE  :EF3'
+            20203A454633
+0064 L 004D 0A0D                        DB      $0A,$0D
+0065 L 004F 4348414E4E454C20            DB      'CHANNEL 8 DRIVES D/A CH1 & CH 2'
+            3820445249564553
+            20442F4120434831
+            20262043482032
+0066 L 006E 0A0D                        DB      $0A,$0D
+0067 L 0070 4348414E4E454C20            DB      'CHANNEL 9 IS ECHOED BACK'
+            3920495320454348
+            4F4544204241434B
+0068 L 0088 0A0D                        DB      $0A,$0D
+0069 L 008A 4348414E4E454C20            DB      'CHANNEL A FOR COUNTER TEST'
+            4120464F5220434F
+            554E544552205445
+            5354
+0070 L 00A4 0A0D                        DB      $0A,$0D
+0071 L 00A6 4348414E4E454C20            DB      'CHANNEL B FOR SERVO TEST'
+            4220464F52205345
+            52564F2054455354
+0072 L 00BE 0A0D                        DB      $0A,$0D
+0073 L 00C0 4348414E4E454C20            DB      'CHANNEL C FOR A/D-D/A TEST'
+            4320464F5220412F
+            442D442F41205445
+            5354
+0074 L 00DA 0A0A0D                      DB      $0A,$0A,$0D
+0075 L 00DD 4348414E4E454C20            DB      'CHANNEL $?'
+            243F
+0076 L 00E7 00                          DB      $00
+0077 L 00E8 68CD0000                    RLDI    RD,$0000
+0078 L 00EC 6886D898                    SCAL    R6,READHX
+0079 L 00F0 8D                          GLO     RD
+0080 L 00F1 CA010E                      LBNZ    CH
+0081 L 00F4 F801                        LDI     $01
+0082 L 00F6 A1                          PLO     R1
+0083 L 00F7 68C0FFFF                    RLDI    R0,$FFFF
+0084 L 00FB 6886D800                    SCAL    R6,OSTRN1
+0085 L 00FF 0A0D                        DB      $0A,$0D
+0086 L 0101 5343414E204D4F44            DB      'SCAN MODE'
+            45
+0087 L 010A 00                          DB      $00
+0088 L 010B C00124                      LBR     GATED
+0089                           ;************************************
+0090 L 010E A1                 CH:      PLO     R1
+0091 L 010F FF0A                        SMI     $0A
+0092 L 0111 C20300                      LBZ     COUNT
+0093 L 0114 81                          GLO     R1
+0094 L 0115 FF0B                        SMI     $0B
+0095 L 0117 C2033C                      LBZ     SERVO
+0096 L 011A 81                          GLO     R1
+0097 L 011B FF0C                        SMI     $0C
+0098 L 011D C203BE                      LBZ     ADTST
+0099 L 0120 68C00000                    RLDI    R0,$0000
+0100                           ;*************************************
+0101                           ;
+0102                           ; AND GATE TEST OPTION
+0103                           ;
+0104                           ;*************************************
+0105 L 0124 6886D800           GATED:   SCAL    R6,OSTRN1
+0106 L 0128 0A0A0D                      DB      $0A,$0A,$0D
+0107 L 012B 414E442047415445            DB      'AND GATE TEST (HALT) '
+            2054455354202848
+            414C542920
+0108 L 0140 28592F4E2920                DB      '(Y/N) '
+0109 L 0146 00                          DB      $00
+0110 L 0147 6886D904                    SCAL    R6,READD
+0111 L 014B 9F                          GHI     RF
+0112 L 014C FF59                        SMI     $59
+0113 L 014E 3A57                        BNZ     NOAND
+0114 L 0150 68C8FFFF                    RLDI    R8,$FFFF
+0115 L 0154 C00200                      LBR     RCOM
+0116 L 0157 68C80000           NOAND:   RLDI    R8,$0000
+0117 L 015B C00200                      LBR     RCOM
+0118                           ;*************************************
+0119 L 0200                             ORG     ORGIN+$0200
+0120                           ;*************************************
+0121                           ; COMMAND LINK
+0122                           ;*************************************
+0123 L 0200 68C24EFF           RCOM:    RLDI    R2,COMM
+0124 L 0204 E3                          SEX     R3
+0125 L 0205 61                          OUT     1
+0126 L 0206 08                          DB      $08                 ;I/O GROUP 8
+0127 L 0207 E2                          SEX     R2
+0128                           ;*************************************
+0129                           ; INPUT PIO DATA
+0130                           ;*************************************
+0131 L 0208 98                 PIO:     GHI     R8
+0132 L 0209 320D                        BZ      PIO2
+0133 L 020B 360B               PIO1:    B3      PIO1
+0134                           ;*************************************
+0135 L 020D 350D               PIO2:    B2      PIO2
+0136 L 020F E3                          SEX     R3
+0137 L 0210 61                          OUT     1
+0138 L 0211 08                          DB      $08
+0139 L 0212 E2                          SEX     R2
+0140 L 0213 3513               WAIT:    B2      WAIT
+0141                           ;*************************************
+0142 L 0215 6E                          INP     6                   ; ADDRESS
+0143 L 0216 60                          IRX     
+0144 L 0217 6C                          INP     4                   ; DATA
+0145 L 0218 22                          DEC     R2
+0146 L 0219 F0                          LDX     
+0147 L 021A FA0F                        ANI     $0F
+0148 L 021C 52                          STR     R2
+0149 L 021D B7                          PHI     R7
+0150                           ;*************************************
+0151 L 021E 81                          GLO     R1
+0152 L 021F F7                          SM      
+0153 L 0220 3A13                        BNZ     WAIT
+0154                           ;*************************************
+0155 L 0222 60                          IRX     
+0156 L 0223 F0                          LDX     
+0157 L 0224 A7                          PLO     R7
+0158 L 0225 22                          DEC     R2
+0159                           ;*************************************
+0160                           ; CHECK FOR CHANNEL 9
+0161                           ;*************************************
+0162 L 0226 81                          GLO     R1
+0163 L 0227 FF09                        SMI     $09
+0164 L 0229 3A33                        BNZ     NEXT
+0165 L 022B 87                          GLO     R7
+0166 L 022C FE                          SHL     
+0167 L 022D FE                          SHL     
+0168 L 022E FE                          SHL     
+0169 L 022F FE                          SHL     
+0170 L 0230 52                          STR     R2
+0171 L 0231 66                          OUT     6
+0172 L 0232 22                          DEC     R2
+0173                           ;*************************************
+0174                           ; CHECK FOR CHANNEL 8
+0175                           ;*************************************
+0176 L 0233 81                 NEXT:    GLO     R1
+0177 L 0234 FF08                        SMI     $08
+0178 L 0236 CA0243                      LBNZ    NEXT1
+0179 L 0239 E3                          SEX     R3
+0180 L 023A 61                          OUT     1
+0181 L 023B 30                          DB      $30
+0182 L 023C E2                          SEX     R2
+0183 L 023D 87                          GLO     R7
+0184 L 023E 52                          STR     R2
+0185 L 023F 63                          OUT     3
+0186 L 0240 22                          DEC     R2
+0187 L 0241 64                          OUT     4
+0188 L 0242 22                          DEC     R2
+0189                           ;*************************************
+0190 L 0243 80                 NEXT1:   GLO     R0
+0191 L 0244 3250                        BZ      OUT
+0192 L 0246 11                          INC     R1
+0193 L 0247 81                          GLO     R1
+0194 L 0248 FF0A                        SMI     $0A
+0195 L 024A 3A50                        BNZ     OUT
+0196 L 024C 68C10001                    RLDI    R1,$0001
+0197                           ;*************************************
+0198 L 0250 C4                 OUT:     NOP     
+0199                           ;*************************************
+0200 L 0251 6886D800                    SCAL    R6,OSTRN1
+0201 L 0255 0A0D                        DB      $0A,$0D
+0202 L 0257 434820                      DB      'CH '
+0203 L 025A 00                          DB      $00
+0204 L 025B 97                          GHI     R7
+0205 L 025C BD                          PHI     RD
+0206 L 025D 6886D965                    SCAL    R6,TYPE8
+0207 L 0261 0302                        DB      $03,$02
+0208 L 0263 87                          GLO     R7
+0209 L 0264 BD                          PHI     RD
+0210 L 0265 6886D9AC                    SCAL    R6,WORD
+0211 L 0269 0302                        DB      $03,$02
+0212 L 026B 87                          GLO     R7
+0213 L 026C BD                          PHI     RD
+0214 L 026D 6886D965                    SCAL    R6,TYPE8
+0215 L 0271 0202                        DB      $02,$02
+0216                           ;*************************************
+0217 L 0273 C00208                      LBR     PIO
+0218                           ;*************************************
+0219 L 0300                             ORG     ORGIN+$0300
+0220                           ;*************************************
+0221                           ; COUNTER TEST
+0222                           ;*************************************
+0223 L 0300 6886D800           COUNT:   SCAL    R6,OSTRN1
+0224 L 0304 0A0D                        DB      $0A,$0D
+0225 L 0306 434F554E54455220            DB      'COUNTER TEST'
+            54455354
+0226 L 0312 0A0D                        DB      $0A,$0D
+0227 L 0314 454E54455220434F            DB      'ENTER COUNTER VALUE '
+            554E544552205641
+            4C554520
+0228 L 0328 00                          DB      $00
+0229 L 0329 68CD0000                    RLDI    RD,$0000
+0230 L 032D 6886D898                    SCAL    R6,READHX
+0231 L 0331 6800                        STPC    
+0232 L 0333 8D                          GLO     RD
+0233 L 0334 6806                        LDC     
+0234 L 0336 6809                        ETQ     
+0235 L 0338 6803                        SCM2    
+0236 L 033A 303A               COUNT1:  BR      COUNT1
+0237                           ;*************************************
+0238                           ;*************************************
+0239                           ;
+0240                           ; TLX-1 SERVO CALIBRATION
+0241                           ;
+0242                           ; (C) 1987 HAYES INTERNATIONAL CORP.
+0243                           ;
+0244                           ; BY DENTON MARLOWE
+0245                           ;
+0246                           ;*************************************
+0247 L 033C 6886D800           SERVO:   SCAL    R6,OSTRN1
+0248 L 0340 0A0D                        DB      $0A,$0D
+0249 L 0342 544C582053455256            DB      'TLX SERVO CALIBRATION'
+            4F2043414C494252
+            4154494F4E
+0250 L 0357 0A0D00                      DB      $0A,$0D,$00
+0251                           ;*************************************
+0252 L 035A 6886D800           SERVO1:  SCAL    R6,OSTRN1
+0253 L 035E 0A0D                        DB      $0A,$0D
+0254 L 0360 4845582057494E47            DB      'HEX WING COMMAND $?'
+            20434F4D4D414E44
+            20243F
+0255 L 0373 00                          DB      $00
+0256 L 0374 68CD0000                    RLDI    RD,$0000
+0257 L 0378 6886D898                    SCAL    R6,READHX
+0258                           ;*************************************
+0259 L 037C E3                          SEX     R3
+0260 L 037D 61                          OUT     1
+0261 L 037E 30                          DB      $30
+0262 L 037F E2                          SEX     R2
+0263 L 0380 8D                          GLO     RD
+0264 L 0381 52                          STR     R2
+0265 L 0382 63                          OUT     3
+0266 L 0383 22                          DEC     R2
+0267 L 0384 64                          OUT     4
+0268 L 0385 22                          DEC     R2
+0269                           ;*************************************
+0270 L 0386 68CF07FF                    RLDI    RF,$07FF
+0271 L 038A 68CE000F           LOOP:    RLDI    RE,$000F
+0272 L 038E C4                 LOOP1:   NOP     
+0273 L 038F 682E038E                    DBNZ    RE,LOOP1
+0274 L 0393 682F038A                    DBNZ    RF,LOOP
+0275                           ;*************************************
+0276 L 0397 E3                          SEX     R3
+0277 L 0398 61                          OUT     1
+0278 L 0399 30                          DB      $30
+0279 L 039A 66                          OUT     6
+0280 L 039B 00                          DB      $00
+0281 L 039C 65                          OUT     5
+0282 L 039D 03                          DB      $03
+0283 L 039E E2                          SEX     R2
+0284 L 039F 3C9F                        BN1     *
+0285 L 03A1 6B                          INP     3
+0286 L 03A2 A7                          PLO     R7
+0287 L 03A3 6886D800                    SCAL    R6,OSTRN1
+0288 L 03A7 0A0D                        DB      $0A,$0D
+0289 L 03A9 464545444241434B            DB      'FEEDBACK '
+            20
+0290 L 03B2 00                          DB      $00
+0291 L 03B3 87                          GLO     R7
+0292 L 03B4 BD                          PHI     RD
+0293 L 03B5 6886D965                    SCAL    R6,TYPE8
+0294 L 03B9 0202                        DB      $02,$02
+0295 L 03BB C0035A                      LBR     SERVO1
+0296                           ;*************************************
+0297                           ;
+0298                           ; A/D-D/A TEST ROUTINE
+0299                           ;
+0300                           ;*************************************
+0301 L 03BE 6886D800           ADTST:   SCAL    R6,OSTRN1
+0302 L 03C2 0A0D                        DB      $0A,$0D
+0303 L 03C4 412F442D442F4120            DB      'A/D-D/A TEST'
+            54455354
+0304 L 03D0 0A0D00                      DB      $0A,$0D,$00
+0305 L 03D3 E3                 ADTST1:  SEX     R3
+0306 L 03D4 61                          OUT     1
+0307 L 03D5 30                          DB      $30
+0308 L 03D6 66                          OUT     6
+0309 L 03D7 01                          DB      $01
+0310 L 03D8 65                          OUT     5
+0311 L 03D9 00                          DB      $00
+0312 L 03DA E2                          SEX     R2
+0313 L 03DB 68C24800                    RLDI    R2,RAM+$0800
+0314 L 03DF 68C40008                    RLDI    R4,$0008
+0315 L 03E3 3CE3               ADTST2:  BN1     *
+0316 L 03E5 6C                          INP     4
+0317 L 03E6 22                          DEC     R2
+0318 L 03E7 682403E3                    DBNZ    R4,ADTST2
+0319                           ;
+0320 L 03EB 68C247FD                    RLDI    R2,RAM+$07FD
+0321 L 03EF 64                          OUT     4
+0322 L 03F0 63                          OUT     3
+0323                           ;
+0324 L 03F1 68C24FFF                    RLDI    R2,RAM+$0FFF
+0325 L 03F5 68CA4800                    RLDI    RA,RAM+$0800
+0326 L 03F9 68CB0008                    RLDI    RB,$0008
+0327 L 03FD 6886DAB5                    SCAL    R6,T8OUT1
+0328 L 0401 02                          DB      $02
+0329                           ;
+0330 L 0402 C003D3                      LBR     ADTST1
+0331                           ;*************************************
+0332   0405                             END     
+There were: 0000 Errors
+
+SECTIONS USED:
+
+ Section           Relocation   Alignment  Type     Begins       Ends
+ LINKTEST          absolute                         0000         0404
+
+
+SYMBOL TABLE
+
+SYMBOLS DEFINED:
+
+ Symbol            Section/Type        Attribute Value             Length
+ ADTST             absolute                      03BE      
+ ADTST1            absolute                      03D3      
+ ADTST2            absolute                      03E3      
+ CH                absolute                      010E      
+ COMM              local constant                4EFF      
+ COUNT             absolute                      0300      
+ COUNT1            absolute                      033A      
+ DEBUG             local constant                D000      
+ GATED             absolute                      0124      
+ HELLO             absolute                      000C      
+ LOOP              absolute                      038A      
+ LOOP1             absolute                      038E      
+ NEXT              absolute                      0233      
+ NEXT1             absolute                      0243      
+ NOAND             absolute                      0157      
+ ORGIN             local constant                0000      
+ OSTRN1            local constant                D800      
+ OUT               absolute                      0250      
+ PIO               absolute                      0208      
+ PIO1              absolute                      020B      
+ PIO2              absolute                      020D      
+ RAM               local constant                4000      
+ RCOM              absolute                      0200      
+ READD             local constant                D904      
+ READHX            local constant                D898      
+ SERVO             absolute                      033C      
+ SERVO1            absolute                      035A      
+ T8OUT1            local constant                DAB5      
+ TYPE8             local constant                D965      
+ WAIT              absolute                      0213      
+ WORD              local constant                D9AC      
+
+
+Assembly time: 0 min, 4 sec

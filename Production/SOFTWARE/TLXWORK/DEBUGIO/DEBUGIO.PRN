@@ -1,0 +1,1310 @@
+
+Title: DEBUG TERMINAL I/O ROUTINES
+American Automation Cross-Assembler 1805 9.05.11
+Assembly date: 26 Oct 1987
+Assembly time: 15:01:54
+Options in effect:expand format list object symbol errorfile uppercase 
+
+Subtitle: (C)1984,85,86,87,88 HAYES INTERNATIONAL CORPORTION
+0004 D D800                  D          SECTION DEBUG,$D800
+0005                           ;************************************
+0006                           ;
+0007                           ; TERMINAL I/O ROUTINES FOR 1805
+0008                           ;
+0009                           ; TLX-1 VERSION 1 FOR 2 MEGHZ CLOCK
+0010                           ;
+0011                           ; 8 ,16 AND 32 BIT OPERATIONS
+0012                           :
+0013                           ; MODIFIED FOR 300 BAUD OPERATION
+0014                           ;          NEW BASE ADDRESS AND
+0015                           ;          RELOCATED RAM BASE ADDRESS
+0016                           ;
+0017                           ; REGISTER ASSIGNMENTS
+0018                           ;
+0019                           ; RF   CHAR OUTPUT/INPUT
+0020                           ; RE   TIMER
+0021                           ; RD   TEMPORAY STORAGE
+0022                           ; RC   DELAY PROGRAM COUNTER
+0023                           ; RB   WORD COUNTER
+0024                           ; RA   DATA STACK POINTER
+0025                           ; R9   LOW 16 BITS OF 32 BIT
+0026                           ; R6   SUBROUTINE LINK
+0027                           ; R3   PROGRAM COUNTER
+0028                           ; R2   PROGRAM STACK POINTER
+0029                           ;
+0030                           ;*************************************
+0031                           ; REGISTER EQUATES
+0032                           ;*************************************
+0033        0000D800           ORGIN    EQU     $D800
+0034        00003000           RAM      EQU     $3000
+0035                           SP       EQU     R2
+0036                           PC       EQU     R3
+0037                           LINK     EQU     R6
+0038                           STORE    EQU     R9
+0039                           TOP      EQU     RA
+0040                           NUM      EQU     RB
+0041                           DELAY    EQU     RC
+0042                           TEMP     EQU     RD
+0043                           TIMER    EQU     RE
+0044                           CHAR     EQU     RF
+0045                           ;*************************************
+0046 D D800                             ORG     ORGIN
+0047                           ;*************************************
+0048                           ;
+0049                           ; SUBROUTINE NAME: OSTRNG
+0050                           ;
+0051                           ; THIS ROUTINE PRINTS A STRING PASSED
+0052                           ; IN-LINE WITH THE SUBROUTINE CALL
+0053                           ;
+0054                           ; EXAMPLE:
+0055                           ;
+0056                           ;      SCAL R6 OSTRNG
+0057                           ;      ,$0A0D
+0058                           ;      ,T'THIS IS A TEST'
+0059                           ;      ,$00
+0060                           ;
+0061                           ;*************************************
+0062 D D800 6886D874           OSTRN1:  SCAL    LINK,RCA1           ; SET UP DELAY TIMER
+0063 D D804 46                 OSTRNG:  LDA     LINK                ; GET INLINE CHARACTER
+0064 D D805 320E                        BZ      01$                 ; IF NULL EXIT
+0065 D D807 BF                          PHI     CHAR                ; LOAD INTO CHARACTER REGISTER
+0066 D D808 6886D82B                    SCAL    LINK,TYPED          ; CALL SCREEN TYPE ROUTINE
+0067 D D80C 3004                        BR      OSTRNG              ; LOOP FOR NEXT CHARACTER
+0068 D D80E 6896               01$:     SRET    LINK                ; RETURN
+0069                           ;*************************************
+0070                           ;
+0071                           ; SUBROUTINE NAME: TYPEHD
+0072                           ;
+0073                           ; THIS ROUTINE PRINTS THE HEX
+0074                           ; BYTE PASSED IN RF.1
+0075                           ;
+0076                           ;*************************************
+0077 D D810 6886D874           TYPEH1:  SCAL    LINK,RCA1           ; SET UP DELAY TIMER
+0078 D D814 DC                 TYPEHD:  SEP     DELAY               ; DELAY
+0079 D D815 17                          DB      $17                 ; DELAY CONSTANT
+0080 D D816 9F                 TYPEH:   GHI     CHAR
+0081 D D817 F6                          SHR     
+0082 D D818 F6                          SHR     
+0083 D D819 F6                          SHR     
+0084 D D81A F6                          SHR     
+0085 D D81B FCF6                        ADI     $F6
+0086 D D81D C7                          LSNF    
+0087 D D81E FC07                        ADI     $07
+0088 D D820 FFC6                        SMI     $C6
+0089 D D822 AE                          PLO     TIMER
+0090 D D823 F81B                        LDI     $1B
+0091 D D825 3038                        BR      TYPEH0
+0092                           ;*************************************
+0093                           ;
+0094                           ; SUBROUTINE NAME: TYPE
+0095                           ;
+0096                           ; THIS ROUTINE PRINTS THE ASCII CHAR
+0097                           ; PASSED IN RF.1
+0098                           ;
+0099                           ;*************************************
+0100 D D827 6886D874           TYPED1:  SCAL    LINK,RCA1
+0101 D D82B DC                 TYPED:   SEP     DELAY
+0102 D D82C 17                          DB      $17
+0103 D D82D 9F                 TYPER:   GHI     CHAR
+0104 D D82E AE                          PLO     TIMER
+0105 D D82F FB0A                        XRI     $0A
+0106 D D831 3A36                        BNZ     01$
+0107 D D833 F88B                        LDI     $8B
+0108 D D835 C8                          LSKP    
+0109 D D836 F80B               01$:     LDI     $0B
+0110 D D838 AF                 TYPEH0:  PLO     CHAR
+0111 D D839 8D                          GLO     TEMP
+0112 D D83A 52                          STR     SP
+0113                           ;******************
+0114 D D83B 7B                          SEQ     
+0115 D D83C 8E                          GLO     TIMER
+0116 D D83D AD                          PLO     TEMP
+0117 D D83E DC                          SEP     DELAY
+0118 D D83F 07                          DB      $07
+0119 D D840 2F                          DEC     CHAR
+0120 D D841 F5                          SD      
+0121 D D842 8D                          GLO     TEMP
+0122 D D843 76                          SHRC    
+0123 D D844 AD                          PLO     TEMP
+0124 D D845 CF                          LSDF    
+0125 D D846 7B                          SEQ     
+0126 D D847 C8                          LSKP    
+0127 D D848 7A                          REQ     
+0128 D D849 7A                          REQ     
+0129 D D84A 8F                          GLO     CHAR
+0130 D D84B FA0F                        ANI     $0F
+0131 D D84D C4                          NOP     
+0132 D D84E C4                          NOP     
+0133 D D84F C4                          NOP     
+0134 D D850 C4                          NOP     
+0135 D D851 3A3E                        BNZ     *-$13
+0136                           ;******************
+0137 D D853 8F                          GLO     CHAR
+0138 D D854 FCFB                        ADI     $FB
+0139 D D856 AF                          PLO     CHAR
+0140 D D857 3B70                        BNF     *+$19
+0141 D D859 FF1B                        SMI     $1B
+0142 D D85B 3270                        BZ      *+$15
+0143 D D85D 3B63                        BNF     *+$06
+0144 D D85F F800                        LDI     $00
+0145 D D861 306D                        BR      *+$0C
+0146                           ;******************
+0147 D D863 9F                          GHI     CHAR
+0148 D D864 FA0F                        ANI     $0F
+0149 D D866 FCF6                        ADI     $F6
+0150 D D868 C7                          LSNF    
+0151 D D869 FC07                        ADI     $07
+0152 D D86B FFC6                        SMI     $C6
+0153 D D86D AE                          PLO     TIMER
+0154 D D86E 303B                        BR      *-$33
+0155                           ;*******************
+0156 D D870 F0                          LDX     
+0157 D D871 AD                          PLO     TEMP
+0158 D D872 6896                        SRET    LINK
+0159                           ;*************************************
+0160                           ;
+0161                           ; SUBROUTINE NAME: RCA1
+0162                           ;
+0163                           ; THIS ROUTINE SELECTS SCREEN AND 
+0164                           ; KEYBORAD I/O AND SETS BAUD RATE
+0165                           ; IN RE.1
+0166                           ;
+0167                           ; VALUES FOR RCA DEVELOPMENT SYSTEM
+0168                           ;
+0169                           ;       110 BAUD        7000
+0170                           ;       300 BAUD        2800
+0171                           ;       1200 BAUD       0800
+0172                           ;
+0173                           ; VALUES FOR AMERICAN AUTOMATION SYSTEM RUNNING AT 300 BAUD IS 6600
+0174                           ;
+0175                           ;******************************************************************************
+0176 D D874 E3                 RCA1:    SEX     PC
+0177 D D875 61                          OUT     1
+0178 D D876 01                          DB      $01
+0179 D D877 E2                          SEX     SP
+0180 D D878 68CCD889                    RLDI    DELAY,DELAY1
+0181 D D87C 68CE2800                    RLDI    TIMER,$2800         ; PARAMETER FOR BAUD RATE
+0182 D D880 DC                          SEP     DELAY
+0183 D D881 17                          DB      $17
+0184 D D882 6896                        SRET    LINK
+0185                           ;*************************************
+0186                           ;
+0187                           ; SUBROUTINE NAME: DELAY1
+0188                           ;
+0189                           ; THIS ROUTINE PROVIDES A DELAY
+0190                           ; AND SHOULD BE USED BETWEEN INPUT
+0191                           ; AND OUTPUT TO INSURE THAT THE
+0192                           ; LAST OPERATION IS FINISHED.
+0193                           ; THE DELAY CONSTANT IS PASSED INLINE
+0194                           ;
+0195                           ;*************************************
+0196 D D884 DC                 DELAY0:  SEP     DELAY
+0197 D D885 DC                          SEP     DELAY
+0198 D D886 DC                          SEP     DELAY
+0199 D D887 DC                          SEP     DELAY
+0200 D D888 D3                          SEP     PC
+0201 D D889 9E                 DELAY1:  GHI     TIMER
+0202 D D88A F6                          SHR     
+0203 D D88B AE                          PLO     TIMER
+0204 D D88C 2E                 DELAY2:  DEC     TIMER
+0205 D D88D 43                          LDA     PC
+0206 D D88E FF01               DELAY3:  SMI     $01
+0207 D D890 3A8E                        BNZ     DELAY3
+0208 D D892 8E                          GLO     TIMER
+0209 D D893 3284                        BZ      DELAY0
+0210 D D895 23                          DEC     PC
+0211 D D896 308C                        BR      DELAY2
+0212                           ;*************************************
+0213                           ;
+0214                           ; SUBROUTINE NAME: READHX
+0215                           ;
+0216                           ; THIS ROUTINE IS USED TO INPUT A
+0217                           ; 8 OR 16 BIT HEX WORD INTO RD.
+0218                           ; RD.0 IS THE LSB AND RD.1 IS THE
+0219                           ; MSB. IF A NONE HEX CHAR IS ENTERED
+0220                           ; AND ERROR MESSAGE IS GIVEN AND
+0221                           ; INPUT MAY BE GIVEN AGAIN.
+0222                           ; INPUT IS TERMINATED BY A RETURN.
+0223                           ;
+0224                           ;*************************************
+0225 D D898 6886D874           READX1:  SCAL    LINK,RCA1
+0226 D D89C 6886D8BC           READHX:  SCAL    LINK,READHD
+0227 D D8A0 339C                        BDF     READHX
+0228 D D8A2 9F                          GHI     CHAR
+0229 D D8A3 FB0D                        XRI     $0D
+0230 D D8A5 3AA9                        BNZ     *+$04
+0231 D D8A7 6896                        SRET    LINK
+0232 D D8A9 6886D804                    SCAL    LINK,OSTRNG
+0233 D D8AD 0A0D                        DB      $0A,$0D
+0234 D D8AF 455252                      DB      'ERR'
+0235 D D8B2 0A0D                        DB      $0A,$0D
+0236 D D8B4 2A                          DB      $2A
+0237 D D8B5 00                          DB      $00
+0238 D D8B6 309C                        BR      READHX
+0239                           ;*************************************
+0240                           ;
+0241                           ; SUBROUTINE NAME: READH
+0242                           ;
+0243                           ; THIS ROUTINE IS USED TO ENTER A
+0244                           ; HEX CHARACTER INTO RD.0
+0245                           ;
+0246                           ;*************************************
+0247 D D8B8 6886D874           READH1:  SCAL    LINK,RCA1
+0248 D D8BC DC                 READHD:  SEP     DELAY
+0249 D D8BD 17                          DB      $17
+0250 D D8BE 6886D906           READH:   SCAL    LINK,READ
+0251                           ;*******************
+0252 D D8C2 9F                 CKHXE:   GHI     CHAR
+0253 D D8C3 FF41                        SMI     $41
+0254 D D8C5 3BEA                        BNF     *+$25
+0255 D D8C7 FF06                        SMI     $06
+0256 D D8C9 33F2                        BDF     *+$29
+0257 D D8CB FC10                        ADI     $10
+0258                           ;*******************
+0259 D D8CD AE                          PLO     TIMER
+0260 D D8CE 9D                          GHI     TEMP
+0261 D D8CF FE                          SHL     
+0262 D D8D0 FE                          SHL     
+0263 D D8D1 FE                          SHL     
+0264 D D8D2 FE                          SHL     
+0265 D D8D3 52                          STR     SP
+0266 D D8D4 8D                          GLO     TEMP
+0267 D D8D5 F6                          SHR     
+0268 D D8D6 F6                          SHR     
+0269 D D8D7 F6                          SHR     
+0270 D D8D8 F6                          SHR     
+0271 D D8D9 F1                          OR      
+0272 D D8DA BD                          PHI     TEMP
+0273 D D8DB 8D                          GLO     TEMP
+0274 D D8DC FE                          SHL     
+0275 D D8DD FE                          SHL     
+0276 D D8DE FE                          SHL     
+0277 D D8DF FE                          SHL     
+0278 D D8E0 52                          STR     SP
+0279 D D8E1 8E                          GLO     TIMER
+0280 D D8E2 FA0F                        ANI     $0F
+0281 D D8E4 F1                          OR      
+0282 D D8E5 AD                          PLO     TEMP
+0283 D D8E6 FF00                        SMI     $00
+0284 D D8E8 6896                        SRET    LINK
+0285                           ;*******************
+0286 D D8EA FC07                        ADI     $07
+0287 D D8EC 33F2                        BDF     *+$06
+0288 D D8EE FC0A                        ADI     $0A
+0289 D D8F0 33CD                        BDF     *-$23
+0290 D D8F2 FC00                        ADI     $00
+0291 D D8F4 6896                        SRET    LINK
+0292                           ;*************************************
+0293 D D900                             ORG     ORGIN+$0100
+0294                           ;*************************************
+0295                           ;
+0296                           ; SUBROUTINE NAME: READ
+0297                           ;
+0298                           ; THIS ROUTINE ALLOWS THE INPUT OF
+0299                           ; ANY ASCII CHARACTER INTO RF.1
+0300                           ;
+0301                           ;*************************************
+0302 D D900 6886D874           READ1:   SCAL    LINK,RCA1
+0303 D D904 DC                 READD:   SEP     DELAY
+0304 D D905 17                          DB      $17
+0305 D D906 F880               READ:    LDI     $80
+0306 D D908 BF                          PHI     CHAR
+0307 D D909 3F09                        BN4     *
+0308 D D90B 370B                        B4      *
+0309 D D90D DC                          SEP     DELAY
+0310 D D90E 02                          DB      $02
+0311                           ;*******************
+0312 D D90F E2                          SEX     SP
+0313 D D910 E2                          SEX     SP
+0314 D D911 9E                          GHI     TIMER
+0315 D D912 F6                          SHR     
+0316 D D913 331C                        BDF     *+$09
+0317 D D915 371A                        B4      *+$05
+0318 D D917 7B                          SEQ     
+0319 D D918 301E                        BR      *+$06
+0320 D D91A 7A                          REQ     
+0321 D D91B C8                          LSKP    
+0322 D D91C C4                          NOP     
+0323 D D91D C4                          NOP     
+0324 D D91E DC                          SEP     DELAY
+0325 D D91F 07                          DB      $07
+0326 D D920 C4                          NOP     
+0327 D D921 C4                          NOP     
+0328 D D922 9F                          GHI     CHAR
+0329 D D923 F6                          SHR     
+0330 D D924 BF                          PHI     CHAR
+0331 D D925 332E                        BDF     *+$09
+0332 D D927 F980                        ORI     $80
+0333 D D929 3F0F                        BN4     *-$1A
+0334 D D92B BF                          PHI     CHAR
+0335 D D92C 3011                        BR      *-$1B
+0336 D D92E 7A                          REQ     
+0337 D D92F 3206                        BZ      READ
+0338 D D931 6896                        SRET    LINK
+0339                           ;*************************************
+0340                           ;
+0341                           ; SUBROUTINE NAME: TYPE3
+0342                           ;
+0343                           ; THIS ROUTINE WILL PRINT THE 32 BIT
+0344                           ; HEX WORD, WITH MSB IN RD.1,RD.0
+0345                           ; AND THE LSB IN R9.1,R9.0
+0346                           ; THE OPTION FOR TERMNATION IS
+0347                           ; PASSED IN-LINE
+0348                           ;
+0349                           ;*************************************
+0350 D D933 6886D874           TYPE31:  SCAL    LINK,RCA1
+0351 D D937 DC                 TYPE3D:  SEP     DELAY
+0352 D D938 17                          DB      $17
+0353 D D939 6886D950           TYPE3:   SCAL    LINK,TYPE6
+0354 D D93D 00                          DB      $00
+0355 D D93E 99                          GHI     R9
+0356 D D93F BD                          PHI     TEMP
+0357 D D940 89                          GLO     R9
+0358 D D941 AD                          PLO     TEMP
+0359 D D942 6886D950                    SCAL    LINK,TYPE6
+0360 D D946 00                          DB      $00
+0361 D D947 C0DB08                      LBR     TEST
+0362                           ;*************************************
+0363                           ;
+0364                           ; SUBROUTINE NAME: TYPE6
+0365                           ;
+0366                           ; THIS ROUTINE WILL PRINT THE 16 BIT
+0367                           ; HEX WORD, WITH MSB IN RD.1 AND
+0368                           ; THE LSB IN RD.0
+0369                           ; THE OPTION FOR TERMNATION IS
+0370                           ; PASSED IN-LINE
+0371                           ;
+0372                           ;*************************************
+0373 D D94A 6886D874           TYPE61:  SCAL    LINK,RCA1
+0374 D D94E DC                 TYPE6D:  SEP     DELAY
+0375 D D94F 17                          DB      $17
+0376 D D950 9D                 TYPE6:   GHI     TEMP
+0377 D D951 BF                          PHI     CHAR
+0378 D D952 6886D816                    SCAL    LINK,TYPEH
+0379 D D956 8D                          GLO     TEMP
+0380 D D957 BF                          PHI     CHAR
+0381 D D958 6886D816                    SCAL    LINK,TYPEH
+0382 D D95C C0DB08                      LBR     TEST
+0383                           ;*************************************
+0384                           ;
+0385                           ; SUBROUTINE NAME: TYPE8
+0386                           ;
+0387                           ; THIS ROUTINE WILL PRINT THE 8 BIT
+0388                           ; HEX WORD IN RD.1
+0389                           ; THE OPTION FOR TERMNATION IS
+0390                           ; PASSED IN-LINE
+0391                           ;
+0392                           ;*************************************
+0393 D D95F 6886D874           TYPE81:  SCAL    LINK,RCA1
+0394 D D963 DC                 TYPE8D:  SEP     DELAY
+0395 D D964 17                          DB      $17
+0396 D D965 9D                 TYPE8:   GHI     TEMP
+0397 D D966 BF                          PHI     CHAR
+0398 D D967 6886D816                    SCAL    LINK,TYPEH
+0399 D D96B C0DB08                      LBR     TEST
+0400                           ;*************************************
+0401 D D96E 6886D874           WORD31:  SCAL    LINK,RCA1
+0402 D D972 DC                 WORD3D:  SEP     DELAY
+0403 D D973 17                          DB      $17
+0404 D D974 8D                 WORD3:   GLO     TEMP
+0405 D D975 73                          STXD    
+0406 D D976 6886D9B2                    SCAL    LINK,WORD
+0407 D D97A 00                          DB      $00
+0408 D D97B 60                          IRX     
+0409 D D97C F0                          LDX     
+0410 D D97D BD                          PHI     TEMP
+0411 D D97E 6886D9B2                    SCAL    LINK,WORD
+0412 D D982 00                          DB      $00
+0413 D D983 99                          GHI     R9
+0414 D D984 BD                          PHI     TEMP
+0415 D D985 6886D9B2                    SCAL    LINK,WORD
+0416 D D989 00                          DB      $00
+0417 D D98A 89                          GLO     R9
+0418 D D98B BD                          PHI     TEMP
+0419 D D98C 6886D9B2                    SCAL    LINK,WORD
+0420 D D990 00                          DB      $00
+0421 D D991 C0DB08                      LBR     TEST
+0422                           ;*************************************
+0423 D D994 6886D874           WORD61:  SCAL    LINK,RCA1
+0424 D D998 DC                 WORD6D:  SEP     DELAY
+0425 D D999 17                          DB      $17
+0426 D D99A 8D                 WORD6:   GLO     TEMP
+0427 D D99B 73                          STXD    
+0428 D D99C 6886D9B2                    SCAL    LINK,WORD
+0429 D D9A0 00                          DB      $00
+0430 D D9A1 60                          IRX     
+0431 D D9A2 F0                          LDX     
+0432 D D9A3 BD                          PHI     TEMP
+0433 D D9A4 6886D9B2                    SCAL    LINK,WORD
+0434 D D9A8 00                          DB      $00
+0435 D D9A9 C0DB08                      LBR     TEST
+0436                           ;*************************************
+0437 D D9AC 6886D874           WORD81:  SCAL    LINK,RCA1
+0438 D D9B0 DC                 WORD8D:  SEP     DELAY
+0439 D D9B1 17                          DB      $17
+0440 D D9B2 F808               WORD:    LDI     $08
+0441 D D9B4 AD                          PLO     TEMP
+0442 D D9B5 9D                 WORDLOOP:GHI     TEMP
+0443 D D9B6 FE                          SHL     
+0444 D D9B7 BD                          PHI     TEMP
+0445 D D9B8 F800                        LDI     $00
+0446 D D9BA 7C30                        ADCI    $30
+0447 D D9BC BF                          PHI     CHAR
+0448 D D9BD 6886D82D                    SCAL    LINK,TYPER
+0449 D D9C1 2D                          DEC     TEMP
+0450 D D9C2 8D                          GLO     TEMP
+0451 D D9C3 3AB5                        BNZ     WORDLOOP
+0452 D D9C5 C0DB08                      LBR     TEST
+0453                           ;*************************************
+0454 D D9C8 6886D874           TOUT31:  SCAL    LINK,RCA1
+0455 D D9CC DC                 TOUT3D:  SEP     DELAY
+0456 D D9CD 17                          DB      $17
+0457 D D9CE 68AA               TOUT3:   RSXD    RA
+0458 D D9D0 68AB                        RSXD    RB
+0459                           ;*******************
+0460 D D9D2 ED                          SEX     TEMP
+0461 D D9D3 68BA                        RNX     RA
+0462 D D9D5 E2                          SEX     SP
+0463 D D9D6 6886D9F4                    SCAL    LINK,MOUT3
+0464 D D9DA 02                          DB      $02
+0465 D D9DB 01                          DB      $01
+0466 D D9DC 2A                          DEC     RA
+0467 D D9DD 2A                          DEC     RA
+0468 D D9DE 2A                          DEC     RA
+0469 D D9DF 2A                          DEC     RA
+0470 D D9E0 682BD9D2                    DBNZ    RB,*-$0E
+0471 D D9E4 60                          IRX     
+0472 D D9E5 686B                        RLXA    RB
+0473 D D9E7 686A                        RLXA    RA
+0474 D D9E9 22                          DEC     SP
+0475 D D9EA 46                          LDA     LINK
+0476 D D9EB C0DB3C                      LBR     MLFCRT
+0477                           ;*******************
+0478 D D9EE 6886D874           MOUT31:  SCAL    LINK,RCA1
+0479 D D9F2 DC                 MOUT3D:  SEP     DELAY
+0480 D D9F3 17                          DB      $17
+0481 D D9F4 0D                 MOUT3:   LDN     TEMP
+0482 D D9F5 73                          STXD    
+0483 D D9F6 2D                          DEC     TEMP
+0484 D D9F7 0D                          LDN     TEMP
+0485 D D9F8 73                          STXD    
+0486 D D9F9 2D                          DEC     TEMP
+0487 D D9FA 0D                          LDN     TEMP
+0488 D D9FB 73                          STXD    
+0489 D D9FC 2D                          DEC     TEMP
+0490 D D9FD 0D                          LDN     TEMP
+0491 D D9FE 73                          STXD    
+0492 D D9FF 9D                          GHI     TEMP
+0493 D DA00 BF                          PHI     CHAR
+0494 D DA01 6886D816                    SCAL    LINK,TYPEH
+0495 D DA05 8D                          GLO     TEMP
+0496 D DA06 BF                          PHI     CHAR
+0497 D DA07 6886D816                    SCAL    LINK,TYPEH
+0498 D DA0B 6886D804                    SCAL    LINK,OSTRNG
+0499 D DA0F 2020                        DB      $20,$20
+0500 D DA11 2020                        DB      $20,$20
+0501 D DA13 00                          DB      $00
+0502 D DA14 60                          IRX     
+0503 D DA15 72                          LDXA    
+0504 D DA16 BD                          PHI     TEMP
+0505 D DA17 72                          LDXA    
+0506 D DA18 AD                          PLO     TEMP
+0507 D DA19 72                          LDXA    
+0508 D DA1A B9                          PHI     R9
+0509 D DA1B F0                          LDX     
+0510 D DA1C A9                          PLO     R9
+0511 D DA1D 22                          DEC     SP
+0512 D DA1E 22                          DEC     SP
+0513 D DA1F 22                          DEC     SP
+0514 D DA20 22                          DEC     SP
+0515 D DA21 6886D974                    SCAL    LINK,WORD3
+0516 D DA25 03                          DB      $03
+0517 D DA26 04                          DB      $04
+0518 D DA27 60                          IRX     
+0519 D DA28 72                          LDXA    
+0520 D DA29 BD                          PHI     TEMP
+0521 D DA2A 72                          LDXA    
+0522 D DA2B AD                          PLO     TEMP
+0523 D DA2C 72                          LDXA    
+0524 D DA2D B9                          PHI     R9
+0525 D DA2E F0                          LDX     
+0526 D DA2F A9                          PLO     R9
+0527 D DA30 9D                          GHI     TEMP
+0528 D DA31 BF                          PHI     CHAR
+0529 D DA32 6886D816                    SCAL    LINK,TYPEH
+0530 D DA36 8D                          GLO     TEMP
+0531 D DA37 BF                          PHI     CHAR
+0532 D DA38 6886D816                    SCAL    LINK,TYPEH
+0533 D DA3C 99                          GHI     R9
+0534 D DA3D BF                          PHI     CHAR
+0535 D DA3E 6886D816                    SCAL    LINK,TYPEH
+0536 D DA42 89                          GLO     R9
+0537 D DA43 BF                          PHI     CHAR
+0538 D DA44 6886D816                    SCAL    LINK,TYPEH
+0539 D DA48 C0DB08                      LBR     TEST
+0540                           ;*************************************
+0541 D DA4B 6886D874           TOUT61:  SCAL    LINK,RCA1
+0542 D DA4F DC                 TOUT6D:  SEP     DELAY
+0543 D DA50 17                          DB      $17
+0544 D DA51 9A                 TOUT6:   GHI     RA
+0545 D DA52 73                          STXD    
+0546 D DA53 8A                          GLO     RA
+0547 D DA54 73                          STXD    
+0548 D DA55 9B                          GHI     RB
+0549 D DA56 73                          STXD    
+0550 D DA57 8B                          GLO     RB
+0551 D DA58 73                          STXD    
+0552                           ;********************
+0553 D DA59 ED                          SEX     TEMP
+0554 D DA5A 68BA                        RNX     RA
+0555 D DA5C E2                          SEX     SP
+0556 D DA5D 6886DA7C                    SCAL    LINK,MOUT
+0557 D DA61 02                          DB      $02
+0558 D DA62 01                          DB      $01
+0559 D DA63 2A                          DEC     RA
+0560 D DA64 2A                          DEC     RA
+0561 D DA65 682BDA59                    DBNZ    RB,*-$0C
+0562 D DA69 60                          IRX     
+0563 D DA6A 72                          LDXA    
+0564 D DA6B AB                          PLO     RB
+0565 D DA6C 72                          LDXA    
+0566 D DA6D BB                          PHI     RB
+0567 D DA6E 72                          LDXA    
+0568 D DA6F AA                          PLO     RA
+0569 D DA70 F0                          LDX     
+0570 D DA71 BA                          PHI     RA
+0571 D DA72 46                          LDA     LINK
+0572 D DA73 C0DB3C                      LBR     MLFCRT
+0573                           ;*************************************
+0574 D DA76 6886D874           MOUT1:   SCAL    LINK,RCA1
+0575 D DA7A DC                 MOUTD:   SEP     DELAY
+0576 D DA7B 17                          DB      $17
+0577 D DA7C 0D                 MOUT:    LDN     TEMP
+0578 D DA7D 73                          STXD    
+0579 D DA7E 2D                          DEC     TEMP
+0580 D DA7F 0D                          LDN     TEMP
+0581 D DA80 73                          STXD    
+0582 D DA81 9D                          GHI     TEMP
+0583 D DA82 BF                          PHI     CHAR
+0584 D DA83 6886D816                    SCAL    LINK,TYPEH
+0585 D DA87 8D                          GLO     TEMP
+0586 D DA88 BF                          PHI     CHAR
+0587 D DA89 6886D816                    SCAL    LINK,TYPEH
+0588 D DA8D 60                          IRX     
+0589 D DA8E 72                          LDXA    
+0590 D DA8F BD                          PHI     TEMP
+0591 D DA90 F0                          LDX     
+0592 D DA91 AD                          PLO     TEMP
+0593 D DA92 22                          DEC     SP
+0594 D DA93 22                          DEC     SP
+0595 D DA94 6886D804                    SCAL    LINK,OSTRNG
+0596 D DA98 2020                        DB      $20,$20
+0597 D DA9A 2020                        DB      $20,$20
+0598 D DA9C 00                          DB      $00
+0599 D DA9D 6886D99A                    SCAL    LINK,WORD6
+0600 D DAA1 03                          DB      $03
+0601 D DAA2 04                          DB      $04
+0602 D DAA3 60                          IRX     
+0603 D DAA4 72                          LDXA    
+0604 D DAA5 BF                          PHI     CHAR
+0605 D DAA6 F0                          LDX     
+0606 D DAA7 AD                          PLO     TEMP
+0607 D DAA8 6886D816                    SCAL    LINK,TYPEH
+0608 D DAAC 8D                          GLO     TEMP
+0609 D DAAD BF                          PHI     CHAR
+0610 D DAAE 6886D816                    SCAL    LINK,TYPEH
+0611 D DAB2 C0DB08                      LBR     TEST
+0612                           ;*************************************
+0613 D DAB5 6886D874           T8OUT1:  SCAL    LINK,RCA1
+0614 D DAB9 DC                 T8OUTD:  SEP     DELAY
+0615 D DABA 17                          DB      $17
+0616 D DABB 68AA               T8OUT:   RSXD    RA
+0617 D DABD 68AB                        RSXD    RB
+0618                           ;********************
+0619 D DABF ED                          SEX     TEMP
+0620 D DAC0 68BA                        RNX     RA
+0621 D DAC2 E2                          SEX     SP
+0622 D DAC3 6886DADD                    SCAL    LINK,M8OUT
+0623 D DAC7 02                          DB      $02
+0624 D DAC8 01                          DB      $01
+0625 D DAC9 2A                          DEC     RA
+0626 D DACA 682BDABF                    DBNZ    RB,*-$0B
+0627 D DACE 60                          IRX     
+0628 D DACF 686B                        RLXA    RB
+0629 D DAD1 686A                        RLXA    RA
+0630 D DAD3 22                          DEC     SP
+0631 D DAD4 C0DB3C                      LBR     MLFCRT
+0632                           ;*******************
+0633 D DAD7 6886D874           M8OUT1:  SCAL    LINK,RCA1
+0634 D DADB DC                 M8OUTD:  SEP     DELAY
+0635 D DADC 17                          DB      $17
+0636 D DADD 0D                 M8OUT:   LDN     TEMP
+0637 D DADE 73                          STXD    
+0638 D DADF 9D                          GHI     TEMP
+0639 D DAE0 BF                          PHI     CHAR
+0640 D DAE1 6886D816                    SCAL    LINK,TYPEH
+0641 D DAE5 8D                          GLO     TEMP
+0642 D DAE6 BF                          PHI     CHAR
+0643 D DAE7 6886D816                    SCAL    LINK,TYPEH
+0644 D DAEB 6886D804                    SCAL    LINK,OSTRNG
+0645 D DAEF 2020                        DB      $20,$20
+0646 D DAF1 2020                        DB      $20,$20
+0647 D DAF3 00                          DB      $00
+0648 D DAF4 60                          IRX     
+0649 D DAF5 F0                          LDX     
+0650 D DAF6 BD                          PHI     TEMP
+0651 D DAF7 22                          DEC     SP
+0652 D DAF8 6886D9B2                    SCAL    LINK,WORD
+0653 D DAFC 03                          DB      $03
+0654 D DAFD 04                          DB      $04
+0655 D DAFE 60                          IRX     
+0656 D DAFF F0                          LDX     
+0657 D DB00 BF                          PHI     CHAR
+0658 D DB01 6886D816                    SCAL    LINK,TYPEH
+0659 D DB05 C0DB08                      LBR     TEST
+0660                           ;*************************************
+0661 D DB08 46                 TEST:    LDA     LINK
+0662 D DB09 3264                        BZ      WEXIT
+0663 D DB0B FF01                        SMI     $01
+0664 D DB0D 3A17                        BNZ     CRLFT
+0665 D DB0F 6886D804           CR:      SCAL    LINK,OSTRNG
+0666 D DB13 0D                          DB      $0D
+0667 D DB14 00                          DB      $00
+0668 D DB15 3064                        BR      WEXIT
+0669 D DB17 FF01               CRLFT:   SMI     $01
+0670 D DB19 3A2A                        BNZ     SPACET
+0671 D DB1B 46                 CRLF:    LDA     LINK
+0672 D DB1C AD                          PLO     TEMP
+0673 D DB1D 6886D804                    SCAL    LINK,OSTRNG
+0674 D DB21 0A0D                        DB      $0A,$0D
+0675 D DB23 00                          DB      $00
+0676 D DB24 2D                          DEC     TEMP
+0677 D DB25 8D                          GLO     TEMP
+0678 D DB26 3A1D                        BNZ     *-$09
+0679 D DB28 3064                        BR      WEXIT
+0680 D DB2A FF01               SPACET:  SMI     $01
+0681 D DB2C 3A3C                        BNZ     MLFCRT
+0682 D DB2E 46                 SPACE:   LDA     LINK
+0683 D DB2F AD                          PLO     TEMP
+0684 D DB30 6886D804                    SCAL    LINK,OSTRNG
+0685 D DB34 20                          DB      $20
+0686 D DB35 00                          DB      $00
+0687 D DB36 2D                          DEC     TEMP
+0688 D DB37 8D                          GLO     TEMP
+0689 D DB38 3A30                        BNZ     *-$08
+0690 D DB3A 3064                        BR      WEXIT
+0691 D DB3C FF01               MLFCRT:  SMI     $01
+0692 D DB3E 3A50                        BNZ     BAR
+0693 D DB40 46                 MLFCR:   LDA     LINK
+0694 D DB41 AD                          PLO     TEMP
+0695 D DB42 6886D804                    SCAL    LINK,OSTRNG
+0696 D DB46 0D                          DB      $0D
+0697 D DB47 1B41                        DB      $1B,$41
+0698 D DB49 00                          DB      $00
+0699 D DB4A 2D                          DEC     TEMP
+0700 D DB4B 8D                          GLO     TEMP
+0701 D DB4C 3A42                        BNZ     *-$0A
+0702 D DB4E 3064                        BR      WEXIT
+0703 D DB50 F828               BAR:     LDI     $28
+0704 D DB52 AD                          PLO     TEMP
+0705 D DB53 6886D804                    SCAL    LINK,OSTRNG
+0706 D DB57 2D                          DB      $2D
+0707 D DB58 00                          DB      $00
+0708 D DB59 2D                          DEC     TEMP
+0709 D DB5A 8D                          GLO     TEMP
+0710 D DB5B 3A53                        BNZ     *-$08
+0711 D DB5D 6886D804                    SCAL    LINK,OSTRNG
+0712 D DB61 0A0D                        DB      $0A,$0D
+0713 D DB63 00                          DB      $00
+0714                           ;*******************
+0715 D DB64 6896               WEXIT:   SRET    LINK
+0716                           ;*************************************
+0717                           ;
+0718                           ; SPECIAL TERMINAL FUNCTIONS 1
+0719                           ;
+0720                           ;*************************************
+0721                           ;
+0722                           ; HOME CURSOR
+0723                           ;
+0724                           ;*************************************
+0725 D DB66 6886D800           HOME:    SCAL    LINK,OSTRN1
+0726 D DB6A 1B48                        DB      $1B,$48
+0727 D DB6C 00                          DB      $00
+0728 D DB6D 6896                        SRET    LINK
+0729                           ;*************************************
+0730                           ;
+0731                           ; CLEAR SCREEN
+0732                           ;
+0733                           ;*************************************
+0734 D DB6F 6886D800           CLEAR:   SCAL    LINK,OSTRN1
+0735 D DB73 1B6A                        DB      $1B,$6A
+0736 D DB75 00                          DB      $00
+0737 D DB76 6896                        SRET    LINK
+0738                           ;*************************************
+0739                           ;
+0740                           ; HIGH RESOLUTION
+0741                           ;
+0742                           ;*************************************
+0743 D DB78 6886D800           REHIGH:  SCAL    LINK,OSTRN1
+0744 D DB7C 1B1B                        DB      $1B,$1B
+0745 D DB7E 5231                        DB      $52,$31
+0746 D DB80 00                          DB      $00
+0747 D DB81 6896                        SRET    LINK
+0748                           ;*************************************
+0749                           ;
+0750                           ; LOW RESOLUTION
+0751                           ;
+0752                           ;*************************************
+0753 D DB83 6886D800           RELOW:   SCAL    LINK,OSTRN1
+0754 D DB87 1B1B                        DB      $1B,$1B
+0755 D DB89 5230                        DB      $52,$30
+0756 D DB8B 00                          DB      $00
+0757 D DB8C 6896                        SRET    LINK
+0758                           ;*************************************
+0759                           ;
+0760                           ; REVERSE VIDEO ON
+0761                           ;
+0762                           ;*************************************
+0763 D DB8E 6886D800           RVON:    SCAL    LINK,OSTRN1
+0764 D DB92 1B1B                        DB      $1B,$1B
+0765 D DB94 5331                        DB      $53,$31
+0766 D DB96 00                          DB      $00
+0767 D DB97 6896                        SRET    LINK
+0768                           ;*************************************
+0769                           ;
+0770                           ; REVERSE VIDEO OFF
+0771                           ;
+0772                           ;*************************************
+0773 D DB99 6886D800           RVOFF:   SCAL    LINK,OSTRN1
+0774 D DB9D 1B1B                        DB      $1B,$1B
+0775 D DB9F 5330                        DB      $53,$30
+0776 D DBA1 00                          DB      $00
+0777 D DBA2 6896                        SRET    LINK
+0778                           ;*************************************
+0779                           ;
+0780                           ; RUN PROGRAM ROUTINE
+0781                           ;
+0782                           ;*************************************
+0783 D DBA4 71                          DIS     
+0784 D DBA5 00                          DB      $00
+0785 D DBA6 68C23FFF                    RLDI    R2,RAM+$0FFF
+0786 D DBAA E2                          SEX     R2
+0787 D DBAB 68C3DBB0                    RLDI    R3,RUN
+0788 D DBAF D3                          SEP     R3
+0789                           ;*************************************
+0790 D DBB0 6886D800           RUN:     SCAL    R6,OSTRN1
+0791 D DBB4 0A0D                        DB      $0A,$0D
+0792 D DBB6 454E544552205255            DB      'ENTER RUN ADDRESS'
+            4E20414444524553
+            53
+0793 D DBC7 2020                        DB      $20,$20
+0794 D DBC9 00                          DB      $00
+0795 D DBCA 6886D89C                    SCAL    R6,READHX
+0796 D DBCE E0                          SEX     R0
+0797 D DBCF 68BD                        RNX     RD
+0798 D DBD1 D0                          SEP     R0
+0799                           ;*************************************
+0800                           ;
+0801                           ; DISPLAY ON
+0802                           ;
+0803                           ;*************************************
+0804 D DBD2 6886D800           DISON:   SCAL    R6,OSTRN1
+0805 D DBD6 1B1B                        DB      $1B,$1B
+0806 D DBD8 4330                        DB      $43,$30
+0807 D DBDA 00                          DB      $00
+0808 D DBDB 6896                        SRET    R6
+0809                           ;*************************************
+0810                           ;
+0811                           ; DISPLAY OFF
+0812                           ;
+0813                           ;*************************************
+0814 D DBDD 6886D800           DISOFF:  SCAL    R6,OSTRN1
+0815 D DBE1 1B1B                        DB      $1B,$1B
+0816 D DBE3 4331                        DB      $43,$31
+0817 D DBE5 00                          DB      $00
+0818 D DBE6 6896                        SRET    R6
+0819                           ;*************************************
+0820                           ;
+0821                           ; KYEBOARD ON
+0822                           ;
+0823                           ;*************************************
+0824 D DBE8 6886D800           KYEON:   SCAL    R6,OSTRN1
+0825 D DBEC 1B1B                        DB      $1B,$1B
+0826 D DBEE 4B31                        DB      $4B,$31
+0827 D DBF0 00                          DB      $00
+0828 D DBF1 6896                        SRET    R6
+0829                           ;*************************************
+0830                           ;
+0831                           ; KYEBOARD OFF
+0832                           ;
+0833                           ;*************************************
+0834 D DBF3 6886D800           KYEOFF:  SCAL    R6,OSTRN1
+0835 D DBF7 1B1B                        DB      $1B,$1B
+0836 D DBF9 4B30                        DB      $4B,$30
+0837 D DBFB 00                          DB      $00
+0838 D DBFC 6896                        SRET    R6
+0839                           ;*************************************
+0840                           ;
+0841                           ; ENGLISH CHARACTER SET
+0842                           ;
+0843                           ;*************************************
+0844 D DBFE 6886D800           ENG:     SCAL    R6,OSTRN1
+0845 D DC02 1B1B                        DB      $1B,$1B
+0846 D DC04 45                          DB      $45
+0847 D DC05 00                          DB      $00
+0848 D DC06 6896                        SRET    R6
+0849                           ;*************************************
+0850                           ;
+0851                           ; DEFINE COMMAND DELIMITER (INLINE)
+0852                           ;
+0853                           ;*************************************
+0854 D DC08 6886D800           DCD:     SCAL    R6,OSTRN1
+0855 D DC0C 1B1B                        DB      $1B,$1B
+0856 D DC0E 58                          DB      $58
+0857 D DC0F 00                          DB      $00
+0858 D DC10 46                          LDA     R6
+0859 D DC11 BF                          PHI     RF
+0860 D DC12 6886D82B                    SCAL    R6,TYPED
+0861 D DC16 6896                        SRET    R6
+0862                           ;*************************************
+0863                           ;
+0864                           ; CURSOR ON
+0865                           ;
+0866                           ;*************************************
+0867 D DC18 6886D800           CURON:   SCAL    R6,OSTRN1
+0868 D DC1C 1B1B                        DB      $1B,$1B
+0869 D DC1E 4331                        DB      $43,$31
+0870 D DC20 00                          DB      $00
+0871 D DC21 6896                        SRET    R6
+0872                           ;*************************************
+0873                           ;
+0874                           ; CURSOR OFF
+0875                           ;
+0876                           ;*************************************
+0877 D DC23 6886D800           CUROFF:  SCAL    R6,OSTRN1
+0878 D DC27 1B1B                        DB      $1B,$1B
+0879 D DC29 4330                        DB      $43,$30
+0880 D DC2B 00                          DB      $00
+0881 D DC2C 6896                        SRET    R6
+0882                           ;*************************************
+0883                           ;
+0884                           ; CURSOR NO BLINK
+0885                           ;
+0886                           ;*************************************
+0887 D DC2E 6886D800           CURNB:   SCAL    R6,OSTRN1
+0888 D DC32 1B1B                        DB      $1B,$1B
+0889 D DC34 4332                        DB      $43,$32
+0890 D DC36 00                          DB      $00
+0891 D DC37 6896                        SRET    R6
+0892                           ;*************************************
+0893                           ;
+0894                           ; ADDRESS CURSOR PASSED IN RD
+0895                           ;
+0896                           ;*************************************
+0897 D DC39 6886D800           ADCUR:   SCAL    R6,OSTRN1
+0898 D DC3D 1B59                        DB      $1B,$59
+0899 D DC3F 00                          DB      $00
+0900 D DC40 9D                          GHI     RD
+0901 D DC41 BF                          PHI     RF
+0902 D DC42 6886D82D                    SCAL    R6,TYPER
+0903 D DC46 8D                          GLO     RD
+0904 D DC47 BF                          PHI     RF
+0905 D DC48 6886D82D                    SCAL    R6,TYPER
+0906 D DC4C 6896                        SRET    R6
+0907                           ;*************************************
+0908                           ;
+0909                           ; FORE SPACE (NUMBER INLINE)
+0910                           ;
+0911                           ;*************************************
+0912 D DC4E 46                 FORE:    LDA     R6
+0913 D DC4F AD                          PLO     RD
+0914 D DC50 6886D800                    SCAL    R6,OSTRN1
+0915 D DC54 1B43                        DB      $1B,$43
+0916 D DC56 00                          DB      $00
+0917 D DC57 2D                          DEC     RD
+0918 D DC58 8D                          GLO     RD
+0919 D DC59 3A50                        BNZ     *-$09
+0920 D DC5B 6896                        SRET    R6
+0921                           ;*************************************
+0922                           ;
+0923                           ; BACK SPACE (NUMBER INLINE)
+0924                           ;
+0925                           ;*************************************
+0926 D DC5D 46                 BACK:    LDA     R6
+0927 D DC5E AD                          PLO     RD
+0928 D DC5F 6886D800                    SCAL    R6,OSTRN1
+0929 D DC63 1B44                        DB      $1B,$44
+0930 D DC65 00                          DB      $00
+0931 D DC66 2D                          DEC     RD
+0932 D DC67 8D                          GLO     RD
+0933 D DC68 3A5F                        BNZ     *-$09
+0934 D DC6A 6896                        SRET    R6
+0935                           ;*************************************
+0936 D DD00                             ORG     ORGIN+$0500
+0937                           ;*************************************
+0938                           ;
+0939                           ; TEST OF TERMINAL I/O ROUTINES
+0940                           ;
+0941                           ;*************************************
+0942 D DD00 71                 DEBUGT:  DIS     
+0943 D DD01 00                          DB      $00
+0944                           
+0945 D DD02 68C23FFF                    RLDI    R2,RAM+$0FFF
+0946 D DD06 E2                          SEX     R2
+0947                           
+0948 D DD07 68C3DD0C                    RLDI    R3,ITEST
+0949 D DD0B D3                          SEP     R3
+0950                           ;*************************************
+0951 D DD0C 6886D800           ITEST:   SCAL    R6,OSTRN1
+0952 D DD10 0A0D                        DB      $0A,$0D
+0953 D DD12 54494D4520                  DB      'TIME '
+0954 D DD17 00                          DB      $00
+0955                           
+0956 D DD18 6886DE04                    SCAL    R6,TIMALC
+0957                           
+0958 D DD1C 9E                          GHI     RE
+0959 D DD1D BF                          PHI     RF
+0960 D DD1E 6886D814                    SCAL    R6,TYPEHD
+0961                           
+0962 D DD22 6886D804                    SCAL    R6,OSTRNG
+0963 D DD26 0A0D                        DB      $0A,$0D
+0964 D DD28 2A                          DB      $2A
+0965 D DD29 00                          DB      $00
+0966                           
+0967 D DD2A 6886D89C                    SCAL    R6,READHX
+0968                           
+0969 D DD2E 6886D804                    SCAL    R6,OSTRNG
+0970 D DD32 0A0D                        DB      $0A,$0D
+0971 D DD34 23                          DB      $23
+0972 D DD35 00                          DB      $00
+0973                           
+0974 D DD36 8D                          GLO     RD
+0975 D DD37 BF                          PHI     RF
+0976 D DD38 6886D814                    SCAL    R6,TYPEHD
+0977                           
+0978 D DD3C 6886DB1B                    SCAL    R6,CRLF
+0979 D DD40 02                          DB      $02
+0980                           
+0981 D DD41 68CA0EFF                    RLDI    RA,$0EFF
+0982 D DD45 68CB0010                    RLDI    RB,$0010
+0983                           
+0984 D DD49 6886D9CE                    SCAL    R6,TOUT3
+0985 D DD4D 02                          DB      $02
+0986                           
+0987 D DD4E 6886DA51                    SCAL    R6,TOUT6
+0988 D DD52 02                          DB      $02
+0989                           
+0990 D DD53 6886DABB                    SCAL    R6,T8OUT
+0991 D DD57 02                          DB      $02
+0992                           
+0993 D DD58 68CD0F0F                    RLDI    RD,$0F0F
+0994 D DD5C 68C90F0F                    RLDI    R9,$0F0F
+0995 D DD60 6886D939                    SCAL    R6,TYPE3
+0996 D DD64 0202                        DB      $02,$02
+0997                           
+0998 D DD66 68CD0F0F                    RLDI    RD,$0F0F
+0999 D DD6A 6886D950                    SCAL    R6,TYPE6
+1000 D DD6E 0202                        DB      $02,$02
+1001                           
+1002 D DD70 68CD0F00                    RLDI    RD,$0F00
+1003 D DD74 6886D965                    SCAL    R6,TYPE8
+1004 D DD78 0202                        DB      $02,$02
+1005                           
+1006 D DD7A C0DBB0                      LBR     RUN
+1007                           
+1008                           ;************************************
+1009 D DE00                             ORG     ORGIN+$0600
+1010                           ;*************************************
+1011                           ;
+1012                           ; SUBROUTINE NAME: TIMALC
+1013                           ;
+1014                           ; THIS ROUTINE DETECTS A KEYSTROKE
+1015                           ; AND COMPUTES THE BAUD RATE OF
+1016                           ; THE USER TERMINAL. IF THE CHAR
+1017                           ; IS $0D (A CR) ECHO IS ENABLED. IF
+1018                           ; IT IS A $0A (A LF) ECHO IS DISABLED
+1019                           ;
+1020                           ;************************************
+1021 D DE00 6886D874           TIMLC1:  SCAL    R6,RCA1
+1022 D DE04 F800               TIMALC:  LDI     $00
+1023 D DE06 AE                          PLO     RE
+1024 D DE07 AF                          PLO     RF
+1025 D DE08 3708                        B4      *
+1026 D DE0A 3F0A                        BN4     *
+1027 D DE0C F803                        LDI     $03
+1028 D DE0E FF01                        SMI     $01
+1029 D DE10 3A0E                        BNZ     *-$02
+1030 D DE12 8F                          GLO     RF
+1031 D DE13 3A18                        BNZ     *+$05
+1032 D DE15 371A                        B4      *+$05
+1033 D DE17 1F                          INC     RF
+1034 D DE18 371F                        B4      *+$07
+1035 D DE1A 1E                          INC     RE
+1036 D DE1B F807                        LDI     $07
+1037 D DE1D 300E                        BR      *-$0F
+1038 D DE1F 2E                          DEC     RE
+1039 D DE20 2E                          DEC     RE
+1040 D DE21 8E                          GLO     RE
+1041 D DE22 F901                        ORI     $01
+1042 D DE24 BE                          PHI     RE
+1043 D DE25 DC                          SEP     RC
+1044 D DE26 0C                          DB      $0C
+1045 D DE27 3F2D                        BN4     *+$06
+1046 D DE29 9E                          GHI     RE
+1047 D DE2A FAFE                        ANI     $FE
+1048 D DE2C BE                          PHI     RE
+1049 D DE2D DC                          SEP     RC
+1050 D DE2E 26                          DB      $26
+1051 D DE2F 6896                        SRET    R6
+1052                           ;*************************************
+1053                           ;
+1054                           ;       A/D-D/A TEST ROUTINES
+1055                           ;
+1056                           ;*************************************
+1057 D DE31 68C23FFF           ADTST:   RLDI    R2,RAM+$0FFF
+1058 D DE35 E2                          SEX     R2
+1059 D DE36 68C3DE3B                    RLDI    R3,ADTST0
+1060 D DE3A D3                          SEP     R3
+1061                           ;*************************************
+1062 D DE3B 6886DB6F           ADTST0:  SCAL    R6,CLEAR
+1063 D DE3F 6886D800                    SCAL    R6,OSTRN1
+1064 D DE43 0A0D                        DB      $0A,$0D
+1065 D DE45 412F442D442F4120            DB      'A/D-D/A TEST'
+            54455354
+1066 D DE51 0A0D00                      DB      $0A,$0D,$00
+1067 D DE54 E3                 ADTST1:  SEX     R3
+1068 D DE55 61                          OUT     1
+1069 D DE56 30                          DB      $30
+1070 D DE57 66                          OUT     6
+1071 D DE58 01                          DB      01
+1072 D DE59 65                          OUT     5
+1073 D DE5A 00                          DB      00
+1074 D DE5B E2                          SEX     R2
+1075 D DE5C 68C23800                    RLDI    R2,RAM+$0800
+1076 D DE60 68C40008                    RLDI    R4,$0008
+1077                           ;
+1078 D DE64 3C64               ADTST2:  BN1     *
+1079 D DE66 6C                          INP     4
+1080 D DE67 22                          DEC     R2
+1081 D DE68 6824DE64                    DBNZ    R4,ADTST2
+1082                           ;
+1083 D DE6C 68C237FF                    RLDI    R2,RAM+$07FF
+1084 D DE70 64                          OUT     4
+1085 D DE71 63                          OUT     3
+1086                           ;
+1087 D DE72 68C23FFF                    RLDI    R2,RAM+$0FFF
+1088 D DE76 68CA3800                    RLDI    RA,RAM+$0800
+1089 D DE7A 68CB0008                    RLDI    RB,$0008
+1090 D DE7E 6886DAB5                    SCAL    R6,T8OUT1
+1091 D DE82 02                          DB      $02
+1092                           ;
+1093 D DE83 C0DE54                      LBR     ADTST1
+1094                           ;************************************
+1095                           ;
+1096                           ;       PIO TEST
+1097                           ;
+1098                           ;************************************
+1099 D DE86 68C23FFF           POTST:   RLDI    R2,RAM+$0FFF
+1100 D DE8A E2                          SEX     R2
+1101 D DE8B 68C3DE90                    RLDI    R3,POTST0
+1102 D DE8F D3                          SEP     R3
+1103                           ;************************************
+1104 D DE90 6886DB6F           POTST0:  SCAL    R6,CLEAR
+1105 D DE94 6886D800                    SCAL    R6,OSTRN1
+1106 D DE98 0A0D                        DB      $0A,$0D
+1107 D DE9A 50494F2054455354            DB      'PIO TEST'
+1108 D DEA2 0A0D00                      DB      $0A,$0D,$00
+1109                           ;
+1110 D DEA5 E3                 POTST1:  SEX     R3
+1111 D DEA6 61                          OUT     1
+1112 D DEA7 08                          DB      $08
+1113 D DEA8 62                          OUT     2
+1114 D DEA9 0F                          DB      $0F
+1115 D DEAA 62                          OUT     2
+1116 D DEAB F7                          DB      $F7
+1117 D DEAC 62                          OUT     2
+1118 D DEAD F0                          DB      $F0
+1119 D DEAE E2                          SEX     R2
+1120 D DEAF 68C23800                    RLDI    R2,RAM+$0800
+1121 D DEB3 6C                          INP     4
+1122 D DEB4 22                          DEC     R2
+1123 D DEB5 6E                          INP     6
+1124 D DEB6 FA0F                        ANI     $0F
+1125 D DEB8 52                          STR     R2
+1126 D DEB9 FE                          SHL     
+1127 D DEBA FE                          SHL     
+1128 D DEBB FE                          SHL     
+1129 D DEBC FE                          SHL     
+1130 D DEBD 66                          OUT     6
+1131                           ;
+1132 D DEBE 68C23FFF                    RLDI    R2,RAM+$0FFF
+1133 D DEC2 68CA3800                    RLDI    RA,RAM+$0800
+1134 D DEC6 68CB0002                    RLDI    RB,$0002
+1135 D DECA 6886DAB5                    SCAL    R6,T8OUT1
+1136 D DECE 02                          DB      $02
+1137 D DECF C0DF00                      LBR     EFTST
+1138                           ;**************************************
+1139 D DF00                             ORG     ORGIN+$0700
+1140                           ;**************************************
+1141                           ;
+1142                           ;       TEST STATUS FLAGS
+1143                           ;
+1144                           ;**************************************
+1145 D DF00 3615               EFTST:   B3      EF3
+1146 D DF02 6886D800                    SCAL    R6,OSTRN1
+1147 D DF06 0A0D                        DB      $0A,$0D
+1148 D DF08 4E4F5420454633              DB      'NOT EF3'
+1149 D DF0F 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1150 D DF13 3022                        BR      POTST2
+1151 D DF15 6886D800           EF3:     SCAL    R6,OSTRN1
+1152 D DF19 0A0D                        DB      $0A,$0D
+1153 D DF1B 454633                      DB      'EF3'
+1154 D DF1E 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1155                           ;****************************************
+1156 D DF22 3537               POTST2:  B2      EF2
+1157 D DF24 6886D800                    SCAL    R6,OSTRN1
+1158 D DF28 0A0D                        DB      $0A,$0D
+1159 D DF2A 4E4F5420454632              DB      'NOT EF2'
+1160 D DF31 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1161 D DF35 3044                        BR      POTST3
+1162 D DF37 6886D800           EF2:     SCAL    R6,OSTRN1
+1163 D DF3B 0A0D                        DB      $0A,$0D
+1164 D DF3D 454632                      DB      'EF2'
+1165 D DF40 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1166                           ;******************************************
+1167 D DF44 C0DEA5             POTST3:  LBR     POTST1
+1168                           ;******************************************
+1169   DF47                             END     
+There were: 0000 Errors
+
+SECTIONS USED:
+
+ Section           Relocation   Alignment  Type     Begins       Ends
+ DEBUG             absolute                         D800         DF46
+
+
+SYMBOL TABLE
+
+SYMBOLS DEFINED:
+
+ Symbol            Section/Type        Attribute Value             Length
+ ADCUR             absolute                      DC39      
+ ADTST             absolute                      DE31      
+ ADTST0            absolute                      DE3B      
+ ADTST1            absolute                      DE54      
+ ADTST2            absolute                      DE64      
+ BACK              absolute                      DC5D      
+ BAR               absolute                      DB50      
+ CHAR              register                      RF
+ CKHXE             absolute                      D8C2      
+ CLEAR             absolute                      DB6F      
+ CR                absolute                      DB0F      
+ CRLF              absolute                      DB1B      
+ CRLFT             absolute                      DB17      
+ CURNB             absolute                      DC2E      
+ CUROFF            absolute                      DC23      
+ CURON             absolute                      DC18      
+ DCD               absolute                      DC08      
+ DEBUGT            absolute                      DD00      
+ DELAY             register                      RC
+ DELAY0            absolute                      D884      
+ DELAY1            absolute                      D889      
+ DELAY2            absolute                      D88C      
+ DELAY3            absolute                      D88E      
+ DISOFF            absolute                      DBDD      
+ DISON             absolute                      DBD2      
+ EF2               absolute                      DF37      
+ EF3               absolute                      DF15      
+ EFTST             absolute                      DF00      
+ ENG               absolute                      DBFE      
+ FORE              absolute                      DC4E      
+ HOME              absolute                      DB66      
+ ITEST             absolute                      DD0C      
+ KYEOFF            absolute                      DBF3      
+ KYEON             absolute                      DBE8      
+ LINK              register                      R6
+ M8OUT             absolute                      DADD      
+ M8OUT1            absolute                      DAD7      
+ M8OUTD            absolute                      DADB      
+ MLFCR             absolute                      DB40      
+ MLFCRT            absolute                      DB3C      
+ MOUT              absolute                      DA7C      
+ MOUT1             absolute                      DA76      
+ MOUT3             absolute                      D9F4      
+ MOUT31            absolute                      D9EE      
+ MOUT3D            absolute                      D9F2      
+ MOUTD             absolute                      DA7A      
+ NUM               register                      RB
+ ORGIN             local constant                D800      
+ OSTRN1            absolute                      D800      
+ OSTRNG            absolute                      D804      
+ PC                register                      R3
+ POTST             absolute                      DE86      
+ POTST0            absolute                      DE90      
+ POTST1            absolute                      DEA5      
+ POTST2            absolute                      DF22      
+ POTST3            absolute                      DF44      
+ RAM               local constant                3000      
+ RCA1              absolute                      D874      
+ READ              absolute                      D906      
+ READ1             absolute                      D900      
+ READD             absolute                      D904      
+ READH             absolute                      D8BE      
+ READH1            absolute                      D8B8      
+ READHD            absolute                      D8BC      
+ READHX            absolute                      D89C      
+ READX1            absolute                      D898      
+ REHIGH            absolute                      DB78      
+ RELOW             absolute                      DB83      
+ RUN               absolute                      DBB0      
+ RVOFF             absolute                      DB99      
+ RVON              absolute                      DB8E      
+ SP                register                      R2
+ SPACE             absolute                      DB2E      
+ SPACET            absolute                      DB2A      
+ STORE             register                      R9
+ T8OUT             absolute                      DABB      
+ T8OUT1            absolute                      DAB5      
+ T8OUTD            absolute                      DAB9      
+ TEMP              register                      RD
+ TEST              absolute                      DB08      
+ TIMALC            absolute                      DE04      
+ TIMER             register                      RE
+ TIMLC1            absolute                      DE00      
+ TOP               register                      RA
+ TOUT3             absolute                      D9CE      
+ TOUT31            absolute                      D9C8      
+ TOUT3D            absolute                      D9CC      
+ TOUT6             absolute                      DA51      
+ TOUT61            absolute                      DA4B      
+ TOUT6D            absolute                      DA4F      
+ TYPE3             absolute                      D939      
+ TYPE31            absolute                      D933      
+ TYPE3D            absolute                      D937      
+ TYPE6             absolute                      D950      
+ TYPE61            absolute                      D94A      
+ TYPE6D            absolute                      D94E      
+ TYPE8             absolute                      D965      
+ TYPE81            absolute                      D95F      
+ TYPE8D            absolute                      D963      
+ TYPED             absolute                      D82B      
+ TYPED1            absolute                      D827      
+ TYPEH             absolute                      D816      
+ TYPEH0            absolute                      D838      
+ TYPEH1            absolute                      D810      
+ TYPEHD            absolute                      D814      
+ TYPER             absolute                      D82D      
+ WEXIT             absolute                      DB64      
+ WORD              absolute                      D9B2      
+ WORD3             absolute                      D974      
+ WORD31            absolute                      D96E      
+ WORD3D            absolute                      D972      
+ WORD6             absolute                      D99A      
+ WORD61            absolute                      D994      
+ WORD6D            absolute                      D998      
+ WORD81            absolute                      D9AC      
+ WORD8D            absolute                      D9B0      
+ WORDLOOP          absolute                      D9B5      
+
+
+Assembly time: 0 min, 48 sec

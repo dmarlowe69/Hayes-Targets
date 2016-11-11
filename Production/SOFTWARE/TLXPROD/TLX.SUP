@@ -1,0 +1,84 @@
+The following information should be incorporated in the T.M.001-5036 date
+15 JAN 1991.
+
+Add the following to Page 5 after paragragh 2-2.1, sub-heading (a):
+
+        The following section applies to targets with version 4 software:
+
+        The OK light also indicates the operation of the TLX Preset Altitude
+        "CAPTURE MODE". When the TLX is in "CAPTURE MODE" the OK light will
+        flash double its normal twice per second.
+
+Add the following to Page 7 after paragraph 2-2.1, sub-heading (d), item (5):
+
+        The following section applies to targets with version 4 software:
+
+        (6) If the TLX is in "FLY" mode and the wings are positioned above
+        the - 1.5 degree recovery position, the wings will not drop to the
+        -1.5 degree position if the target is commanded inti the "RECOVERY"
+        mode by the operator. Instead, the wings will freeze at their current
+        position, and the RCVY and FLY lights will flash. At this time, the
+        operator must return the RCVY switch to FLY and then back to RCVY.
+        Only after this operation will the wings return to the -1.5 degree
+        recovery position.
+
+Add the following to Page 7 after paragragh 2-2.1, sub-heading (e):
+
+        The following section applies to targets with version 4 software:
+
+        (f) The TLX initial altitude error gain is set at 0.16 degree/ft and the
+        control wings begin responing approximatley 25 feet above preset. Once
+        the TLX descends to the preset altitude, the TLX will "CAPTURE" the
+        preset altitude. This mode is enabled by the TLX passing through the
+        preset altitude, with a wing angle between -3.5 and -4.5 degrees. In
+        this mode the altitude error gain is switched to 0.32 degree/ft which
+        will allow the TLX to use its +/- 4 degree control stroke within a
+        +/- 12.5 ft error band. Once the "CAPTURE" mode is in effect, the OK
+        light on the control panel will flash double its normal twice per
+        second. The "CAPTURE mode remains in effect untill the TLX is commanded
+        into "RECOVERY" mode. If after the TLX "CAPTURES" the preset altitude,
+        the tow aircraft pulls the target up more than 50 feet above the preset
+        altitude, the TLX will switch out of "CAPTURE" mode and the OK light
+        will return to its normal bink rate. This allows for a "RE-CAPTURE" of
+        the preset altitude.
+
+Add the following to Page 27 after paragraph 7-1.1, sub-heading (l):
+
+        The following section applies to targets with version 4 software:
+
+        m.      CAPTURE MODE            FLY mode in which the TLX has aquired
+                                        the PRESET Altitude and the altitude
+                                        error gains are switched from 0.16
+                                        degree/ft to 0.32 degree/ft.
+
+Add the following to Page 32 after paragraph 7-1.4.5:
+
+        The TLX wings should begin responding and lift off the -8 degree
+        mark approximately 25 feet above the preset altitude.
+
+Add the following to Page 32 after paragraph 7-1.4.6:
+
+        The following section applies to targets with version 4 software:
+
+        Once the TLX descends to the preset altitude, the TLX will "CAPTURE"
+        the preset altitude. This mode is enabled by the TLX passing through
+        the preset altitude, with a wing angle between -3.5 and -4.5 degrees.
+        Once the "CAPTURE" mode is in effect, the OK light on the control
+        panel will flash double its normal twice per second.
+
+        NOTES:
+        1.      Effectivity EPROM 001-1224-9, Version 01 Computer
+                Serial No. 001 thru 018.
+
+        2.      Effectivity EPROM 001-1224-9, Version 02 Computer
+                Serial No. 019 and 051
+
+        3.      Effectivity EPROM 001-1224-9 and EPROM 001-1224-19,
+                Version 03 Computer Serial No. 12
+
+        4.      Effectivity EPROM 001-1224-9 and EPROM 001-1224-19,
+                Version 04 Computer Serial No. 052 and Subsequent.
+
+        5.      For version numbers of field and Hayes upgraded computers,
+                see production test procedures.
+

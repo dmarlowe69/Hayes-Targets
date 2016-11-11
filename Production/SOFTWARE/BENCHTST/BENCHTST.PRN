@@ -1,0 +1,2036 @@
+
+Title: 1805 CPU / A/D-D/A TEST
+American Automation Cross-Assembler 1805 9.05.11
+Assembly date:  9 Mar 1992
+Assembly time: 15:03:16
+Options in effect:expand format list object symbol errorfile uppercase 
+
+Subtitle: (C)1984,85,86,87,88 HAYES INTERNATIONAL CORPORATION
+0004 T B000                  T          SECTION TLXTEST,$B000
+0005                           ;******************************************************************************
+0006                           ;
+0007                           ;       TLX-1 TEST SOFTWARE
+0008                           ;
+0009                           ;       MODIFIED NOV 13,1990 TO FIX ERROR IN EVENT FLAG TEST
+0010                           ;
+0011                           ;       MODIFIED JUN 25,1991 TO ADD SECOND TLX MASTER EPROM
+0012                           ;
+0013                           ;       MODIFIED JUL 24,1991 TO ADD OPTION TO TEST VER 2 OR VER 4 CPU'S
+0014                           ;
+0015                           ;       MODIFIED MAR 06,1992 TO ADD DYNMAIC D/A AND RTV XTAL NOTE
+0016                           ;
+0017                           ;       (C) 1988 HAYES INTERNATIONAL CORP.
+0018                           ;
+0019                           ;       BY DENTON MARLOWE
+0020                           ;
+0021                           ;******************************************************************************
+0022        0000B000           ORGIN    EQU     $B000               ; START ADDRESS OF THIS CODE
+0023        00004000           RAM      EQU     $4000                   ; BASE ADDRESS OF CPU RAM
+0024        00003000           STACK    EQU     $3000               ; TEST ROUTINE RAM
+0025        00002000           USER     EQU     $2000               ; USER STACK SPACE
+0026        00008C00           TAPERAM  EQU     $8C00               ; BASE ADDRESS OF RAM ON TAPE I/O BOARD
+0027        00008FFF           TAPETOP  EQU     $8FFF               ; TOP OF TAPE I/O BOARD RAM
+0028                           ;MASTER EQU     $C800           ; BASE ADDRESS OF MASTER TLX EPROM
+0029        00009000           MASTER   EQU     $9000               ; BASE ADDRESS OF MASTER TLX EPROM
+0030        00009800           MASTER2  EQU     $9800               ; BASE ADDRESS OF SECOND TLX EPROM
+0031        0000A000           MASTER3  EQU     $A000               ; BASE ADDRESS OF THIRD EPROM
+0032        0000C800           MASTER4  EQU     $C800               ; BASE ADDRESS OF FORTH EPROM
+0033        0000D000           DEBUG    EQU     $D000               ; BASE ADDRESS OF TERMINAL I/O ROUTINES
+0034        0000D000           EPROM    EQU     $D000               ; BASE ADDRESS OF EPROM PROGRAMMING CODE
+0035                           ;******************************************************************************
+0036        0000D800           OSTRN1   EQU     DEBUG+$0800
+0037        0000D804           OSTRNG   EQU     DEBUG+$0804
+0038                           ;**************************
+0039        0000D810           TYPEH1   EQU     DEBUG+$0810
+0040        0000D814           TYPEHD   EQU     DEBUG+$0814
+0041        0000D816           TYPEH    EQU     DEBUG+$0816
+0042        0000D827           TYPED1   EQU     DEBUG+$0827
+0043        0000D82B           TYPED    EQU     DEBUG+$082B
+0044        0000D82D           TYPER    EQU     DEBUG+$082D
+0045                           ;**************************
+0046        0000D874           RCA1     EQU     DEBUG+$0874
+0047        0000D889           DELAY1   EQU     DEBUG+$0889
+0048                           ;**************************
+0049        0000D898           READHX   EQU     DEBUG+$0898
+0050        0000D8B8           READH1   EQU     DEBUG+$08B8
+0051        0000D8BC           READHD   EQU     DEBUG+$08BC
+0052        0000D8BE           READH    EQU     DEBUG+$08BE
+0053        0000D900           READ1    EQU     DEBUG+$0900
+0054        0000D904           READD    EQU     DEBUG+$0904
+0055        0000D906           READ     EQU     DEBUG+$0906
+0056                           ;**************************
+0057        0000D933           TYPE31   EQU     DEBUG+$0933
+0058        0000D937           TYPE3D   EQU     DEBUG+$0937
+0059        0000D939           TYPE3    EQU     DEBUG+$0939
+0060        0000D94A           TYPE61   EQU     DEBUG+$094A
+0061        0000D94E           TYPE6D   EQU     DEBUG+$094E
+0062        0000D950           TYPE6    EQU     DEBUG+$0950
+0063        0000D95F           TYPE81   EQU     DEBUG+$095F
+0064        0000D963           TYPE8D   EQU     DEBUG+$0963
+0065        0000D965           TYPE8    EQU     DEBUG+$0965
+0066                           ;**************************
+0067        0000D96E           WORD31   EQU     DEBUG+$096E
+0068        0000D972           WORD3D   EQU     DEBUG+$0972
+0069        0000D974           WORD3    EQU     DEBUG+$0974
+0070        0000D994           WORD61   EQU     DEBUG+$0994
+0071        0000D998           WORD6D   EQU     DEBUG+$0998
+0072        0000D99A           WORD6    EQU     DEBUG+$099A
+0073        0000D9AC           WORD81   EQU     DEBUG+$09AC
+0074        0000D9B0           WORD8D   EQU     DEBUG+$09B0
+0075        0000D9B2           WORD     EQU     DEBUG+$09B2
+0076                           ;**************************
+0077        0000D9C8           TOUT31   EQU     DEBUG+$09C8
+0078        0000D9CC           TOUT3D   EQU     DEBUG+$09CC
+0079        0000D9CE           TOUT3    EQU     DEBUG+$09CE
+0080        0000D9EE           MOUT31   EQU     DEBUG+$09EE
+0081        0000D9F2           MOUT3D   EQU     DEBUG+$09F2
+0082        0000D9F4           MOUT3    EQU     DEBUG+$09F4
+0083        0000DA4B           TOUT61   EQU     DEBUG+$0A4B
+0084        0000DA4F           TOUT6D   EQU     DEBUG+$0A4F
+0085        0000DA51           TOUT6    EQU     DEBUG+$0A51
+0086        0000DA76           MOUT1    EQU     DEBUG+$0A76
+0087        0000DA7A           MOUTD    EQU     DEBUG+$0A7A
+0088        0000DA7C           MOUT     EQU     DEBUG+$0A7C
+0089        0000DAB5           T8OUT1   EQU     DEBUG+$0AB5
+0090        0000DAB9           T8OUTD   EQU     DEBUG+$0AB9
+0091        0000DABB           T8OUT    EQU     DEBUG+$0ABB
+0092        0000DAD7           M8OUT1   EQU     DEBUG+$0AD7
+0093        0000DADB           M8OUTD   EQU     DEBUG+$0ADB
+0094        0000DADD           M8OUT    EQU     DEBUG+$0ADD
+0095                           ;**************************
+0096        0000DB6F           CLEAR    EQU     DEBUG+$0B6F
+0097        0000DB1B           CRLF     EQU     DEBUG+$0B1B
+0098        0000DB40           MLFCR    EQU     DEBUG+$0B40
+0099        0000DB8E           RVON     EQU     DEBUG+$0B8E
+0100        0000DB99           RVOFF    EQU     DEBUG+$0B99
+0101        0000DC18           CURON    EQU     DEBUG+$0C18
+0102        0000DC23           CUROFF   EQU     DEBUG+$0C23
+0103        0000DD0C           ITEST    EQU     DEBUG+$0D0C
+0104                           ;******************************************************************************
+0105 T B000                             ORG     ORGIN
+0106                           ;******************************************************************************
+0107 T B000 71                          DIS                         ; DISABLE INTERRUPTS
+0108 T B001 00                          DB      $00                     ; SET SP AND PC = R0
+0109 T B002 68C24FFF                    RLDI    R2,RAM+$0FFF            ; SETUP FOR NEW SP
+0110 T B006 E2                          SEX     R2                      ; NEW SP IS R2
+0111 T B007 68C3B00C                    RLDI    R3,MENU                 ; SETUP FOR NEW PC
+0112 T B00B D3                          SEP     R3                      ; NEW PC IS R3
+0113                           ;******************************************************************************
+0114                           ;
+0115                           ;       MAIN TEST AND FUNCTION MENU
+0116                           ;
+0117                           ;******************************************************************************
+0118 T B00C 6886DB6F           MENU:    SCAL    R6,CLEAR                ; CLEAR SCREEN
+0119 T B010 6886DB6F                    SCAL    R6,CLEAR                ; CLEAR SCREEN
+0120 T B014 6886DB99                    SCAL    R6,RVOFF                ; NORMAL VIDEO
+0121 T B018 6886DC18                    SCAL    R6,CURON                ; TURN CURSOR ON
+0122                           ;******************************************************************************
+0123 T B01C 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0124 T B020 0A0D                        DB      $0A,$0D                 ;
+0125 T B022 544C5820434F4D50            DB      'TLX COMPONENT BENCH TEST SOFTWARE'
+            4F4E454E54204245
+            4E43482054455354
+            20534F4654574152
+            45
+0126 T B043 0A0D                        DB      $0A,$0D
+0127 T B045 56455253494F4E20            DB      'VERSION 4.0/12MAR92'
+            342E302F31324D41
+            523932
+0128 T B058 0A0D                        DB      $0A,$0D
+0129 T B05A 5752495454454E20            DB      'WRITTEN BY DENTON MARLOWE'
+            42592044454E544F
+            4E204D41524C4F57
+            45
+0130 T B073 0A0D                        DB      $0A,$0D
+0131 T B075 434F505952494748            DB      'COPYRIGHT 1988 HAYES TARGETS'
+            5420313938382048
+            4159455320544152
+            47455453
+0132 T B091 0A0A0A0D                    DB      $0A,$0A,$0A,$0D
+0133 T B095 544C582044455645            DB      'TLX DEVELOPMENT SYSTEM MAIN TEST MENU',$0A,$0D
+            4C4F504D454E5420
+            53595354454D204D
+            41494E2054455354
+            204D454E550A0D
+0134 T B0BC 0A0D                        DB      $0A,$0D 
+0135 T B0BE 283129204D423630            DB      '(1) MB606 1805 CPU TEST',$0A,$0D
+            3620313830352043
+            505520544553540A
+            0D
+0136 T B0D7 283229204D423635            DB      '(2) MB654A A/D-D/A TEST',$0A,$0D
+            344120412F442D44
+            2F4120544553540A
+            0D
+0137 T B0F0 283329204550524F            DB      '(3) EPROM PROGRAMING FUNCTIONS',$0A,$0D
+            4D2050524F475241
+            4D494E472046554E
+            4354494F4E530A0D
+0138 T B110 2834292052544531            DB      '(4) RTE1/RDT1 FUNCTION TEST',$0A,$0D
+            2F52445431204655
+            4E4354494F4E2054
+            4553540A0D
+0139 T B12D 2835292044454255            DB      '(5) DEBUGGER TEST',$0A,$0D
+            4747455220544553
+            540A0D
+0140 T B140 0A0D                        DB      $0A,$0D
+0141 T B142 454E544552205445            DB      'ENTER TEST NUMBER '
+            5354204E554D4245
+            5220
+0142 T B154 00                          DB      $00
+0143                           
+0144 T B155 6886D904                    SCAL    R6,READD                ; KEYBOARD INPUT
+0145                           
+0146 T B159 9F                          GHI     RF                      ; GET KEYPRESS
+0147 T B15A FF31                        SMI     '1'                     ; ONE
+0148 T B15C C2B800                      LBZ     CPUTST                  ; CPU TEST
+0149                           
+0150 T B15F 9F                          GHI     RF                      ; GET KEYPRESS
+0151 T B160 FF32                        SMI     '2'                     ; TWO
+0152 T B162 C2B17A                      LBZ     AMENU                   ; A/D-D/A TEST
+0153                           
+0154 T B165 9F                          GHI     RF                      ; GET KEYPRESS
+0155 T B166 FF33                        SMI     '3'                     ; THREE
+0156 T B168 C2BF00                      LBZ     IEPROM                  ; EPROM FUNCTIONS
+0157                           
+0158 T B16B 9F                          GHI     RF                      ; GET KEYPRESS
+0159 T B16C FF34                        SMI     '4'                     ; FOUR
+0160 T B16E C2C000                      LBZ     RTERTD                  ; ENCODER/DECODER TEST
+0161                           
+0162 T B171 9F                          GHI     RF                      ; GET KEYPRESS
+0163 T B172 FF35                        SMI     '5'                     ; FIVE
+0164 T B174 C2DD0C                      LBZ     ITEST                   ; DEBUGGER TEST
+0165                           
+0166 T B177 C0B00C                      LBR     MENU                   ; TRY AGAIN
+0167                           ;******************************************************************************
+0168                           ;
+0169                           ;       MB654A A/D-D/A TEST MENU
+0170                           ;
+0171                           ;******************************************************************************
+0172 T B17A 6886DB6F           AMENU:   SCAL    R6,CLEAR                ; CLEAR SCREEN
+0173 T B17E 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0174 T B182 0A0D                        DB      $0A,$0D                 ;
+0175 T B184 4D42363534412041            DB      'MB654A A/D-D/A CONVERTER TEST MENU',$0A,$0D
+            2F442D442F412043
+            4F4E564552544552
+            2054455354204D45
+            4E550A0D
+0176 T B1A8 0A0D                        DB      $0A,$0D 
+0177 T B1AA 28312920412F442D            DB      '(1) A/D-D/A TEST',$0A,$0D
+            442F412054455354
+            0A0D
+0178 T B1BC 28322920412F4420            DB      '(2) A/D CALIBRATION',$0A,$0D
+            43414C4942524154
+            494F4E0A0D
+0179 T B1D1 28332920442F4120            DB      '(3) D/A CALIBRATION',$0A,$0D
+            43414C4942524154
+            494F4E0A0D
+0180 T B1E6 2834292045584954            DB      '(4) EXIT TO MAIN MENU',$0A,$0D
+            20544F204D41494E
+            204D454E550A0D
+0181 T B1FD 0A0A0D                      DB      $0A,$0A,$0D
+0182 T B200 434845434B204359            DB      'CHECK CYRSTAL FOR ADDED RTV'
+            525354414C20464F
+            5220414444454420
+            525456
+0183 T B21B 0A0D                        DB      $0A,$0D
+0184 T B21D 454E544552205445            DB      'ENTER TEST NUMBER '
+            5354204E554D4245
+            5220
+0185 T B22F 00                          DB      $00
+0186                           
+0187 T B230 6886D904                    SCAL    R6,READD                ; KEYBOARD INPUT
+0188                           
+0189 T B234 9F                          GHI     RF                      ; GET KEYPRESS
+0190 T B235 FF31                        SMI     '1'                     ; ONE
+0191 T B237 C2B300                      LBZ     ADTST                   ; A/D TEST
+0192                           
+0193 T B23A 9F                          GHI     RF                      ; GET KEYPRESS
+0194 T B23B FF32                        SMI     '2'                     ; THREE
+0195 T B23D C2B500                      LBZ     ADCAL                   ; A/D CALIBRATION
+0196                           
+0197 T B240 9F                          GHI     RF                      ; GET KEYPRESS
+0198 T B241 FF33                        SMI     '3'                     ; FOUR
+0199 T B243 C2B600                      LBZ     DACAL                   ; D/A CALIBRATION
+0200                           
+0201 T B246 9F                          GHI     RF                      ; GET KEYPRESS
+0202 T B247 FF34                        SMI     '4'                     ; FIVE
+0203 T B249 C2B00C                      LBZ     MENU                    ; RETURN TO MAIN MENU
+0204                           
+0205 T B24C C0B17A                      LBR     AMENU                   ; TRY AGAIN
+0206                           ;******************************************************************************
+0207                           
+0208 T B300                             CORG    $0100               ; SET NEXT PAGE
+0209                           
+0210                           ;******************************************************************************
+0211                           ;
+0212                           ;       A/D-D/A TEST ROUTINE
+0213                           ;
+0214                           ;******************************************************************************
+0215 T B300 C4                 ADTST:   NOP                         ; NO OPERATION
+0216 T B301 6886DB6F                    SCAL    R6,CLEAR                ; CLEAR SCREEN
+0217 T B305 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0218 T B309 0A0D                        DB      $0A,$0D
+0219 T B30B 4D42363534412041            DB      'MB654A A/D-D/A TEST'
+            2F442D442F412054
+            455354
+0220 T B31E 0A0A0D00                    DB      $0A,$0A,$0D,$00
+0221                           ;******************************************************************************
+0222                           ;
+0223                           ;       INITIALIZE OUTPUT DATA TO ZERO
+0224                           ;
+0225                           ;******************************************************************************
+0226 T B322 68C10000                    RLDI    R1,$0000                ; ZERO DATA
+0227                           ;******************************************************************************
+0228                           ;
+0229                           ;       SETUP D/A I/O MODE
+0230                           ;
+0231                           ;******************************************************************************
+0232 T B326 68C24800           DATST1:  RLDI    R2,RAM+$0800        ; SETUP INPUT STACK
+0233 T B32A E3                          SEX     R3                              ; SET PROGRAM COUNTER EQUAL SP
+0234 T B32B 61                          OUT     1                               ; SET I/O GROUP
+0235 T B32C 30                          DB      $30                             ; I/O GROUP 30
+0236 T B32D E2                          SEX     R2                              ; RESET SP TO R2
+0237                           ;******************************************************************************
+0238                           ;
+0239                           ;       OUTPUT DATA TO D/A CHANNELS 1 AND TWO
+0240                           ;
+0241                           ;******************************************************************************
+0242 T B32E 81                          GLO     R1                      ; GET DATA
+0243 T B32F 52                          STR     R2                      ; STACK IT
+0244 T B330 63                          OUT     3                       ; OUTPUT DATA TO CHANNEL 1
+0245 T B331 22                          DEC     R2                      ; RESET STACK POINTER
+0246 T B332 64                          OUT     4                       ; OUTPUT DATA TO CHANNEL 2
+0247 T B333 22                          DEC     R2                      ; RESET STACK POINTER
+0248                           ;******************************************************************************
+0249                           ;
+0250                           ;       DISPLAY D/A OUTPUT DATA
+0251                           ;
+0252                           ;******************************************************************************
+0253 T B334 68C24FFF                    RLDI    R2,RAM+$0FFF        ; RESET STACK POINTER FOR DEBUG ROUTINES
+0254 T B338 68C70001                    RLDI    R7,$0001                ; SET INITIAL CHANNEL NUMBER
+0255 T B33C 68CB0002                    RLDI    RB,$0002                ; TWO CHANNELS
+0256                           
+0257 T B340 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0258 T B344 442F41204F555450            DB      'D/A OUTPUT'
+            5554
+0259 T B34E 0A0A0D                      DB      $0A,$0A,$0D
+0260 T B351 00                          DB      $00
+0261                           
+0262 T B352 6886D800           01$:     SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0263 T B356 43482000                    DB      'CH ',$00                       ; CHANNEL
+0264 T B35A 87                          GLO     R7                              ; GET CHANNEL NUMBER
+0265 T B35B BF                          PHI     RF                              ; LOAD REGISTER
+0266 T B35C 6886D816                    SCAL    R6,TYPEH                ; PRINT CHANNEL NUMBER
+0267 T B360 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0268 T B364 202000                      DB      '  ',$00                        ; SPACE OVER
+0269 T B367 81                          GLO     R1                              ; LOAD DATA
+0270 T B368 BD                          PHI     RD                              ; LOAD REGISTER
+0271 T B369 6886D9B2                    SCAL    R6,WORD                 ; DISPLAY AS BITS
+0272 T B36D 00                          DB      $00                                     ; TERMINATION
+0273 T B36E 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0274 T B372 202000                      DB      '  ',$00                        ; SPACE OVER
+0275 T B375 81                          GLO     R1                              ; LOAD DATA
+0276 T B376 BF                          PHI     RF                              ; LOAD REGISTER
+0277 T B377 6886D816                    SCAL    R6,TYPEH                ; DISPLAY AS HEX
+0278                           
+0279 T B37B 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0280 T B37F 0A0D00                      DB      $0A,$0D,$00                     ; NEW LINE
+0281                           
+0282 T B382 17                          INC     R7                              ; INCREMENT CHANNEL NUMBER
+0283 T B383 682BB352                    DBNZ    RB,01$                  ; LOOP FOR 2 CHANNELS
+0284                           
+0285 T B387 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0286 T B38B 0A0A0D00                    DB      $0A,$0A,$0D,$00         ;
+0287                           ;******************************************************************************
+0288                           ;
+0289                           ;       DELAY 3 SECONDS TO GIVE D/A OUTPUTS TIME TO SETTLE
+0290                           ;
+0291                           ;******************************************************************************
+0292 T B38F 68CE0002                    RLDI    RE,$02              ; LOAD OUTER COUNTER
+0293 T B393 68CFFFFF           02$:     RLDI    RF,$FFFF            ; LOAD INNER COUNTER
+0294 T B397 C4                 03$:     NOP                         ; NO OPERATION
+0295                           ;******************************************************************************
+0296                           ;       START ADDED CODE TO FOR DYNAMIC TEST OF D/A
+0297                           ;******************************************************************************
+0298 T B398 81                          GLO     R1                      ; GET DATA
+0299 T B399 52                          STR     R2                      ; STACK IT
+0300 T B39A 63                          OUT     3                       ; OUTPUT DATA TO CHANNEL 1
+0301 T B39B 22                          DEC     R2                      ; RESET STACK POINTER
+0302 T B39C 64                          OUT     4                       ; OUTPUT DATA TO CHANNEL 2
+0303 T B39D 22                          DEC     R2                      ; RESET STACK POINTER
+0304                           ;******************************************************************************
+0305                           ;       END OF ADDED CODE TO FOR DYNAMIC TEST OF D/A
+0306                           ;******************************************************************************
+0307 T B39E 682FB397                    DBNZ    RF,03$              ; DECREMENT INNER COUNTER
+0308 T B3A2 682EB393                    DBNZ    RE,02$              ; DECREMENT OUTER COUNTER
+0309                           ;******************************************************************************
+0310                           ;
+0311                           ;       SETUP A/D FOR SCAN MODE
+0312                           ;
+0313                           ;******************************************************************************
+0314 T B3A6 E3                          SEX     R3                      ; SET PROGRAM COUNTER EQUAL SP
+0315 T B3A7 61                          OUT     1                       ; SET I/O GROUP
+0316 T B3A8 30                          DB      $30                     ; I/O GROUP 30
+0317 T B3A9 66                          OUT     6                       ; SET CONVERSION MODE
+0318 T B3AA 01                          DB      $01                     ; SCAN MODE LSB=1
+0319 T B3AB 65                          OUT     5                       ; SELECT FIRST CHANNEL
+0320 T B3AC 00                          DB      $00                     ; START AT CHANNEL ZERO
+0321 T B3AD E2                          SEX     R2                      ; RESET SP TO R2
+0322                           ;******************************************************************************
+0323                           ;
+0324                           ;       SETUP INPUT STACK AND CHANNEL COUNTER
+0325                           ;
+0326                           ;******************************************************************************
+0327 T B3AE 68C24800                    RLDI    R2,RAM+$0800        ; SETUP INPUT STACK
+0328 T B3B2 68C40008                    RLDI    R4,$0008                ; EIGHT CYCLES
+0329                           ;******************************************************************************
+0330                           ;
+0331                           ;       INPUT AND STACK DATA FROM A/D CONVERTER
+0332                           ;
+0333                           ;******************************************************************************
+0334 T B3B6 3CB6               ADTST2:  BN1     *                       ; WAIT FOR CONVERSION
+0335 T B3B8 6C                          INP     4                       ; INPUT AND START NEXT CONVERSION
+0336 T B3B9 22                          DEC     R2                      ; DECREMENT SP FOR NEXT INPUT
+0337 T B3BA 6824B3B6                    DBNZ    R4,ADTST2           ; LOOP FOR 8 CHANNELS
+0338                           ;******************************************************************************
+0339                           ;
+0340                           ;       PRINT OUT A/D INPUT STACK
+0341                           ;
+0342                           ;******************************************************************************
+0343 T B3BE 68C24FFF                    RLDI    R2,RAM+$0FFF        ; RESET STACK POINTER FOR DEBUG ROUTINES
+0344 T B3C2 68CA4800                    RLDI    RA,RAM+$0800        ; LOAD STACK OF DATA STACK
+0345 T B3C6 68CB0008                    RLDI    RB,$0008                ; LOAD COUNTER FOR NUMBER OF BYTES
+0346 T B3CA 68C70001                    RLDI    R7,$0001                ; SET INITIAL CHANNEL NUMBER
+0347                           
+0348 T B3CE 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0349 T B3D2 412F4420494E5055            DB      'A/D INPUT'
+            54
+0350 T B3DB 0A0A0D                      DB      $0A,$0A,$0D
+0351 T B3DE 00                          DB      $00
+0352                           
+0353 T B3DF 6886D800           OUTIT:   SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0354 T B3E3 43482000                    DB      'CH ',$00               ; CHANNEL
+0355 T B3E7 87                          GLO     R7                      ; GET CHANNEL NUMBER
+0356 T B3E8 BF                          PHI     RF                      ; LOAD REGISTER
+0357 T B3E9 6886D816                    SCAL    R6,TYPEH            ; PRINT CHANNEL NUMBER
+0358 T B3ED 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0359 T B3F1 202000                      DB      '  ',$00                ; SPACE OVER
+0360 T B3F4 0A                          LDN     RA                      ; LOAD DATA
+0361 T B3F5 BD                          PHI     RD                      ; LOAD REGISTER
+0362 T B3F6 6886D9B2                    SCAL    R6,WORD             ; DISPLAY AS BITS
+0363 T B3FA 00                          DB      $00                             ; TERMINATION
+0364 T B3FB 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0365 T B3FF 202000                      DB      '  ',$00                ; SPACE OVER
+0366 T B402 0A                          LDN     RA                      ; LOAD DATA
+0367 T B403 BF                          PHI     RF                      ; LOAD REGISTER
+0368 T B404 6886D816                    SCAL    R6,TYPEH            ; DISPLAY AS HEX
+0369                           
+0370 T B408 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0371 T B40C 0A0D00                      DB      $0A,$0D,$00             ; NEW LINE
+0372                           
+0373 T B40F 2A                          DEC     RA                      ; DECREMENT POINTER TO DATA
+0374 T B410 17                          INC     R7                      ; INCREMENT CHANNEL NUMBER
+0375 T B411 682BB3DF                    DBNZ    RB,OUTIT            ; LOOP FOR 8 CHANNELS
+0376                           ;******************************************************************************
+0377                           ;
+0378                           ;       DELAY 15 SECONDS TO ALLOW FOR CHECK OR ABORT
+0379                           ;
+0380                           ;******************************************************************************
+0381 T B415 68C4000C                    RLDI    R4,$0C              ; LOAD OUTER COUNTER
+0382 T B419 68C5FFFF           02$:     RLDI    R5,$FFFF            ; LOAD INNER COUNTER
+0383 T B41D 3F47               03$:     BN4     06$                     ; ABORT ON BREAK
+0384 T B41F 6825B41D                    DBNZ    R5,03$              ; DECREMENT INNER COUNTER
+0385 T B423 6824B419                    DBNZ    R4,02$              ; DECREMENT OUTER COUNTER
+0386                           
+0387 T B427 6886DB40                    SCAL    R6,MLFCR            ; LINE UP
+0388 T B42B 10                          DB      $10                     ; 16 TIMES
+0389                           ;******************************************************************************
+0390                           ;
+0391                           ;       INCREMENT OUTPUT DATA 1/4 FULL SCALE
+0392                           ;
+0393                           ;*****************************************************************************
+0394 T B42C 81                          GLO     R1                      ; GET DATA
+0395 T B42D FFFF                        SMI     $FF                     ; OUTPUT DATA MAX
+0396 T B42F 323E                        BZ      05$                     ; IF DATA MAX, EXIT
+0397                           
+0398 T B431 81                          GLO     R1                      ; GET DATA
+0399 T B432 FC40                        ADI     $40                     ; ADD 1/4 FULL SCALE
+0400 T B434 A1                          PLO     R1                      ; RESET DATA
+0401                           
+0402 T B435 3A3B                        BNZ     04$                     ; IF NOT ZERO OK, OTHERWISE ROLLED OVER
+0403                           
+0404 T B437 68C100FF                    RLDI    R1,$00FF            ; RESET DATA TO MAX
+0405                           
+0406 T B43B C0B326             04$:     LBR     DATST1              ; LOOP
+0407                           ;******************************************************************************
+0408                           ;
+0409                           ;       REPEAT PROCESS
+0410                           ;
+0411                           ;*****************************************************************************
+0412 T B43E 6886D874           05$:     SCAL    R6,RCA1             ; SETUP TERMINAL I/O
+0413 T B442 6886DB1B                    SCAL    R6,CRLF             ; LINE DOWN
+0414 T B446 0E                          DB      $0E                             ; 15 LINES
+0415                           
+0416 T B447 6886D800           06$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0417 T B44B 0A0D00                      DB      $0A,$0D,$00
+0418 T B44E 6886B700                    SCAL    R6,REPEAT           ; CALL REPEAT QUESTION ROUTINE
+0419 T B452 C2B300                      LBZ     ADTST               ; REPEAT TEST IF D=0
+0420                           ;******************************************************************************
+0421                           ;
+0422                           ;       RESET D/A OUTPUTS TO ZERO AND EXIT TO MAIN MENU
+0423                           ;
+0424                           ;*****************************************************************************
+0425 T B455 68C10000                    RLDI    R1,$0000                ; ZERO DATA
+0426 T B459 68C24800                    RLDI    R2,RAM+$0800        ; SETUP INPUT STACK
+0427 T B45D E3                          SEX     R3                              ; SET PROGRAM COUNTER EQUAL SP
+0428 T B45E 61                          OUT     1                               ; SET I/O GROUP
+0429 T B45F 30                          DB      $30                             ; I/O GROUP 30
+0430 T B460 E2                          SEX     R2                              ; RESET SP TO R2
+0431 T B461 81                          GLO     R1                              ; GET DATA
+0432 T B462 52                          STR     R2                              ; STACK IT
+0433 T B463 63                          OUT     3                               ; OUTPUT DATA TO CHANNEL 1
+0434 T B464 22                          DEC     R2                              ; RESET STACK POINTER
+0435 T B465 64                          OUT     4                               ; OUTPUT DATA TO CHANNEL 2
+0436 T B466 22                          DEC     R2                              ; RESET STACK POINTER
+0437 T B467 C0B17A                      LBR     AMENU                   ; RETURN TO A/D-D/A TEST MENU
+0438                           ;******************************************************************************
+0439                           ;
+0440                           ;       END OF A/D-D/A TEST
+0441                           ;
+0442                           ;******************************************************************************
+0443                           
+0444 T B500                             CORG    $0100               ; SET NEXT PAGE
+0445                           
+0446                           ;*****************************************************************************
+0447                           ;
+0448                           ; A/D CALIBRATION
+0449                           ;
+0450                           ;******************************************************************************
+0451 T B500 C4                 ADCAL:   NOP                         ; NO OPERATION
+0452 T B501 6886DB6F                    SCAL    R6,CLEAR                ; CLEAR SCREEN
+0453 T B505 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+0454 T B509 0A0D                        DB      $0A,$0D
+0455 T B50B 4D42363534412041            DB      'MB654A A/D CALIBRATION'
+            2F442043414C4942
+            524154494F4E
+0456 T B521 0A0A0A0A0D00                DB      $0A,$0A,$0A,$0A,$0D,$00
+0457                           ;******************************************************************************
+0458                           ;
+0459                           ;       SETUP CYCLE COUNTER
+0460                           ;
+0461                           ;******************************************************************************
+0462 T B527 6886DC23                    SCAL    R6,CUROFF               ; TURN OFF CURSOR
+0463 T B52B 6886DB8E                    SCAL    R6,RVON                 ; REVERSE VIDEO
+0464 T B52F 68C10200                    RLDI    R1,$0200                ; 512 TIMES
+0465                           ;******************************************************************************
+0466 T B533 E3                 ADCAL1:  SEX     R3                      ; SET PC EQUAL SP
+0467 T B534 61                          OUT     1                       ; SELECT I/O GROUP
+0468 T B535 30                          DB      $30                     ; I/O GROUP 30 IS A/D BOARD
+0469 T B536 66                          OUT     6                       ; SELECT A/D MODE
+0470 T B537 00                          DB      $00                     ; ZERO MEANS FIXED CHANNEL
+0471 T B538 65                          OUT     5                       ; SELECT CHANNEL
+0472 T B539 00                          DB      $00                     ; CHANNEL ZERO
+0473 T B53A E2                          SEX     R2                      ; RESET SP TO R2
+0474 T B53B 3C3B                        BN1     *                       ; WAIT FOR CONVERSION
+0475 T B53D 6B                          INP     3                       ; INPUT CHANNEL ZERO
+0476 T B53E BD                          PHI     RD                      ; LOAD REGISTER
+0477 T B53F 6886D9AC                    SCAL    R6,WORD81               ; DISPLAY AS BITS
+0478 T B543 01                          DB      $01                     ; TERMINATE WITH A CR
+0479                           ;******************************************************************************
+0480                           ;
+0481                           ;       LOOP FOR NEXT SCAN
+0482                           ;
+0483                           ;******************************************************************************
+0484 T B544 3F4A                        BN4     ADCAL2                  ; EXIT ON BREAK
+0485 T B546 6821B533                    DBNZ    R1,ADCAL1               ; LOOP R1 TIMES
+0486                           ;*****************************************************************************
+0487                           ;
+0488                           ;       REPEAT PROCESS
+0489                           ;
+0490                           ;*****************************************************************************
+0491 T B54A 6886DB99           ADCAL2:  SCAL    R6,RVOFF            ; NORMAL VIDEO
+0492 T B54E 6886DC18                    SCAL    R6,CURON            ; TURN CURSOR BACK ON
+0493 T B552 6886B700                    SCAL    R6,REPEAT           ; CALL REPEAT QUESTION ROUTINE
+0494 T B556 C2B500                      LBZ     ADCAL               ; REPEAT CALIBRATION IF D=0
+0495 T B559 C0B17A                      LBR     AMENU               ; RETURN TO A/D-D/A TEST MENU
+0496                           ;******************************************************************************
+0497                           
+0498 T B600                             CORG    $0100               ; SET TO NEXT PAGE
+0499                           
+0500                           ;******************************************************************************
+0501                           ;
+0502                           ;       D/A CALIBRATION
+0503                           ;
+0504                           ;******************************************************************************
+0505 T B600 C4                 DACAL:   NOP                         ; NO OPERATION
+0506 T B601 6886DB6F                    SCAL    R6,CLEAR            ; CLEAR SCREEN
+0507 T B605 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0508 T B609 0A0D                        DB      $0A,$0D
+0509 T B60B 4D42363534412044            DB      'MB654A D/A CALIBRATION'
+            2F412043414C4942
+            524154494F4E
+0510 T B621 0A0A0D                      DB      $0A,$0A,$0D
+0511 T B624 0A0D00                      DB      $0A,$0D,$00
+0512                           ;******************************************************************************
+0513                           ;
+0514                           ;       SETUP OUTPUT DATA
+0515                           ;
+0516                           ;******************************************************************************
+0517 T B627 68C24FFF           DACAL1:  RLDI    R2,RAM+$0FFF        ; RESET STACK POINTER FOR DEBUG ROUTINES
+0518 T B62B 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0519 T B62F 454E544552204845            DB      'ENTER HEX DATA FOR OUTPUT '
+            5820444154412046
+            4F52204F55545055
+            5420
+0520 T B649 00                          DB      $00
+0521                           
+0522 T B64A 6886B728                    SCAL    R6,CREAD            ; READ HEX DATA
+0523 T B64E 3A27                        BNZ     DACAL1              ; RETRY ON NO HEX CHARACTER
+0524                           
+0525 T B650 8D                          GLO     RD                  ; GET BYTE
+0526 T B651 A1                          PLO     R1                  ; SET INPUT BYTE
+0527                           ;******************************************************************************
+0528                           ;
+0529                           ;       SETUP D/A I/O MODE
+0530                           ;
+0531                           ;******************************************************************************
+0532 T B652 68C24800                    RLDI    R2,RAM+$0800        ; SETUP INPUT STACK
+0533 T B656 E3                          SEX     R3                  ; SET PROGRAM COUNTER EQUAL SP
+0534 T B657 61                          OUT     1                   ; SET I/O GROUP
+0535 T B658 30                          DB      $30                 ; I/O GROUP 30
+0536 T B659 E2                          SEX     R2                  ; RESET SP TO R2
+0537                           ;******************************************************************************
+0538                           ;
+0539                           ;       OUTPUT DATA TO D/A CHANNELS 1 AND TWO
+0540                           ;
+0541                           ;******************************************************************************
+0542 T B65A 81                          GLO     R1                  ; GET DATA
+0543 T B65B 52                          STR     R2                  ; STACK IT
+0544 T B65C 63                          OUT     3                   ; OUTPUT DATA TO CHANNEL 1
+0545 T B65D 22                          DEC     R2                  ; RESET STACK POINTER
+0546 T B65E 64                          OUT     4                   ; OUTPUT DATA TO CHANNEL 2
+0547 T B65F 22                          DEC     R2                  ; RESET STACK POINTER
+0548                           ;******************************************************************************
+0549                           ;
+0550                           ;       DISPLAY OUTPUT DATA
+0551                           ;
+0552                           ;******************************************************************************
+0553 T B660 68C24FFF                    RLDI    R2,RAM+$0FFF        ; RESET STACK POINTER FOR DEBUG ROUTINES
+0554 T B664 68C70001                    RLDI    R7,$0001            ; SET INITIAL CHANNEL NUMBER
+0555 T B668 68CB0002                    RLDI    RB,$0002            ; TWO CHANNELS
+0556                                            
+0557 T B66C 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0558 T B670 0A0A0D                      DB      $0A,$0A,$0D
+0559 T B673 00                          DB      $00     
+0560                           
+0561 T B674 6886D800           01$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0562 T B678 43482000                    DB      'CH ',$00           ; CHANNEL
+0563 T B67C 87                          GLO     R7                  ; GET CHANNEL NUMBER
+0564 T B67D BF                          PHI     RF                  ; LOAD REGISTER
+0565 T B67E 6886D816                    SCAL    R6,TYPEH            ; PRINT CHANNEL NUMBER
+0566 T B682 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0567 T B686 202000                      DB      '  ',$00            ; SPACE OVER
+0568 T B689 81                          GLO     R1                  ; LOAD DATA
+0569 T B68A BD                          PHI     RD                  ; LOAD REGISTER
+0570 T B68B 6886D9B2                    SCAL    R6,WORD             ; DISPLAY AS BITS
+0571 T B68F 00                          DB      $00                 ; TERMINATION
+0572 T B690 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0573 T B694 202000                      DB      '  ',$00            ; SPACE OVER
+0574 T B697 81                          GLO     R1                  ; LOAD DATA
+0575 T B698 BF                          PHI     RF                  ; LOAD REGISTER
+0576 T B699 6886D816                    SCAL    R6,TYPEH            ; DISPLAY AS HEX
+0577                           
+0578 T B69D 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0579 T B6A1 0A0D00                      DB      $0A,$0D,$00         ; NEW LINE
+0580                           
+0581 T B6A4 17                          INC     R7                  ; INCREMENT CHANNEL NUMBER
+0582 T B6A5 682BB674                    DBNZ    RB,01$              ; LOOP FOR 2 CHANNELS
+0583                           ;******************************************************************************
+0584                           ;
+0585                           ;       DELAY 15 SECONDS FOR CHECK OR ABORT
+0586                           ;
+0587                           ;******************************************************************************
+0588 T B6A9 68CE000C                    RLDI    RE,$0C              ; LOAD OUTER COUNTER
+0589 T B6AD 68CFFFFF           02$:     RLDI    RF,$FFFF            ; LOAD INNER COUNTER
+0590 T B6B1 3FC7               03$:     BN4     05$                 ; ABORT ON BREAK
+0591 T B6B3 682FB6B1                    DBNZ    RF,03$              ; DECREMENT INNER COUNTER
+0592 T B6B7 682EB6AD                    DBNZ    RE,02$              ; DECREMENT OUTER COUNTER
+0593                           
+0594 T B6BB 6886D874                    SCAL    R6,RCA1             ; SETUP FOR TERMINAL I/O
+0595 T B6BF 6886DB40                    SCAL    R6,MLFCR            ; LINE UP
+0596 T B6C3 04                          DB      $04                 ; 4 TIMES
+0597                           ;******************************************************************************
+0598                           ;
+0599                           ;       REPEAT CYCLE
+0600                           ;
+0601                           ;*****************************************************************************
+0602 T B6C4 C0B627                      LBR     DACAL1              ; LOOP
+0603                           ;******************************************************************************
+0604                           ;
+0605                           ;       REPEAT PROCESS
+0606                           ;
+0607                           ;*****************************************************************************
+0608 T B6C7 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0609 T B6CB 0A0A0D00                    DB      $0A,$0A,$0D,$00     ; 2 LINES DOWN
+0610 T B6CF 6886B700                    SCAL    R6,REPEAT           ; CALL REPEAT QUESTION ROUTINE
+0611 T B6D3 C2B600                      LBZ     DACAL               ; REPEAT TEST IF D=0
+0612 T B6D6 C0B17A                      LBR     AMENU               ; RETURN TO A/D-D/A TEST MENU
+0613                           ;******************************************************************************
+0614                           
+0615 T B700                             CORG    $0100               ; SET NEXT PAGE
+0616                           
+0617                           ;******************************************************************************
+0618                           ;
+0619                           ;       REPEAT PROCESS QUESTION ROUTINE
+0620                           ;
+0621                           ;******************************************************************************
+0622 T B700 6886D800           REPEAT:  SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0623 T B704 0A0A0D                      DB      $0A,$0A,$0D
+0624 T B707 5245504541542054            DB      'REPEAT TEST (Y OR N) ? ',$00
+            455354202859204F
+            52204E29203F2000
+0625                           
+0626 T B71F 6886D904                    SCAL    R6,READD            ; READ AFTER DELAY
+0627 T B723 9F                          GHI     RF                  ; GET USER INPUT
+0628 T B724 FF59                        SMI     'Y'                 ; YES
+0629 T B726 6896                        SRET    R6                  ; RETURN D=0 FOR YES
+0630                           ;******************************************************************************
+0631                           ;
+0632                           ;       CUSTOM HEX READER ROUTINE
+0633                           ;
+0634                           ;******************************************************************************
+0635 T B728 6886D8B8           CREAD:   SCAL    R6,READH1           ; CALL READER
+0636 T B72C 3328                        BDF     CREAD               ; WAIT FOR INPUT
+0637 T B72E 9F                          GHI     RF                  ; CHECK ASCII
+0638 T B72F FB0D                        XRI     $0D                 ; IS IT A CR?
+0639 T B731 3A35                        BNZ     01$                 ; IF NON HEX ERROR
+0640 T B733 6896                        SRET    R6                  ; RETURN WITH RESULT IN RD
+0641                           
+0642 T B735 6886D800           01$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0643 T B739 0D00                        DB      $0D,$00             ; RESET TO START OF LINE
+0644 T B73B F8FF                        LDI     $FF                 ; SET D WITH SOME NON-ZERO VAULE
+0645 T B73D 6896                        SRET    R6                  ; RETURN
+0646                           ;******************************************************************************
+0647                           
+0648 T B800                             CORG    $0100               ; SET NEXT PAGE
+0649                           
+0650                           ;******************************************************************************
+0651                           ;
+0652                           ;       CPU TEST 
+0653                           ;
+0654                           ;******************************************************************************
+0655 T B800 C4                 CPUTST:  NOP                         ; NO OPERATION
+0656 T B801 68C10000                    RLDI    R1,$0000            ; ZERO OUT GLOBAL ERROR COUNTER
+0657                           ;******************************************************************************
+0658                           ;
+0659                           ;       TEST RAM AT $4000
+0660                           ;
+0661                           ;******************************************************************************
+0662 T B805 6886DB6F                    SCAL    R6,CLEAR            ; CLEAR SCREEN
+0663 T B809 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0664 T B80D 0A0D                        DB      $0A,$0D
+0665 T B80F 54455354494E4720            DB      'TESTING RAM ON CPU BOARD'
+            52414D204F4E2043
+            505520424F415244
+0666 T B827 0A0A0D                      DB      $0A,$0A,$0D
+0667 T B82A 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+0668 T B838 0A0A0D00                    DB      $0A,$0A,$0D,$00
+0669                           
+0670 T B83C 68C00000                    RLDI    R0,$0000            ; ZERO OUT ERROR COUNT
+0671                           
+0672 T B840 68C84000                    RLDI    R8,RAM              ; BASE ADDRESSS FOR CPU RAM
+0673 T B844 68C90FFF                    RLDI    R9,$0FFF            ; NUMBER OF BYTES
+0674 T B848 F800               RAMTST:  LDI     $00                 ; ZERO BYTE
+0675 T B84A 58                          STR     R8                  ; STORE IN RAM
+0676 T B84B C4                          NOP                         ;
+0677 T B84C C4                          NOP                         ;
+0678                                            
+0679 T B84D 3FB5                        BN4     04$                 ; ABORT ON BREAK
+0680                           
+0681 T B84F C4                          NOP                         ;
+0682 T B850 C4                          NOP                         ;
+0683 T B851 08                          LDN     R8                  ; GET BYTE FROM RAM
+0684 T B852 3258                        BZ      01$                 ; CHECK OK?
+0685                           
+0686 T B854 6886BE05                    SCAL    R6,ERRRAM           ; REPORT RAM ERROR
+0687                           
+0688 T B858 F8FF               01$:     LDI     $FF                 ; ALL ONES
+0689 T B85A 58                          STR     R8                  ; STORE IN RAM
+0690 T B85B C4                          NOP                         ;
+0691 T B85C C4                          NOP                         ;
+0692                           
+0693 T B85D 3FB5                        BN4     04$                 ; ABORT ON BREAK
+0694                                            
+0695 T B85F C4                          NOP                         ;
+0696 T B860 C4                          NOP                         ;
+0697 T B861 08                          LDN     R8                  ; GET BYTE FROM RAM
+0698 T B862 FFFF                        SMI     $FF                 ;
+0699 T B864 326A                        BZ      02$                 ; CHECK OK
+0700                           
+0701 T B866 6886BE05                    SCAL    R6,ERRRAM           ; REPORT RAM ERROR
+0702                                            
+0703 T B86A 18                 02$:     INC     R8                  ; INCREMENT RAM ADDRESS
+0704 T B86B 6829B848                    DBNZ    R9,RAMTST           ; CHECK 4K BYTE
+0705                           
+0706 T B86F 90                          GHI     R0                  ; HIGH BYTE OF ERROR COUNT
+0707 T B870 3A91                        BNZ     03$                 ; IF ERROR BRANCH
+0708 T B872 80                          GLO     R0                  ; LOW BYTE OF ERROR COUNT
+0709 T B873 3A91                        BNZ     03$                 ; JUMP TO EPROM TEST IF NO ERRORS
+0710                           
+0711 T B875 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0712 T B879 0A0D                        DB      $0A,$0D
+0713 T B87B 52414D2054455354            DB      'RAM TEST COMPLETED'
+            20434F4D504C4554
+            4544
+0714 T B88D 00                          DB      $00
+0715                           ;       LBR     EPTST           ; JUMP TO EPROM TEST IF NO ERRORS
+0716 T B88E C0C3BA                      LBR     GETVER              ; GET SOFTWARE VERSION
+0717                           
+0718 T B891 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0719 T B895 0A0D                        DB      $0A,$0D
+0720 T B897 2A2A2A2A2052414D            DB      '**** RAM TEST ERRORS ****'
+            2054455354204552
+            524F5253202A2A2A
+            2A
+0721 T B8B0 0A0D00                      DB      $0A,$0D,$00
+0722 T B8B3 30D8                        BR      05$                 ; WAIT FOR KEY
+0723                                            
+0724 T B8B5 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0725 T B8B9 0A0D                        DB      $0A,$0D
+0726 T B8BB 2A2A2A2A2052414D            DB      '**** RAM TEST ABORTED ****'
+            2054455354204142
+            4F52544544202A2A
+            2A2A
+0727 T B8D5 0A0D00                      DB      $0A,$0D,$00
+0728                           
+0729 T B8D8 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0730 T B8DC 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+0731 T B8EF 0A0D00                      DB      $0A,$0D,$00
+0732 T B8F2 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+0733 T B8F6 C0C3BA                      LBR     GETVER              ; GET SOFTWARE VERSION
+0734                           ;******************************************************************************
+0735                           ;
+0736                           ;       COMPARE EPROM AT $0000 TO MASTER AT $C000
+0737                           ;
+0738                           ;******************************************************************************
+0739 T B8F9 6886DB6F           EPTST:   SCAL    R6,CLEAR            ; CLEAR SCREEN
+0740 T B8FD 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0741 T B901 0A0D                        DB      $0A,$0D
+0742 T B903 434845434B204550            DB      'CHECK EPROM AGAINST MASTER VERSION 4'
+            524F4D2041474149
+            4E5354204D415354
+            4552205645525349
+            4F4E2034
+0743 T B927 0A0A0D                      DB      $0A,$0A,$0D
+0744 T B92A 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+0745 T B938 0A0A0D00                    DB      $0A,$0A,$0D,$00
+0746                           
+0747 T B93C 68C00000                    RLDI    R0,$0000            ; ZERO OUT ERROR COUNT
+0748                           
+0749 T B940 68C79000                    RLDI    R7,MASTER           ; STORAGE ADDREES FOR EPROM CODE
+0750 T B944 68C80000                    RLDI    R8,$0000            ; BASE ADDRESS FOR EPROM CODE
+0751 T B948 68C907FF                    RLDI    R9,$07FF            ; NUMBER OF BYTES
+0752                           
+0753 T B94C E8                 01$:     SEX     R8                  ; POINTER TO EPROM IS SP
+0754 T B94D 07                          LDN     R7                  ; GET BYTE FORM MASTER
+0755 T B94E F7                          SM                          ; SUBTRACK FORM EPROM
+0756 T B94F E2                          SEX     R2                  ; RESET SP TO R2
+0757 T B950 3256                        BZ      02$                 ; CHECK OK?
+0758                           
+0759 T B952 6886BE2F                    SCAL    R6,ERRCOM           ; IF NOT EQUAL ERROR
+0760                           
+0761 T B956 3FAA               02$:     BN4     04$                 ; ABORT ON BREAK
+0762 T B958 17                          INC     R7                  ; INCREMENT ADDRESS OF EPROM
+0763 T B959 18                          INC     R8                  ; INCREMENT ADDRESS OF MASTER
+0764 T B95A 6829B94C                    DBNZ    R9,01$              ; COMPARE 2K BYTES
+0765                           
+0766 T B95E 90                          GHI     R0                  ; HIGH BYTE OF ERROR COUNT
+0767 T B95F 3A82                        BNZ     03$                 ; IF ERROR BRANCH
+0768 T B961 80                          GLO     R0                  ; LOW BYTE OF ERROR COUNT
+0769 T B962 3A82                        BNZ     03$                 ; IF NOT ZERO ERRORS
+0770                           
+0771 T B964 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0772 T B968 0A0D                        DB      $0A,$0D
+0773 T B96A 4550524F4D205445            DB      'EPROM TEST COMPLETED'
+            535420434F4D504C
+            45544544
+0774 T B97E 00                          DB      $00
+0775 T B97F C0C0CE                      LBR     EPTST2              ; BRANCH TO PATCH AREA
+0776                           ;       LBR     PIOTST          ; JUMP TO PIO TEST IF NO ERRORS
+0777                           
+0778 T B982 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0779 T B986 0A0D                        DB      $0A,$0D
+0780 T B988 2A2A2A2A20455052            DB      '**** EPROM VERIFY ERRORS ****'
+            4F4D205645524946
+            59204552524F5253
+            202A2A2A2A
+0781 T B9A5 0A0D00                      DB      $0A,$0D,$00
+0782 T B9A8 30CF                        BR      05$                 ; WAIT FOR KEY
+0783                           
+0784 T B9AA 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0785 T B9AE 0A0D                        DB      $0A,$0D
+0786 T B9B0 2A2A2A2A20455052            DB      '**** EPROM TEST ABORTED ****'
+            4F4D205445535420
+            41424F5254454420
+            2A2A2A2A
+0787 T B9CC 0A0D00                      DB      $0A,$0D,$00
+0788                           
+0789 T B9CF 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0790 T B9D3 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+0791 T B9E6 0A0D00                      DB      $0A,$0D,$00
+0792                           ;       SCAL    R6,READD        ; SCAN KEYBOARD
+0793 T B9E9 C0C0C7                      LBR     EPTSTE              ; BRANCH TO PATCH AREA
+0794 T B9EC C4                          NOP                         ; CODE FILLER
+0795                           ;******************************************************************************
+0796                           ;
+0797                           ;       PIO TEST
+0798                           ;
+0799                           ;******************************************************************************
+0800 T B9ED 6886DB6F           PIOTST:  SCAL    R6,CLEAR            ; CLEAR SCREEN
+0801 T B9F1 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0802 T B9F5 0A0D                        DB      $0A,$0D
+0803 T B9F7 54455354494E4720            DB      'TESTING PROGRAMMABLE I/O CHIP'
+            50524F4752414D4D
+            41424C4520492F4F
+            2043484950
+0804 T BA14 0A0A0D                      DB      $0A,$0A,$0D
+0805 T BA17 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+0806 T BA25 0A0A0D00                    DB      $0A,$0A,$0D,$00
+0807                           
+0808 T BA29 68C00000                    RLDI    R0,$0000            ; ZERO OUT ERROR COUNT
+0809                           
+0810                           ;******************************************************************************
+0811                           ;
+0812                           ;       SETUP PIO PORTS
+0813                           ;
+0814                           ;******************************************************************************
+0815 T BA2D E3                          SEX     R3                  ; SET SP TO PC
+0816 T BA2E 61                          OUT     1                   ; SELECT I/O GROUP
+0817 T BA2F 08                          DB      $08                 ; PIO CHIP
+0818 T BA30 62                          OUT     2                   ; SETUP PORT A FOR INPUT
+0819 T BA31 0F                          DB      $0F
+0820 T BA32 62                          OUT     2                   ; SETUP PORT B FOR OUTPUT
+0821 T BA33 77                          DB      $77
+0822 T BA34 E2                          SEX     R2                  ; RESET SP
+0823                           ;******************************************************************************
+0824                           ;
+0825                           ;       TEST PIO PORTS
+0826                           ;
+0827                           ;******************************************************************************
+0828 T BA35 68C70100                    RLDI    R7,$0100            ; COUNTER
+0829 T BA39 68C800FF                    RLDI    R8,$00FF            ; DATA
+0830                           
+0831 T BA3D E3                 01$:     SEX     R3                  ; SET SP TO PC
+0832 T BA3E 61                          OUT     1                   ; SET I/O GROUP
+0833 T BA3F 08                          DB      $08                 ; PIO CHIP
+0834 T BA40 E2                          SEX     R2                  ; RESET SP
+0835                           
+0836 T BA41 88                          GLO     R8                  ; GET DATA
+0837 T BA42 52                          STR     R2                  ; STACK IT
+0838 T BA43 66                          OUT     6                   ; OUTPUT DATA FROM PORT B
+0839 T BA44 22                          DEC     R2                  ; RESET SP
+0840                           
+0841 T BA45 C4                          NOP                         ; NO OPERATION
+0842 T BA46 C4                          NOP                         ;
+0843 T BA47 3F9F                        BN4     04$                 ; ABORT ON BREAK KEY
+0844 T BA49 C4                          NOP                         ;
+0845 T BA4A C4                          NOP                         ;
+0846                           
+0847 T BA4B 6C                          INP     4                   ; READ PORT A
+0848 T BA4C 88                          GLO     R8                  ; GET DATA
+0849 T BA4D F7                          SM                          ; DATA OUT - DATA IN
+0850 T BA4E 3254                        BZ      02$                 ; IF ZERO OK
+0851                           
+0852 T BA50 6886BE5B                    SCAL    R6,ERRIO            ; REPORT I/O ERRORS
+0853                           
+0854 T BA54 28                 02$:     DEC     R8                  ; DECREMENT DATA
+0855 T BA55 6827BA3D                    DBNZ    R7,01$              ; LOOP TILL ALL DATA TESTED
+0856                           
+0857 T BA59 90                          GHI     R0                  ; HIGH BYTE OF ERROR COUNT
+0858 T BA5A 3A7B                        BNZ     03$                 ; IF ERROR BRANCH
+0859 T BA5C 80                          GLO     R0                  ; LOW BYTE OF ERROR COUNT
+0860 T BA5D 3A7B                        BNZ     03$                 ; IF NOT ZERO ERRORS
+0861                           
+0862 T BA5F 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0863 T BA63 0A0D                        DB      $0A,$0D
+0864 T BA65 492F4F2054455354            DB      'I/O TEST COMPLETED'
+            20434F4D504C4554
+            4544
+0865 T BA77 00                          DB      $00
+0866 T BA78 C0BAE0                      LBR     EFNTST              ; JUMP TO EVENT FLAG TEST IF NO ERRORS
+0867                           
+0868 T BA7B 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0869 T BA7F 0A0D                        DB      $0A,$0D
+0870 T BA81 2A2A2A2A20492F4F            DB      '**** I/O TEST ERRORS ****'
+            2054455354204552
+            524F5253202A2A2A
+            2A
+0871 T BA9A 0A0D00                      DB      $0A,$0D,$00
+0872 T BA9D 30C2                        BR      05$                 ; WAIT FOR KEY
+0873                           
+0874 T BA9F 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0875 T BAA3 0A0D                        DB      $0A,$0D
+0876 T BAA5 2A2A2A2A20492F4F            DB      '**** I/O TEST ABORTED ****'
+            2054455354204142
+            4F52544544202A2A
+            2A2A
+0877 T BABF 0A0D00                      DB      $0A,$0D,$00
+0878                           
+0879 T BAC2 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0880 T BAC6 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+0881 T BAD9 0A0D00                      DB      $0A,$0D,$00
+0882 T BADC 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+0883                           ;******************************************************************************
+0884                           ;
+0885                           ;      EVENT FLAG TEST
+0886                           ;
+0887                           ;******************************************************************************
+0888 T BAE0 6886DB6F           EFNTST:  SCAL    R6,CLEAR            ; CLEAR SCREEN
+0889 T BAE4 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0890 T BAE8 0A0D                        DB      $0A,$0D
+0891 T BAEA 54455354494E4720            DB      'TESTING EVENT FLAGS'
+            4556454E5420464C
+            414753
+0892 T BAFD 0A0A0D                      DB      $0A,$0A,$0D
+0893 T BB00 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+0894 T BB0E 0A0A0D00                    DB      $0A,$0A,$0D,$00
+0895                           
+0896 T BB12 68C00000                    RLDI    R0,$0000            ; ZERO OUT ERROR COUNT
+0897                           
+0898                           ;******************************************************************************
+0899 T BB16 E3                          SEX     R3                  ; SET SP TO PC
+0900 T BB17 61                          OUT     1                   ; SELECT I/O GROUP
+0901 T BB18 08                          DB      $08                 ; PIO CHIP
+0902 T BB19 E2                          SEX     R2                  ; RESET SP
+0903                           
+0904 T BB1A 68C80001                    RLDI    R8,$0001            ; EVENT FLAG COUNTER
+0905                           
+0906 T BB1E F800                        LDI     $00                 ; ZERO BYTE
+0907 T BB20 52                          STR     R2                  ; STACK IT
+0908 T BB21 66                          OUT     6                   ; OUTPUT DATA
+0909 T BB22 22                          DEC     R2                  ; RESET SP
+0910                                            
+0911 T BB23 342B                        B1      10$                 ; EF1 SHALL BE ZERO - REV
+0912 T BB25 6886BE85                    SCAL    R6,ERREF            ; DISPLAY ERROR
+0913 T BB29 3FB8                        BN4     04$                 ; ABORT ON BREAK
+0914                                            
+0915 T BB2B 18                 10$:     INC     R8                  ; INCREMENT EVENT FLAG COUNTER
+0916 T BB2C 3534                        B2      20$                 ; EF2 SHALL BE ZERO - REV
+0917 T BB2E 6886BE85                    SCAL    R6,ERREF            ; DISPLAY ERROR
+0918 T BB32 3FB8                        BN4     04$                 ; ABORT ON BREAK
+0919                           
+0920 T BB34 18                 20$:     INC     R8                  ; INCREMENT EVENT FLAG COUNTER
+0921 T BB35 363D                        B3      30$                 ; EF3 SHALL BE ZERO - REV
+0922 T BB37 6886BE85                    SCAL    R6,ERREF            ; DISPLAY ERROR
+0923 T BB3B 3FB8                        BN4     04$                 ; ABORT ON BREAK
+0924                           
+0925 T BB3D E3                 30$:     SEX     R3                  ; SET SP TO PC
+0926 T BB3E 61                          OUT     1                   ; SELCT I/O GROUP
+0927 T BB3F 08                          DB      $08                 ; PIO CHIP
+0928 T BB40 E2                          SEX     R2                  ; RESET SP
+0929                           
+0930 T BB41 68C8FF01                    RLDI    R8,$FF01            ; EVENT FLAG COUNTER
+0931                           
+0932 T BB45 F8FF                        LDI     $FF                 ; DATA BYTE
+0933 T BB47 52                          STR     R2                  ; STACK IT
+0934 T BB48 66                          OUT     6                   ; OUTPUT DATA
+0935 T BB49 22                          DEC     R2                  ; RESET SP
+0936                           
+0937 T BB4A 3C52                        BN1     11$                 ; EF1 SHALL BE HIGH - REV
+0938 T BB4C 6886BE85                    SCAL    R6,ERREF            ; DISPLAY ERROR
+0939 T BB50 3FB8                        BN4     04$                 ; ABORT ON BREAK
+0940                           
+0941 T BB52 18                 11$:     INC     R8                  ; INCREMENT EVENT FLAG COUNTER
+0942 T BB53 3D5B                        BN2     12$                 ; EF2 SHALL BE HIGH - REV
+0943 T BB55 6886BE85                    SCAL    R6,ERREF            ; DISPLAY ERROR
+0944 T BB59 3FB8                        BN4     04$                 ; ABORT ON BREAK
+0945                           
+0946 T BB5B 18                 12$:     INC     R8                  ; INCREMENT EVENT FLAG COUNTER
+0947 T BB5C 3E64                        BN3     13$                 ; EF3 SHALL BE HIGH - REV
+0948 T BB5E 6886BE85                    SCAL    R6,ERREF            ; DISPLAY ERROR
+0949 T BB62 3FB8                        BN4     04$                 ; ABORT ON BREAK
+0950                           
+0951 T BB64 90                 13$:     GHI     R0                  ; HIGH BYTE OF ERROR COUNT
+0952 T BB65 3A8D                        BNZ     03$                 ; IF ERROR BRANCH
+0953 T BB67 80                          GLO     R0                  ; LOW BYTE OF ERROR COUNT
+0954 T BB68 3A8D                        BNZ     03$                 ; IF NOT ZERO ERRORS
+0955                           
+0956 T BB6A 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0957 T BB6E 0A0D                        DB      $0A,$0D
+0958 T BB70 4556454E5420464C            DB      'EVENT FLAG TEST COMPLETED'
+            4147205445535420
+            434F4D504C455445
+            44
+0959 T BB89 00                          DB      $00
+0960 T BB8A C0BC00                      LBR     CLKTST              ; JUMP TO CLOCK TEST IF NO ERRORS
+0961                           
+0962 T BB8D 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0963 T BB91 0A0D                        DB      $0A,$0D
+0964 T BB93 2A2A2A2A20455645            DB      '**** EVENT FLAG TEST ERRORS ****'
+            4E5420464C414720
+            5445535420455252
+            4F5253202A2A2A2A
+0965 T BBB3 0A0D00                      DB      $0A,$0D,$00
+0966 T BBB6 30E2                        BR      05$                 ; WAIT FOR KEY
+0967                           
+0968 T BBB8 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0969 T BBBC 0A0D                        DB      $0A,$0D
+0970 T BBBE 2A2A2A2A20455645            DB      '**** EVENT FLAG TEST ABORTED ****'
+            4E5420464C414720
+            544553542041424F
+            52544544202A2A2A
+            2A
+0971 T BBDF 0A0D00                      DB      $0A,$0D,$00
+0972                           
+0973 T BBE2 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0974 T BBE6 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+0975 T BBF9 0A0D00                      DB      $0A,$0D,$00
+0976 T BBFC 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+0977                           ;******************************************************************************
+0978                           ;
+0979                           ;       CLOCK - COUNTER TEST
+0980                           ;
+0981                           ;******************************************************************************
+0982 T BC00 6886DB6F           CLKTST:  SCAL    R6,CLEAR            ; CLEAR SCREEN
+0983 T BC04 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+0984 T BC08 0A0D                        DB      $0A,$0D
+0985 T BC0A 54455354494E4720            DB      'TESTING CLOCK-COUNTER'
+            434C4F434B2D434F
+            554E544552
+0986 T BC1F 0A0A0D                      DB      $0A,$0A,$0D
+0987 T BC22 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+0988 T BC30 0A0A0D00                    DB      $0A,$0A,$0D,$00
+0989                           
+0990 T BC34 68C00000                    RLDI    R0,$0000            ; ZERO OUT ERROR COUNT
+0991                           
+0992                           ;******************************************************************************
+0993                           ;
+0994                           ;       SET UP CLOCK COUNTER
+0995                           ;
+0996                           ;******************************************************************************
+0997 T BC38 6800                        STPC                        ; STOP COUNTER
+0998 T BC3A F840                        LDI     $40                 ; 64 COUNTS
+0999 T BC3C 6806                        LDC                         ; LOAD COUNTER
+1000 T BC3E 6809                        ETQ                         ; ENABLE Q FLIP/FLOP
+1001 T BC40 6803                        SCM2                        ; START COUNTER MODE 2
+1002                           ;******************************************************************************
+1003 T BC42 7B                          SEQ                         ; SET Q=1
+1004 T BC43 68C70050                    RLDI    R7,$0040+$10        ; 80 COUNTS
+1005 T BC47 E3                          SEX     R3                  ; SET SP TO PC
+1006 T BC48 61                          OUT     1                   ; SELECT I/O GROUP
+1007 T BC49 08                          DB      $08                 ; PIO CHIP
+1008 T BC4A E2                          SEX     R2                  ; RESET SP
+1009                           ;******************************************************************************
+1010 T BC4B F8FF               01$:     LDI     $FF                 ; HIGH DATA
+1011 T BC4D 52                          STR     R2                  ; STACK IT
+1012 T BC4E 66                          OUT     6                   ; OUTPUT TO PORT B
+1013 T BC4F 22                          DEC     R2                  ; RESET SP
+1014                           
+1015 T BC50 C4                          NOP                         ; NO OPERATION
+1016 T BC51 C4                          NOP                         ;
+1017 T BC52 3FC5                        BN4     04$                 ; ABORT ON BREAK
+1018 T BC54 C4                          NOP                         ;
+1019 T BC55 C4                          NOP                         ;
+1020                           
+1021 T BC56 F800                        LDI     $00                 ; ZERO DATA
+1022 T BC58 52                          STR     R2                  ; STACK IT
+1023 T BC59 66                          OUT     6                   ; OUTPUT TO PORT B
+1024 T BC5A 22                          DEC     R2                  ; RESET SP
+1025                           
+1026 T BC5B C4                          NOP                         ; NO OPERATION
+1027 T BC5C C4                          NOP                         ;
+1028 T BC5D 3FC5                        BN4     04$                 ; ABORT ON BREAK
+1029 T BC5F C4                          NOP                         ;
+1030 T BC60 C4                          NOP                         ;
+1031                           
+1032 T BC61 6827BC4B                    DBNZ    R7,01$              ; LOOP FOR 42 CYCLES
+1033                           ;******************************************************************************
+1034                           ;
+1035                           ;       ON EXIT FROM LOOP Q SHALL BE LOW
+1036                           ;
+1037                           ;******************************************************************************
+1038 T BC65 396B                        BNQ     02$                 ; IF Q NOT LOW ERROR
+1039                           
+1040 T BC67 6886BEAC                    SCAL    R6,ERRCLK           ; DISPLAY ERROR
+1041                           
+1042 T BC6B 90                 02$:     GHI     R0                  ; HIGH BYTE OF ERROR COUNT
+1043 T BC6C 3A97                        BNZ     03$                 ; IF ERROR BRANCH
+1044 T BC6E 80                          GLO     R0                  ; LOW BYTE OF ERROR COUNT
+1045 T BC6F 3A97                        BNZ     03$                 ; IF NOT ZERO ERRORS
+1046                           
+1047 T BC71 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1048 T BC75 0A0D                        DB      $0A,$0D
+1049 T BC77 434C4F434B2D434F            DB      'CLOCK-COUNTER TEST COMPLETED'
+            554E544552205445
+            535420434F4D504C
+            45544544
+1050 T BC93 00                          DB      $00
+1051 T BC94 C0BD10                      LBR     CPUEND              ; JUMP TO END OF TEST IF NO ERRORS
+1052                           
+1053 T BC97 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1054 T BC9B 0A0D                        DB      $0A,$0D
+1055 T BC9D 2A2A2A2A20434C4F            DB      '**** CLOCK-COUNTER TEST ERRORS ****'
+            434B2D434F554E54
+            4552205445535420
+            4552524F5253202A
+            2A2A2A
+1056 T BCC0 0A0D00                      DB      $0A,$0D,$00
+1057 T BCC3 30F2                        BR      05$                 ; WAIT FOR KEY
+1058                           
+1059 T BCC5 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1060 T BCC9 0A0D                        DB      $0A,$0D
+1061 T BCCB 2A2A2A2A20434C4F            DB      '**** CLOCK-COUNTER TEST ABORTED ****'
+            434B2D434F554E54
+            4552205445535420
+            41424F5254454420
+            2A2A2A2A
+1062 T BCEF 0A0D00                      DB      $0A,$0D,$00
+1063                           
+1064 T BCF2 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1065 T BCF6 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+1066 T BD09 0A0D00                      DB      $0A,$0D,$00
+1067 T BD0C 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+1068                           ;******************************************************************************
+1069                           ;
+1070                           ;       END OF CPU TEST
+1071                           ;
+1072                           ;******************************************************************************
+1073 T BD10 E2                 CPUEND:  SEX     R2                  ; RESET SP TO R2
+1074 T BD11 6886DB6F                    SCAL    R6,CLEAR            ; CLEAR SCREEN
+1075                           
+1076 T BD15 91                          GHI     R1                  ; HIGH BYTE OF ERROR COUNT
+1077 T BD16 3A60                        BNZ     03$                 ; IF ERROR BRANCH
+1078 T BD18 81                          GLO     R1                  ; LOW BYTE OF ERROR COUNT
+1079 T BD19 3A60                        BNZ     03$                 ; IF NOT ZERO ERRORS
+1080                           
+1081 T BD1B 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1082 T BD1F 0A0D                        DB      $0A,$0D
+1083 T BD21 4D42363036203138            DB      'MB606 1805 CPU TEST COMPLETED'
+            3035204350552054
+            45535420434F4D50
+            4C45544544
+1084 T BD3E 0A0A0D                      DB      $0A,$0A,$0D
+1085 T BD41 434845434B204359            DB      'CHECK CYRSTAL FOR ADDED RTV'
+            525354414C20464F
+            5220414444454420
+            525456
+1086 T BD5C 00                          DB      $00
+1087 T BD5D C0B00C                      LBR     MENU                ; RETURN TO MAIN TEST MENU IF NO ERRORS
+1088                           
+1089 T BD60 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1090 T BD64 0A0D                        DB      $0A,$0D
+1091 T BD66 2A2A2A2A204D4236            DB      '**** MB606 1805 CPU TEST ERRORS ****'
+            3036203138303520
+            4350552054455354
+            204552524F525320
+            2A2A2A2A
+1092 T BD8A 0A0A0D                      DB      $0A,$0A,$0D
+1093 T BD8D 2A2A2A2A2052454A            DB      '**** REJECT AND/OR RE-INSPECT *****'
+            45435420414E442F
+            4F522052452D494E
+            5350454354202A2A
+            2A2A2A
+1094 T BDB0 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1095 T BDB4 30E4                        BR      05$                 ; WAIT FOR KEY
+1096                           
+1097 T BDB6 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1098 T BDBA 0A0D                        DB      $0A,$0D
+1099 T BDBC 2A2A2A2A204D4236            DB      '**** MB606 1805 CPU TEST ABORTED ****'
+            3036203138303520
+            4350552054455354
+            2041424F52544544
+            202A2A2A2A
+1100 T BDE1 0A0D00                      DB      $0A,$0D,$00
+1101                           
+1102 T BDE4 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1103 T BDE8 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+1104 T BDFB 0A0D00                      DB      $0A,$0D,$00
+1105 T BDFE 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+1106 T BE02 C0B00C                      LBR     MENU                ; RETURN TO MAIN MENU
+1107                           ;******************************************************************************
+1108                           ;
+1109                           ;       CPU TEST ERROR ROURINES
+1110                           ;
+1111                           ;******************************************************************************
+1112                           ;
+1113                           ;       RAM VERIFY ERROR
+1114                           ;
+1115                           ;******************************************************************************
+1116 T BE05 6886D800           ERRRAM:  SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1117 T BE09 52414D204641494C            DB      'RAM FAILURE AT ADDRESS '
+            5552452041542041
+            44445245535320
+1118 T BE20 00                          DB      $00
+1119                                            
+1120 T BE21 98                          GHI     R8                  ; GET HIGH BYTE OF RAM ADDRESS
+1121 T BE22 BD                          PHI     RD                  ; PASS FOR PRINT
+1122 T BE23 88                          GLO     R8                  ; GET LOW BYTE OF RAM ADDRESS
+1123 T BE24 AD                          PLO     RD                  ; PASS FOR PRINT
+1124 T BE25 6886D950                    SCAL    R6,TYPE6            ; PRINT HEX ADDRESS
+1125 T BE29 0201                        DB      $02,$01             ; FOLLOW WITH ONE CRLF
+1126 T BE2B 10                          INC     R0                  ; INCREMENT LOCAL ERROR COUNTER
+1127 T BE2C 11                          INC     R1                  ; INCREMENT GOBAL ERROR COUNTER
+1128 T BE2D 6896                        SRET    R6                  ; RETURN
+1129                           ;******************************************************************************
+1130                           ;
+1131                           ;       EPROM VERIFY ERROR
+1132                           ;
+1133                           ;******************************************************************************
+1134 T BE2F 6886D800           ERRCOM:  SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1135 T BE33 4550524F4D204641            DB      'EPROM FAILURE AT ADDRESS '
+            494C555245204154
+            2041444452455353
+            20
+1136 T BE4C 00                          DB      $00
+1137                           
+1138 T BE4D 98                          GHI     R8                  ; GET HIGH BYTE OF EPROM ADDRESS
+1139 T BE4E BD                          PHI     RD                  ; PASS FOR PRINT
+1140 T BE4F 88                          GLO     R8                  ; GET LOW BYTE OF EPROM ADDRESS
+1141 T BE50 AD                          PLO     RD                  ; PASS FOR PRINT
+1142 T BE51 6886D950                    SCAL    R6,TYPE6            ; PRINT HEX ADDRESS
+1143 T BE55 0201                        DB      $02,$01             ; FOLLOW WITH ONE CRLF
+1144 T BE57 10                          INC     R0                  ; INCREMENT LOCAL ERROR COUNTER
+1145 T BE58 11                          INC     R1                  ; INCREMENT GOBAL ERROR COUNTER
+1146 T BE59 6896                        SRET    R6                  ; RETURN
+1147                           ;******************************************************************************
+1148                           ;
+1149                           ;       I/O TEST ERROR
+1150                           ;
+1151                           ;******************************************************************************
+1152 T BE5B 6886D800           ERRIO:   SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1153 T BE5F 492F4F204641494C            DB      'I/O FAILURE TO READ DATA '
+            55524520544F2052
+            4541442044415441
+            20
+1154 T BE78 00                          DB      $00
+1155                           
+1156 T BE79 88                          GLO     R8                  ; GET LOW BYTE OF EPROM ADDRESS
+1157 T BE7A BD                          PHI     RD                  ; PASS FOR PRINT
+1158 T BE7B 6886D965                    SCAL    R6,TYPE8            ; PRINT HEX DATA
+1159 T BE7F 0201                        DB      $02,$01             ; FOLLOW WITH ONE CRLF
+1160 T BE81 10                          INC     R0                  ; INCREMENT LOCAL ERROR COUNTER
+1161 T BE82 11                          INC     R1                  ; INCREMENT GOBAL ERROR COUNTER
+1162 T BE83 6896                        SRET    R6                  ; RETURN
+1163                           ;******************************************************************************
+1164                           ;
+1165                           ;       EVENT FLAG TEST ERROR
+1166                           ;
+1167                           ;******************************************************************************
+1168 T BE85 6886D800           ERREF:   SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1169 T BE89 4556454E5420464C            DB      'EVENT FLAG ERROR ON EF'
+            4147204552524F52
+            204F4E204546
+1170 T BE9F 00                          DB      $00
+1171                           
+1172 T BEA0 88                          GLO     R8                  ; GET LOW BYTE OF EPROM ADDRESS
+1173 T BEA1 BD                          PHI     RD                  ; PASS FOR PRINT
+1174 T BEA2 6886D965                    SCAL    R6,TYPE8            ; PRINT HEX DATA
+1175 T BEA6 0201                        DB      $02,$01             ; FOLLOW WITH ONE CRLF
+1176 T BEA8 10                          INC     R0                  ; INCREMENT LOCAL ERROR COUNTER
+1177 T BEA9 11                          INC     R1                  ; INCREMENT GOBAL ERROR COUNTER
+1178 T BEAA 6896                        SRET    R6                  ; RETURN
+1179                           ;******************************************************************************
+1180                           ;
+1181                           ;       CLOCK-COUNTER TEST ERROR
+1182                           ;
+1183                           ;******************************************************************************
+1184 T BEAC 6886D800           ERRCLK:  SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1185 T BEB0 0D0D0D0D                    DB      $0D,$0D,$0D,$0D
+1186 T BEB4 434C4F434B2D434F            DB      'CLOCK-COUNTER ERROR'
+            554E544552204552
+            524F52
+1187 T BEC7 0A0A00                      DB      $0A,$0A,$00
+1188                           
+1189 T BECA 10                          INC     R0                  ; INCREMENT LOCAL ERROR COUNTER
+1190 T BECB 11                          INC     R1                  ; INCREMENT GOBAL ERROR COUNTER
+1191 T BECC 6896                        SRET    R6                  ; RETURN
+1192                           ;******************************************************************************
+1193                           
+1194 T BF00                             CORG    $0100               ; SET NEXT PAGE
+1195                           
+1196                           ;******************************************************************************
+1197                           ;
+1198                           ;       EPROM PROGRAMING ROUTINE
+1199                           ;
+1200                           ;       TRANSFER EPROM FROM ROM AT EPROM ADDRESS TO ADDRESS 0000
+1201                           ;       AND THEN RUN
+1202                           ;
+1203                           ;******************************************************************************
+1204 T BF00 6886DB6F           IEPROM:  SCAL    R6,CLEAR            ; CLEAR SCREEN
+1205 T BF04 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1206 T BF08 0A0D                        DB      $0A,$0D
+1207 T BF0A 4C4F4144494E4720            DB      'LOADING EPROM SOFTWARE INTO RAM'
+            4550524F4D20534F
+            4654574152452049
+            4E544F2052414D
+1208 T BF29 0A0A0D                      DB      $0A,$0A,$0D
+1209 T BF2C 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+1210 T BF3A 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1211                           
+1212 T BF3E 68C7D000                    RLDI    R7,EPROM            ; STORAGE ADDREES FOR EPROM CODE
+1213 T BF42 68C80000                    RLDI    R8,$0000            ; BASE ADDRESS FOR EPROM CODE
+1214 T BF46 68C907FF                    RLDI    R9,$07FF            ; NUMBER OF BYTES
+1215                           
+1216 T BF4A 07                 01$:     LDN     R7                  ; GET BYTE FROM ROM
+1217 T BF4B 58                          STR     R8                  ; STORE IN RAM
+1218                                            
+1219 T BF4C E7                          SEX     R7                  ; MAKE ROM POINTER SP
+1220 T BF4D 08                          LDN     R8                  ; GET BYTE FROM RAM
+1221 T BF4E F7                          SM                          ; SUBTRCK BYTES
+1222 T BF4F E2                          SEX     R2                  ; RESET SP TO R2
+1223 T BF50 3258                        BZ      02$                 ; BYTE OK?
+1224                           
+1225 T BF52 6886BE2F                    SCAL    R6,ERRCOM           ; IF NOT EQUAL ERROR
+1226 T BF56 3068                        BR      03$                 ; QUIT ON ERROR
+1227                           
+1228 T BF58 17                 02$:     INC     R7                  ; INCREMENT ROM ADDRESS
+1229 T BF59 18                          INC     R8                  ; INCREMENT RAM ADDRESS
+1230 T BF5A 6829BF4A                    DBNZ    R9,01$              ; TRANSFER 2K BYTES
+1231                           
+1232 T BF5E 6886DB6F                    SCAL    R6,CLEAR            ; CLEAR SCREEN
+1233                           
+1234 T BF62 68C00000                    RLDI    R0,$0000            ; INITIAL R0 
+1235 T BF66 E0                          SEX     R0                  ; R0 IS SP
+1236 T BF67 D0                          SEP     R0                  ; R0 IS PC
+1237                           ;******************************************************************************
+1238                           ;
+1239                           ;       EPROM PROGRAMMING ABORTED
+1240                           ;
+1241                           ;******************************************************************************
+1242 T BF68 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1243 T BF6C 0A0D                        DB      $0A,$0D
+1244 T BF6E 2A2A2A2A20455052            DB      '**** EPROM PROGRAMING  ABORTED ****'
+            4F4D2050524F4752
+            414D494E47202041
+            424F52544544202A
+            2A2A2A
+1245 T BF91 0A0D                        DB      $0A,$0D
+1246 T BF93 2020202020202050            DB      '       PRESS ANY KEY'
+            5245535320414E59
+            204B4559
+1247 T BFA7 0A0D00                      DB      $0A,$0D,$00
+1248 T BFAA 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+1249 T BFAE C0B00C                      LBR     MENU
+1250                           ;******************************************************************************
+1251                           
+1252 T C000                             CORG    $0100               ; SET NEXT PAGE
+1253                           
+1254                           ;******************************************************************************
+1255                           ;
+1256                           ;       RTE1/RTD1 TEST ROUTINE
+1257                           ;
+1258                           ;******************************************************************************
+1259 T C000 6886DB6F           RTERTD:  SCAL    R6,CLEAR                ; CLEAR SCREEN
+1260 T C004 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+1261 T C008 0A0D                        DB      $0A,$0D
+1262 T C00A 525445312F525444            DB      'RTE1/RTD1 TEST'
+            312054455354
+1263 T C018 0A0D00                      DB      $0A,$0D,$00
+1264                           ;******************************************************************************
+1265                           ;
+1266                           ;       SET-UP FOR PIO PORTS
+1267                           ;
+1268                           ;       PORT A FOR DATA INPUT
+1269                           ;       PORT B LOW NIBBLE ADDRESS INPUT
+1270                           ;       PORT B HIGH NIBBLE OUTPUT ECHO
+1271                           ;
+1272                           ;******************************************************************************
+1273 T C01B 68C24800                    RLDI    R2,RAM+$0800            ; USER STACK
+1274 T C01F E3                          SEX     R3                      ; SET SP TO PC
+1275 T C020 61                          OUT     1                       ; SELECT I/O GROUP 8
+1276 T C021 08                          DB      $08                 ; I/O GROUP 8       
+1277 T C022 62                          OUT     2
+1278 T C023 0F                          DB      $0F                 ; A IS INPUT
+1279 T C024 62                          OUT     2
+1280 T C025 F7                          DB      $F7                 ; B IS BIT PROG
+1281 T C026 62                          OUT     2
+1282 T C027 F0                          DB      $F0                 ; LOW IN,HIGH OUT
+1283 T C028 E2                          SEX     R2
+1284                           
+1285 T C029 68C10001                    RLDI    R1,$0001                ; INITIALIZE TO CHANNEL ONE
+1286 T C02D 68C00000                    RLDI    R0,$0000                ; INITIALIZE LINE COUNTER
+1287                           ;******************************************************************************
+1288                           ;
+1289                           ;       INPUT PIO DATA
+1290                           ;
+1291                           ;******************************************************************************
+1292 T C031 E3                 PIO:     SEX     R3                      ; SET SP TO PC
+1293 T C032 61                          OUT     1                       ; SELECT I/O GROUP 8
+1294 T C033 08                          DB      $08
+1295 T C034 E2                          SEX     R2                      ; RESET SP TO R2
+1296 T C035 3535               WAIT:    B2      WAIT                    ; WAIT FOR DATA VALID
+1297                           ;******************************************************************************
+1298 T C037 6E                          INP     6                       ; ADDRESS
+1299 T C038 60                          IRX     
+1300 T C039 6C                          INP     4                       ; DATA
+1301 T C03A 22                          DEC     R2
+1302 T C03B F0                          LDX     
+1303 T C03C FA0F                        ANI     $0F
+1304 T C03E 52                          STR     R2
+1305 T C03F B7                          PHI     R7
+1306                           ;******************************************************************************
+1307 T C040 81                          GLO     R1                      ; LOAD CHANNEL NUMBER
+1308 T C041 F7                          SM                          ; COMPARE TO INPUT CHANNEL
+1309 T C042 3A35                        BNZ     WAIT                    ; IF NOT SAME WAIT FOR NEXT INPUT
+1310                           ;******************************************************************************
+1311 T C044 60                          IRX                         ; INCREMENT STACK TO DATA
+1312 T C045 F0                          LDX                         ; LOAD DATA
+1313 T C046 A7                          PLO     R7                      ; STASH IN REGISTER
+1314 T C047 22                          DEC     R2                      ; RESET STACK POINTER
+1315                           ;******************************************************************************
+1316 T C048 11                          INC     R1                      ; INCREMENT TO NEXT CHANNEL
+1317 T C049 81                          GLO     R1                      ; LOAD NEXT CHANNEL
+1318 T C04A FF0A                        SMI     $0A                     ; $0A PAST CHANNEL 9?
+1319 T C04C 3A52                        BNZ     OUT                     ; IF NOT OUTPUT, OTHERWISE-
+1320 T C04E 68C10001                    RLDI    R1,$0001                ; RESET CHANNEL TO ONE
+1321                           ;******************************************************************************
+1322                           ;
+1323                           ;       OUTPUT CHANNEL NUMBER AND INPUT BYTE TO SCREEN
+1324                           ;
+1325                           ;******************************************************************************
+1326 T C052 6886D800           OUT:     SCAL    R6,OSTRN1
+1327 T C056 0A0D                        DB      $0A,$0D
+1328 T C058 434820                      DB      'CH '
+1329 T C05B 00                          DB      $00
+1330 T C05C 97                          GHI     R7
+1331 T C05D BD                          PHI     RD
+1332 T C05E 6886D965                    SCAL    R6,TYPE8
+1333 T C062 0302                        DB      $03,$02
+1334 T C064 87                          GLO     R7
+1335 T C065 BD                          PHI     RD
+1336 T C066 6886D9B2                    SCAL    R6,WORD
+1337 T C06A 0302                        DB      $03,$02
+1338 T C06C 87                          GLO     R7
+1339 T C06D BD                          PHI     RD
+1340 T C06E 6886D965                    SCAL    R6,TYPE8
+1341 T C072 0201                        DB      $02,$01
+1342                           
+1343 T C074 3F89                        BN4     04$                 ; ABORT ON BREAK
+1344                           
+1345 T C076 10                          INC     R0                  ; INCREMENT LINE COUNTER
+1346 T C077 80                          GLO     R0                  ; GET COUNT
+1347 T C078 FF09                        SMI     $09                 ; 9 LINES
+1348 T C07A CAC031                      LBNZ    PIO                 ; IF LESS NEXT CHANNEL, OTHERWISE-
+1349                           
+1350 T C07D 6886DB40                    SCAL    R6,MLFCR            ; LINE UP
+1351 T C081 12                          DB      $12                 ; 18 TIMES
+1352 T C082 68C00000                    RLDI    R0,$0000            ; RESET LINE COUNTER
+1353                           
+1354 T C086 C0C031                      LBR     PIO
+1355                           ;****************************************************************************
+1356                           ;
+1357                           ;       RTE1/RTD1 TEST ABORTED
+1358                           ;
+1359                           ;****************************************************************************
+1360 T C089 6886DB6F           04$:     SCAL    R6,CLEAR            ; CLEAR SCREEN
+1361 T C08D 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1362 T C091 0A0D                        DB      $0A,$0D
+1363 T C093 2A2A2A2A20525445            DB      '**** RTE1/RTD1 TEST ABORTED ****'
+            312F525444312054
+            4553542041424F52
+            544544202A2A2A2A
+1364 T C0B3 0A0D00                      DB      $0A,$0D,$00
+1365                           ;******************************************************************************
+1366                           ;
+1367                           ;       REPEAT PROCESS
+1368                           ;
+1369                           ;*****************************************************************************
+1370 T C0B6 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1371 T C0BA 0A0D00                      DB      $0A,$0D,$00         ; 1 LINES DOWN
+1372 T C0BD 6886B700                    SCAL    R6,REPEAT           ; CALL REPEAT QUESTION ROUTINE
+1373 T C0C1 C2C000                      LBZ     RTERTD              ; REPEAT TEST IF D=0
+1374 T C0C4 C0B00C                      LBR     MENU                ; RETURN TO MAIN TEST MENU
+1375                           ;******************************************************************************
+1376                           ;
+1377                           ;       END OF TLX TEST SOFTWARE
+1378                           ;
+1379                           ;******************************************************************************
+1380                           
+1381                           ;******************************************************************************
+1382                           ;
+1383                           ;       PATCH AREA
+1384                           ;
+1385                           ;******************************************************************************
+1386 T C0C7 6886D904           EPTSTE:  SCAL    R6,READD            ; SCAN KEYBOARD
+1387 T C0CB C0C0CE                      LBR     EPTST2              ; BRANCH
+1388                           ;******************************************************************************
+1389 T C0CE 6886DB6F           EPTST2:  SCAL    R6,CLEAR            ; CLEAR SCREEN
+1390 T C0D2 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1391 T C0D6 0A0D                        DB      $0A,$0D
+1392 T C0D8 434845434B204550            DB      'CHECK EPROM AGAINST MASTER NUMBER 2 VERSION 4'
+            524F4D2041474149
+            4E5354204D415354
+            4552204E554D4245
+            5220322056455253
+            494F4E2034
+1393 T C105 0A0A0D                      DB      $0A,$0A,$0D
+1394 T C108 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+1395 T C116 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1396                           
+1397 T C11A 68C00000                    RLDI    R0,$0000            ; ZERO OUT ERROR COUNT
+1398                           
+1399 T C11E 68C79800                    RLDI    R7,MASTER2          ; STORAGE ADDREES FOR EPROM CODE
+1400 T C122 68C80800                    RLDI    R8,$0800            ; BASE ADDRESS FOR EPROM CODE
+1401 T C126 68C907FF                    RLDI    R9,$07FF            ; NUMBER OF BYTES
+1402                           
+1403 T C12A E8                 01$:     SEX     R8                  ; POINTER TO EPROM IS SP
+1404 T C12B 07                          LDN     R7                  ; GET BYTE FORM MASTER
+1405 T C12C F7                          SM                          ; SUBTRACK FORM EPROM
+1406 T C12D E2                          SEX     R2                  ; RESET SP TO R2
+1407 T C12E 3234                        BZ      02$                 ; CHECK OK?
+1408                           
+1409 T C130 6886BE2F                    SCAL    R6,ERRCOM           ; IF NOT EQUAL ERROR
+1410                           
+1411 T C134 3F88               02$:     BN4     04$                 ; ABORT ON BREAK
+1412 T C136 17                          INC     R7                  ; INCREMENT ADDRESS OF EPROM
+1413 T C137 18                          INC     R8                  ; INCREMENT ADDRESS OF MASTER
+1414 T C138 6829C12A                    DBNZ    R9,01$              ; COMPARE 2K BYTES
+1415                           
+1416 T C13C 90                          GHI     R0                  ; HIGH BYTE OF ERROR COUNT
+1417 T C13D 3A60                        BNZ     03$                 ; IF ERROR BRANCH
+1418 T C13F 80                          GLO     R0                  ; LOW BYTE OF ERROR COUNT
+1419 T C140 3A60                        BNZ     03$                 ; IF NOT ZERO ERRORS
+1420                           
+1421 T C142 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1422 T C146 0A0D                        DB      $0A,$0D
+1423 T C148 4550524F4D205445            DB      'EPROM TEST COMPLETED'
+            535420434F4D504C
+            45544544
+1424 T C15C 00                          DB      $00
+1425                           ;       LBR     EPTST3          ; BRANCH TO PATCH AREA
+1426 T C15D C0B9ED                      LBR     PIOTST              ; JUMP TO PIO TEST IF NO ERRORS
+1427                           
+1428 T C160 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1429 T C164 0A0D                        DB      $0A,$0D
+1430 T C166 2A2A2A2A20455052            DB      '**** EPROM VERIFY ERRORS ****'
+            4F4D205645524946
+            59204552524F5253
+            202A2A2A2A
+1431 T C183 0A0D00                      DB      $0A,$0D,$00
+1432 T C186 30AD                        BR      05$                 ; WAIT FOR KEY
+1433                           
+1434 T C188 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1435 T C18C 0A0D                        DB      $0A,$0D
+1436 T C18E 2A2A2A2A20455052            DB      '**** EPROM TEST ABORTED ****'
+            4F4D205445535420
+            41424F5254454420
+            2A2A2A2A
+1437 T C1AA 0A0D00                      DB      $0A,$0D,$00
+1438                           
+1439 T C1AD 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1440 T C1B1 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+1441 T C1C4 0A0D00                      DB      $0A,$0D,$00
+1442 T C1C7 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+1443                           ;       NOP
+1444                           ;       NOP
+1445                           ;       NOP
+1446 T C1CB C0B9ED                      LBR     PIOTST              ; RETURN TO MAIN CODE STREAM
+1447                           ;******************************************************************************
+1448 T C1CE 6886DB6F           EPTST3:  SCAL    R6,CLEAR            ; CLEAR SCREEN
+1449 T C1D2 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1450 T C1D6 0A0D                        DB      $0A,$0D
+1451 T C1D8 434845434B204550            DB      'CHECK EPROM AGAINST MASTER NUMBER 3'
+            524F4D2041474149
+            4E5354204D415354
+            4552204E554D4245
+            522033
+1452 T C1FB 0A0A0D                      DB      $0A,$0A,$0D
+1453 T C1FE 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+1454 T C20C 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1455                           
+1456 T C210 68C00000                    RLDI    R0,$0000            ; ZERO OUT ERROR COUNT
+1457                           
+1458 T C214 68C7A000                    RLDI    R7,MASTER3          ; STORAGE ADDREES FOR EPROM CODE
+1459 T C218 68C81000                    RLDI    R8,$1000            ; BASE ADDRESS FOR EPROM CODE
+1460 T C21C 68C907FF                    RLDI    R9,$07FF            ; NUMBER OF BYTES
+1461                           
+1462 T C220 E8                 01$:     SEX     R8                  ; POINTER TO EPROM IS SP
+1463 T C221 07                          LDN     R7                  ; GET BYTE FORM MASTER
+1464 T C222 F7                          SM                          ; SUBTRACK FORM EPROM
+1465 T C223 E2                          SEX     R2                  ; RESET SP TO R2
+1466 T C224 322A                        BZ      02$                 ; CHECK OK?
+1467                           
+1468 T C226 6886BE2F                    SCAL    R6,ERRCOM           ; IF NOT EQUAL ERROR
+1469                           
+1470 T C22A 3F7E               02$:     BN4     04$                 ; ABORT ON BREAK
+1471 T C22C 17                          INC     R7                  ; INCREMENT ADDRESS OF EPROM
+1472 T C22D 18                          INC     R8                  ; INCREMENT ADDRESS OF MASTER
+1473 T C22E 6829C220                    DBNZ    R9,01$              ; COMPARE 2K BYTES
+1474                           
+1475 T C232 90                          GHI     R0                  ; HIGH BYTE OF ERROR COUNT
+1476 T C233 3A56                        BNZ     03$                 ; IF ERROR BRANCH
+1477 T C235 80                          GLO     R0                  ; LOW BYTE OF ERROR COUNT
+1478 T C236 3A56                        BNZ     03$                 ; IF NOT ZERO ERRORS
+1479                           
+1480 T C238 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1481 T C23C 0A0D                        DB      $0A,$0D
+1482 T C23E 4550524F4D205445            DB      'EPROM TEST COMPLETED'
+            535420434F4D504C
+            45544544
+1483 T C252 00                          DB      $00
+1484                           ;       LBR     EPTST4          ; BRANCH TO PATCH AREA
+1485 T C253 C0B9ED                      LBR     PIOTST              ; JUMP TO PIO TEST IF NO ERRORS
+1486                           
+1487 T C256 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1488 T C25A 0A0D                        DB      $0A,$0D
+1489 T C25C 2A2A2A2A20455052            DB      '**** EPROM VERIFY ERRORS ****'
+            4F4D205645524946
+            59204552524F5253
+            202A2A2A2A
+1490 T C279 0A0D00                      DB      $0A,$0D,$00
+1491 T C27C 30A3                        BR      05$                 ; WAIT FOR KEY
+1492                           
+1493 T C27E 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1494 T C282 0A0D                        DB      $0A,$0D
+1495 T C284 2A2A2A2A20455052            DB      '**** EPROM TEST ABORTED ****'
+            4F4D205445535420
+            41424F5254454420
+            2A2A2A2A
+1496 T C2A0 0A0D00                      DB      $0A,$0D,$00
+1497                           
+1498 T C2A3 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1499 T C2A7 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+1500 T C2BA 0A0D00                      DB      $0A,$0D,$00
+1501 T C2BD 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+1502                           ;       NOP
+1503                           ;       NOP
+1504                           ;       NOP
+1505 T C2C1 C0B9ED                      LBR     PIOTST              ; RETURN TO MAIN CODE STREAM
+1506                           ;******************************************************************************
+1507 T C2C4 6886DB6F           EPTST4:  SCAL    R6,CLEAR            ; CLEAR SCREEN
+1508 T C2C8 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1509 T C2CC 0A0D                        DB      $0A,$0D
+1510 T C2CE 434845434B204550            DB      'CHECK EPROM AGAINST MASTER NUMBER 4'
+            524F4D2041474149
+            4E5354204D415354
+            4552204E554D4245
+            522034
+1511 T C2F1 0A0A0D                      DB      $0A,$0A,$0D
+1512 T C2F4 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+1513 T C302 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1514                           
+1515 T C306 68C00000                    RLDI    R0,$0000            ; ZERO OUT ERROR COUNT
+1516                           
+1517 T C30A 68C7C800                    RLDI    R7,MASTER4          ; STORAGE ADDREES FOR EPROM CODE
+1518 T C30E 68C81800                    RLDI    R8,$1800            ; BASE ADDRESS FOR EPROM CODE
+1519 T C312 68C907FF                    RLDI    R9,$07FF            ; NUMBER OF BYTES
+1520                           
+1521 T C316 E8                 01$:     SEX     R8                  ; POINTER TO EPROM IS SP
+1522 T C317 07                          LDN     R7                  ; GET BYTE FORM MASTER
+1523 T C318 F7                          SM                          ; SUBTRACK FORM EPROM
+1524 T C319 E2                          SEX     R2                  ; RESET SP TO R2
+1525 T C31A 3220                        BZ      02$                 ; CHECK OK?
+1526                           
+1527 T C31C 6886BE2F                    SCAL    R6,ERRCOM           ; IF NOT EQUAL ERROR
+1528                           
+1529 T C320 3F74               02$:     BN4     04$                 ; ABORT ON BREAK
+1530 T C322 17                          INC     R7                  ; INCREMENT ADDRESS OF EPROM
+1531 T C323 18                          INC     R8                  ; INCREMENT ADDRESS OF MASTER
+1532 T C324 6829C316                    DBNZ    R9,01$              ; COMPARE 2K BYTES
+1533                           
+1534 T C328 90                          GHI     R0                  ; HIGH BYTE OF ERROR COUNT
+1535 T C329 3A4C                        BNZ     03$                 ; IF ERROR BRANCH
+1536 T C32B 80                          GLO     R0                  ; LOW BYTE OF ERROR COUNT
+1537 T C32C 3A4C                        BNZ     03$                 ; IF NOT ZERO ERRORS
+1538                           
+1539 T C32E 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1540 T C332 0A0D                        DB      $0A,$0D
+1541 T C334 4550524F4D205445            DB      'EPROM TEST COMPLETED'
+            535420434F4D504C
+            45544544
+1542 T C348 00                          DB      $00
+1543 T C349 C0B9ED                      LBR     PIOTST              ; JUMP TO PIO TEST IF NO ERRORS
+1544                           
+1545 T C34C 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1546 T C350 0A0D                        DB      $0A,$0D
+1547 T C352 2A2A2A2A20455052            DB      '**** EPROM VERIFY ERRORS ****'
+            4F4D205645524946
+            59204552524F5253
+            202A2A2A2A
+1548 T C36F 0A0D00                      DB      $0A,$0D,$00
+1549 T C372 3099                        BR      05$                 ; WAIT FOR KEY
+1550                           
+1551 T C374 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1552 T C378 0A0D                        DB      $0A,$0D
+1553 T C37A 2A2A2A2A20455052            DB      '**** EPROM TEST ABORTED ****'
+            4F4D205445535420
+            41424F5254454420
+            2A2A2A2A
+1554 T C396 0A0D00                      DB      $0A,$0D,$00
+1555                           
+1556 T C399 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1557 T C39D 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+1558 T C3B0 0A0D00                      DB      $0A,$0D,$00
+1559 T C3B3 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+1560 T C3B7 C0B9ED                      LBR     PIOTST              ; RETURN TO MAIN CODE STREAM
+1561                           ;******************************************************************************
+1562                           ;
+1563                           ;       GET SOFTWARE VERSION NUMBER
+1564                           ;
+1565                           ;******************************************************************************
+1566 T C3BA 6886DB6F           GETVER:  SCAL    R6,CLEAR                ; CLEAR SCREEN
+1567                           
+1568 T C3BE 6886D800                    SCAL    R6,OSTRN1               ; PRINT MESSAGE
+1569 T C3C2 0A0D                        DB      $0A,$0D                 ;
+1570 T C3C4 28322920544C5820            DB      '(2) TLX SOFTWARE VERSION 2',$0A,$0D
+            534F465457415245
+            2056455253494F4E
+            20320A0D
+1571 T C3E0 0A0D                        DB      $0A,$0D                 ;
+1572 T C3E2 28342920544C5820            DB      '(4) TLX SOFTWARE VERSION 4',$0A,$0D
+            534F465457415245
+            2056455253494F4E
+            20340A0D
+1573 T C3FE 0A0D                        DB      $0A,$0D
+1574 T C400 454E544552205645            DB      'ENTER VERSION NUMBER '
+            5253494F4E204E55
+            4D42455220
+1575 T C415 00                          DB      $00
+1576                           
+1577 T C416 6886D904                    SCAL    R6,READD                ; KEYBOARD INPUT
+1578                           
+1579 T C41A 9F                          GHI     RF                      ; GET KEYPRESS
+1580 T C41B FF32                        SMI     '2'                     ; TWO
+1581 T C41D C2C429                      LBZ     CPUVER2                 ; VERSION 2
+1582                           
+1583 T C420 9F                          GHI     RF                      ; GET KEYPRESS
+1584 T C421 FF34                        SMI     '4'                     ; FOUR
+1585 T C423 C2B8F9                      LBZ     EPTST                   ; VERSION 4
+1586                           
+1587 T C426 C0C3BA                      LBR     GETVER                  ; LOOP TILL CORRECT ANSWER
+1588                           ;******************************************************************************
+1589                           ;
+1590                           ;       EPROM TEST FOR SOFTWARE VERSION 2
+1591                           ;
+1592                           ;******************************************************************************
+1593 T C429                    CPUVER2:         
+1594 T C429 6886DB6F                    SCAL    R6,CLEAR            ; CLEAR SCREEN
+1595 T C42D 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1596 T C431 0A0D                        DB      $0A,$0D
+1597 T C433 434845434B204550            DB      'CHECK EPROM AGAINST MASTER VERSION 2'
+            524F4D2041474149
+            4E5354204D415354
+            4552205645525349
+            4F4E2032
+1598 T C457 0A0A0D                      DB      $0A,$0A,$0D
+1599 T C45A 504C454153452057            DB      'PLEASE WAIT...'
+            4149542E2E2E
+1600 T C468 0A0A0D00                    DB      $0A,$0A,$0D,$00
+1601                           
+1602 T C46C 68C00000                    RLDI    R0,$0000            ; ZERO OUT ERROR COUNT
+1603                           
+1604 T C470 68C7C800                    RLDI    R7,MASTER4          ; STORAGE ADDREES FOR EPROM CODE
+1605 T C474 68C80000                    RLDI    R8,$0000            ; BASE ADDRESS FOR EPROM CODE
+1606 T C478 68C907FF                    RLDI    R9,$07FF            ; NUMBER OF BYTES
+1607                           
+1608 T C47C E8                 01$:     SEX     R8                  ; POINTER TO EPROM IS SP
+1609 T C47D 07                          LDN     R7                  ; GET BYTE FORM MASTER
+1610 T C47E F7                          SM                          ; SUBTRACK FORM EPROM
+1611 T C47F E2                          SEX     R2                  ; RESET SP TO R2
+1612 T C480 3286                        BZ      02$                 ; CHECK OK?
+1613                           
+1614 T C482 6886BE2F                    SCAL    R6,ERRCOM           ; IF NOT EQUAL ERROR
+1615                           
+1616 T C486 3FDA               02$:     BN4     04$                 ; ABORT ON BREAK
+1617 T C488 17                          INC     R7                  ; INCREMENT ADDRESS OF EPROM
+1618 T C489 18                          INC     R8                  ; INCREMENT ADDRESS OF MASTER
+1619 T C48A 6829C47C                    DBNZ    R9,01$              ; COMPARE 2K BYTES
+1620                           
+1621 T C48E 90                          GHI     R0                  ; HIGH BYTE OF ERROR COUNT
+1622 T C48F 3AB2                        BNZ     03$                 ; IF ERROR BRANCH
+1623 T C491 80                          GLO     R0                  ; LOW BYTE OF ERROR COUNT
+1624 T C492 3AB2                        BNZ     03$                 ; IF NOT ZERO ERRORS
+1625                           
+1626 T C494 6886D800                    SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1627 T C498 0A0D                        DB      $0A,$0D
+1628 T C49A 4550524F4D205445            DB      'EPROM TEST COMPLETED'
+            535420434F4D504C
+            45544544
+1629 T C4AE 00                          DB      $00
+1630 T C4AF C0B9ED                      LBR     PIOTST              ; JUMP TO PIO TEST IF NO ERRORS
+1631                           
+1632 T C4B2 6886D800           03$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1633 T C4B6 0A0D                        DB      $0A,$0D
+1634 T C4B8 2A2A2A2A20455052            DB      '**** EPROM VERIFY ERRORS ****'
+            4F4D205645524946
+            59204552524F5253
+            202A2A2A2A
+1635 T C4D5 0A0D00                      DB      $0A,$0D,$00
+1636 T C4D8 30FF                        BR      05$                 ; WAIT FOR KEY
+1637                           
+1638 T C4DA 6886D800           04$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1639 T C4DE 0A0D                        DB      $0A,$0D
+1640 T C4E0 2A2A2A2A20455052            DB      '**** EPROM TEST ABORTED ****'
+            4F4D205445535420
+            41424F5254454420
+            2A2A2A2A
+1641 T C4FC 0A0D00                      DB      $0A,$0D,$00
+1642                           
+1643 T C4FF 6886D800           05$:     SCAL    R6,OSTRN1           ; PRINT MESSAGE
+1644 T C503 2020202020205052            DB      '      PRESS ANY KEY'
+            45535320414E5920
+            4B4559
+1645 T C516 0A0D00                      DB      $0A,$0D,$00
+1646 T C519 6886D904                    SCAL    R6,READD            ; SCAN KEYBOARD
+1647 T C51D C0B9ED                      LBR     PIOTST              ; RETURN TO MAIN CODE STREAM
+1648                           ;******************************************************************************
+1649 T C520 C4                          PATCH:  NOP                     ; NO OPERATION
+1650                           ;******************************************************************************
+1651                           ;
+1652                           ;       END OF TLX TEST SOFTWARE PATCHES
+1653                           ;
+1654                           ;******************************************************************************
+1655   C521                             END     
+There were: 0000 Errors
+
+SECTIONS USED:
+
+ Section           Relocation   Alignment  Type     Begins       Ends
+ TLXTEST           absolute                         B000         C520
+
+
+SYMBOL TABLE
+
+SYMBOLS DEFINED:
+
+ Symbol            Section/Type        Attribute Value             Length
+ ADCAL             absolute                      B500      
+ ADCAL1            absolute                      B533      
+ ADCAL2            absolute                      B54A      
+ ADTST             absolute                      B300      
+ ADTST2            absolute                      B3B6      
+ AMENU             absolute                      B17A      
+ CLEAR             local constant                DB6F      
+ CLKTST            absolute                      BC00      
+ CPUEND            absolute                      BD10      
+ CPUTST            absolute                      B800      
+ CPUVER2           absolute                      C429      
+ CREAD             absolute                      B728      
+ CRLF              local constant                DB1B      
+ CUROFF            local constant                DC23      
+ CURON             local constant                DC18      
+ DACAL             absolute                      B600      
+ DACAL1            absolute                      B627      
+ DATST1            absolute                      B326      
+ DEBUG             local constant                D000      
+ DELAY1            local constant                D889      
+ EFNTST            absolute                      BAE0      
+ EPROM             local constant                D000      
+ EPTST             absolute                      B8F9      
+ EPTST2            absolute                      C0CE      
+ EPTST3            absolute                      C1CE      
+ EPTST4            absolute                      C2C4      
+ EPTSTE            absolute                      C0C7      
+ ERRCLK            absolute                      BEAC      
+ ERRCOM            absolute                      BE2F      
+ ERREF             absolute                      BE85      
+ ERRIO             absolute                      BE5B      
+ ERRRAM            absolute                      BE05      
+ GETVER            absolute                      C3BA      
+ IEPROM            absolute                      BF00      
+ ITEST             local constant                DD0C      
+ M8OUT             local constant                DADD      
+ M8OUT1            local constant                DAD7      
+ M8OUTD            local constant                DADB      
+ MASTER            local constant                9000      
+ MASTER2           local constant                9800      
+ MASTER3           local constant                A000      
+ MASTER4           local constant                C800      
+ MENU              absolute                      B00C      
+ MLFCR             local constant                DB40      
+ MOUT              local constant                DA7C      
+ MOUT1             local constant                DA76      
+ MOUT3             local constant                D9F4      
+ MOUT31            local constant                D9EE      
+ MOUT3D            local constant                D9F2      
+ MOUTD             local constant                DA7A      
+ ORGIN             local constant                B000      
+ OSTRN1            local constant                D800      
+ OSTRNG            local constant                D804      
+ OUT               absolute                      C052      
+ OUTIT             absolute                      B3DF      
+ PATCH             absolute                      C520      
+ PIO               absolute                      C031      
+ PIOTST            absolute                      B9ED      
+ RAM               local constant                4000      
+ RAMTST            absolute                      B848      
+ RCA1              local constant                D874      
+ READ              local constant                D906      
+ READ1             local constant                D900      
+ READD             local constant                D904      
+ READH             local constant                D8BE      
+ READH1            local constant                D8B8      
+ READHD            local constant                D8BC      
+ READHX            local constant                D898      
+ REPEAT            absolute                      B700      
+ RTERTD            absolute                      C000      
+ RVOFF             local constant                DB99      
+ RVON              local constant                DB8E      
+ STACK             local constant                3000      
+ T8OUT             local constant                DABB      
+ T8OUT1            local constant                DAB5      
+ T8OUTD            local constant                DAB9      
+ TAPERAM           local constant                8C00      
+ TAPETOP           local constant                8FFF      
+ TOUT3             local constant                D9CE      
+ TOUT31            local constant                D9C8      
+ TOUT3D            local constant                D9CC      
+ TOUT6             local constant                DA51      
+ TOUT61            local constant                DA4B      
+ TOUT6D            local constant                DA4F      
+ TYPE3             local constant                D939      
+ TYPE31            local constant                D933      
+ TYPE3D            local constant                D937      
+ TYPE6             local constant                D950      
+ TYPE61            local constant                D94A      
+ TYPE6D            local constant                D94E      
+ TYPE8             local constant                D965      
+ TYPE81            local constant                D95F      
+ TYPE8D            local constant                D963      
+ TYPED             local constant                D82B      
+ TYPED1            local constant                D827      
+ TYPEH             local constant                D816      
+ TYPEH1            local constant                D810      
+ TYPEHD            local constant                D814      
+ TYPER             local constant                D82D      
+ USER              local constant                2000      
+ WAIT              absolute                      C035      
+ WORD              local constant                D9B2      
+ WORD3             local constant                D974      
+ WORD31            local constant                D96E      
+ WORD3D            local constant                D972      
+ WORD6             local constant                D99A      
+ WORD61            local constant                D994      
+ WORD6D            local constant                D998      
+ WORD81            local constant                D9AC      
+ WORD8D            local constant                D9B0      
+
+
+Assembly time: 0 min, 20 sec

@@ -1,0 +1,189 @@
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS   
+                                                CONERR - INPUT ERROR CHECKING
+
+
+ ERROR CODES - N* DENOTES THE NUMBER OF OCCURENCES OF EACH ERROR
+
+ A - UNKNOWN VARIABLE NAME
+
+ B - MISSING EQUAL SIGN FOLLOWING VARIABLE NAME
+
+ C - NON-ARRAY VARIABLE HAS AN ARRAY ELEMENT DESIGNATION - (N)
+
+ D - NON-ARRAY VARIABLE HAS MULTIPLE VALUES ASSIGNED
+
+ E - ASSIGNED VALUES EXCEED ARRAY DIMENSION
+
+ F - SYNTAX ERROR
+
+    ******************************  INPUT DATA CARDS  ******************************
+
+  1 CASEID  TLX-1 with Canards                                                      
+  2  $FLTCON                                                                        
+  3          NMACH =1., MACH =.41,                                                  
+  4          NALPHA=6., ALPHA=0.,1.,2.,3.,4.,5.,                                    
+  5          PHI=0.0,                                                               
+  6          ALT=0.0,                                                               
+  7  $END                                                                           
+  8  $REFQ                                                                          
+  9          XCG=52.68,                                                             
+ 10          LREF=9.0,                                                              
+ 11          SREF=63.61725,                                                         
+ 12          BLAYER=NATURAL,                                                           ** SUBSTITUTING NUMERIC FOR NAME NATURAL
+ 13          RHR=50.0,                                                              
+ 14          SCALE=1.0,                                                             
+ 15  $END                                                                           
+ 16  $AXIBOD                                                                        
+ 17          XO=0.000,                                                              
+ 18          TNOSE=OGIVE,                                                              ** SUBSTITUTING NUMERIC FOR NAME OGIVE
+ 19          LNOSE=12.68,                                                           
+ 20          DNOSE=9.0,                                                             
+ 21          BNOSE=3.5,                                                             
+ 22          TRUNC=.FALSE.,                                                         
+ 23          LCENTR=82.0,                                                           
+ 24          DCENTR=9.0,                                                            
+ 25          TAFT=OGIVE,                                                               ** SUBSTITUTING NUMERIC FOR NAME OGIVE
+ 26          LAFT=11.5,                                                             
+ 27          DAFT=6.0,                                                              
+ 28          DEXIT=0.,                                                              
+ 29  $END                                                                           
+ 30  $FINSET1                                                                       
+ 31          SECTYP=NACA,                                                              ** SUBSTITUTING NUMERIC FOR NAME NACA
+ 32          SSPAN= 4.5, 12.0,                                                      
+ 33          CHORD= 4.0, 4.0,                                                       
+ 34          XLE=  51.68, 51.68,                                                    
+ 35          NPANEL=2.0,                                                            
+ 36          PHIF= 90.,270.,                                                        
+ 37  $END                                                                           
+ 38  $FINSET2                                                                       
+ 39          SECTYP=NACA,                                                              ** SUBSTITUTING NUMERIC FOR NAME NACA
+ 40          SSPAN= 4.5, 11.93,                                                     
+ 41          CHORD= 20.38, 0.000,                                                   
+ 42          XLE=  77.8,                                                            
+ 43          SWEEP= 70.0,90.0,                                                      
+ 44          STA=0.,0.,                                                             
+ 45          NPANEL=6.0,                                                            
+ 46          PHIF= 30.,90.,150.,210.,270.,330.,                                     
+ 47          GAM= 0.0,0.0,0.0,0.0,0.0,0.0,                                          
+ 48  $END                                                                           
+ 49  $TRIM                                                                          
+ 50         SET=1.,                                                                 
+ 51         PANL1=.TRUE.,                                                           
+ 52         PANL2=.TRUE.,                                                           
+ 53         DELMIN=-25.,                                                            
+ 54         DELMAX=25.,                                                             
+ 55  $END                                                                           
+ 56 DERIV DEG                                                                       
+ 57 NO LAT                                                                          
+ 58 NACA 1 4 0018                                                                   
+ 59 NACA 2 4 0001                                                                   
+ 60 DIM IN                                                                          
+ 61 BUILD                                                                           
+ 62 NEXT CASE                                                                       
+ 63                                                                                    ** BLANK CARD - IGNORED
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   1
+                                                         CASE INPUTS
+
+FOLLOWING ARE THE CARDS INPUT FOR THIS CASE
+
+CASEID  TLX-1 with Canards                                                      
+ $FLTCON                                                                        
+         NMACH =1., MACH =.41,                                                  
+         NALPHA=6., ALPHA=0.,1.,2.,3.,4.,5.,                                    
+         PHI=0.0,                                                               
+         ALT=0.0,                                                               
+ $END                                                                           
+ $REFQ                                                                          
+         XCG=52.68,                                                             
+         LREF=9.0,                                                              
+         SREF=63.61725,                                                         
+         BLAYER=1.,                                                             
+         RHR=50.0,                                                              
+         SCALE=1.0,                                                             
+ $END                                                                           
+ $AXIBOD                                                                        
+         XO=0.000,                                                              
+         TNOSE=1.,                                                              
+         LNOSE=12.68,                                                           
+         DNOSE=9.0,                                                             
+         BNOSE=3.5,                                                             
+         TRUNC=.FALSE.,                                                         
+         LCENTR=82.0,                                                           
+         DCENTR=9.0,                                                            
+         TAFT=1.,                                                               
+         LAFT=11.5,                                                             
+         DAFT=6.0,                                                              
+         DEXIT=0.,                                                              
+ $END                                                                           
+ $FINSET1                                                                       
+         SECTYP=1.,                                                             
+         SSPAN= 4.5, 12.0,                                                      
+         CHORD= 4.0, 4.0,                                                       
+         XLE=  51.68, 51.68,                                                    
+         NPANEL=2.0,                                                            
+         PHIF= 90.,270.,                                                        
+ $END                                                                           
+ $FINSET2                                                                       
+         SECTYP=1.,                                                             
+         SSPAN= 4.5, 11.93,                                                     
+         CHORD= 20.38, 0.000,                                                   
+         XLE=  77.8,                                                            
+         SWEEP= 70.0,90.0,                                                      
+         STA=0.,0.,                                                             
+         NPANEL=6.0,                                                            
+         PHIF= 30.,90.,150.,210.,270.,330.,                                     
+         GAM= 0.0,0.0,0.0,0.0,0.0,0.0,                                          
+ $END                                                                           
+ $TRIM                                                                          
+        SET=1.,                                                                 
+        PANL1=.TRUE.,                                                           
+        PANL2=.TRUE.,                                                           
+        DELMIN=-25.,                                                            
+        DELMAX=25.,                                                             
+ $END                                                                           
+DERIV DEG                                                                       
+NO LAT                                                                          
+NACA 1 4 0018                                                                   
+NACA 2 4 0001                                                                   
+DIM IN                                                                          
+BUILD                                                                           
+NEXT CASE                                                                       
+
+THE BOUNDARY LAYER IS ASSUMED TO DEVELOP NATURALLY OVER ALL COMPONENTS OF THE CONFIGURATION
+
+THE INPUT UNITS ARE IN INCHES, THE SCALE FACTOR IS   1.0000
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  4/91 *                                   CASE   1
+                                        AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   2
+                                                       TLX-1 with Canards                                                         
+                                           TRIMMED STATIC AERODYNAMIC COEFFICIENTS
+
+
+-------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+ MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+            FT        FT/SEC    LB/IN**2     DEG R      1/FT        DEG      DEG      IN**2     IN       IN        IN         IN
+ 0.41        0.00     457.67   1.470E+01     518.67   2.898E+06      0.00     0.00    63.617    9.000    9.000    52.680      0.000
+
+
+
+             ALPHA        DELTA          CL           CD           CN           CA           CY          CLN          CLL
+
+               0.00       0.0000       0.0000       0.2657       0.0000       0.2657       0.0000       0.0000       0.0000
+
+               1.00       2.1694       0.3461       0.2698       0.3508       0.2637       0.0000       0.0000       0.0000
+
+               2.00       5.2995       0.6969       0.2854       0.7064       0.2609       0.0000       0.0000       0.0000
+
+               3.00      10.4753       1.0493       0.3030       1.0638       0.2477       0.0000       0.0000       0.0000
+
+               4.00      15.6789       1.3966       0.3268       1.4160       0.2286       0.0000       0.0000       0.0000
+
+               5.00      18.8982       1.6800       0.3579       1.7048       0.2101       0.0000       0.0000       0.0000
+
+
+PANELS FROM FIN SET 1 WERE DEFLECTED OVER THE RANGE  -25.0000 TO   25.0000 DEG.
+    PANEL 1 WAS VARIED
+    PANEL 2 WAS VARIED
+*** END OF JOB ***

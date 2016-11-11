@@ -1,0 +1,41 @@
+
+American Automation Cross-Assembler 1805 9.05.11
+Assembly date:  8 Dec 1988
+Assembly time: 10:40:39
+Options in effect:expand format list object symbol errorfile uppercase 
+
+0001 T 0000                  T          section test,$0000
+0002 T 0000                             org     $0000
+0003 T 0000 68CCFFFF                    rldi    rc,$ffff
+0004                           
+0005 T 0004 68CA0000           test:    rldi    ra,$0000
+0006 T 0008 68CB0000                    rldi    rb,$0000
+0007                           
+0008 T 000C 1A                 wait:    inc     ra
+0009 T 000D 350C                        b2      wait
+0010                                            
+0011 T 000F 1B                 wait1:   inc     rb
+0012 T 0010 3D0F                        bn2     wait1
+0013                                            
+0014 T 0012 682C0004                    dbnz    rc,test
+0015                                            
+0016   0016                             end     
+There were: 0000 Errors
+
+SECTIONS USED:
+
+ Section           Relocation   Alignment  Type     Begins       Ends
+ TEST              absolute                         0000         0015
+
+
+SYMBOL TABLE
+
+SYMBOLS DEFINED:
+
+ Symbol            Section/Type        Attribute Value             Length
+ TEST              absolute                      0004      
+ WAIT              absolute                      000C      
+ WAIT1             absolute                      000F      
+
+
+Assembly time: 0 min, 1 sec

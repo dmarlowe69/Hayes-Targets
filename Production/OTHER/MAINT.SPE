@@ -1,0 +1,48 @@
+
+
+
+
+
+	SPECIFICATION TLX TYPICAL MAINTENANCE TURN-AROUND TIME
+
+	1. APPLICATION
+
+		This specifications covers the typical maintenance turn-round
+	time of the TLX target. The following minimum equipment is required
+	to perform the preflight tests:
+
+	1.	TLX target
+	2.	TLX control station or aircraft simulator
+	3.	TLX Power Supply/Test Set
+	4.	Altimeter Tester
+
+
+	2. PRE-FLIGHT CHECKS
+
+		In the general, the following operations must be performed
+	prior to loading the TLX target on the tow aircraft.
+
+	1. 	Removeal of access door			(2 min)
+
+	2. 	Disconnect computer power cable and connect TLX Power
+		Supply/Test, and power on target.	(2 min)
+
+	3.	Check test points on test set		(2 min)
+
+	4.	Check and calibrate accelerometer (if required)
+							(5 min)
+
+	5.	Strap on Altimeter tester		(2 min)
+
+	6.	Test altimeter				(5 min)
+
+	7.	Verify command link and TM RF links	(10 min)
+
+	8.	power off target, remove power supply/test set, altimeter
+		tester.					(2 min)
+
+	9.	re-install access door			(2 min)
+
+	10.	Total test time:			35 minutes
+		
+

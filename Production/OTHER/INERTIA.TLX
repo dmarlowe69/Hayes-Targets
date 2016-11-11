@@ -1,0 +1,250 @@
+
+
+
+
+
+
+
+
+			MASS MOMENT OF INERTIA
+
+			       OF THE
+
+				TLX-1
+
+			         IN
+
+			    PITCH AND YAW
+
+
+
+
+
+
+	MASS AND MOMENT OF INERTIA OF THE TLX-1 IN PATCH AND YAW
+
+	1.0 INTRODUCTION
+
+		Mass and moment of inertia of a tow target are quanities which
+	are required for dynmaic analysis. A "swing" test was preformed to
+	experimentally determine these values. This report contains the results
+	of this test. A summary of the results are as follows:
+
+
+		weight:				68.225 pounds
+
+
+		pitch moment of inertia:	126.566 in-lbs-sec^2
+
+						10.547 ft-lbs-sec^2
+
+						14.30 Kg-M^2
+
+
+		yaw moment of inertia:		123.690 in-lbs-sec^2
+
+						10.307 ft-lbs-sec^2
+
+						13.975 Kg-M^2
+
+
+
+
+
+
+	2.0 EXPERIMENTIAL PARAMETERS
+
+		The method use to measure the mass moment of inertia of the TLX
+	is the Bi-Filer Pendulum method. The derivation of the equation used to
+	calculate the moment of inertia is included in the appendix. This
+	method is valid for a test configuartion as depicted in figure 1. The
+	required measured variables include the following:
+
+
+	PENDULM LENGTH	(S)	45 INCHES
+	
+	RADIUS		(R)	16 INCHES
+
+	TLX WEIGHT	(W)	68.225 LBS
+
+
+		Given this data, the equation for calculating the moment of
+	inertia only depends on the measured period of oscilation (T). The
+	equation is:
+
+	
+	MOMENT OF INERTIA
+
+	I  =  ( T^2 ) * ( W ) * ( R^2 )
+	      -------------------------
+		4 * ( pi^2 ) * ( S )
+
+	   =  ( T^2 ) * ( 68.225 LBS ) * ( 16 INCHES )^2
+	      ------------------------------------------
+		4 * ( pi^2 ) * ( 45 INCHES )
+
+	   =  ( T^2 ) * ( 9.8313 in - lbs )
+
+	
+		Where "T" is the measured period of the pendulum, in seconds.
+	In order to get an accurate menasured of the period, the time of 10
+	periods (cycles) are measured, six times, and the results averaged. The
+	times are measured using a digital stopwatch. 
+
+		The yaw plane data is obtained by swinging the target about
+	its vertical axis. The pitch data is obtained by swing the target about
+	its lateral axis. Note that the target is suspended upright for the yaw
+	plane and rolled over 90 degrees for the pitch plane.
+
+		The test data on moment of inertia calculations are presented
+	in tables 1 and 2. Table 3 contains the conversion factors required
+	to depict the moment of inertia in four different units of measure.
+
+
+
+				TABLE: 1
+
+		MOMENT OF INERTIA DATA SHEET: PENDULUM METHOD
+
+
+				PITCH PLANE
+
+	   TEST NUMBER			  TIME FOR 10 CYCLES
+					      (SECONDS)
+
+		1				35.79 
+		2				36.03
+		3				35.99
+		4				36.07
+		5				35.25
+		6				36.16
+
+
+	    TOTAL TIME				215.29 SECONDS
+
+
+	AVERAGE TIME 10 CYCLES =  215.29 SECONDS  = 35.88 SECONDS
+				  --------------
+					6
+
+	PERIOD = 35.88 SECONDS  = 3.588 SECONDS
+		 -------------
+		   10 CYCLES
+
+
+	PITCH MOMENT OF INERTIA = ( T^2 ) * ( 9.8313 IN-LBS )
+
+				= ( 3.588 SEC )^2 * ( 9.8313 IN LBS )
+
+				= 126.566 IN-LBS-SEC^2
+
+				= 10.547 FT-LBS-SEC^2
+
+				= 14.30 Kg-M^2
+
+
+
+				TABLE: 2
+
+		MOMENT OF INERTIA DATA SHEET: PENDULUM METHOD
+
+
+				YAW PLANE
+
+	   TEST NUMBER			  TIME FOR 10 CYCLES
+					      (SECONDS)
+
+		1				35.38
+		2				35.36
+		3				35.62
+		4				35.34
+		5				35.62
+		6				35.48
+
+
+	    TOTAL TIME				212.80 SECONDS
+
+
+	AVERAGE TIME 10 CYCLES =  212.80 SECONDS  = 35.47 SECONDS
+				  --------------
+					6
+
+	PERIOD = 35.47 SECONDS	= 3.547 SECONDS
+		 -------------
+		   10 CYCLES
+
+
+	PITCH MOMENT OF INERTIA = ( T^2 ) * ( 9.8313 IN-LBS )
+
+				= ( 3.547 SEC )^2 * ( 9.8313 IN LBS )
+
+				= 123.690 IN-LBS-SEC^2
+
+				= 10.307 FT-LBS-SEC^2
+
+				= 13.975 Kg-M^2
+
+
+
+
+				TABLE: 3
+
+		Moment of Inertia Conversion Factors
+
+
+
+	given			mult by			to obtain
+
+
+	in-lbs-sec^2		1/12			ft-lbs-sec^2
+
+
+	ft-lbs-sec^2		(1)			slug-ft^2
+
+
+	slug-ft^2		1.3559			Kg-M^2
+
+
+
+
+
+	NOTE:
+
+
+		1 SLUG = 1 LBS-SEC^2
+			 -----------
+			     FT
+	AND
+
+		1 LBS-SEC^2
+		  --------- * FT^2 = LBS-FT-SEC^2
+		    FT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				APPENDIX
+
+
+
+
+
+				DERIVATION
+
+				   OF
+
+			MASS MOMENT OF INERTIA EQUATION
+
+

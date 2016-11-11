@@ -1,0 +1,1243 @@
+
+Title: LOW LEVEL OPERATING SYSTEM
+American Automation Cross-Assembler 1805 9.05.11
+Assembly date: 11 Mar 1992
+Assembly time:  8:33:29
+Options in effect:expand format list object symbol errorfile uppercase 
+
+Subtitle: (C)1984,85,86,87,88,89,90,91 HAYES INTERNATION CORPORATION
+0004 T 0000                  T          SECTION TLX,$0000
+0005                           ;****************************************************************************
+0006                           ;
+0007                           ;       LOW LEVEL OPERATING SYSTEM
+0008                           ;
+0009                           ;       FIRST PRODUCTION VERSION 1.0/07 JUL84
+0010                           ;
+0011                           ;       WRITTEN BY DENTON MARLOWE
+0012                           ;
+0013                           ;       COPYRIGHT HAYES INTERNATIONAL CORPORATION
+0014                           ;
+0015                           ;****************************************************************************
+0016                           ;       EQUATES FROM TLXPROD.S
+0017                           ;****************************************************************************
+0018                                    INCLUDE TLXEQU.S
+0019                           ;ABORT                     EQU  $63E  ; D
+0020                           ;ABORTL                    EQU  $634  ; D
+0021                           ;ABORTP                    EQU  $62F  ; D
+0022                           ;ABORTR                    EQU  $639  ; D
+0023        000041E0           ABOT     EQU     $41E0               ; D
+0024        00000020           ABYTE    EQU     $20                 ; D
+0025        0000012A           ACC      EQU     $12A                ; D
+0026        00000000           ACCBIT   EQU     $0                  ; D
+0027        00000131           ACCBNK   EQU     $131                ; D
+0028                           ;ACCEL                     EQU  $54A  ; D
+0029        00000060           ACCLIT   EQU     $60                 ; D
+0030        00000182           ACCOK    EQU     $182                ; D
+0031                           ;ACCZER                    EQU  $401  ; D
+0032        00000735           ADDER    EQU     $735                ; D
+0033        000002F9           ADGETC   EQU     $2F9                ; D
+0034                           ;ADSET                     EQU  $468  ; D
+0035        000002E1           ADSETC   EQU     $2E1                ; D
+0036                           ;AHIGH                     EQU  $501  ; D
+0037        0000038D           AHIGHC   EQU     $38D                ; D
+0038        000001AD           ALT      EQU     $1AD                ; D
+0039        00000004           ALTBIT   EQU     $4                  ; D
+0040        000001B4           ALTBNK   EQU     $1B4                ; D
+0041        00000C00           ALTCON   EQU     $C00                ; D
+0042        0000435F           ALTHIH   EQU     $435F               ; D
+0043        00000040           ALTLIT   EQU     $40                 ; D
+0044        0000436F           ALTLOW   EQU     $436F               ; D
+0045        000001E1           ALTOK    EQU     $1E1                ; D
+0046        0000437F           ALTREL   EQU     $437F               ; D
+0047        000002CC           ALTSFC   EQU     $2CC                ; D
+0048                           ;ARATE                     EQU  $526  ; D
+0049        000002D9           ASHFTC   EQU     $2D9                ; D
+0050        00000710           ASHR     EQU     $710                ; D
+0051        000041FF           ATOP     EQU     $41FF               ; D
+0052                           ;AUTO                      EQU  $493  ; D
+0053        00000317           AUTOC    EQU     $317                ; D
+0054                           ;AVG                       EQU  $4C5  ; D
+0055        00000350           AVGC     EQU     $350                ; D
+0056                           ;BIAS                      EQU  $48A  ; D
+0057                           ;CAHFT                     EQU  $44B  ; D
+0058        0000036C           CALERC   EQU     $36C                ; D
+0059                           ;CALERR                    EQU  $4E1  ; D
+0060        000042E0           CBOT     EQU     $42E0               ; D
+0061        00000020           CBYTE    EQU     $20                 ; D
+0062        00000010           CBYTE2   EQU     $10                 ; D
+0063                           ;CCEL                      EQU  $58E  ; D
+0064                           ;CELAVG                    EQU  $557  ; D
+0065                           ;CELSFT                    EQU  $453  ; D
+0066        00000090           CH0      EQU     $90                 ; D
+0067        00000098           CH1      EQU     $98                 ; D
+0068        0000009E           CH2      EQU     $9E                 ; D
+0069        000000A4           CH3      EQU     $A4                 ; D
+0070        000000AA           CH4      EQU     $AA                 ; D
+0071        000000B0           CH5      EQU     $B0                 ; D
+0072        000000B6           CH6      EQU     $B6                 ; D
+0073        000000BC           CH7      EQU     $BC                 ; D
+0074        000000C2           CH8      EQU     $C2                 ; D
+0075        000000C8           CH9      EQU     $C8                 ; D
+0076                           ;CLTSHF                    EQU  $43E  ; D
+0077        0000473F           COMCHK   EQU     $473F               ; D
+0078        0000473D           COMCNT   EQU     $473D               ; D
+0079        0000473B           COMFLG   EQU     $473B               ; D
+0080        000046FF           COMWRD   EQU     $46FF               ; D
+0081        000043FF           COUNT    EQU     $43FF               ; D
+0082                           ;CSHFT                     EQU  $460  ; D
+0083        000042FF           CTOP     EQU     $42FF               ; D
+0084        000007C6           DCR      EQU     $7C6                ; D
+0085        000007E8           DCR1     EQU     $7E8                ; D
+0086        00000044           DELAY1   EQU     $44                 ; D
+0087        0000013E           DELAY2   EQU     $13E                ; D
+0088        00000199           DELAY3   EQU     $199                ; D
+0089        000001C1           DELAY4   EQU     $1C1                ; D
+0090        000001E4           DETDEC   EQU     $1E4                ; D
+0091                           ;DETDEV                    EQU  $4EF  ; D
+0092        00000791           DIVQ     EQU     $791                ; D
+0093                           ;DOUBLE                    EQU  $573  ; D
+0094        000007B7           DSA      EQU     $7B7                ; D
+0095        000007A8           DSEX     EQU     $7A8                ; D
+0096        000007BC           DSM      EQU     $7BC                ; D
+0097        000007CE           DVC      EQU     $7CE                ; D
+0098        00000799           DVL      EQU     $799                ; D
+0099        000007DC           DVM      EQU     $7DC                ; D
+0100        000007F3           DVN      EQU     $7F3                ; D
+0101        000007E2           DVR      EQU     $7E2                ; D
+0102        000007FF           DVX      EQU     $7FF                ; D
+0103        000000CF           ECHO     EQU     $CF                 ; D
+0104        0000451F           EGAIN    EQU     $451F               ; D
+0105        00004517           EGAIN2   EQU     $4517               ; D
+0106                           ;EXIT                      EQU  $661  ; D
+0107        0000434F           FEDPOT   EQU     $434F               ; D
+0108        0000014F           GAINER   EQU     $14F                ; D
+0109        0000433F           GLOADS   EQU     $433F               ; D
+0110        0000004E           GRABER   EQU     $4E                 ; D
+0111                           ;HALT                      EQU  $439  ; D
+0112        0000024F           HUNDS    EQU     $24F                ; D
+0113        0000453F           IGAIN    EQU     $453F               ; D
+0114        0000447F           INPUT    EQU     $447F               ; D
+0115                           ;LIMIT                     EQU  $624  ; D
+0116        0000011F           LIMITC   EQU     $11F                ; D
+0117        00000700           LINK     EQU     $700                ; D
+0118                           ;LOWALT                    EQU  $418  ; D
+0119                           ;LOWHLT                    EQU  $41C  ; D
+0120        00000006           MANBIT   EQU     $6                  ; D
+0121        00000000           MANLIT   EQU     $0                  ; D
+0122        00000109           MANUAL   EQU     $109                ; D
+0123        0000443F           MATH     EQU     $443F               ; D
+0124                           ;MAXH                      EQU  $50C  ; D
+0125        0000039A           MAXHC    EQU     $39A                ; D
+0126                           ;MAXL                      EQU  $4FD  ; D
+0127        00000388           MAXLC    EQU     $388                ; D
+0128        00000790           MEXIT    EQU     $790                ; D
+0129        0000076F           MPA      EQU     $76F                ; D
+0130        0000076C           MPB      EQU     $76C                ; D
+0131        00000756           MPL      EQU     $756                ; D
+0132        00000776           MPS      EQU     $776                ; D
+0133        00000788           MPX      EQU     $788                ; D
+0134        00000779           MSP3     EQU     $779                ; D
+0135        00000785           MT       EQU     $785                ; D
+0136        0000074A           MULT     EQU     $74A                ; D
+0137                           ;NEGOVF                    EQU  $5F7  ; D
+0138                           ;NEGWNG                    EQU  $5EE  ; D
+0139        00000040           OKLITE   EQU     $40                 ; D
+0140        00000006           OKSET    EQU     $6                  ; D
+0141        00000207           ONES     EQU     $207                ; D
+0142                           ;OUT                       EQU  $50E  ; D
+0143        0000039C           OUTC     EQU     $39C                ; D
+0144                           ;OVERFL                    EQU  $5DD  ; D
+0145        000047FF           PFLAG    EQU     $47FF               ; D
+0146                           ;POSOVF                    EQU  $5E8  ; D
+0147                           ;PREC                      EQU  $65C  ; D
+0148        00004637           PREHUN   EQU     $4637               ; D
+0149        000002C4           PREOK    EQU     $2C4                ; D
+0150        0000463F           PREONE   EQU     $463F               ; D
+0151        0000450B           PRESE1   EQU     $450B               ; D
+0152        00004507           PRESE2   EQU     $4507               ; D
+0153        00004503           PRESE3   EQU     $4503               ; D
+0154        0000450F           PRESET   EQU     $450F               ; D
+0155        0000463B           PRETEN   EQU     $463B               ; D
+0156        00000185           PRG      EQU     $185                ; D
+0157        00000002           PRGBIT   EQU     $2                  ; D
+0158        0000018C           PRGBNK   EQU     $18C                ; D
+0159        00000020           PRGLIT   EQU     $20                 ; D
+0160        000001AA           PRGOK    EQU     $1AA                ; D
+0161        00000100           PULLIT   EQU     $100                ; D
+0162        00004000           RAM      EQU     $4000               ; D
+0163        00000001           RECBIT   EQU     $1                  ; D
+0164        00000010           RECLIT   EQU     $10                 ; D
+0165        0000437B           RELCNT   EQU     $437B               ; D
+0166        0000437D           RELFLG   EQU     $437D               ; D
+0167                           ;RELOK                     EQU  $47C  ; D
+0168        0000455F           RESET    EQU     $455F               ; D
+0169        0000452F           RGAIN    EQU     $452F               ; D
+0170        0000071F           SCALE    EQU     $71F                ; D
+0171                           ;SERVO                     EQU  $629  ; D
+0172        00000124           SERVOC   EQU     $124                ; D
+0173        0000454F           SGAIN    EQU     $454F               ; D
+0174                           ;SOFT                      EQU  $610  ; D
+0175                           ;SOFT1                     EQU  $618  ; D
+0176                           ;STACKA                    EQU  $4AD  ; D
+0177        00000332           STACKC   EQU     $332                ; D
+0178                           ;STOP                      EQU  $627  ; D
+0179        00000122           STOPC    EQU     $122                ; D
+0180                           ;SUBMAN                    EQU  $603  ; D
+0181        0000027C           SUMUP    EQU     $27C                ; D
+0182        00000221           TENS     EQU     $221                ; D
+0183        00000801           TEST     EQU     $801                ; D
+0184        0000083E           TEST0    EQU     $83E                ; D
+0185        00000841           TEST1    EQU     $841                ; D
+0186        00000844           TEST2    EQU     $844                ; D
+0187        00000847           TEST3    EQU     $847                ; D
+0188        0000084A           TEST4    EQU     $84A                ; D
+0189        0000084D           TEST5    EQU     $84D                ; D
+0190        00000850           TEST6    EQU     $850                ; D
+0191        00000853           TEST7    EQU     $853                ; D
+0192        00000856           TEST8    EQU     $856                ; D
+0193        00000859           TEST9    EQU     $859                ; D
+0194        0000085C           TESTX    EQU     $85C                ; D
+0195        0000467F           TIMER    EQU     $467F               ; D
+0196                           ;TLXACC                    EQU  $400  ; D
+0197                           ;TLXALT                    EQU  $800  ; D
+0198                           ;TLXFLY                    EQU  $43C  ; D
+0199        00000010           TMINIT   EQU     $10                 ; D
+0200        00000015           TMWAIT   EQU     $15                 ; D
+0201        00000703           USHR     EQU     $703                ; D
+0202        000044FF           UTIL     EQU     $44FF               ; D
+0203        00000026           VAL      EQU     $26                 ; D
+0204        0000005A           VALID    EQU     $5A                 ; D
+0205                           ;VERSION                   EQU  $2      ; D
+0206                           ;VER_0                     EQU  $0      ; D
+0207                           ;VER_1                     EQU  $1      ; D
+0208                           ;VER_2                     EQU  $2      ; D
+0209                           ;VER_3                     EQU  $3      ; D
+0210                           ;VER_4                     EQU  $4      ; D
+0211                           ;VER_5                     EQU  $5      ; D
+0212        0000477F           WFLAG    EQU     $477F               ; D
+0213        0000006C           WHICH    EQU     $6C                 ; D
+0214                           ;WING                      EQU  $5C9  ; D
+0215        000000CC           WNGMAX   EQU     $CC                 ; D
+0216        00000019           WNGNEG   EQU     $19                 ; D
+0217        000000E5           WNGPOS   EQU     $E5                 ; D
+0218        000000BF           WNGREC   EQU     $BF                 ; D
+0219        0000007F           WNGRET   EQU     $7F                 ; D
+0220        0000FF34           WNGXRI   EQU     $FF34               ; D
+0221        000000E5           WNGZER   EQU     $E5                 ; D
+0222                           ;ZEROC1                    EQU  $40C  ; D
+0223                           ;_OFFSET                   EQU  $5FB  ; D
+0224                           
+0225                           ;****************************************************************************
+0226                           ;       VERSION DEFINTIONS
+0227                           ;****************************************************************************
+0228        00000000           VER_0    EQU     0                   ; PROTOTYPE CONFIGURATION
+0229        00000001           VER_1    EQU     1                   ; STANDARD HAYES CONFIGURATION (SERIAL NO. 1-19)
+0230        00000002           VER_2    EQU     2                   ; STANDARD HAYES CONFIGURATION (SERIAL NO. 20-?)
+0231        00000003           VER_3    EQU     3                   ; SPECIAL FLIGHT INTERNATION VERSION (SERIAL NO. 12)
+0232        00000004           VER_4    EQU     4                   ; STANDARD FLIGHT INTERNATION VERSION (BEFORE FEB 7,1992)
+0233        00000005           VER_5    EQU     5                   ; STANDARD HAYES CONFIGURATION TO MATCH NEW ALTIMETER
+0234                           
+0235                           ;VERSION EQU    VER_0           ; SET VERSION
+0236                           ;VERSION EQU    VER_1           ; SET VERSION
+0237        00000002           VERSION  EQU     VER_2               ; SET VERSION
+0238                           ;VERSION EQU    VER_3           ; SET VERSION
+0239                           ;VERSION EQU    VER_4                   ; SET VERSION
+0240                           ;VERSION EQU    VER_5                   ; SET VERSION
+0241                           
+0242        00000000                    IF      (VERSION EQ VER_0)
+0244                                    ENDIF   
+0245                           
+0246        00000000                    IF      (VERSION EQ VER_1)
+0248                                    ENDIF   
+0249                           
+0250        00000001                    IF      (VERSION EQ VER_2)
+0252                                    ENDIF   
+0253                           
+0254        00000000                    IF      (VERSION EQ VER_3)
+0256                                    ENDIF   
+0257                           
+0258        00000000                    IF      (VERSION EQ VER_4)
+0260                                    ENDIF   
+0261                           
+0262        00000000                    IF      (VERSION EQ VER_5)
+0264                                    ENDIF   
+0265                           
+0266        00000000                    IF      (VERSION GT VER_2)
+0268                                    ENDIF   
+0269                           
+0270                           ;****************************************************************************
+0271                           ;
+0272                           ;
+0273                           ;       TLX ACCEL CONTOLLER SOFTWARE
+0274                           ;
+0275                           ;
+0276                           ;****************************************************************************
+0277 T 0C00                             ORG     $0C00               ; EPROM NUMBER ONE
+0278                           ;****************************************************************************
+0279                           ;
+0280                           ;       WING LIMITS
+0281                           ;
+0282                           ;       HARDWARE WING POSITION
+0283                           ;       BASED ON FOLLOWING CALIBRATION
+0284                           ;
+0285                           ;       ANGLE  ANGLE     HEX  DEC  VOLTS
+0286                           ;
+0287                           ;       +1      +10      FF   255   2.5
+0288                           ;        0       +9      E5   229   2.25
+0289                           ;       -1       +8      CC   204   2.0
+0290                           ;       -1.5     +7.5    BF   191   1.875
+0291                           ;       -2       +7      B2   178   1.75
+0292                           ;       -3       +6      99   153   1.5
+0293                           ;       -4       +5      7F   127   1.25
+0294                           ;       -4.5     +4.5    73   115   1.125
+0295                           ;       -5       +4      66   102   1.0
+0296                           ;       -6       +3      4C    76   0.75
+0297                           ;       -7       +2      33    51   0.50
+0298                           ;       -8       +1      19    25   0.25
+0299                           ;       -8.5     +0.5    0C    12   0.125
+0300                           ;       -9        0      00     0   0.0
+0301                           ;
+0302                           ;       SOFTWARE WING POSITION
+0303                           ;       BASED ON THE FOLLOWING CONVENTION
+0304                           ;
+0305                           ;       ANGLE    HEX
+0306                           ;
+0307                           ;       +8       00CC + 00E5 = 01B1
+0308                           ;        0       0000 + 00E5 = 00E5
+0309                           ;       -8       FF34 + 00E5 = 0019
+0310                           ;
+0311                           ;****************************************************************************
+0312                           ;       WING POSITON EQUATES
+0313                           ;****************************************************************************
+0314        000000E5           WNGPOS   EQU     $E5                 ; MAX POSITIVE (0 DEG)
+0315        000000E5           WNGZER   EQU     $E5                 ; ZERO ANGLE (0 DEG)
+0316        000000BF           WNGREC   EQU     $BF                 ; RECOVERY (-1.5 DEG)
+0317                           
+0318                           
+0319        00000001                    IF      ((VERSION EQ VER_0) OR (VERSION EQ VER_1) OR (VERSION EQ VER_2) OR (VERSION EQ VER_4) OR (VERSION EQ VER_5))
+0320                           
+0321        00000019           WNGNEG   EQU     $19                     ; MAX NEGATIVE (-8.0 DEG)
+0322                           
+0324                                    ENDIF   
+0325                           
+0326        00000000                    IF      (VERSION EQ VER_3)
+0331                                    ENDIF   
+0332                           
+0333        00000001                    IF      ((VERSION EQ VER_1) OR (VERSION EQ VER_2) OR (VERSION EQ VER_4) OR (VERSION EQ VER_5))
+0334                           
+0335        0000007F           WNGRET   EQU     $7F                     ; NORMAL MANUAL RESET (4.0 DEG - 9DEG = -5.0 DEG)
+0336                           
+0338                                    ENDIF   
+0339                           
+0340        00000000                    IF      (VERSION EQ VER_3)
+0345                                    ENDIF   
+0346                           
+0347        00000000                    IF      (VERSION GT VER_2)
+0353                                    ENDIF   
+0354                           ;
+0355        000000CC           WNGMAX   EQU     $00CC               ; ABS POS LIMIT (+8)
+0356        0000FF34           WNGXRI   EQU     $FF34               ; ABS NEG LIMIT (-8)
+0357                           ;****************************************************************************
+0358                           ;
+0359                           ;       ACCELEROMETER SCALING
+0360                           ;
+0361                           ;       G'S    HEX    DEC    VOLTS
+0362                           ;
+0363                           ;       +1.5   FF     255     2.5
+0364                           ;       +1.25  BF     191     1.875
+0365                           ;       +1     7F     127     1.25
+0366                           ;       +0.75  3F      63     0.625
+0367                           ;       +0.5   00       0     0.0
+0368                           ;
+0369                           ;****************************************************************************
+0370                           ;
+0371                           ;       TLX ACCEL CONTROLLER
+0372                           ;
+0373                           ;****************************************************************************
+0374 T 0C00 C4                 TLXACC:  NOP     
+0375                           ;****************************************************************************
+0376                           ;       ZERO ACCEL STACK
+0377                           ;****************************************************************************
+0378 T 0C01 68CD42FF           ACCZER:  RLDI    RD,CTOP             ; TOP OF ACCEL STACK
+0379 T 0C05 68CC0020                    RLDI    RC,CBYTE                ; NUMBER BYTES
+0380 T 0C09 ED                          SEX     RD                              ; SET STACK
+0381 T 0C0A F800                        LDI     $00                     ; ZERO G'S
+0382                           ;
+0383 T 0C0C 73                 ZEROC1:  STXD                        ; STORE BYTE
+0384                           ;
+0385 T 0C0D 682C0C0C                    DBNZ    RC,ZEROC1               ; ZERO ALL BYTES
+0386                           ;****************************************************************************
+0387                           ;       SET COUNTER FOR FOUR CYCLES
+0388                           ;****************************************************************************
+0389 T 0C11 68CD43FF                    RLDI    RD,COUNT
+0390 T 0C15 F804                        LDI     $04
+0391 T 0C17 5D                          STR     RD
+0392                           ;****************************************************************************
+0393                           ;       INITIALIZE PRESET FLAG
+0394                           ;****************************************************************************
+0395        00000000                    IF      ((VERSION GT VER_2) AND (VERSION LT VER_5))
+0402                                    ENDIF   
+0403                           ;****************************************************************************
+0404                           ;
+0405                           ;       DELAY LOOP SECTION
+0406                           ;
+0407                           ;       DELAY LOOP FOR PROGRAM EXECUTION
+0408                           ;       OF 0.25 SECONDS PER CYCLE.
+0409                           ;       POLL THE HALT SWITCH WHILE
+0410                           ;       WAITING, USING THE EF3 FLAG .
+0411                           ;
+0412                           ;****************************************************************************
+0413 T 0C18 68CF0167           LOWALT:  RLDI    RF,$0167            ; DELAY COUNTER
+0414 T 0C1C 3E39               LOWHLT:  BN3     HALT
+0415 T 0C1E 3E39                        BN3     HALT
+0416 T 0C20 3E39                        BN3     HALT
+0417 T 0C22 3E39                        BN3     HALT
+0418                           ;
+0419 T 0C24 3E39                        BN3     HALT
+0420 T 0C26 3E39                        BN3     HALT
+0421 T 0C28 3E39                        BN3     HALT
+0422 T 0C2A 3E39                        BN3     HALT
+0423                           ;
+0424 T 0C2C 682F0C1C                    DBNZ    RF,LOWHLT               ; DECREMENT DELAY COUNT
+0425 T 0C30 303C                        BR      TLXFLY
+0426                           ;****************************************************************************
+0427                           ;
+0428                           ;       DEBUG:CYCLE TIMER
+0429                           ;
+0430                           ;       NOP OUT ABOVE BRANCH AND STOP
+0431                           ;       CLOCK COUNTER. USES Q OUTPUT
+0432                           ;       TO INDICATE CONTROL LOOP
+0433                           ;
+0434                           ;****************************************************************************
+0435 T 0C32 CD                          LSQ                         ; SKIP NEXT 2 IF Q=1
+0436                           ;
+0437 T 0C33 7B                          SEQ                         ; SET Q=1
+0438 T 0C34 C8                          LSKP                        ; SKIP NEXT 2
+0439                           ;
+0440 T 0C35 7A                          REQ                         ; SET Q=0
+0441 T 0C36 7A                          REQ                         ; EVEN OUT LOOP
+0442                           ;
+0443 T 0C37 303E                        BR      CLTSHF
+0444                           ;****************************************************************************
+0445                           ;       JUMP TO COMMAND LINK
+0446                           ;****************************************************************************
+0447        00000000                    IF      (VERSION GT VER_3)
+0451                                    ELSE    
+0452                           
+0453 T 0C39 C00E2F             HALT:    LBR     ABORTP                  ; ABORT PROCESSOR
+0454                           
+0455                                    ENDIF   
+0456                           ;****************************************************************************
+0457                           ; CONTROL LOOP
+0458                           ;****************************************************************************
+0459 T 0C3C C4                 TLXFLY:  NOP                         ; NO OPERATION
+0460 T 0C3D C4                          NOP                         ; NO OPERATION
+0461                           ;****************************************************************************
+0462                           ;       SHIFT ALT STACK DOWN ONE ENTRY
+0463                           ;****************************************************************************
+0464 T 0C3E 68CA41E2           CLTSHF:  RLDI    RA,ABOT+$02         ; BOTTOM OF STACK+2
+0465 T 0C42 68CB41E0                    RLDI    RB,ABOT                 ; BOTTOM STACK
+0466 T 0C46 68CC001E                    RLDI    RC,ABYTE-$02        ; NUMBER BYTES-2
+0467 T 0C4A EA                          SEX     RA                              ; RA IS SP
+0468                           ;
+0469 T 0C4B 72                 CAHFT:   LDXA                        ; GET BYTE
+0470 T 0C4C 5B                          STR     RB                              ; MOVE DOWN
+0471 T 0C4D 1B                          INC     RB                              ; INCREMENT POINTER
+0472                           ;
+0473 T 0C4E 682C0C4B                    DBNZ    RC,CAHFT                ; LOOP FOR ALL BYTES
+0474 T 0C52 1B                          INC     RB                              ; POINT TO LOW BYTE
+0475                           ;****************************************************************************
+0476                           ;       SHIFT ACCEL STACK DOWN ONE ENTRY
+0477                           ;****************************************************************************
+0478 T 0C53 68C742E2           CELSFT:  RLDI    R7,CBOT+$02         ; BOTTOM OF STACK+2
+0479 T 0C57 68C842E0                    RLDI    R8,CBOT                 ; BOTTOM STACK
+0480 T 0C5B 68C9001E                    RLDI    R9,CBYTE-$02        ; NUMBER BYTES-2
+0481 T 0C5F E7                          SEX     R7                              ; R7 IS SP
+0482                           ;
+0483 T 0C60 72                 CSHFT:   LDXA                        ; GET BYTE
+0484 T 0C61 58                          STR     R8                              ; MOVE DOWN
+0485 T 0C62 18                          INC     R8                              ; INCREMENT POINTER
+0486                           ;
+0487 T 0C63 68290C60                    DBNZ    R9,CSHFT                ; LOOP FOR ALL BYTES
+0488 T 0C67 18                          INC     R8                              ; POINT TO LOW BYTE
+0489                           ;****************************************************************************
+0490                           ;
+0491                           ;       A/D INPUT SECTION
+0492                           ;
+0493                           ;****************************************************************************
+0494 T 0C68 68C2447F           ADSET:   RLDI    R2,INPUT            ; INPUT STACK
+0495                           ;
+0496 T 0C6C E3                          SEX     R3                              ; MAKE PC SP
+0497 T 0C6D 61                          OUT     1                               ; SELECT I/O
+0498 T 0C6E 30                          DB      $30
+0499 T 0C6F 66                          OUT     6                               ; SCAN MODE
+0500 T 0C70 01                          DB      $01
+0501 T 0C71 65                          OUT     5                               ; START AT CH 0
+0502 T 0C72 00                          DB      $00
+0503 T 0C73 E2                          SEX     R2                              ; RESET SP
+0504                           ;
+0505 T 0C74 3C74                        BN1     *                               ; WAIT FOR FLAG
+0506                           ;
+0507 T 0C76 6C                          INP     4                               ; INPUT RELIBILITY
+0508 T 0C77 FF80                        SMI     $80
+0509 T 0C79 CB0E39                      LBNF    ABORTR
+0510                           ;****************************************************************************
+0511                           ;       RELIBILITY OK
+0512                           ;****************************************************************************
+0513 T 0C7C 3C7C               RELOK:   BN1     *                   ; WAIT FOR FLAG
+0514                           ;
+0515 T 0C7E 6C                          INP     4                               ; 100FT RANGE
+0516 T 0C7F AF                          PLO     RF                              ; STASH
+0517                           ;
+0518 T 0C80 3C80                        BN1     *                               ; WAIT FOR FLAG
+0519                           ;
+0520 T 0C82 6C                          INP     4                               ; 1000FT RANGE
+0521 T 0C83 A7                          PLO     R7                              ; STASH
+0522                           ;****************************************************************************
+0523 T 0C84 3C84                        BN1     *                               ; WAIT FOR FLAG
+0524 T 0C86 6C                          INP     4                               ; WING POSITION
+0525                           
+0526        00000000                    IF      (VERSION GT VER_2)
+0530                                    ENDIF   
+0531                           ;****************************************************************************
+0532 T 0C87 3C87                        BN1     *                               ; WAIT
+0533 T 0C89 6B                          INP     3                               ; ACCEL
+0534                           ;****************************************************************************
+0535                           ;
+0536                           ;       SUBTRACT +1 G BIAS ($007F)
+0537                           ;
+0538                           ;****************************************************************************
+0539 T 0C8A FF7F               BIAS:    SMI     $7F                 ; BIAS
+0540 T 0C8C 58                          STR     R8                              ; STACK IT
+0541 T 0C8D 28                          DEC     R8                              ; HIGH BYTE
+0542 T 0C8E F800                        LDI     $00                     ; ZERO BYTE
+0543 T 0C90 7F00                        SMBI    $00                     ; BIAS
+0544 T 0C92 58                          STR     R8                              ; STACK IT
+0545                           ;****************************************************************************
+0546                           ;       AUTO-RANGE ALT INPUTS
+0547                           ;****************************************************************************
+0548 T 0C93 F800               AUTO:    LDI     $00                 ; ZERO BYTE
+0549 T 0C95 BF                          PHI     RF                              ; HIGH BYTE OF ALT
+0550                           ;
+0551 T 0C96 8F                          GLO     RF                              ; LOW RANGE ALT
+0552 T 0C97 FDFF                        SDI     $FF                     ; SUBTRACT MAX VALVE
+0553 T 0C99 3AAD                        BNZ     STACKA                  ; IF NOT MAX USE LOW RANGE
+0554                           ;****************************************************************************
+0555                           ;       FULL SCALE RANGE
+0556                           ;****************************************************************************
+0557 T 0C9B 87                          GLO     R7                              ; HIGH RANGE ALT
+0558 T 0C9C AF                          PLO     RF                              ; SET LOW BYTE OF ALT
+0559                           ;
+0560 T 0C9D 68CD44FF                    RLDI    RD,UTIL                 ; SET MATH STACK
+0561 T 0CA1 ED                          SEX     RD                              ; MAKE RD SP
+0562 T 0CA2 F805                        LDI     $05                     ; LOW BYTE OF 5
+0563 T 0CA4 73                          STXD                        ; PUT ON STACK
+0564 T 0CA5 F800                        LDI     $00                     ; HIGH BYTE OF 5
+0565 T 0CA7 5D                          STR     RD                              ; PUT ON STACK
+0566                           ;
+0567 T 0CA8 68C6074A                    RLDI    R6,MULT                 ; ADDRESS OF MULT
+0568 T 0CAC D6                          SEP     R6                              ; CALL MULT
+0569                           ;****************************************************************************
+0570                           ;       PUT CURRENT ALT ON STACK
+0571                           ;****************************************************************************
+0572 T 0CAD 8F                 STACKA:  GLO     RF                  ;
+0573 T 0CAE 5B                          STR     RB                              ;
+0574 T 0CAF 2B                          DEC     RB                              ;
+0575 T 0CB0 9F                          GHI     RF                              ;
+0576 T 0CB1 5B                          STR     RB                              ;
+0577                           ;****************************************************************************
+0578                           ;       CHECK FOR ALT < 8 FT
+0579                           ;****************************************************************************
+0580 T 0CB2 87                          GLO     R7                              ; HIGH RANGE
+0581 T 0CB3 FF04                        SMI     $04                     ; SUB 8FT
+0582 T 0CB5 CB0E34                      LBNF    ABORTL                  ; IF BORROW ABORT
+0583                           ;****************************************************************************
+0584                           ;       AVERAGE 4 ALT SAMPLES
+0585                           ;****************************************************************************
+0586 T 0CB8 68CD41FF                    RLDI    RD,ATOP                 ; TOP OF ALT STACK
+0587 T 0CBC 68CC0004                    RLDI    RC,$0004                ; NUMBER OF SAMPLES
+0588 T 0CC0 68CF0000                    RLDI    RF,$0000                ; ZERO SUM
+0589 T 0CC4 ED                          SEX     RD                              ; SET STACK
+0590                           ;
+0591 T 0CC5 8F                 AVG:     GLO     RF                  ; GET LOW BYTE
+0592 T 0CC6 F4                          ADD                         ; ADD TO ALT
+0593 T 0CC7 AF                          PLO     RF                              ; RESET SUM
+0594                           ;
+0595 T 0CC8 2D                          DEC     RD                              ; POINT TO HIGH BYTE
+0596                           ;
+0597 T 0CC9 9F                          GHI     RF                              ; GET HIGH BYTE
+0598 T 0CCA 74                          ADC                         ; ADD WITH DF
+0599 T 0CCB BF                          PHI     RF                              ; RESET SUM
+0600                           ;
+0601 T 0CCC 2D                          DEC     RD                              ; POINT TO NEXT LOW BYTE
+0602                           ;
+0603 T 0CCD 682C0CC5                    DBNZ    RC,AVG                  ; ADD ALL WORDS
+0604                           ;
+0605 T 0CD1 E2                          SEX     R2                              ; RESET STACK
+0606 T 0CD2 68C60703                    RLDI    R6,USHR                 ; ADDRESS OF USHR
+0607 T 0CD6 D6                          SEP     R6                              ; DIVIDE SUM BY 4
+0608 T 0CD7 02                          DB      $02
+0609                           ;****************************************************************************
+0610                           ;       RESET CURRENT INPUT WITH AVERAGE
+0611                           ;****************************************************************************
+0612 T 0CD8 68CD41FF                    RLDI    RD,ATOP
+0613 T 0CDC ED                          SEX     RD                              ; RESET SP
+0614 T 0CDD 8F                          GLO     RF                              ; LOW BYTE
+0615 T 0CDE 73                          STXD                        ; STACK IT
+0616 T 0CDF 9F                          GHI     RF                              ; HIGH BYTE
+0617 T 0CE0 5D                          STR     RD                              ; STACK IT
+0618                           ;****************************************************************************
+0619                           ;       CALCULATE ALT ERROR
+0620                           ;****************************************************************************
+0621 T 0CE1 68CD450F           CALERR:  RLDI    RD,PRESET           ; POINTER TO PRESET
+0622 T 0CE5 ED                          SEX     RD                              ; SET STACK POINTER
+0623                           ;
+0624 T 0CE6 8F                          GLO     RF                              ; GET LOW BYTE OF ALT
+0625 T 0CE7 F5                          SD                          ;
+0626                           ;
+0627 T 0CE8 AF                          PLO     RF                              ;
+0628 T 0CE9 A9                          PLO     R9                              ;
+0629                           ;
+0630 T 0CEA 2D                          DEC     RD                              ;
+0631                           ;
+0632 T 0CEB 9F                          GHI     RF                              ; GET HIGH BYTE OF ALT
+0633 T 0CEC 75                          SDB                         ;
+0634                           ;
+0635 T 0CED BF                          PHI     RF                              ;
+0636 T 0CEE B9                          PHI     R9                              ;
+0637                           ;****************************************************************************
+0638                           ;       DETERMINE +/- 50 FT ALT DEVIATION
+0639                           ;****************************************************************************
+0640 T 0CEF 99                 DETDEV:  GHI     R9                  ; CHECK SIGN OF ERROR
+0641 T 0CF0 FE                          SHL                         ;
+0642 T 0CF1 C30D01                      LBDF    AHIGH                   ;
+0643                           ;****************************************************************************
+0644                           ;       LOW ON PRESET
+0645                           ;****************************************************************************
+0646        00000000                    IF      ((VERSION GT VER_2) AND (VERSION LT VER_5))
+0666                                    ENDIF   
+0667                           ;****************************************************************************
+0668                           ;       LOW ON PRESET
+0669                           ;****************************************************************************
+0670 T 0CF4 99                 01$:     GHI     R9                  ;
+0671 T 0CF5 3AFD                        BNZ     MAXL                    ;
+0672                           ;
+0673 T 0CF7 89                          GLO     R9                              ;
+0674 T 0CF8 FC80                        ADI     $80                     ;
+0675 T 0CFA 33FD                        BDF     MAXL                    ;
+0676                           ;
+0677 T 0CFC C8                          LSKP                        ;
+0678                           ;
+0679 T 0CFD F8FF               MAXL:    LDI     $FF                 ;
+0680 T 0CFF 300E                        BR      OUT                     ;
+0681                           ;****************************************************************************
+0682                           ;       HIGH ON PRESET
+0683                           ;****************************************************************************
+0684 T 0D01 99                 AHIGH:   GHI     R9                  ;
+0685 T 0D02 FFFF                        SMI     $FF                     ;
+0686 T 0D04 3A0C                        BNZ     MAXH                    ;
+0687                           ;
+0688 T 0D06 89                          GLO     R9                              ;
+0689 T 0D07 FF80                        SMI     $80                     ;
+0690 T 0D09 3B0C                        BNF     MAXH                    ;
+0691                           ;
+0692        00000000                    IF      (VERSION EQ VER_4)
+0700                                    ELSE    
+0701                           
+0702 T 0D0B C8                          LSKP                        ; SKIP NEXT INSTRUNCTION
+0703 T 0D0C F800               MAXH:    LDI     $00
+0704                           
+0705                                    ENDIF   
+0706                           ;****************************************************************************
+0707                           ;       OUTPUT ALT DEVIATION TO D/A CH 2
+0708                           ;****************************************************************************
+0709 T 0D0E FBFF               OUT:     XRI     $FF                 ; INVERT ALT DEVIATION
+0710 T 0D10 52                          STR     R2                              ; STACK IT
+0711 T 0D11 E2                          SEX     R2                              ; MAKE R2 STACK
+0712 T 0D12 64                          OUT     4                               ; OUTPUT ALT DEVIATION FROM STACK
+0713 T 0D13 22                          DEC     R2                              ; RESET STACK POINTER
+0714                           ;****************************************************************************
+0715                           ;       GAIN ALT ERROR (KP*ERROR)
+0716                           ;****************************************************************************
+0717 T 0D14 68CD451E                    RLDI    RD,EGAIN-1              ; POINT TO HIGH BYTE
+0718 T 0D18 68C6074A                    RLDI    R6,MULT                 ; ADDRESS OF MULT
+0719 T 0D1C ED                          SEX     RD                              ; RD IS SP
+0720 T 0D1D D6                          SEP     R6                              ; CALL MULT
+0721                           ;****************************************************************************
+0722                           ;       STORE RESULT (RE,RF) IN R0,R1
+0723                           ;****************************************************************************
+0724 T 0D1E 9E                          GHI     RE                              ;
+0725 T 0D1F B0                          PHI     R0                              ;
+0726                           ;
+0727 T 0D20 8E                          GLO     RE                              ;
+0728 T 0D21 A0                          PLO     R0                              ;
+0729                           ;
+0730 T 0D22 9F                          GHI     RF                              ;
+0731 T 0D23 B1                          PHI     R1                              ;
+0732                           ;
+0733 T 0D24 8F                          GLO     RF                              ;
+0734 T 0D25 A1                          PLO     R1                              ;
+0735                           ;****************************************************************************
+0736                           ;       DETERMINE ALT(N)-ALT(1)
+0737                           ;
+0738                           ;       THIS IS REVERSED SO THAT AN UPWARD
+0739                           ;       ALT CHANGE WITH YIELD A NEGATIVE
+0740                           ;       WING ANGLE
+0741                           ;****************************************************************************
+0742 T 0D26 68CD41FF           ARATE:   RLDI    RD,ATOP             ; ALT(1)
+0743 T 0D2A 68CC41E1                    RLDI    RC,ABOT+$01         ; ALT(N)
+0744 T 0D2E ED                          SEX     RD
+0745                           ;
+0746 T 0D2F 0C                          LDN     RC
+0747 T 0D30 F7                          SM                          ; (N)-(1)
+0748 T 0D31 AF                          PLO     RF                              ; STORE
+0749                           ;
+0750 T 0D32 2D                          DEC     RD                              ; POINT TO HIGH BYTE
+0751 T 0D33 2C                          DEC     RC                              ; POINT TO HIGH BYTE
+0752                           ;
+0753 T 0D34 0C                          LDN     RC                              ; HIGH BYTE
+0754 T 0D35 77                          SMB                         ; HIGH BYTE
+0755 T 0D36 BF                          PHI     RF                              ; STORE
+0756                           ;****************************************************************************
+0757                           ;       DIVIDE ALT DIFFERENCE BY N*0.0625
+0758                           ;       WITH N=15 THEN IS APPROXIMATELY
+0759                           ;       EQUAL TO 1, THEREFORE NO OPERATION
+0760                           ;****************************************************************************
+0761 T 0D37 C4                          NOP     
+0762 T 0D38 C4                          NOP     
+0763 T 0D39 C4                          NOP     
+0764                           ;****************************************************************************
+0765                           ;       GAIN ALT DIFF (KV* DIFF)
+0766                           ;****************************************************************************
+0767 T 0D3A 68CD452E                    RLDI    RD,RGAIN-1              ; POINT TO HIGH BYTE
+0768 T 0D3E 68C6074A                    RLDI    R6,MULT                 ; ADDRESS OF MULT
+0769 T 0D42 ED                          SEX     RD                              ; MAKE RD STACK
+0770 T 0D43 D6                          SEP     R6                              ; CALL MULT
+0771                           ;****************************************************************************
+0772                           ;       ADD KP*ERROR + KV*ALT DIFF
+0773                           ;****************************************************************************
+0774 T 0D44 68C60735                    RLDI    R6,ADDER                ; ADDRESS OF ADDER
+0775 T 0D48 E2                          SEX     R2                              ; RESET STACK
+0776 T 0D49 D6                          SEP     R6                              ; CALL ADDER
+0777                           ;****************************************************************************
+0778                           ; AVERAGE ACCEL INPUT
+0779                           ;****************************************************************************
+0780 T 0D4A 68CB42FF           ACCEL:   RLDI    RB,CTOP             ; ACCEL STACK
+0781 T 0D4E 68CC0004                    RLDI    RC,$0004                ; 4 AVERAGES
+0782 T 0D52 68CF0000                    RLDI    RF,$0000                ; ZERO SUM
+0783 T 0D56 EB                          SEX     RB                              ; SET STACK
+0784                           ;
+0785 T 0D57 8F                 CELAVG:  GLO     RF                  ; LOW BYTE
+0786 T 0D58 F4                          ADD                         ; ADD LOW BYTES
+0787 T 0D59 AF                          PLO     RF                              ; RESET SUM
+0788                           ;
+0789 T 0D5A 2B                          DEC     RB                              ; POINT TO HIGH BYTE
+0790                           ;
+0791 T 0D5B 9F                          GHI     RF                              ; HIGH BYTE
+0792 T 0D5C 74                          ADC                         ; ADD HIGH BYTES
+0793 T 0D5D BF                          PHI     RF                              ; RESET SUM
+0794                           ;
+0795 T 0D5E 2B                          DEC     RB                              ; POINT TO NEXT LOW
+0796                           ;
+0797 T 0D5F 682C0D57                    DBNZ    RC,CELAVG               ; ADD UP FOUR INPUTS
+0798                           ;
+0799 T 0D63 E2                          SEX     R2                              ; RESET SP
+0800 T 0D64 68C60710                    RLDI    R6,ASHR                 ; ADDRESS OF ASHR
+0801 T 0D68 D6                          SEP     R6
+0802 T 0D69 02                          DB      $02
+0803                           ;
+0804 T 0D6A 68CB42FF                    RLDI    RB,CTOP
+0805 T 0D6E 8F                          GLO     RF                              ; LOW BYTE
+0806 T 0D6F 5B                          STR     RB                              ; STACK IT
+0807 T 0D70 2B                          DEC     RB                              ; POINT TO HIGH
+0808 T 0D71 9F                          GHI     RF                              ; HIGH BYTE
+0809 T 0D72 5B                          STR     RB                              ; STACK IT
+0810                           ;****************************************************************************
+0811                           ;       DOUBLE INTEGRATE THE ACCEL
+0812                           ;****************************************************************************
+0813 T 0D73 68CD43FF           DOUBLE:  RLDI    RD,COUNT            ; POINT TO COUNT
+0814 T 0D77 0D                          LDN     RD                              ; LOAD COUNT
+0815 T 0D78 FF01                        SMI     $01                     ; COUNT-1
+0816 T 0D7A 5D                          STR     RD                              ; RESET COUNT
+0817 T 0D7B CA0C18                      LBNZ    LOWALT                  ; LOOP TILL ZERO
+0818 T 0D7E F804                        LDI     $04                     ; 4 CYCLES
+0819 T 0D80 5D                          STR     RD                              ; RESET COUNT
+0820                           ;****************************************************************************
+0821                           ;       INTEGRATE ACCEL
+0822                           ;****************************************************************************
+0823 T 0D81 68CB42FF                    RLDI    RB,CTOP                 ; ACCEL STACK
+0824 T 0D85 68CA0010                    RLDI    RA,CBYTE2               ; NUMBER WORBS
+0825 T 0D89 68C90000                    RLDI    R9,$0000                ; DOUBLE SUM
+0826 T 0D8D ED                          SEX     RD                              ; SET MATH STACK
+0827                           ;
+0828 T 0D8E 0B                 CCEL:    LDN     RB                              ; GET LOW BYTE
+0829 T 0D8F AF                          PLO     RF                              ; STORE
+0830 T 0D90 2B                          DEC     RB                              ; POINT TO HIGH BYTE
+0831 T 0D91 0B                          LDN     RB                              ; GET HIGH BYTE
+0832 T 0D92 BF                          PHI     RF                              ; STORE
+0833 T 0D93 2B                          DEC     RB                              ; NEXT LOW BYTE
+0834                           ;
+0835 T 0D94 68CD44FF                    RLDI    RD,UTIL                 ; SET STACK
+0836 T 0D98 8A                          GLO     RA                              ; LOW COUNT
+0837 T 0D99 73                          STXD                        ; STACK IT
+0838 T 0D9A 9A                          GHI     RA                              ; HIGH COUNT
+0839 T 0D9B 5D                          STR     RD                              ; STACK IT
+0840 T 0D9C 68C6074A                    RLDI    R6,MULT                 ; ADDRESS OF MULT
+0841 T 0DA0 D6                          SEP     R6                              ; MULT
+0842                           ;
+0843 T 0DA1 8F                          GLO     RF                              ; LOW BYTE
+0844 T 0DA2 5D                          STR     RD                              ; STACK IT
+0845 T 0DA3 89                          GLO     R9                              ; LOW BYTE
+0846 T 0DA4 F4                          ADD                         ; ADD LOW BYTES
+0847 T 0DA5 A9                          PLO     R9                              ; RESET SUM
+0848                           ;
+0849 T 0DA6 9F                          GHI     RF                              ; HIGH BYTE
+0850 T 0DA7 5D                          STR     RD                              ; STACK IT
+0851 T 0DA8 99                          GHI     R9                              ; HIGH BYTE
+0852 T 0DA9 74                          ADC                         ; ADD HIGH BYTES
+0853 T 0DAA B9                          PHI     R9                              ; RESET SUM
+0854                           ;
+0855 T 0DAB 682A0D8E                    DBNZ    RA,CCEL                 ; SUM STACK
+0856                           ;
+0857 T 0DAF 89                          GLO     R9                              ; LOW BYTE
+0858 T 0DB0 AF                          PLO     RF                              ;
+0859 T 0DB1 99                          GHI     R9                              ; HIGH BYTE
+0860 T 0DB2 BF                          PHI     RF                              ;
+0861                           ;****************************************************************************
+0862                           ;       MULT ACCEL INTEGRAL BY 0.0625**2
+0863                           ;       AND DIVIDE BY 15*0.0625
+0864                           ;       WHICH IS APPROXIMATELY 2**(-8)
+0865                           ;****************************************************************************
+0866 T 0DB3 68C60710                    RLDI    R6,ASHR                 ; ADDRESS OF ASHR
+0867 T 0DB7 D6                          SEP     R6                              ; CALL ASHR
+0868 T 0DB8 08                          DB      $08                     ; NUMBER OF RIGHT SHIFTS
+0869                           ;****************************************************************************
+0870                           ;       GAIN ACCEL INTEGRAL (KV* ACCEL)
+0871                           ;****************************************************************************
+0872 T 0DB9 68CD453E                    RLDI    RD,IGAIN-1              ; POINT TO HIGH BYTE
+0873 T 0DBD 68C6074A                    RLDI    R6,MULT                 ; ADDRESS OF MULT
+0874 T 0DC1 ED                          SEX     RD                              ; MAKE RD STACK
+0875 T 0DC2 D6                          SEP     R6                              ; CALL MULT
+0876                           ;****************************************************************************
+0877                           ;       ADD KP*ERROR + KV*ACCEL INTEGRAL
+0878                           ;****************************************************************************
+0879 T 0DC3 68C60735                    RLDI    R6,ADDER                ; ADDRESS OF ADDER
+0880 T 0DC7 E2                          SEX     R2                              ; RESET STACK
+0881 T 0DC8 D6                          SEP     R6                              ; CALL ADDER
+0882                           ;****************************************************************************
+0883                           ;       WING COMMAND SECTION
+0884                           ;****************************************************************************
+0885 T 0DC9 68C244FF           WING:    RLDI    R2,UTIL             ; MATH STACK
+0886 T 0DCD E2                          SEX     R2                              ; SETUP STACK
+0887                           ;
+0888 T 0DCE 68CD454F                    RLDI    RD,SGAIN                ; SCALE FACTOR
+0889 T 0DD2 0D                          LDN     RD                              ; GET SCALE
+0890 T 0DD3 F6                          SHR                         ; DIVIDE BY 16
+0891 T 0DD4 F6                          SHR     
+0892 T 0DD5 F6                          SHR     
+0893 T 0DD6 F6                          SHR     
+0894 T 0DD7 AD                          PLO     RD                              ; STORE
+0895                           ;****************************************************************************
+0896                           ;       DIVIDE BY 2**SCALE
+0897                           ;****************************************************************************
+0898 T 0DD8 68C6071F                    RLDI    R6,SCALE                ; ADDRESS OF SCALE
+0899 T 0DDC D6                          SEP     R6                              ; CALL SCALE
+0900                           ;****************************************************************************
+0901                           ;       CHECK WING COMMAND FOR OVERFLOW
+0902                           ;****************************************************************************
+0903 T 0DDD 90                 OVERFL:  GHI     R0                  ; GET MSB
+0904 T 0DDE FE                          SHL                         ; PUT SIGN IN DF
+0905                           
+0906        00000001                    IF      (VERSION LT VER_3) OR (VERSION EQ VER_5)
+0907                           
+0908 T 0DDF 33EE                        BDF     NEGWNG                  ; IF NEG BRANCH
+0909                           
+0914                                    ENDIF   
+0915                           
+0916 T 0DE1 91                          GHI     R1                              ; GET HIGH BYTE
+0917 T 0DE2 3AE8                        BNZ     POSOVF                  ; IF NOT ZERO OVERFLOW
+0918 T 0DE4 81                          GLO     R1                              ; GET LOW BYTE
+0919 T 0DE5 FE                          SHL                         ; PUT BIT 7 IN DF
+0920 T 0DE6 3BFB                        BNF     _OFFSET                 ; IF ZERO OK
+0921 T 0DE8 68C100CC           POSOVF:  RLDI    R1,WNGMAX           ; MAXIMUM (+)
+0922 T 0DEC 30FB                        BR      _OFFSET                 ; ADD IN OFFSET
+0923                           ;
+0924 T 0DEE 91                 NEGWNG:  GHI     R1                  ; GET HIGH BYTE
+0925 T 0DEF FDFF                        SDI     $FF                     ; SUBTRACK NEG BITS
+0926 T 0DF1 3AF7                        BNZ     NEGOVF                  ; IF NOT ZERO OVERFLOW
+0927 T 0DF3 81                          GLO     R1                              ; GET LOW BYTE
+0928 T 0DF4 FE                          SHL                         ; PUT SIGN IN DF
+0929 T 0DF5 33FB                        BDF     _OFFSET                 ; IF SET OK
+0930 T 0DF7 68C1FF34           NEGOVF:  RLDI    R1,WNGXRI           ; MAXIMUM (-)
+0931                           ;****************************************************************************
+0932                           ;       ADD IN HARDWARE OFFSET
+0933                           ;****************************************************************************
+0934 T 0DFB                    _OFFSET:         
+0935 T 0DFB 81                          GLO     R1                              ; GET WING COMMAND
+0936 T 0DFC FCE5                        ADI     LOW(WNGZER)         ; ADD OFFSET
+0937 T 0DFE A1                          PLO     R1                              ; RESET COMMAND
+0938 T 0DFF 91                          GHI     R1                              ; GET HIGH BYET
+0939 T 0E00 7C00                        ADCI    HIGH(WNGZER)        ; ADD OFFSET HIGH BYTE
+0940 T 0E02 B1                          PHI     R1                              ; RESET HIGH BYTE
+0941                           ;****************************************************************************
+0942                           ;       SUBTRACT MANUAL RESET
+0943                           ;****************************************************************************
+0944 T 0E03 68CD455F           SUBMAN:  RLDI    RD,RESET            ; MANUAL RESET
+0945 T 0E07 0D                          LDN     RD                              ; GET RESET
+0946 T 0E08 52                          STR     R2                              ; STACK IT
+0947                           ;
+0948 T 0E09 81                          GLO     R1                              ; GET WING POSITION
+0949 T 0E0A F7                          SM                          ; SUBTRACT MR
+0950 T 0E0B A1                          PLO     R1                              ; RESET WING POSITION
+0951 T 0E0C 91                          GHI     R1                              ; HIGH BYTE
+0952 T 0E0D 7F00                        SMBI    $00                     ; HIGH BYTE OF LIMIT
+0953 T 0E0F B1                          PHI     R1                              ; RESET HIGH BYTE
+0954                           ;****************************************************************************
+0955                           ;       SOFTWARE LIMIT SWITCHES
+0956                           ;****************************************************************************
+0957 T 0E10 91                 SOFT:    GHI     R1                  ; CHECK HIGH BYTE
+0958 T 0E11 3218                        BZ      SOFT1                   ; IF ZERO IN LIMITS
+0959                           ;
+0960 T 0E13 FE                          SHL                         ; PUT SIGN IN DF
+0961 T 0E14 3327                        BDF     STOP                    ; NEG OVERFLOW
+0962 T 0E16 3024                        BR      LIMIT                   ; POS OVERFLOW
+0963                           ;
+0964 T 0E18 81                 SOFT1:   GLO     R1                  ; GET COMMAND
+0965 T 0E19 FF19                        SMI     LOW(WNGNEG)         ; - LIMIT
+0966 T 0E1B 3B27                        BNF     STOP                    ; IF DF=0 LIMIT
+0967                           ;
+0968 T 0E1D 81                          GLO     R1                              ; GET COMMAND
+0969 T 0E1E FFE5                        SMI     LOW(WNGPOS)         ; + LIMIT
+0970 T 0E20 3324                        BDF     LIMIT                   ; IF DF=1 LIMIT
+0971                           ;
+0972 T 0E22 81                          GLO     R1                              ; GET COMMAND
+0973                           ;
+0974 T 0E23 C8                          LSKP                        ; SKIP NEXT
+0975                           ;
+0976 T 0E24 F8E5               LIMIT:   LDI     LOW(WNGPOS)         ; MAXIMUM + LIMIT
+0977                           ;
+0978 T 0E26 C8                          LSKP                        ; SKIP NEXT
+0979                           ;
+0980 T 0E27 F819               STOP:    LDI     LOW(WNGNEG)         ; MAXIMUM - LIMIT
+0981                           ;****************************************************************************
+0982                           ; OUTPUT TO SERVO
+0983                           ;****************************************************************************
+0984 T 0E29 52                 SERVO:   STR     R2                  ; STACK IT
+0985 T 0E2A 63                          OUT     3                               ; OUT D/A CH 1
+0986 T 0E2B 22                          DEC     R2                              ; RESET STACK
+0987                           ;****************************************************************************
+0988                           ; CYCLE CONTROLLER
+0989                           ;****************************************************************************
+0990 T 0E2C C00C18                      LBR     LOWALT
+0991                           ;****************************************************************************
+0992                           ;
+0993                           ; END OF CONTROLLER SECTION
+0994                           ;
+0995                           ;****************************************************************************
+0996                           ;
+0997                           ;       ABORT CONTROLLER
+0998                           ;
+0999                           ;****************************************************************************
+1000                           ;       ABORT ON HALT SWITCH
+1001                           ;****************************************************************************
+1002 T 0E2F F800               ABORTP:  LDI     $00                 ; HALT FLAG
+1003 T 0E31 AC                          PLO     RC                  ; SET ABORT FLAG
+1004                           
+1005        00000000                    IF      (VERSION GT VER_2)
+1010                                    ELSE    
+1011                           
+1012 T 0E32 305C                        BR      PREC                ; BRANCH
+1013                           
+1014                                    ENDIF   
+1015                           ;****************************************************************************
+1016                           ;       ABORT IF ALT LESS THAN 8 FT
+1017                           ;****************************************************************************
+1018 T 0E34 F801               ABORTL:  LDI     $01                 ; ABOTRL FLAG
+1019 T 0E36 AC                          PLO     RC                  ; SET ABORT FLAG
+1020 T 0E37 303E                        BR      ABORT               ; BRANCH
+1021                           ;****************************************************************************
+1022                           ;       ABORT IF ALT RELIBILITY IS LOST
+1023                           ;****************************************************************************
+1024 T 0E39 F802               ABORTR:  LDI     $02                 ; ABORTR FLAG
+1025 T 0E3B AC                          PLO     RC                  ; SET ABORT FLAG
+1026 T 0E3C 303E                        BR      ABORT               ; BRANCH
+1027                           ;****************************************************************************
+1028                           ;       ABORT PROCESSOR
+1029                           ;****************************************************************************
+1030 T 0E3E                    ABORT:           
+1031        00000000                    IF      (VERSION GT VER_2)
+1036                                    ENDIF   
+1037                           
+1038 T 0E3E 68C2447F                    RLDI    R2,INPUT            ; I/O STACK
+1039 T 0E42 E3                          SEX     R3                      ; SET SP TO PC
+1040 T 0E43 61                          OUT     1                       ; I/O GROUP 30
+1041 T 0E44 30                          DB      $30
+1042 T 0E45 66                          OUT     6                       ; SCAN MODE
+1043 T 0E46 01                          DB      $01
+1044 T 0E47 65                          OUT     5                       ; REL
+1045 T 0E48 00                          DB      $00
+1046 T 0E49 E2                          SEX     R2                      ; RESET SP
+1047                           ;
+1048 T 0E4A 3C4A                        BN1     *                       ; WAIT
+1049 T 0E4C 6C                          INP     4                       ; REL
+1050                           ;
+1051 T 0E4D 3C4D                        BN1     *                       ; WAIT
+1052 T 0E4F 6C                          INP     4                       ; 100FT ALT
+1053                           ;
+1054 T 0E50 3C50                        BN1     *                       ; WAIT
+1055 T 0E52 6C                          INP     4                       ; 500FT ALT
+1056                           ;
+1057 T 0E53 3C53                        BN1     *                       ; WAIT
+1058 T 0E55 6B                          INP     3                       ; WING
+1059                           ;
+1060 T 0E56 FFBF                        SMI     LOW(WNGREC)         ; SUBTRACK RECOVERY
+1061 T 0E58 3B5C                        BNF     PREC                ; DF=0 WING BELOW RECOVERY
+1062                           ;****************************************************************************
+1063                           ;       DO NOT PUT WINGS IN RECOVERY
+1064                           ;****************************************************************************
+1065 T 0E5A F0                          LDX                         ; GET POSITION
+1066                           ;
+1067 T 0E5B C8                          LSKP                        ; SKIP NEXT INSTRUCTION
+1068                           ;****************************************************************************
+1069                           ;       PUT WINGS INTO RECOVERY
+1070                           ;****************************************************************************
+1071 T 0E5C F8BF               PREC:    LDI     LOW(WNGREC)         ; RECOVERY
+1072                           ;
+1073 T 0E5E 52                          STR     R2                      ; PUT ON STACK
+1074 T 0E5F 63                          OUT     3                       ; OUPUT D/A CH1
+1075 T 0E60 22                          DEC     R2                      ; RESET STACK
+1076                           ;****************************************************************************
+1077                           ;       EXIT TO COMMAND LINK ERROR ROUTINE
+1078                           ;****************************************************************************
+1079        00000000                    IF      (VERSION GT VER_2)
+1086                                    ELSE    
+1087                           
+1088 T 0E61 C00700             EXIT:    LBR     LINK                ; BRANCH
+1089                           
+1090                                    ENDIF   
+1091                           ;****************************************************************************
+1092                           ;
+1093                           ;       END OF ABORT PROCESSOR
+1094                           ;
+1095                           ;****************************************************************************
+1096   0E64                             END     
+There were: 0000 Errors
+
+SECTIONS USED:
+
+ Section           Relocation   Alignment  Type     Begins       Ends
+ TLX               absolute                         0000         0E63
+
+
+SYMBOL TABLE
+
+SYMBOLS DEFINED:
+
+ Symbol            Section/Type        Attribute Value             Length
+ ABORT             absolute                      0E3E      
+ ABORTL            absolute                      0E34      
+ ABORTP            absolute                      0E2F      
+ ABORTR            absolute                      0E39      
+ ABOT              local constant                41E0      
+ ABYTE             local constant                0020      
+ ACC               local constant                012A      
+ ACCBIT            local constant                0000      
+ ACCBNK            local constant                0131      
+ ACCEL             absolute                      0D4A      
+ ACCLIT            local constant                0060      
+ ACCOK             local constant                0182      
+ ACCZER            absolute                      0C01      
+ ADDER             local constant                0735      
+ ADGETC            local constant                02F9      
+ ADSET             absolute                      0C68      
+ ADSETC            local constant                02E1      
+ AHIGH             absolute                      0D01      
+ AHIGHC            local constant                038D      
+ ALT               local constant                01AD      
+ ALTBIT            local constant                0004      
+ ALTBNK            local constant                01B4      
+ ALTCON            local constant                0C00      
+ ALTHIH            local constant                435F      
+ ALTLIT            local constant                0040      
+ ALTLOW            local constant                436F      
+ ALTOK             local constant                01E1      
+ ALTREL            local constant                437F      
+ ALTSFC            local constant                02CC      
+ ARATE             absolute                      0D26      
+ ASHFTC            local constant                02D9      
+ ASHR              local constant                0710      
+ ATOP              local constant                41FF      
+ AUTO              absolute                      0C93      
+ AUTOC             local constant                0317      
+ AVG               absolute                      0CC5      
+ AVGC              local constant                0350      
+ BIAS              absolute                      0C8A      
+ CAHFT             absolute                      0C4B      
+ CALERC            local constant                036C      
+ CALERR            absolute                      0CE1      
+ CBOT              local constant                42E0      
+ CBYTE             local constant                0020      
+ CBYTE2            local constant                0010      
+ CCEL              absolute                      0D8E      
+ CELAVG            absolute                      0D57      
+ CELSFT            absolute                      0C53      
+ CH0               local constant                0090      
+ CH1               local constant                0098      
+ CH2               local constant                009E      
+ CH3               local constant                00A4      
+ CH4               local constant                00AA      
+ CH5               local constant                00B0      
+ CH6               local constant                00B6      
+ CH7               local constant                00BC      
+ CH8               local constant                00C2      
+ CH9               local constant                00C8      
+ CLTSHF            absolute                      0C3E      
+ COMCHK            local constant                473F      
+ COMCNT            local constant                473D      
+ COMFLG            local constant                473B      
+ COMWRD            local constant                46FF      
+ COUNT             local constant                43FF      
+ CSHFT             absolute                      0C60      
+ CTOP              local constant                42FF      
+ DCR               local constant                07C6      
+ DCR1              local constant                07E8      
+ DELAY1            local constant                0044      
+ DELAY2            local constant                013E      
+ DELAY3            local constant                0199      
+ DELAY4            local constant                01C1      
+ DETDEC            local constant                01E4      
+ DETDEV            absolute                      0CEF      
+ DIVQ              local constant                0791      
+ DOUBLE            absolute                      0D73      
+ DSA               local constant                07B7      
+ DSEX              local constant                07A8      
+ DSM               local constant                07BC      
+ DVC               local constant                07CE      
+ DVL               local constant                0799      
+ DVM               local constant                07DC      
+ DVN               local constant                07F3      
+ DVR               local constant                07E2      
+ DVX               local constant                07FF      
+ ECHO              local constant                00CF      
+ EGAIN             local constant                451F      
+ EGAIN2            local constant                4517      
+ EXIT              absolute                      0E61      
+ FEDPOT            local constant                434F      
+ GAINER            local constant                014F      
+ GLOADS            local constant                433F      
+ GRABER            local constant                004E      
+ HALT              absolute                      0C39      
+ HUNDS             local constant                024F      
+ IGAIN             local constant                453F      
+ INPUT             local constant                447F      
+ LIMIT             absolute                      0E24      
+ LIMITC            local constant                011F      
+ LINK              local constant                0700      
+ LOWALT            absolute                      0C18      
+ LOWHLT            absolute                      0C1C      
+ MANBIT            local constant                0006      
+ MANLIT            local constant                0000      
+ MANUAL            local constant                0109      
+ MATH              local constant                443F      
+ MAXH              absolute                      0D0C      
+ MAXHC             local constant                039A      
+ MAXL              absolute                      0CFD      
+ MAXLC             local constant                0388      
+ MEXIT             local constant                0790      
+ MPA               local constant                076F      
+ MPB               local constant                076C      
+ MPL               local constant                0756      
+ MPS               local constant                0776      
+ MPX               local constant                0788      
+ MSP3              local constant                0779      
+ MT                local constant                0785      
+ MULT              local constant                074A      
+ NEGOVF            absolute                      0DF7      
+ NEGWNG            absolute                      0DEE      
+ OKLITE            local constant                0040      
+ OKSET             local constant                0006      
+ ONES              local constant                0207      
+ OUT               absolute                      0D0E      
+ OUTC              local constant                039C      
+ OVERFL            absolute                      0DDD      
+ PFLAG             local constant                47FF      
+ POSOVF            absolute                      0DE8      
+ PREC              absolute                      0E5C      
+ PREHUN            local constant                4637      
+ PREOK             local constant                02C4      
+ PREONE            local constant                463F      
+ PRESE1            local constant                450B      
+ PRESE2            local constant                4507      
+ PRESE3            local constant                4503      
+ PRESET            local constant                450F      
+ PRETEN            local constant                463B      
+ PRG               local constant                0185      
+ PRGBIT            local constant                0002      
+ PRGBNK            local constant                018C      
+ PRGLIT            local constant                0020      
+ PRGOK             local constant                01AA      
+ PULLIT            local constant                0100      
+ RAM               local constant                4000      
+ RECBIT            local constant                0001      
+ RECLIT            local constant                0010      
+ RELCNT            local constant                437B      
+ RELFLG            local constant                437D      
+ RELOK             absolute                      0C7C      
+ RESET             local constant                455F      
+ RGAIN             local constant                452F      
+ SCALE             local constant                071F      
+ SERVO             absolute                      0E29      
+ SERVOC            local constant                0124      
+ SGAIN             local constant                454F      
+ SOFT              absolute                      0E10      
+ SOFT1             absolute                      0E18      
+ STACKA            absolute                      0CAD      
+ STACKC            local constant                0332      
+ STOP              absolute                      0E27      
+ STOPC             local constant                0122      
+ SUBMAN            absolute                      0E03      
+ SUMUP             local constant                027C      
+ TENS              local constant                0221      
+ TEST              local constant                0801      
+ TEST0             local constant                083E      
+ TEST1             local constant                0841      
+ TEST2             local constant                0844      
+ TEST3             local constant                0847      
+ TEST4             local constant                084A      
+ TEST5             local constant                084D      
+ TEST6             local constant                0850      
+ TEST7             local constant                0853      
+ TEST8             local constant                0856      
+ TEST9             local constant                0859      
+ TESTX             local constant                085C      
+ TIMER             local constant                467F      
+ TLXACC            absolute                      0C00      
+ TLXFLY            absolute                      0C3C      
+ TMINIT            local constant                0010      
+ TMWAIT            local constant                0015      
+ USHR              local constant                0703      
+ UTIL              local constant                44FF      
+ VAL               local constant                0026      
+ VALID             local constant                005A      
+ VERSION           local constant                0002      
+ VER_0             local constant                0000      
+ VER_1             local constant                0001      
+ VER_2             local constant                0002      
+ VER_3             local constant                0003      
+ VER_4             local constant                0004      
+ VER_5             local constant                0005      
+ WFLAG             local constant                477F      
+ WHICH             local constant                006C      
+ WING              absolute                      0DC9      
+ WNGMAX            local constant                00CC      
+ WNGNEG            local constant                0019      
+ WNGPOS            local constant                00E5      
+ WNGREC            local constant                00BF      
+ WNGRET            local constant                007F      
+ WNGXRI            local constant                FF34      
+ WNGZER            local constant                00E5      
+ ZEROC1            absolute                      0C0C      
+ _OFFSET           absolute                      0DFB      
+
+
+Assembly time: 0 min, 13 sec
