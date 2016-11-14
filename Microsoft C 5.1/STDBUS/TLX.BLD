@@ -1,0 +1,126 @@
++++ PWB  [C:\C\STD_BUS\TLX] Rebuild 
+
+	NMAKE  /a /f C:\C\STD_BUS\TLX\TLX.MAK 
+Loading NMAKE
+
+Microsoft (R) Program Maintenance Utility   Version 1.30
+Copyright (c) Microsoft Corp 1988-93. All rights reserved.
+
+MIT/LL Path Configuration
+	cl /AS /Zi /Oi /Gs /c /G2 /W2 /FPa /DV40 /DCLOCK=10 /DV40 /DSTD_ENCODER /DLED_DEBUG /D_MEB /D_PRIMARY tlx.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+tlx.c
+Small Memory Model
+V40 Processor selected
+16 bit I/O instructions allowed
+V40 - 10Mz
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+TLX-DIAGNOSTIC-NOT FOR FLIGHT
+PLATFORM.H
+PILOT.H
+UTILITY.H
+_SERIAL_PROMPT
+	cl /AS /Zi /Oi /Gs /c /G2 /W2 /FPa /DV40 /DCLOCK=10 /DV40 /DSTD_ENCODER /DLED_DEBUG /D_MEB /D_PRIMARY platform.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+platform.c
+Small Memory Model
+V40 Processor selected
+16 bit I/O instructions allowed
+V40 - 10Mz
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+PILOT.H
+UTILITY.H
+PLATFORM.C
+	cl /AS /Zi /Oi /Gs /c /G2 /W2 /FPa /DV40 /DCLOCK=10 /DV40 /DSTD_ENCODER /DLED_DEBUG /D_MEB /D_PRIMARY pilot.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+pilot.c
+Small Memory Model
+V40 Processor selected
+16 bit I/O instructions allowed
+V40 - 10Mz
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+TLX-DIAGNOSTIC-NOT FOR FLIGHT
+UTILITY.H
+run time debugging included
+run time debugging included
+	cl /AS /Zi /Oi /Gs /c /G2 /W2 /FPa /DV40 /DCLOCK=10 /DV40 /DSTD_ENCODER /DLED_DEBUG /D_MEB /D_PRIMARY utility.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+utility.c
+Small Memory Model
+V40 Processor selected
+16 bit I/O instructions allowed
+V40 - 10Mz
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+run time debugging included
+	cl /AS /Zi /Oi /Gs /c /G2 /W2 /FPa /DV40 /DCLOCK=10 /DV40 /DSTD_ENCODER /DLED_DEBUG /D_MEB /D_PRIMARY cmd_tm.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cmd_tm.c
+NO SYNC REQUIRED FROM CNTRL STATION
+Small Memory Model
+V40 Processor selected
+16 bit I/O instructions allowed
+V40 - 10Mz
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+PLATFORM.H
+UTILITY.H
+PILOT.H
+USING STANDARD ENCODER
+USING STATUS Board for LED
+run time debugging included
+run time debugging included
+	cl /AS /Zi /Oi /Gs /c /G2 /W2 /FPa /DV40 /DCLOCK=10 /DV40 /DSTD_ENCODER /DLED_DEBUG /D_MEB /D_PRIMARY ground.C
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+ground.c
+Small Memory Model
+V40 Processor selected
+16 bit I/O instructions allowed
+V40 - 10Mz
+_INC_MIT_IO
+_INC_MIT_IO
+Using Comm_port Function Pointers
+PILOT.H
+UTILITY.H
+run time debugging included
+	link /NOI /MAP /CODEVIEW /NOE @tlx.lnk
+
+Microsoft (R) Segmented Executable Linker  Version 5.50
+Copyright (C) Microsoft Corp 1984-1993.  All rights reserved.
+
+Object Modules [.obj]: /NOI /MAP /CODEVIEW /NOE c:\c\mit_ll\libx\SRAMA.obj+
+Object Modules [.obj]: tlx+
+Object Modules [.obj]: platform+
+Object Modules [.obj]: pilot+utility+cmd_tm+ground
+Run File [c:SRAMA.exe]: tlx.exe
+List File [c:tlx.map]: tlx.map
+Libraries [.lib]: c:\c\mit_ll\libx\SV40_10A.lib+c:\c\mit_ll\libx\SV40GNDA.lib+c:\c\mit_ll\lib\SlibcA.lib
+Definitions File [nul.def]: NUL.DEF
+	loc @tlx.loc
+DATALIGHT 80x86 Locator v2.0
+(C) Copyright 1988-1992, Datalight Inc.
+
+All chips are RAM: file not produced
+	locate tlx
+Paradigm LOCATE - Version 5.00.308
+Copyright (C) 1987-1995 Paradigm Systems.  All rights reserved.

@@ -1,0 +1,17 @@
+tlx,
+tlx,
+tlx,
+CODE     @ 0x0400       +
+PLHOLDER @ $            +
+FAR_DATA @ $            +
+DATA     @ $            +
+INITDATA @ $            +
+EXITDATA @ $            +
+CONST    @ $            +
+MSG      @ $            +
+BSS      @ $            +
+STACK    @ $            +
+FAR_BSS  @ $            +
+HEAP     @ $            ,
+256K ROM @ 0x0
+

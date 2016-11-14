@@ -1,0 +1,89 @@
++++ PWB  [D:\C\CABLE\HCABLE] Rebuild all
+
+	NMAKE  /a /f D:\C\CABLE\HCABLE\HCABLE.MAK all
+
+Microsoft (R) Program Maintenance Utility   Version 1.40       
+Copyright (c) Microsoft Corp 1988-93. All rights reserved.
+
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /Fohcable.obj hcable.C
+hcable.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /FoDATAFILE.obj DATAFILE.C
+datafile.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /FoAIRFRAME.obj AIRFRAME.C
+airframe.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /FoANALYSIS.obj ANALYSIS.C
+analysis.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /FoDESIGN.obj DESIGN.C
+design.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /FoDESIGN6.obj DESIGN6.C
+design6.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /FoPRINT6.obj PRINT6.C
+print6.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /FoREVS.obj REVS.C
+revs.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /FoDESIGNST.obj DESIGNST.C
+designst.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f /Od /Zi /FoTESTDATA.obj TESTDATA.C
+testdata.c
+	echo > NUL @HCABLE.lrf
+	link @HCABLE.lrf
+
+Microsoft (R) Segmented Executable Linker  Version 5.60.339 Dec  5 1994
+Copyright (C) Microsoft Corp 1984-1993.  All rights reserved.
+
+Object Modules [.obj]: hcable.obj +
+Object Modules [.obj]: DATAFILE.obj +
+Object Modules [.obj]: AIRFRAME.obj +
+Object Modules [.obj]: ANALYSIS.obj +
+Object Modules [.obj]: DESIGN.obj +
+Object Modules [.obj]: DESIGN6.obj +
+Object Modules [.obj]: PRINT6.obj +
+Object Modules [.obj]: REVS.obj +
+Object Modules [.obj]: DESIGNST.obj +
+Object Modules [.obj]: TESTDATA.obj
+Run File [hcable.exe]: HCABLE.exe
+List File [nul.map]: NUL
+Libraries [.lib]:  +
+Libraries [.lib]:  +
+Libraries [.lib]: 
+Definitions File [nul.def]:  /NOI /BATCH /ONERROR:NOEXE /CO /FAR /PACKC;

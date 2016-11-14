@@ -1,0 +1,9 @@
+trx-12b with MIT large towline
+
+		station number = 1
+
+            trx-12 tow reel parameters
+                                                              cable angles
+   kcas   alpha   beta     tx       ty       tz     tension  x-z    x-y    y-z
+
+ 250.00    0.00    0.00   319.70     0.00    47.13   323.15   8.39   0.00  90.00

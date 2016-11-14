@@ -1,0 +1,166 @@
+PWB-GENERATED FILE: DO NOT MODIFY
+[shared-]
+	version=3
+	project="D:\C\CABLE\TRX12CAB\TRX12CAB\CABLE.MAK"
+	buildmode=3
+[edit-]
+	srch=D:\C700\INCLUDE
+	fSrchRe=0
+	rpl=pragma
+	src=pargam
+	fRplRe=17408
+[pwbed]
+	screen=25 80
+	winstyle=7
+	wnd=C 2 1 24 80
+[pwb]
+	screen=50 80
+	winstyle=7
+	file="<COMPILE>Build Results" 1 1 1 1
+	wnd=c 1 0 49 80 32 0
+	file="<SEARCH>Search Results" 1 1 1 1
+	wnd=c 32 0 49 80 45 4
+	file="<PRINT>Print Results" 1 1 1 1
+	wnd=c 0 0 0 0 0 0
+	file="<RECORD>Record" 1 1 1 1
+	wnd=c 0 0 0 0 0 0
+	file="<CLIPBOARD>Clipboard" 1 1 1 1
+	wnd=c 0 0 0 0 0 0
+	file="<pwbhelp>Help" 1 1 1 1
+	wnd=c 1 0 19 80 0 0
+	file="<browse>Browser Output" 1 1 1 1
+	wnd=c 0 0 0 0 0 0
+[build]
+    build: language "C"
+    build: template "None" modified
+    build: macro DEBUG "1"
+    build: macro PWBRMAKE "pwbrmake"
+    build: macro NMAKEBSC1 "set"
+    build: macro NMAKEBSC2 "nmake"
+    build: macro CC "cl"
+    build: macro CFLAGS_G "/AL /W2 /G1 /BATCH"
+    build: macro CFLAGS_D "/Od /Zi"
+    build: macro CFLAGS_R "/Od /Gs"
+    build: macro MAPFILE_D "NUL"
+    build: macro MAPFILE_R "NUL"
+    build: macro LFLAGS_G "/NOI /BATCH"
+    build: macro LFLAGS_D "/CO /NOFA /NOPACKC /NOPACKF"
+    build: macro LFLAGS_R "/NOF /NOPACKC"
+    build: macro LINKER "link"
+    build: macro ILINK "ilink"
+    build: macro LRF "echo > NUL"
+    build: macro BRFLAGS " /o $(PROJ).bsc"
+    build: macro BROWSE "0"
+    build: macro LLIBS_R ""
+    build: macro LLIBS_D ""
+    build: macro LLIBS_G "graphics.lib pgchart.lib"
+    build: macro NMFLAGS ""
+    build: macro CVFLAGS " /25 /F"
+    build: all $(PROJ).exe
+    build: target $(PROJ).bsc pwbrmake
+    build: target $(PROJ).exe lrf_exe link_exe
+    build: inference .c.obj cc_c_obj
+    build: inference .c.sbr cc_c_sbr
+    build: command pwbrmake "$(PWBRMAKE) @<<\n$(BRFLAGS) $(SBRS)\n<<"
+    build: command nmakebsc1 "$(NMAKEBSC1) MAKEFLAGS="
+    build: command nmakebsc2 "$(NMAKEBSC2) $(NMFLAGS) -f $(PROJFILE) $(PROJ).bsc"
+    build: release command cc_c_obj "$(CC) /c $(CFLAGS_G) $(CFLAGS_R) /Fo$@ $<"
+    build: debug command cc_c_obj "$(CC) /c $(CFLAGS_G) $(CFLAGS_D) /Fo$@ $<"
+    build: release command cc_c_sbr "$(CC) /Zs $(CFLAGS_G) $(CFLAGS_R) /FR$@ $<"
+    build: debug command cc_c_sbr "$(CC) /Zs $(CFLAGS_G) $(CFLAGS_D) /FR$@ $<"
+    build: release command lrf_exe "$(LRF) @<<$(PROJ).lrf\n$(RT_OBJS: = +^\n) $(OBJS: = +^\n)\n$@\n$(MAPFILE_R)\n$(LLIBS_G: = +^\n) +\n$(LLIBS_R: = +^\n) +\n$(LIBS: = +^\n)\n$(DEF_FILE) $(LFLAGS_G) $(LFLAGS_R);\n<<"
+    build: debug command lrf_exe "$(LRF) @<<$(PROJ).lrf\n$(RT_OBJS: = +^\n) $(OBJS: = +^\n)\n$@\n$(MAPFILE_D)\n$(LLIBS_G: = +^\n) +\n$(LLIBS_D: = +^\n) +\n$(LIBS: = +^\n)\n$(DEF_FILE) $(LFLAGS_G) $(LFLAGS_D);\n<<"
+    build: command link_exe "$(LINKER) @$(PROJ).lrf"
+    build: command run "$(PROJ).exe $(RUNFLAGS)"
+    build: command debug "CV $(CVFLAGS) $(PROJ).exe $(RUNFLAGS)"
+    build: suffixes
+    build: include dependencies
+    build: include no system
+    build: include path .c
+    build: include .asm "^[ \t]*include[ \t]+\\([^ \t]+\\)"
+    build: include .inc "^[ \t]*include[ \t]+\\([^ \t]+\\)"
+    build: include .rc "^[ \t]*rcinclude[ \t]+\\([^ \t]+\\)"
+    build: include .rc "^[ \t]*#[ \t]*include[ \t]*\"[ \t]*\\(\\:p\\)[ \t]*\""
+    build: include .rc "^[ \t]*#[ \t]*include[ \t]*<[ \t]*\\(\\:p\\)[ \t]*>" system
+    build: include .rc "^\\:i\\:b\\{ICON\\!BITMAP\\!FONT\\!CURSOR\\}\\:b\\{LOADONCALL\\:b\\!PRELOAD\\:b\\!FIXED\\:b\\!MOVABLE\\:b\\!DISCARDABLE\\:b\\!\\}*\\(\\:p\\)"
+    build: include .c "^[ \t]*#[ \t]*include[ \t]*\"[ \t]*\\(\\:p\\)[ \t]*\"" case
+    build: include .c "^[ \t]*#[ \t]*include[ \t]*<[ \t]*\\(\\:p\\)[ \t]*>" case system
+    build: include .h "^[ \t]*#[ \t]*include[ \t]*\"[ \t]*\\(\\:p\\)[ \t]*\"" case
+    build: include .h "^[ \t]*#[ \t]*include[ \t]*<[ \t]*\\(\\:p\\)[ \t]*>" case system
+    build: include .cxx "^[ \t]*#[ \t]*include[ \t]*\"[ \t]*\\(\\:p\\)[ \t]*\"" case
+    build: include .cxx "^[ \t]*#[ \t]*include[ \t]*<[ \t]*\\(\\:p\\)[ \t]*>" case system
+    build: include .cpp "^[ \t]*#[ \t]*include[ \t]*\"[ \t]*\\(\\:p\\)[ \t]*\"" case
+    build: include .cpp "^[ \t]*#[ \t]*include[ \t]*<[ \t]*\\(\\:p\\)[ \t]*>" case system
+    build: include .hxx "^[ \t]*#[ \t]*include[ \t]*\"[ \t]*\\(\\:p\\)[ \t]*\"" case
+    build: include .hxx "^[ \t]*#[ \t]*include[ \t]*<[ \t]*\\(\\:p\\)[ \t]*>" case system
+    build: include .hpp "^[ \t]*#[ \t]*include[ \t]*\"[ \t]*\\(\\:p\\)[ \t]*\"" case
+    build: include .hpp "^[ \t]*#[ \t]*include[ \t]*<[ \t]*\\(\\:p\\)[ \t]*>" case system
+    build: include .for "^[ \t$][ \t]*[iI][nN][cC][lL][uU][dD][eE][ \t:]*'[ \t]*\\(\\:p\\)[ \t]*'" case
+    build: include .fi "^[ \t$][ \t]*[iI][nN][cC][lL][uU][dD][eE][ \t:]*'[ \t]*\\(\\:p\\)[ \t]*'" case system
+    build: include .fd "^[ \t$][ \t]*[iI][nN][cC][lL][uU][dD][eE][ \t:]*'[ \t]*\\(\\:p\\)[ \t]*'" case system
+    build: include .inc "^[ \t$][ \t]*[iI][nN][cC][lL][uU][dD][eE][ \t:]*'[ \t]*\\(\\:p\\)[ \t]*'" case
+    build: include .rc "^\\:i\\:bBITMAP\\:b\\(\\:p\\)"
+    build: include .rc "^\\:i\\:bCURSOR\\:b\\(\\:p\\)"
+    build: include .rc "^\\:i\\:bFONT\\:b\\(\\:p\\)"
+    build: include .rc "^\\:i\\:bICON\\:b\\(\\:p\\)"
+    build: include .f "^[ \t$][ \t]*[iI][nN][cC][lL][uU][dD][eE][ \t:]*'[ \t]*\\(\\:p\\)[ \t]*'" case
+    build: message "^SYS[0-9][0-9][0-9][0-9]:\\:b"
+    build: message "^NET[0-9][0-9][0-9][0-9]:\\:b"
+    build: message "^\\(\\{\\:p\\!<[^>]*>\\}\\) \\([0-9]+\\) \\([0-9]+\\)[ ]*:" file line col
+    build: message "^\\(\\:p\\):\\([0-9]+\\):" file line
+    build: message "^[^(]+(\\(\\:p\\)) : error L[0-9]+[ ]*: '_*\\([^']+\\)' : unresolved external" file token
+    build: message "^[^(]+(\\(\\:p\\)) : [^L]+L[124]" file
+    build: message "^LINK [^L]+L[124]"
+    build: message "^ILINK : [^L]+L[124]"
+    build: message "Rebuild all" file line
+    build: message "^NMAKE : [^U]+U[124]"
+    build: message "^\\:p : [^U]+U[124]\\:d\\:d\\:d"
+    build: message "^\\(\\:p\\)(\\([0-9]+\\))[ \t]*:[ \t]*[^A]+A[12456]" file line
+    build: message "^\\(\\:p\\)(\\(\\:z\\)) : [^H]+HI[124]" file line
+    build: message "^[^H]+HI[124][0-9]+: "
+    build: message "^DOSXNT :"
+    build: message "^bscmake: [^B]+BK[124]"
+    build: message "^sbrpack: [^S]+SB[124]"
+    build: message "^BIND : [^U]+U[124]"
+    build: message "^\\(\\:p\\)(\\(\\:z\\)) RC:" file line
+    build: message "\\(\\:p\\)(\\(\\:z\\)) : error RC\\:z:" file line
+    build: message "^RC:"
+    build: message "^RC :"
+    build: message "^LIB :"
+    build: message "^MPC :"
+    build: message "^CVPACK :"
+    build: message "^\\(\\:p\\)(\\(\\:z\\)) : [^C]+C[124]" file line
+    build: message "^[^C]+C[124][0-9]+: "
+    build: message "^[^D]+D[124][0-9]+ : "
+    build: message "^\\(\\:p\\)(\\(\\:z\\)) : [^F]+F[1234]" file line
+    build: message "^[^F]+F[1234][0-9]+: "
+    build: message "Build all" file line
+    build: message "Rebuild all" file line
+    build: message "Build " file line
+    build: message "Rebuild " file line
+    build: message "Compile mebfor.FOR" file line
+    build: message "Compile KERNEL.C" file line
+    build: message "Compile WINTMX.FOR" file line
+    build: message "Compile SWAP.ASM" file line
+    build: message "Compile TOWSIM.FOR" file line
+    build: message "^pwbrmake: [^U]+U[124]"
+    build: message "^RC: error"
+    build: message "Compile TMX.C" file line
+    build: message "Compile time.asm" file line
+    build: message "Compile 8250.C" file line
+    build: message "Compile TMX.FOR" file line
+    build: message "Compile RTCLOCK.C"
+    build: message "Compile tlxhud.c" file line
+    build: message "Compile TLXHUD.C" file line
+    build: message "Compile TMXTALK.C" file line
+    build: message "Compile TLX_PLOT.C" file line
+    build: message "Compile HUD_PLOT.C" file line
+    build: message "Compile cmd.C" file line
+    build: message "Compile TLX_DISP.C" file line
+    build: message "Compile LABMON.C" file line
+    build: message "Compile MONSHOW.C" file line
+    build: message "Compile 3d.c" file line
+    build: message "Compile IGENFILT.C" file line
+    build: message "Compile test.c" file line
+    build: message "Compile for_util.FOR" file line
+    build: message "Compile MEB.C" file line

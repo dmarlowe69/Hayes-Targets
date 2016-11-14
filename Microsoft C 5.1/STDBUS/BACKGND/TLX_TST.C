@@ -1,0 +1,500 @@
+/* file: tlx.c */
+
+ #pragma linesize(132)
+ #pragma pagesize(63)
+ #pragma title("Autopilot application")
+ #pragma subtitle("(c)1990 Hayes Targets")
+
+/****************************************************************************
+ *
+ *	Include Microsoft definitions
+ *
+ ***************************************************************************/
+
+ #include       <stdio.h>
+ #include       <math.h>
+ #include       <float.h>
+
+/****************************************************************************
+ *
+ *	general defintions
+ *
+ ***************************************************************************/
+
+ #define DEBUG
+ #define OUTPUT
+
+ #define NUM_ALT	16
+ #define NUM_ACCEL	16
+
+ #define FNUM_ALT_STEPS 	15.0
+ #define DELTA_T			0.0625
+
+/****************************************************************************
+ *
+ *	general defintions
+ *
+ ***************************************************************************/
+
+ int alt[NUM_ALT];
+ int accel[NUM_ACCEL];
+
+ int average_alt;
+ int alt_error;
+ int deviation;
+ int preset;
+ int height_rate;
+ long int integrate_accel;
+ int wing;
+ long int sum;
+ int KP,KV,KI,KS,MR;
+ int loop_count;
+
+ float	fpreset;
+ double dwing;
+ float	falt;
+ float	faccel;
+
+ #if defined(OUTPUT)
+
+	FILE *f_tlx;
+
+ #endif
+
+/****************************************************************************
+ *
+ *	function prototypes
+ *
+ ***************************************************************************/
+
+ void tlx_init(void);
+ void tlx_pilot(void);
+ void alt_stack_out(void);
+ void accel_stack_out(void);
+ void tlx_sensor(void);
+ void tlx_test(void);
+
+/***************************************************************************
+ *
+ *	initialize autopilot
+ *
+ **************************************************************************/
+ void tlx_init(void)
+ {
+ int i;
+
+	for(i=0;i<NUM_ALT;i++) {
+		alt[i] = 0;
+		}
+
+	for(i=0;i<NUM_ACCEL;i++) {
+		accel[i] = 0;
+		}
+
+	loop_count = 0;
+
+	preset = (int)(fpreset * 256.0/100.0);
+
+	KP = 0x66;	/* 102 - 2.00	volts */
+	KV = 0x4c;	/*	76 - 1.50	volts */
+	KI = 0x33;	/*	52 - 1.00	volts */
+	KS = 0x50;	/*	80 - 1.568	volts */
+	MR = 0x66;	/* 102 - 2.00	volts */
+
+ }
+/***************************************************************************
+ *
+ *	TLX autopilot
+ *
+ **************************************************************************/
+ void tlx_pilot(void)
+ {
+ int i;
+
+/***************************************************************************
+ *
+ *	Shift ALT stack down one entry
+ *
+ **************************************************************************/
+
+	for(i=NUM_ALT-1;i>0;i--) {
+		alt[i] = alt[i-1];
+		}
+/*
+	alt[15] = alt[14];
+	alt[14] = alt[13];
+	alt[13] = alt[12];
+	alt[12] = alt[11];
+	alt[11] = alt[10];
+	alt[10] = alt[ 9];
+	alt[ 9] = alt[ 8];
+	alt[ 8] = alt[ 7];
+	alt[ 7] = alt[ 6];
+	alt[ 6] = alt[ 5];
+	alt[ 5] = alt[ 4];
+	alt[ 4] = alt[ 3];
+	alt[ 3] = alt[ 2];
+	alt[ 2] = alt[ 1];
+	alt[ 1] = alt[ 0];
+*/
+
+/***************************************************************************
+ *
+ *	Shift ACCEL stack down one entry
+ *
+ **************************************************************************/
+
+	for(i=NUM_ACCEL-1;i>0;i--) {
+		accel[i] = accel[i-1];
+		}
+/*
+	accel[15] = accel[14];
+	accel[14] = accel[13];
+	accel[13] = accel[12];
+	accel[12] = accel[11];
+	accel[11] = accel[10];
+	accel[10] = accel[ 9];
+	accel[ 9] = accel[ 8];
+	accel[ 8] = accel[ 7];
+	accel[ 7] = accel[ 6];
+	accel[ 6] = accel[ 5];
+	accel[ 5] = accel[ 4];
+	accel[ 4] = accel[ 3];
+	accel[ 3] = accel[ 2];
+	accel[ 2] = accel[ 1];
+	accel[ 1] = accel[ 0];
+*/
+
+/***************************************************************************
+ *
+ *	update readings
+ *
+ **************************************************************************/
+
+	tlx_sensor();
+
+/***************************************************************************
+ *
+ *	average last four altitude samples
+ *
+ **************************************************************************/
+
+	average_alt = 0;
+
+	for(i=0;i<4;i++) {
+		average_alt = average_alt + alt[i];
+	}
+
+	average_alt = average_alt >> 2;
+
+/***************************************************************************
+ *
+ *	put average into alt stack
+ *
+ **************************************************************************/
+
+	alt[0] = average_alt;
+
+/***************************************************************************
+ *
+ *	calculate altitude error
+ *
+ **************************************************************************/
+
+	alt_error = preset - average_alt;
+
+	sum = (long)(KP * alt_error);
+
+/***************************************************************************
+ *
+ *	calculate altitude deviation
+ *
+ **************************************************************************/
+
+	deviation = -alt_error;
+
+	if(deviation > 127 )
+		deviation = 127;
+
+	if(deviation < -128)
+		deviation = 128;
+
+	deviation = deviation + 128;
+
+/***************************************************************************
+ *
+ *	determine height rate
+ *
+ **************************************************************************/
+
+	height_rate = alt[NUM_ALT-1] - alt[0];
+
+	height_rate = height_rate;
+
+	sum = sum + (long)(KV * height_rate);
+
+/***************************************************************************
+ *
+ *	check loop counter
+ *
+ **************************************************************************/
+
+	loop_count++;
+	if(loop_count == 4) {
+		loop_count = 0;
+
+/***************************************************************************
+ *
+ *	integrate accelerometer
+ *
+ **************************************************************************/
+
+		integrate_accel = 0;
+		for(i=0;i<NUM_ACCEL;i++) {
+			integrate_accel = integrate_accel + (NUM_ACCEL - i) * accel[i];
+		}
+
+		integrate_accel = integrate_accel >> 8;
+
+		sum = sum + (long)(KI) * integrate_accel;
+
+/***************************************************************************
+ *
+ *	scale result
+ *
+ **************************************************************************/
+
+		wing = (int)(sum >> 5);
+
+/***************************************************************************
+ *
+ *	add in hardware offset
+ *
+ **************************************************************************/
+
+		wing = wing + 0;
+
+/***************************************************************************
+ *
+ *	subtrack manual reset
+ *
+ **************************************************************************/
+
+		wing = wing - MR;
+
+/***************************************************************************
+ *
+ *	limit wing
+ *
+ **************************************************************************/
+
+		if(wing < -255)
+			wing = 255;
+		if(wing > 255)
+			wing = 255;
+
+		dwing = (double)(wing) * 10.0/256.0;
+
+	} /* if loop_count */
+
+ }
+
+ #pragma page(1)
+
+/***************************************************************************
+ *
+ *
+ *
+ **************************************************************************/
+ void alt_stack_out(void)
+ {
+ int i;
+
+	for(i=0;i<NUM_ALT;i++) {
+		printf("%d %d\n",i,alt[i]);
+
+ #if defined(OUTPUT)
+
+		fprintf(f_tlx,"%d %d\n",i,alt[i]);
+
+ #endif
+
+	}
+
+ }
+
+ #pragma page(1)
+
+/***************************************************************************
+ *
+ *
+ *
+ **************************************************************************/
+ void accel_stack_out(void)
+ {
+ int i;
+
+	for(i=0;i<NUM_ACCEL;i++) {
+		printf("%d %d\n",i,accel[i]);
+
+ #if defined(OUTPUT)
+
+		fprintf(f_tlx,"%d %d\n",i,accel[i]);
+
+ #endif
+
+	}
+
+ }
+
+ #pragma page(1)
+
+/***************************************************************************
+ *
+ *	update sensor reading
+ *
+ **************************************************************************/
+ void tlx_sensor(void)
+ {
+	alt[0] = (int)( falt * 256.0/100.0);
+	accel[0] = (int)(faccel * 256.0/1.0);
+ }
+
+ #pragma page(1)
+
+/***************************************************************************
+ *
+ *		TLX autopilot test program
+ *
+ *      written by denton marlowe
+ *      (c)1990 Hayes Targets
+ *
+ **************************************************************************/
+ void tlx_test(void)
+ {
+ double t;						/* time in seconds */
+ float f_rad;					/* user input sin wave frequency */
+ float f_hz;                    /* user input sin wave frequency */
+ float amplitude;               /* amplitude of sine wave */
+ double temp,temp1;             /* temporary variables */
+ float step;                    /* user input step magnitude */
+ unsigned char option;          /* user input option */
+ float run_time;                /* user input for run time in seconds */
+ unsigned long int run_count;   /* number of time slices */
+ unsigned int plot_count;       /* user input for plot frequency */
+ unsigned int p_count;          /* counter for plot frequency */
+ unsigned long int i;			/* counter */
+
+/****************************************************************************
+ *
+ *      get user inputs
+ *
+ ***************************************************************************/
+
+ #if defined(OUTPUT)
+
+	if ((f_tlx=fopen("tlx.out","w")) == NULL)
+		{
+			printf("error opening output file\n");
+			exit(0);
+		}
+ #endif
+
+
+	printf("enter run time :");
+	scanf("%f",&run_time);
+	run_count = (long)(run_time/0.0625) + 1;
+
+	printf("enter plot frequency :");
+	scanf("%d",&plot_count);
+	p_count = 1;
+
+	printf("enter preset :");
+	scanf("%f",&fpreset);
+
+	printf("enter altitude :");
+	scanf("%f",&falt);
+
+	printf("enter accel :");
+	scanf("%f",&faccel);
+
+/****************************************************************************
+ *
+ *      write header info to file
+ *
+ ***************************************************************************/
+
+ #if defined(OUTPUT)
+
+	fprintf(f_tlx,"T\t");
+	fprintf(f_tlx,"AVG ALT\t");
+	fprintf(f_tlx,"ALT ERR\t");
+	fprintf(f_tlx,"ALT RTE\t");
+	fprintf(f_tlx,"ACC\t");
+	fprintf(f_tlx,"WNG\t");
+	fprintf(f_tlx,"WNG");
+	fprintf(f_tlx,"\n");
+
+ #endif
+
+/******************************************************************************
+ *
+ *      start run
+ *
+ *****************************************************************************/
+
+	tlx_init();
+
+	for(i=0;i<run_count;i++) {
+
+		t = (double)(i)/16.0;
+
+		tlx_pilot();
+
+		p_count--;
+		if(p_count == 0) {
+			printf("%6.4f\t",t);
+			printf("%d\t",average_alt);
+			printf("%d\t",alt_error);
+			printf("%d\t",height_rate);
+			printf("%d\t",integrate_accel);
+			printf("%d\t",wing);
+			printf("%6.4f\t",dwing);
+			printf("\n");
+
+ #if defined(OUTPUT)
+
+			fprintf(f_tlx,"%6.4f\t",t);
+			fprintf(f_tlx,"%d\t",average_alt);
+			fprintf(f_tlx,"%d\t",alt_error);
+			fprintf(f_tlx,"%d\t",height_rate);
+			fprintf(f_tlx,"%d\t",integrate_accel);
+			fprintf(f_tlx,"%d\t",wing);
+			fprintf(f_tlx,"%6.4f\t",dwing);
+			fprintf(f_tlx,"\n");
+
+ #endif
+
+			/*alt_stack_out();*/
+
+			/*accel_stack_out();*/
+
+			p_count = plot_count;
+
+			} /* if */
+
+		} /* for */
+
+/****************************************************************************
+ *
+ *      close output files
+ *
+ ***************************************************************************/
+
+ #if defined(OUTPUT)
+
+	fclose(f_tlx);
+
+ #endif
+
+ }

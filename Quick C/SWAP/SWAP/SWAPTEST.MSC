@@ -1,0 +1,20 @@
+# Makes SWAPTEST.EXE in Small memory model (Microsoft C, versions
+#   5.10 and 6.00).  Enter "make swaptest.msc" at DOS command prompt.
+
+MASMDEFS= /W2 /D_Small /mx
+MSCDEFS= /c /W3 /AS
+LINKDEFS=/MAP/STACK:1024
+
+swaps.obj:              swap.asm
+            masm $(MASMDEFS) swap.asm, swaps.obj;
+
+swaptest.obj:           swaptest.c \
+                        swap.h
+            cl $(MSCDEFS) swaptest.c
+
+swaptest.exe:           swaps.obj \
+                        swaptest.obj
+            link $(LINKDEFS) swaps + swaptest, swaptest, swaptest;
+
+
+

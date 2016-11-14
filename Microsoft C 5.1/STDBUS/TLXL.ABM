@@ -1,0 +1,93 @@
+Input file: TLX.EXE
+Configuration file: TLX.CFG
+Created by Paradigm LOCATE 5.00b on Fri Sep 29 08:21:28 1995
+Command line options: C:\C\MIT_LL\BINX\LOCATE.EXE tlx 
+
+Memory Address Map for Program TLX
+
+ Start     Stop      Length   Segment                Class               
+ 004000H   00A5F0H   065F1H   _TEXT                  CODE
+ 00A600H   00A601H   00002H   EMULATOR_TEXT          CODE
+ 00A610H   00A61FH   00010H   RELOC_DATA             PLHOLDER
+ 00A620H   00A620H   00001H   _FARDATA               ROMDATA
+ 00A622H   00BC8DH   0166CH   _DATA                  ROMDATA
+ 00BC90H   00BCBDH   0002EH   PSP                    ROMDATA
+ 00BCBEH   00BCBEH   00000H   XIFCB                  ROMDATA
+ 00BCBEH   00BCBEH   00000H   XIFU                   ROMDATA
+ 00BCBEH   00BCBEH   00000H   XIFL                   ROMDATA
+ 00BCBEH   00BCBEH   00000H   XIFM                   ROMDATA
+ 00BCBEH   00BCBEH   00000H   XIFCE                  ROMDATA
+ 00BCBEH   00BCCBH   0000EH   CDATA                  ROMDATA
+ 00BCCCH   00BCCCH   00000H   XIFB                   ROMDATA
+ 00BCCCH   00BCCCH   00000H   XIF                    ROMDATA
+ 00BCCCH   00BCCCH   00000H   XIFE                   ROMDATA
+ 00BCCCH   00BCCCH   00000H   XIB                    ROMDATA
+ 00BCCCH   00BCCDH   00002H   XI                     ROMDATA
+ 00BCCEH   00BCCEH   00000H   XIE                    ROMDATA
+ 00BCCEH   00BCCEH   00000H   XPB                    ROMDATA
+ 00BCCEH   00BCCEH   00000H   XP                     ROMDATA
+ 00BCCEH   00BCCEH   00000H   XPE                    ROMDATA
+ 00BCCEH   00BCCEH   00000H   XCB                    ROMDATA
+ 00BCCEH   00BCCEH   00000H   XC                     ROMDATA
+ 00BCCEH   00BCCEH   00000H   XCE                    ROMDATA
+ 00BCCEH   00BCCEH   00000H   XCFB                   ROMDATA
+ 00BCCEH   00BCCEH   00000H   XCF                    ROMDATA
+ 00BCCEH   00BCCEH   00000H   XCFE                   ROMDATA
+ 00BCCEH   00BCCEH   00000H   _INIT_                 ROMDATA
+ 00BCCEH   00BCCEH   00000H   _INITEND_              ROMDATA
+ 00BCCEH   00BCCEH   00000H   _EXIT_                 ROMDATA
+ 00BCCEH   00BCCEH   00000H   _EXITEND_              ROMDATA
+ 00BCCEH   00BCCEH   00000H   _CONST                 ROMDATA
+ 00BCCEH   00BCE5H   00018H   CONST                  ROMDATA
+ 00BCE6H   00BDDFH   000FAH   MSG                    ROMDATA
+ 00BDE0H   00BDE0H   00000H   HDR                    ROMDATA
+ 00BDE0H   00BDE1H   00002H   PAD                    ROMDATA
+ 00BDE2H   00BDE2H   00000H   EPAD                   ROMDATA
+ 00BDF0H   00BDF0H   00001H   _FARDATA               FAR_DATA
+ 00BDF2H   00D45DH   0166CH   _DATA                  DATA
+ 00D460H   00D48DH   0002EH   PSP                    DATA
+ 00D48EH   00D48EH   00000H   XIFCB                  DATA
+ 00D48EH   00D48EH   00000H   XIFU                   DATA
+ 00D48EH   00D48EH   00000H   XIFL                   DATA
+ 00D48EH   00D48EH   00000H   XIFM                   DATA
+ 00D48EH   00D48EH   00000H   XIFCE                  DATA
+ 00D48EH   00D49BH   0000EH   CDATA                  DATA
+ 00D49CH   00D49CH   00000H   XIFB                   DATA
+ 00D49CH   00D49CH   00000H   XIF                    DATA
+ 00D49CH   00D49CH   00000H   XIFE                   DATA
+ 00D49CH   00D49CH   00000H   XIB                    DATA
+ 00D49CH   00D49DH   00002H   XI                     DATA
+ 00D49EH   00D49EH   00000H   XIE                    DATA
+ 00D49EH   00D49EH   00000H   XPB                    DATA
+ 00D49EH   00D49EH   00000H   XP                     DATA
+ 00D49EH   00D49EH   00000H   XPE                    DATA
+ 00D49EH   00D49EH   00000H   XCB                    DATA
+ 00D49EH   00D49EH   00000H   XC                     DATA
+ 00D49EH   00D49EH   00000H   XCE                    DATA
+ 00D49EH   00D49EH   00000H   XCFB                   DATA
+ 00D49EH   00D49EH   00000H   XCF                    DATA
+ 00D49EH   00D49EH   00000H   XCFE                   DATA
+ 00D49EH   00D49EH   00000H   _INIT_                 INITDATA
+ 00D49EH   00D49EH   00000H   _INITEND_              INITDATA
+ 00D49EH   00D49EH   00000H   _EXIT_                 EXITDATA
+ 00D49EH   00D49EH   00000H   _EXITEND_              EXITDATA
+ 00D49EH   00D49EH   00000H   _CONST                 CONST
+ 00D49EH   00D4B5H   00018H   CONST                  CONST
+ 00D4B6H   00D5AFH   000FAH   MSG                    MSG
+ 00D5B0H   00D5B0H   00000H   HDR                    MSG
+ 00D5B0H   00D5B1H   00002H   PAD                    MSG
+ 00D5B2H   00D5B2H   00000H   EPAD                   MSG
+ 00D5C0H   00D5C0H   00000H   BEG_BSS                BSS
+ 00D5C0H   00D5D3H   00014H   _BSS                   BSS
+ 00D5D4H   00D5D4H   00000H   XOB                    BSS
+ 00D5D4H   00D5D4H   00000H   XO                     BSS
+ 00D5D4H   00D5D4H   00000H   XOE                    BSS
+ 00D5E0H   00DB6BH   0058CH   C_COMMON               BSS
+ 00DB70H   00EB6FH   01000H   _STACK                 STACK
+ 00EB70H   00EB70H   00000H   _FARBSS                FAR_BSS
+ 00EB70H   00EB7FH   00010H   _HEAP                  HEAP
+
+Entry point:   0400:0000
+Initial stack: 0DB7:1000
+
+

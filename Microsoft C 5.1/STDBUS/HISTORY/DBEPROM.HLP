@@ -1,0 +1,3632 @@
+18b27
+0
+0
+13947
+209e
+2112
+2333
+1c75c
+1b059
+1505b
+15798
+15afc
+1c065
+1c4c6
+16565
+16b35
+16e06
+171f0
+2676
+2b7b
+2df8
+30fb
+31e5
+3573
+37c0
+3b08
+3dd9
+4724
+65a7
+679e
+6a0d
+6c2f
+6e4f
+5f72
+72b3
+7bb4
+863b
+8a4e
+9101
+93c3
+9860
+9a4f
+17775
+17976
+17cf1
+18050
+1833a
+18629
+1891e
+a4a7
+a591
+a1d7
+7e8d
+a700
+aa39
+c9fa
+d758
+dcb9
+e5f0
+eb03
+bfc5
+f20f
+f85a
+f9e4
+f5b2
+11b53
+10ca6
+fad6
+11c69
+11186
+1009d
+11d7f
+1166b
+105f1
+1209b
+128ce
+12c89
+12d88
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1cd1b
+0
+1ae5d
+1a7e0
+1ad1d
+1ac85
+1ca44
+1cbd0
+1c8da
+1aaa6
+1a690
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+        end of indexes
++ HLP_DEBUG
+^^Help for Function Keys and General Input Format.^
+
+^^Function Keys^
+  The function  keys are  used to implement commands which are
+  global in  nature.   Function key  operations may be invoked
+  from any prompt or menu level of the debugger.
+
+^^F1 - Help^
+  Pressing the F1 key will invoke the Help Facility.
+  Help is available at any prompt and is context-sensitive.
+$
+^^F4 - Toggle Word/Byte Mode^
+  Pressing the  F4 key  will  cause  the  debugger  to  toggle
+  between word and byte mode.  When the F4 key is pressed, one
+  of the  following messages  will be displayed depending upon
+  which mode is in effect:
+
+    Word mode selected       - or -       Byte mode selected
+
+  When in  byte mode, memory is displayed as eight bit values.
+  Word mode  causes memory  to be  displayed  as  sixteen  bit
+  values.   Regardless of the mode, addresses always reference
+  eight bit  quantities.   When word  mode is  selected,  even
+  address values  refer to  the high  order eight bits and odd
+  values to the low order eight bits.
+$
+^^F5 - Calculator^
+  The F5 key invokes a calculator feature displayed in a pop up
+  window.   The  calculator will  evaluate and  display the
+  result of  any valid debugger arithmetic expression.
+  The window used by the calculator is illustrated below:
+
+       ษอ CALCULATOR ออออออออออออออออออออออออออออออออออป
+       บ          $       7 = 1 + 2 * 3                บ
+       บ          $       9 = (1 + 2) * 3              บ
+       บ          $       3 = 5 + -2                   บ
+       บ          $       F = (4 * 3) | (2 + 1)        บ
+       บ          $FFFFFFFE =  -2                      บ
+       บ          $FFFFFFFD =  NOT 2                   บ
+       บ      ENTER FORMULA >                          บ
+       ศอออออออออออออออออออออออออออออออออออออออออออออออผ
+$
+^^F5 - Calculator (continued).^
+
+  Expressions may be formed using the same operators as in the
+  assembler, including the use of parentheses or braces.
+
+  Acceptable operators are:
+     symbol function    symbol function    symbol function
+     &      and         AND    and         MOD    mod
+     *      multiply    EQ     equal       NE     not equal
+     +      add         GE     >=          NOT    not
+     -      minus       GT     >           OR     or
+     /      divide      HIGH   high byte   SHL    shift left
+     ^      exclu. or   LE     <=          SHR    shift right
+     |      or          LOW    low byte    XOR    exclu. or
+                        LT     <
+$
+^^F5 - Calculator (continued).^
+
+  Esc will exit from the calculator.  The previous contents of
+  the  area occupied  by the  calculator window will be restored
+  and control will return to the last active debugger prompt.
+
+  The calculator  will  display  the  results  of  up  to  six
+  previous calculations.   These results will be retained even
+  between uses of the calculator.
+$
+^^F6 - Symbols^
+
+  Pressing the  F6 key  invokes the Symbols Window.
+  Complete help for Symbols may be obtained by pressing the
+  F1-Help key from the Symbols Menu.
+
+^^F8 - Learn/Edit/Macro^
+
+  F8  is used to access Learn, Edit, and Macro capabilities of
+  the debugger. Learn enables the user to save keystrokes to a
+  file, Edit lets the user to edit files, and Macro allows the
+  user to assign autotest CMD files to Alt-# keys. For further
+  help on Learn, press F1-help from the Learn Menu.
+$
+^^F9 - Escape to Debug Menu^
+
+  Pressing the F9 key returns control back to the Debug Menu.
+  It may be invoked at any time, including when a command is
+  in progress.
+$
+^^F10 - Call Dos^
+
+  F10 is used to temporarily leave the debugger and go to DOS.
+  To return to the debugger, type "exit" at the DOS prompt.
+
+  NOTE: The  commands executed must not use the communications
+  port in  use by  the debugger.  In particular, the user must
+  not attempt to re-execute the debugger or  EPROM  programmer
+  software.
+$
+^^Debugger Prompts^
+
+  The debugger  utilizes four  general types  of  prompts  for
+  keyboard input.   Each type of prompt has a specific use and
+  specific input  requirements.  The following sections detail
+  the operation of the different types of prompts.
+$
+^^Menu Selections^
+
+  Menus are  used to  select debugger  commands and  to obtain
+  responses to  multiple choice  questions.   Menus are of the
+  form:
+
+^    NAME>  ^A^choice ^B^choice ^C^choice ^D^choice:
+
+  Where NAME is the menu title and Achoice, Bchoice, et cetera
+  are the  available choices.   The desired choice is selected
+  by entering the capitalized, usually first, character of the
+  choice name.   Only the capitalized letter is to be entered;
+  no carriage return is required.  Upper or lower case input is
+  acceptable.  Pressing 'E' (Exit), return, or the Esc key will
+  exit to  the previous level menu.
+  Any character entered  which is  not listed as a menu choice
+  and not one of the exit keys will be ignored.
+$
+^^Yes/No Queries^
+
+  Yes/No queries  are often used to request user confirmation.
+  They are of the form:
+
+    WARNING:  CONTROL-C, exit to DOS? (Y/N) N
+
+  Where (Y,N)  identifies this  as a  Yes/No query.   The only
+  acceptable responses are 'Y', 'y', 'N', 'n', return, or Esc.
+  Carriage return (or Esc) selects the default.
+$
+^^String Input^
+
+  String input  is used  primarily for entering filenames.  It
+  requires a  series of  characters to  be entered followed by
+  carriage return.  The input  area is highlighted to show the
+  maximum length of the input string.  Carriage return accepts
+  the entry. The BACKSPACE key may be used to edit  the  input
+  prior to pressing carraige return.  Esc will abort the  com-
+  mand in progress and return to the menu from  which  it  was
+  initiated.
+
+  Some string  input prompts provide a default response.  If a
+  default is available it will appear in the highlighted input
+  area.  Carriage return  will accept  the  default  response.
+  Any other key (except Esc)  will clear  the default from the
+  input  area and echo the character in the input area.
+$
+^^Numeric Values/Address Expressions.^
+
+  A  prompt  ending in  a  $  (dollar  sign) indicates that an
+  arithmetic  expression  is  required.   The  expression  may
+  consist of a  constant (hexadecimal) value, a symbol name, a
+  register preceded by an '@', a calculation, or a combination
+  of the above.
+
+  Preceding a register name with an '@' will cause the current
+  contents of  that register  to be used in the numeric calcu-
+  lation.
+
+$
+^^Numeric Values/Address Expressions (continued).^
+
+  The numeric  value input  area is  highlighted to illustrate
+  the  maximum  allowable  input  length.   The input must  be
+  terminated with a carriage return.  Editing may be performed
+  using the BACKSPACE key.  Esc will abort the current command
+  and return to the menu from  which it was called.
+
+  Sometimes a value will be displayed in the highlighted input
+  area.   This value  is a  default which will be used if only
+  carriage return is pressed.   Any other  key  will clear the
+  default from the input area and cause the to be echoed.
+$
++ HLP_IRQ
+^^Irq.^
+
+The Irq command toggles the Global IRQ mask (set/clear),
+thus disabling/enabling IRQ's.
+$
++ HLP_GCTX
+^^GetCtx.^
+
+The Get Context command permits the retrieval of previously
+saved context files with subsequent, automatic setup of
+debugger options.
+
+Prompts:
+          File:  Enter the name of the context file to be
+                 retrieved.  Default extension is .ctx.
+
+Responses:
+
+   Return:  After a valid file name will cause the file to
+            be retrieved and then return to the Setup Menu.
+ Spacebar:  Abort command and return to the Setup Menu.
+  Esc Key:  Abort command and return to the Setup Menu.
+$
++ HLP_FCTX
+^^PutCtx.^
+
+The Put Context command saves, in a context file, any setup
+information entered or verified under the Setup Menu,
+eliminating the need to reenter this information each time
+the debugger is reloaded.
+
+During subsequent debugger sessions, issue the GetCtx command
+in order to overwrite the current debugger state.
+
+
+Prompts:  File  Enter the name of the context file into which
+                the current debugger state should be saved.
+                Default extension is ".ctx".
+$
+^^PutCtx (continued).^
+
+Responses:
+
+         Return:  After a valid file name will cause the context
+                  to be saved and then return to the Setup Menu.
+
+       Spacebar:  Abort the command and return to the Setup Menu.
+
+        Esc Key:  Abort the command and return to the Setup Menu.
+$
++ HLP_CNTL
+^^Control Menu.^
+
+      Step   - Execute instruction(s) from specific address.
+
+   <SPC>step - Single step next instruction.
+
+      ""    - Show previous register display.
+
+      ""    - Show next register display.
+
+      "-"    - Show previous register display.
+
+      "+"    - Show next register display.
+
+      Go     - Start execution from specific address.
+
+      Cont   - Continue execution.
+$
+^^Control Menu (continued).^
+
+      Breaks - Select trigger mechanisms.
+
+      Next   - Single step through mainline code.
+
+      Until  - Execute, from PC, until specified address.
+
+      Reg    - View or Modify CPU register contents.
+
+      Irq    - Toggle Global Irq Mask thus enable/disable IRQ's.
+
+      Trace  - View the Trace buffer.
+
+      Memory - Go to Memory Menu.
+
+      View   - Display or Modify memory.
+$
+^^Control Menu (continued).^
+
+      Disa   - Disassemble instructions from memory.
+
+      Asm    - Assemble instructions into memory.
+
+      Load   - Load memory locations from keyboard.
+
+      Fill   - Fill area of memory with constant value.
+
+      Copy   - Copy memory from one area to another.
+
+      Output - Output data to memory-mapped port.
+
+      Zero   - Fill area of memory with zeros.
+$
++ HLP_STEP
+^^Step and <SPC>step.^
+
+^^Step^ causes the emulator to perform the specified number of
+steps.
+
+Prompts:  Address: Enter an address-expression to start stepping
+                   at, or accept the default PC value, which
+                   represents the current value stored in the
+                   debugger register list.
+
+          Count:   Enter a decimal value to indicate the number
+                   of steps to execute.
+
+^^<SPC>step^ causes the emulator to perform one single step.
+
+       Prompts:    There are no prompts for this command.
+       Responses:  Press the space bar to single step.
+$
++ HLP_GO
+^^Go.^
+
+The Go command is used to initially begin execution of a user
+program, to continue from where execution was interrupted by a
+stop or breakpoint, or to resume real-time execution after
+single stepping.
+
+Execution will continue until a software breakpoint or a hardware
+stop condition is encountered, or until a keyboard breakpoint
+(Esc Key) is encountered.  At that time the reason for the stop
+will be output along with the register contents (see Reg command)
+$
+^^Go (continued).^
+
+Prompts:
+
+          Address: Enter the address-expression at which
+                   execution is to begin/resume.
+
+Responses:
+
+       Esc Key: After the Go command, will cause a keyboard
+                break and return to the Control Menu.
+$
++ HLP_CONT
+^^Continue.^
+
+The Continue command resumes execution from the current PC.
+
+There are no prompts for this command, and execution will
+continue until a break condition is encountered, or until
+program termination.
+$
++ HLP_BRKS
+^^Breaks Menu.^
+  Addrbrk       - Set hardware address breaks.
+  Condbrk       - Set hardware breaks for address bus, function
+                  code, and data bus comparison.
+  Delay         - Set an after-break delay of n bus cycles.
+  Breakpoints   - Set software breakpoints.
+
+  Unconditional - Set hardware break for an address range.
+  Sync/trace on - Generate SYNC pulse and start trace at address.
+  Trace off     - Disable trace at specified address.
+  X event       - Set X event to precede Y event.
+  Y event       - Set Y event to follow X and precede event Z.
+  Z event       - Set Z event to follow X event and/or XYevent.
+  Probe         - Select Trace Pod probes.
+$
+^^Breaks Menu. (continued).^
+
+  Run I/O       - Execute program using debugger's simulated I/O.
+  Ignore        - Ignore the specified break category.
+  Offbreak      - Clear a break category.
+$
++ HLP_NEXT
+^^Next.^
+
+This command single-steps through "mainline" code and executes
+subroutines (or loops) in real_time.  If the next instruction to
+be executed is any branch (Jump, Skip, Subroutine Call), an
+implicit address stop is set at branch + 1.
+
+If the code branched to does not return to the location following
+the branch instruction, the slave processor will not be stopped
+by the debugger.
+
+Address and condition stops are not set during mainline execu-
+tion.  If the next instruction does not cause any kind of a
+branch, it will be executed as a single step.
+$
++ HLP_UNTL
+^^Until.^
+
+The Until command is similar to a Go command with an Address
+Break, the major difference being that it is not necessary
+to use the BREAKS Menu to set the Address Break.
+
+Multiple instructions are executed and register contents are
+displayed when execution is complete.  All instructions, from
+the current PC to the entered address, inclusive, are executed.
+$
+^^Until (continued).^
+
+Prompts:  Address: Enter the address expression at which the
+                   Break is to occur.  The debugger will issue
+                   the Go command, with execution beginning at
+                   the current PC.  The debugger will not start
+                   the timer on the host computer.
+
+Responses:
+       Esc Key: Will abort the Until command and will return
+                to the Control Menu.
+$
++ HLP_REG
+^^Reg.^
+
+The Reg command displays the current contents of the registers.
+Each of the Registers may be modified.  Although the registers
+are  displayed  whenever a Break  occurs, and  during  single
+stepping, they may be modified only by using the Reg command.
+
+Prompts:   Enter the new value to be loaded into the register.
+
+Responses: Return accepts current value in entry field, or can
+           be used to walk through the registers.
+           Cursor arrows are used to walk through as well.
+           "/" rereads the current register. Useful for
+           registers involved in port I/O.
+           Ctl-Z will zero all the registers.
+           Esc will return to the Control Menu.
+$
++ HLP_TRAC
+^^Trace.^
+
+This menu is used to control the display of information from the
+hardware Trace buffer.  The Trace buffer contains data from the
+last 4096 slave-processor bus cycles.  The information in the
+buffer may be of interest after the slave has been started with
+the Go command and then stopped for any reason including a key-
+board break.  The use of this feature requires that the Trace
+option be installed.
+$
+^^Trace (continued).^
+
+    Filter   - Enter qualifications for Trace data display.
+    Hardware - Display all filtered Trace data.
+    Software - Display only filtered instruction-fetch Trace data
+    Probe    - Toggle display on/off of external probe data.
+    pRint    - Print Trace information to a file or printer.
+
+    Clock    - Enter decimal clock value to move display to
+               desired record. If Delay active, use + or - values
+            - Highlight previous Trace data entry.
+            - Highlight next Trace data entry.
+    End  Key - Display Trace data beginning with oldest entry.
+    Home Key - Display Trace data ending with newest entry.
+    PgDn Key - Display next (newer) page of Trace data.
+    PgUp Key - Display previous (older) page of Trace data.
+$
+^^Trace (continued).^
+
+    Hardware - This command causes all data in the Trace buffer
+               to be displayed, unless FILTER is active.
+               When active this mode displays HARDWARE in the
+               upper right hand screen corner.  Including FILTER
+               limits the display by the specified filter.
+
+    Software - Selecting this mode, filters Trace buffer data
+               to display only instruction fetch records.
+               When this mode is active, the word SOFTWARE is
+               displayed in the upper right hand screen corner.
+               FILTER further limits the displayed records.
+$
+^^Trace (continued).^
+
+    Probe    - This command allows external signals obtained from
+               the probes on the Trace User Interface Pod to be
+               passed to the Trace buffer. Probes will be con-
+               nected to logic-level points in the target system.
+
+    pRint    - This command prints the selected clock range of
+               trace buffer to printer (filename PRN) or a file.
+               The default extension for filename is ".tra".
+$
++ HLP_AUTO
+^^Autotest Command Summary.^
+
+|N  New line                  |E  Escape.
+|   Suppress new line         |M  Autotest Message.
+|I  Insert                    |C  Autotest Compare.
+|X  Delete                    |T  Autotest Termination.
+                              |W  Autotest Wait.
+|U  Up Arrow
+|D  Down Arrow                |4  Toggle byte/word mode (F4)
+|L  Left Arrow                |5  Calculator            (F5)
+|R  Right Arrow               |6  Symbols               (F6)
+                              |9  Escape to Debug Menu  (F9)
+|H  Home
+|Z  End
+|B  Page Up
+|F  Page Down
+$
+^^Autotest Menu.^
+
+Compare:    Compare register or memory location to a known value.
+            Sets the Compare Flag to TRUE or FALSE.
+
+File:       Start execution of an autotest command file.
+
+Message:    Display a message ALWAYS, or only when Compare Flag
+            is TRUE, or only when it is FALSE.
+
+Terminate:  Terminate command file ALWAYS, or based upon the
+            value of the Compare Flag.
+
+Unit:       Specify output device for messages.
+
+Wait:       Pause to suspend/resume/quit the command file.
+$
+^^Autotest (continued).^
+
+The basic command is File, which causes Debugger commands to
+come from a disk file rather than the keyboard.  This allows
+a test procedure to be devised, which can be applied repeti-
+tively to a test system which is being subjected to varied
+operating conditions.
+
+The command file must be created off-line with an ASCII editor.
+The command file may be invoked either from the command line,
+with the Command File option, or from this menu, with the File
+option.  In addition to the keystrokes available to an inter-
+active user, the vertical bar is used to specify that the next
+character is a special command file function.
+Branching, subroutine calls, and a formatted-message construct,
+similar to printf in "C", are also available.
+$
+^^Autotest Labels.^
+
+   Syntax -      :Label         ;optional comment
+
+All labels are preceeded by ':' (colon) in column one and
+followed by an optional comment.  Autotest commands may not
+appear on the same line as a label.
+
+Labels may be any length but only the first 8 characters are
+significant.  :END is a reserved label and, when encountered
+anywhere in the command file, causes autotest execution to
+terminate.
+
+A label is usually the target of a branch instruction, but may
+also appear within the file as a form of documentation.
+$
+^^Autotest Branching.^
+
+    Syntax -   >BRx label      :optional comment
+
+There are three branch staments:
+
+    >BRT - BRanch True, depending on value of Compare Flag.
+    >BRF - BRanch False, depending on value of Compare Flag.
+    >BRA - BRanch Always.
+
+The branch stataments are preceeded by '>' (angle bracket) in
+column one, and follwed by a label and an optional comment.
+The Compare Flag is set/reset during Compare operations.
+
+Branch labels have the same format as subroutine names, so be
+careful not to perform a 'branch to subroutine'.  Subroutines
+must be CALL'd.
+$
+^^Autotest Subroutine Calls.^
+
+    >CALL  label   ; unconditional call
+    >CALLT label   ; conditional, call if Compare Flag is TRUE.
+    >CALLF label   ; conditional, call if Compare Flag is FALSE.
+    >RET           ; return from subroutine
+
+The CALLx and RET statements are preceeded by a '>' (angle
+bracket) in column one.  The CALL must be followed by a label.
+Comments are optional.  Subroutine calls may be nested ten levels
+deep.
+
+All change-of-control statements (BRx, CALLx, RET) are preceeded
+by a '>' (angle bracket).  All target labels and subroutine names
+are preceeded by a ':' (colon).
+The Compare Flag is set/reset during Compare operations.
+$
+^^Autotest Formatted Messages.^
+
+  Simple autotest messages consist of characters enclosed
+  within single quotes.
+
+  Formatted autotest messages resemble "C" printf statements.
+  For example:
+  "***  sym1 = %d, exp = %x  ***", symbol1, exp
+
+  Format characters are 'd' for decimal, and 'x' for hex.
+  'symbol1' is a user-defined symbol in the symbol table and is
+  of type CONSTANT or LABEL.  'exp' is any valid expression.
+  Use the F6 Key from within the command file to insert/delete/
+  update symbols to be used in subsequent messages.
+  The entire string, including parameters, should not exceed
+  55 characters.
+$
+^^Autotest General Information.^
+
+All blanks (white space) are ignored unless enclosed within
+single quotes.  Blank lines may be inserted but should contain a
+vertical bar so that the carriage return supplied by the editor
+will not be interpreted by the command file processor.
+
+Text  and  simple messages  are  enclosed in  single  quotes, and
+formatted messages  are enclosed in double quotes.  Double quotes
+may not be imbedded. To imbed a single quote in a simple message,
+use two  single quotes.  To imbed  a  single quote in a formatted
+message, use just one single quote.
+
+Examples follow.
+$
+^^Autotest Examples.^
+
+  |9MA100             ; goto top, Memory, Asm, Origin=100
+  'JMP EXIT'          ; instruction
+
+  |9CS100             ; goto top, Control, Step, Address=100
+  10|N' '             ; count=10, newline, single-step
+
+  |9AMA               ; goto top, Autotest, Message, Always
+  '***  This is a simple message.  ***'
+
+  |9AMA               ; goto top, Autotest, Message, Always
+  '***  This ''message'' has single quotes in it.  ***'
+
+  |9AMA               ; goto top, Autotest, Message, Always
+  "***  ERROR:  PC = %x  Lineno = %d  ***", @PC, @LINENO
+$
+^^Autotest General Information.^
+
+Comments appear off to the right and are preceded by ';' (semi-
+colon).
+Autotest functions (|C, |M, |T, |W) may be invoked from the
+Control Menu or the Memory Menu(s), and return to the calling
+menu.
+
+'LINENO' is a special autotest variable which is updated every
+time a Compare Operation is performed.  It contains the line
+number in the command file from which the most recent Compare
+Operation was performed.  It can be accessed from within the
+command file and printed in a message or used in a Compare
+operation.  It must be preceeded by '@', just like a register.
+$
++ HLP_WAIT
+^^Wait Menu.^
+
+Suspend:  Suspend the .cmd file and invoke a new instance of the
+          Debugger.  The context of the new instance is the same
+          as that of the previous instance.  Changes made in the
+          new instance will be  reflected in the previous.  Only
+          one new  instance  may be invoked,  and .cmd files may
+          not be invoked from the second instance.
+
+Resume:   Use the F9-Key to resume the .cmd file from the second
+          instance of the Debugger.
+          Use any key to resume the .cmd file from the first
+          instance, i.e, when the .cmd file has been paused,
+          but not suspended.
+$
+^^Wait Menu continued.^
+Terminate: The Terminate command under the WAIT Menu will uncon-
+           ditionally terminate the .cmd file.  The Terminate
+           command under the ATTST Menu will terminate the .cmd
+           file based upon the value of the Compare Flag.
+
+           A .cmd file may be terminated from the WAIT Menu of
+           the first instance of the Debugger only. (see Suspend)
+           There are two ways to return from the second instance
+           back to the WAIT Menu of the first instance:
+           1) Use F9 to exit the second instance and resume the
+              .cmd file.  Then hit any key to cause a keyboard
+              interrupt.
+           2) Use ESC key to walk back to the DEBUG Menu of the
+              second instance, and then once more to exit the
+              second instance and re-enter the WAIT Menu of the
+              first instance.
+$
++ HLP_CMPR
+^^Compare.^
+
+This command compares one expression with another and causes the
+Compare Flag to be set/reset when  the  expressions  are  equal/
+unequal.  The flag is used to control message output, command
+file termination, and well as branching and subroutine calls.
+
+Prompts:  Value1:   Enter a valid expression.
+
+          Value2:   Enter a second value expression.
+
+Responses:
+
+        Esc Key: Aborts the Compare command and returns to
+                 the ATTST menu.
+$
++ HLP_FILE
+^^File.^
+
+This command is used to begin execution of a command file.
+The file must have been created off line by the Personal Editor
+or a similar editor.
+
+Prompts:  File: Enter the name of the command file.  The file
+                extension is not specified and defaults to
+                ".cmd".  The first command in the file will be
+                for the Autotest Menu.  If some other menu is
+                desired, the first command must be "E" (or a
+                blank line to indicate a carriage return).
+
+Responses:
+
+    Esc Key: Aborts the command and returns to ATTST menu.
+$
++ HLP_MSG
+^^Message.^
+
+The Message command is used to print a message depending on the
+result of a comparison (see Compare).
+
+Prompts:  Condition:  Indicate when the message should appear,
+                      namely, when the result of the compare is
+                      true, false, or whenever a comparison is
+                      made, regardless of the result.
+
+          Message:    Enter the message to be displayed.
+
+Responses:
+
+          Esc Key: Aborts command and returns to the ATTST
+                   menu.
+$
++ HLP_TERM
+^^Terminate.^
+
+The Terminate command is used to return control to the
+Autotest Menu upon the result of a comparison (see Compare).
+
+Prompts:  Condition:  Enter the condition, upon which control
+                      should return to the Autotest Menu,
+                      namely, return when the comparison is
+                      true, false, or whenever a comparison
+                      is made.
+
+Responses:
+
+          Esc Key: Aborts the Terminate command and returns
+                   to the ATTST menu.
+$
++ HLP_UNIT
+^^Unit.^
+
+The Unit command controls output to the screen, to the printer,
+and/or to a disk file, while an Autotest command-file is
+executing.
+
+
+ Screen  - Controls output to the screen.
+           "displayed" : send output to the screen (default).
+           "quiet"     : suppress output to the screen.
+
+ Debug   - Controls the type of debugger information displayed.
+           "off" : display only Autotest messages (default).
+           "on"  : display all debugger messages.
+           "all" : display all input when command inactive.
+$
+^^Unit (continued).^
+
+ Printer - Controls output redirection to the printer.
+           "quiet"   : disable output to printer (default).
+           "enabled" : enable output to the printer.
+
+ File    - Directs messages to a disk file.
+           "none"     : suppress output to a disk file (default).
+           "filename" : name of file to which output is sent.
+                        The debugger will prompt for the name if
+                        this option is selected.
+
+ Reset   - Reset all Unit options to their default setting.
+$
++ HLP_SYMB
+^^Symbols Menu.^
+
+The commands in this menu support the symbol table.
+
+     Ins:     Add a symbol to the list.
+
+     Del:     Delete a symbol from the list.
+
+     Pattern: Sets a display pattern which controls which
+              symbols will be displayed. Wild card characters
+              are '?' and '*'.
+
+     Type:    Controls which types of symbols will be displayed.
+              Possible types: all, addresses, constants,
+                              registers, and register lists.
+$
+^^Symbols (continued).^
+     Get:     Performs a symbols-only load of a user file.
+              Its operation is the same as Get under the Memory
+              Menu except that no user code is loaded.
+
+    List:     List the current contents of the symbol table in
+              alphabetical order.  When the symbol table has been
+              displayed, the following options are available:
+
+              A..Z:  List the table, starting with those symbols
+                     that begin with the selected letter.
+              PgDn:  Display the next page of the list.
+              PgUp:  Display the previous page of the list.
+                 :  Scroll up one line in the list.
+                 :  Scroll down one line in the list.
+              Home:  Display first page of the list.
+              End :  Display last page of the list.
+$
+^^Symbols (continued).^
+     Numlst:  List the current contents of the symbol table in
+              numerical order.  When the symbol table has been
+              displayed, the following options are available:
+
+              PgDn:  Display the next page of the list.
+              PgUp:  Display the previous page of the list.
+                 :  Scroll up one line in the list.
+                 :  Scroll down one line in the list.
+              Home:  Display first page of the list.
+              End :  Display last page of the list.
+
+     Clear:   Deletes all symbols from the table.  The
+              following prompt is displayed:
+              "Warning: Clear all labels? (Y/N) N"
+              Default is to not clear the symbol table.
+$
+^^Symbols (continued).^
+           : Scrolls up the list of displayed symbols.
+
+           : Scrolls down the list of displayed symbols.
+$
++ HLP_QUIT
+^^Quit Menu.^
+
+     Debug: Return to the Debug Menu.
+
+   Comport: Change and/or Test a serial Port.  This menu option
+            is available only when a problem occurs during EZ-PRO
+            initialization.
+
+     Load:  This command initializes the RS232 link, downloads
+            the ".bug" control code into the Emulator, tests the
+            Emulator, restores internal tables, initializes the
+            Trace, sets up Map registers, and then returns to the
+            Debug Menu.
+
+$
+^^Quit Menu cont.^
+
+  Jumpers:  This command will display all hardware jumpers and
+            switch configurations for this emulator.
+
+     Return to DOS:  Exit the debugger and return to DOS.
+$
++ HLP_CMPT
+^^Comport Menu.^
+
+    There are currently three baud rates supported: 19.2, 9600,
+    and autobaud.  When in autobaud mode, the debugger will first
+    try to communicate with the EZ-PRO at 19.2.  If it fails, it
+    will try again at 9600.  If both rates fail, an error is
+    reported.  The default mode is autobaud.
+    See the baud rate jumper on the serial card in the EZ-PRO
+    for changing baud rates.
+    All Comport commands operate upon the port currently pointed
+    to by the '>' marker.
+
+      Baud: The Baud command will initialize a software switch
+            to the requested rate.  The baud rate generator in
+            the RS232 hardware is NOT set.  The Reset command
+            performs the actual RS232 hardware initialization.
+$
+^^Comport Menu continued.^
+
+     Reset: Initialize the port's RS232 hardware and reset the
+            EZ-PRO.  If the EZ-PRO does not respond, an error
+            message will be displayed.  A port must be Reset
+            before it can be Selected or Tested.
+
+    Select: The Select command makes the port the active port
+            and reports RS232 hardware status.  It is assumed
+            that the baud rate has been set and that the port
+            has been Reset.
+$
+^^Comport Menu continued.^
+
+      Test: Establishes a direct connection with the port.
+            Keep in mind that the Tested port does not auto-
+            matically become the active port.
+            Data is sent to the port by pressing any key.  When
+            the port is functioning properly, the hex value $15
+            will be returned from the EZ-PRO after every fourth
+            character sent.
+            Before the port is tested, it must be initialized
+            with the Reset command.
+
+        : Move the '>' pointer up or down.  All Comport
+            commands are performed upon the port currently
+            pointed to by the '>' marker.
+$
++ HLP_FLTR
+^^Filter.^
+
+Use the Filter command to  enter a qualifying  mask for the Trace
+data.  When in FILTER mode, only those bus cycles which "qualify"
+will be displayed.
+
+  "1" means that the bit must be "on" to qualify.
+  "0" means that the bit must be "off" to qualify.
+  "X" means "don't care" if bit is "on" or "off".
+
+If the Filter command is requested while a Filter is active  (see
+word "FILTER" in upper right of screen), then Filter  mode is
+toggled off.
+A leading "*" on a display line indicates an entry beyond the
+end of the available or qualified data.
+$
+^^Filter continued.^
+
+The qualifying mask consists of 5 components:
+
+   Address - select records which access this address.
+   Data    - select records which use this data.
+   Probe   - select records with this probe pattern.
+   R/W     - select records which involve a memory read or write.
+             Read = 1, Write = 0.
+   XIRQ    - select records where the External IRQ (NMI) line is
+             high (1), low (0), or either ("X").
+$
++ HLP_CALC
+^^F5 - Calculator^
+
+  The  calculator will  evaluate and  display the
+  result of  any valid debugger arithmetic expression.
+  All operations are performed in hex.
+  The window used by the calculator is illustrated below:
+
+       ษอ CALCULATOR ออออออออออออออออออออออออออออออออออป
+       บ          $     497 = 200 * 2 + 97             บ
+       บ          $    4322 = symbol1 + symbol2        บ
+       บ          $      39 = 60 + -27                 บ
+       บ          $       F = (4 * 3) | (2 + 1)        บ
+       บ          $FFFFFFFE =  -2                      บ
+       บ          $FFFFFFFD =  ~2                      บ
+       บ      ENTER FORMULA >                          บ
+       ศอออออออออออออออออออออออออออออออออออออออออออออออผ
+$
+^^F5 - Calculator (continued).^
+
+  Expressions may be formed using the same operators as in the
+  assembler, including the use of parentheses or braces.
+
+  Acceptable operators are:
+     symbol function    symbol function    symbol function
+     &      and         AND    and         MOD    mod
+     *      multiply    EQ     equal       NE     not equal
+     +      add         GE     >=          NOT    not
+     -      minus       GT     >           OR     or
+     /      divide      HIGH   high byte   SHL    shift left
+     ^      exclu. or   LE     <=          SHR    shift right
+     |      or          LOW    low byte    XOR    exclu. or
+                        LT     <
+$
+^^F5 - Calculator (continued)^
+
+  The calculator  will  display  the  results  of  up  to  six
+  previous calculations.   These results will be retained even
+  between invocations of the calculator.
+
+  Esc Key: Will exit from the calculator.
+$
++ HLP_ABRK
+^^Address Breaks.^
+
+Addrbrk allows a hardware address break to be set. After real-
+time execution is begun with a Go command, and an address break
+occurs, the registers will be displayed.
+
+Prompts:
+  Address:      Input a physical address expression at which to
+                break. Should not conflict with any existing
+                breakpoints. The entry window appears above the
+                "address" prompt in order to allow for a longer
+                expression to be entered.
+Responses:
+
+  Return:          Accept current value of the break address.
+  Spacebar:        Clear the break address.
+  Esc Key:         Aborts, without altering the break address.
+$
++ HLP_CBRK
+^^Conditional Breakpoints.^
+
+This hardware break feature allows break conditions to be set
+for address bus, function code, and data bus comparison.
+
+These conditions may be set independently, but when set, the
+conditions are logically anded to effect a break. For example,
+if a break address is specified and a function code 3 (read
+memory) is also specified, a break will occur only if a memory
+read is performed when the specified break address is on the
+address bus.
+$
+^^Conditional-Breakpoint Prompts:^
+
+    Address: Input a physical address-expression at which to
+             break. It should not conflict with any existing
+             breakpoints.
+    Code:    Select a function code from the mutiple-entry window
+             by choosing the corresponding number.
+    Data:    Input a 2-digit hexadecimal constant.
+    Count:   Input a hexadecimal number representing the number
+             of iterations through the break condition.
+
+^^Conditional-Breakpoint Responses:^
+
+   Esc Key:  Returns to the Breaks Menu.
+   Return :  Accepts current value.
+         :  Go back to previous prompt.
+         :  Go to the next prompt.
+$
++ HLP_DLAY
+^^Delay.^
+
+When a delay is set, the slave processor will continue to execute
+the "delay number" of bus cycles specified after conditions have
+otherwise been met to produce a break.  The Trace feature can
+then be used to inspect events which occurred after the
+conditions were met.
+
+Delay Prompt:
+
+    Delay: Input a decimal value.  The value set is valid for
+           the next execution occurrence only (Go command).  The
+           maximum delay is 251 bus cycles.
+$
++ HLP_BRK
+^^Breakpoints.^
+
+A maximum of 16 breakpoints can be set at any one time.  The
+software breakpoint feature requires implicit use of the hardware
+address break feature. Breakpoints should not conflict with
+existing Address or Conditional breakpoints.
+
+^^Breakpoint Prompts.^
+
+Breakpoint:
+
+   The address-expression must be the location of an instruction
+   of user code.  If the current instruction is a mutiple-byte
+   instruction, the address must be that of the first byte.
+$
+^^Breakpoint Prompts (continued).^
+
+Count:      Three options are available:
+
+  1. Return accepts the default count of 1. This implies that the
+     first time the breakpoint location is executed, a stop will
+     occur and the breakpoint will be cleared from the table.
+
+  2. An expression may be entered. The slave processor will be
+     stopped only when the breakpoint location is executed for
+     the Nth time, where N is the number input. Default is 1.
+
+  3. "F" - This designates the breakpoint as a fixed breakpoint.
+     The slave processor will stop each time the location is
+     executed, but the breakpoint will not be cleared.
+$
+^^Breakpoint Responses.^
+
+       Return: Accepts a just-entered value, deletes a previously
+               entered value, or exits the table if it follows a
+               null entry.
+       Delete: Delete the current entry from the table.
+        : Move to breakpoint field when in the count field.
+     Rt Arrow: Move to count field when in the breakpoint field.
+           : Move to previous entry. Will roll over from top to
+               bottom.
+           : Move to the next entry. Will roll over from bottom
+               to top.
+     Home Key: Move to the first entry in the table.
+      End Key: Move to last entry or to the next available entry
+               if the table is not full.
+      Esc Key: Aborts breakpoint operation.
+$
++ HLP_RNIO
+^^Run I/O.^
+Enable the debugger's simulated console-I/O facility.
+
+Prompts:
+  Start Address: Enter the program start address.
+
+  Call Address:  Enter the address that will trigger the I/O
+                 facility. Whenever this address is accessed in
+                 any way, a single character will be transferred.
+
+  Data Address:
+            Enter the address of the 2-byte command/data field.
+            The first byte contains the command:
+                    $00 = Output character to screen.
+                    $01 = Input character from keyboard.
+                    $FF = Terminate program; return to debugger.
+            The second byte contains the character to transfer.
+$
++ HLP_IGNR
+^^Ignore.^
+
+This command allows trigger mechanisms to be toggled between an
+active state and an ignore state.
+
+   Responses:  Select a trigger mechanism to toggle.
+
+               Return terminates the command.
+$
++ HLP_OFST
+^^Offbreak.^
+
+This command allows break categories to be cleared.  Select
+the category to be cleared.
+
+Responses:
+  Select a category to be cleared.
+  To clear all break categories, enter the letter 'O'.
+  The following message will appear:
+
+        WARNING:  Clear all break functions?  (Y/N) N
+
+   Return or Esc will abort the command.
+$
++ HLP_STACK
+^^Stack Menu.^
+        The purpose of this function is to allow one to
+to view, push, and pop data from the stack or any pseudo
+stack register.
+
+      "-"    - Move stack value down by Mode value.
+      "+"    - Move stack value up   by Mode value.
+      Reg    - Select a new register to work with.
+      Mode   - Toggle among Byte, Word, and Long modes.
+      ""    - Show the contents of next address.
+      ""    - Show the contents of previous address.
+      PgUp   - Show contents of next page of addresses.
+      PgDn   - Show contents of previous page of addresses.
+      Home   - Return display address to register value.
+      hex #  - Modify value of memory at current address.
+      Ins    - Modify value of memory at current address,
+               may use a label reference.
+$
++ HLP_HI_SRC
+^^Source Menu.^
+
+The purpose of the SOURCE window is to display the source code
+and  allow execution  control of  the program.   A rich set of
+commands enables  the user to  perform most  C-THRU operations
+from this window.
+
+^"^-^"
+Selects the previous stack level.
+
+^"^+^"
+Selects the next stack level.
+
+$
+^^Source Menu Cont.^
+
+^"^^"
+Changes the display context to the previous source line.
+
+^"^^"
+Changes the display context to the next source line.
+
+^^<PgUp>^
+Decreases the display context by the number of lines in the
+source area.
+
+^^<PgDn>^
+Increases the display context by the number of lines in the
+source area.
+$
+^^Source Menu Cont.^
+
+^^<Home>^
+Changes the display context to the first line in the module.
+
+^^<End>^
+Changes the display context to the last line in the module.
+
+^^<rightarrow>^
+Displaces the source code to the right by 40 columns.  It can be
+used twice to effect a display of lines up to 160 characters.
+
+^^<leftarrow>^
+Resets the source code display to column 1.
+$
+^^Source Menu Cont.^
+
+^lastbr^K^
+Restores the display context to the execution context.  This will
+reset any zoom status and set the level to the execution depth.
+If the execution context is not at the beginning of a line, a
+message will be output.  If the execution context is not within a
+C-THRU module, control will be returned to the MODULE window.
+
+^^D^spbrk.
+Displays the breakpoints currently set in C-THRU.  A sub-menu is
+activated which allows a single breakpoint to be reset or all
+breakpoints to be reset.  The display context can also be changed
+to any of the breakpoints.  The cursor keys are used to select a
+breakpoint.
+
+$
+^^Source Menu Cont.^
+
+^^B^rktogl.
+Sets a breakpoint at the display context line.  If a breakpoint
+is already set it will be reset.  A set breakpoint is indicated
+by a line mark character in column one of the source line.
+$
+^^Source Menu Cont.^
+
+^^F^ind
+Allows searching for a specified text string within the current
+module.  The source may be searched in either direction from the
+hi-lighted line.  If the string is found, the display context
+will be changed to that line.
+
+^^A^gain
+Uses the parameters specified with the Find command to continue
+searching for a text string from the hi-lighted line.
+
+$
+^^Source Menu Cont.^
+
+^^Z^oom
+Changes the display context to the first executable source line
+within the function called on the hi-lighted line.  If there is
+no function call or the function does not have C-THRU debugging
+available, the Zoom command has no effect.  The zoom process is
+recursive so that the user may trace program flow and then
+retrace the call sequence.
+
+^^U^nzoom
+The inverse of the Zoom command.  It restores the display context
+from where the most recent Zoom command was executed.  If no zoom
+count is shown on the status line, the command has no affect.
+
+$
+^^Source Menu Cont.^
+
+^^G^o_main
+Begins real-time execution at the symbolic location MAIN, the
+first executable instruction in the 'C' base module.  This is the
+location where any program developed with an American Automation
+'C' compiler must begin execution.  Execution continues until a
+stop condition is reached, normally a breakpoint which was set
+with C-THRU.  Execution context cannot be within a C-THRU module
+until the program reaches the first instruction of the MAIN() 'C'
+function.
+
+$
+^^Source Menu Cont.^
+
+^^C^ont
+Continues real-time execution at the execution context until
+another stop condition is reached.  For both the Go and Continue
+commands, control returns to the SOURCE window if the stop is at
+the beginning of a C-THRU line.  Otherwise, control transfers to
+the WALK sub-window.  The Esc key can be used to stop real-time
+execution.
+
+$
+^^Source Menu Cont.^
+
+^^N^ext
+Executes instructions until the start of a new line in the same
+function is reached (which is not necessarily the next line in
+the code area).  Automatic single stepping is used, which may
+cause a noticeable delay.  Stepping can be stopped with the Esc
+key. This will cause control to be transferred to the WALK
+window.
+$
+^^Source Menu Cont.^
+
+^^<space>^step
+Executes instructions until the start of a source line which has
+C-THRU debugging enabled if reached regardless of the module.
+Otherwise the <space>step command operates identically to the
+Next command.
+
+^^R^estep
+Executes instructions until the start of a source line which has
+C-THRU debugging enabled if reached regardless of the module and
+updates Tracked Variables.  It continues to do this until the
+user uses a keyboard interrupt to stop the execution.
+
+$
+^^Source Menu Cont.^
+
+^^W^alk
+Transfers control to a sub-menu which allows control at the
+assembly language level.
+
+$
+^^Source Menu Cont.^
+
+^^T^rkvar
+Transfers control to the TRACKED sub-menu and displays the
+tracked variables if the quiet mode had been set.  The sub-menu
+commands are <ins>, used to insert a tracked variable, and <del>,
+used to delete the hi-lighted tracked variable.  The cursor keys
+are used to hi-light the desired variable.  Control is returned
+to the SOURCE window with the Esc key, <cr> key or if all tracked
+variables are deleted.
+
+^^Q^uiet
+Resets/Sets display of tracked variables.  The number of tracked
+variables is always shown on the context status line.  Display of
+the tracked variables can be removed or reinstated at any time by
+typing another 'Q'uiet_trk command.
+$
++ HLP_HI_WLK
+^^WALK Sub-Window.^
+
+The purpose of the WALK command sub-window is to allow the User
+to interact with the target microprocessor at the assembly level.
+It may be entered explicitly with the Walk command from the
+SOURCE window.  It will be entered automatically if a breakpoint
+occurs which is not at the beginning of a C-THRU line.  The
+window displayed is the same as that used by the Control Menu in
+the standard Emulator Executive.
+
+^"^^"
+Shows the previous register contents from single stepping if
+scrolled off the screen.
+
+^"^^"
+Shows the next register contexts from single stepping if scrolled
+off the screen.
+$
+^^WALK Sub-Window Cont.^
+
+^^<cr>^ or ^<esc>^
+Restores the display context to the execution context and exits
+to the Source Window.
+
+^^H^i_step
+Executes intructions until reaching the first instruction of a
+'C' source line which has C-THRU debugging enabled.  Control is
+then transferred to the SOURCE window and the execution context
+is set to that line.  This command performs exactly as the
+<space>step command in the SOURCE window.
+
+$
+^^WALK Sub-Window Cont.^
+
+^^<space>^step
+Steps one machine (assembly) instruction and displays the
+register contents, scrolling the previous register contents.  If
+the next instruction happens to be the first instruction of a 'C'
+source line which has C-THRU debugging enabled, control is
+transferred to the SOURCE window and the execution context is set
+to that line.
+
+^^C^ont
+Same as the Continue command in the SOURCE window.  Control will
+be returned to the WALK window or the SOURCE window depending
+upon the location where the processor stops.
+
+$
+^^WALK Sub-Window Cont.^
+
+^^N^ext
+Same as the Next command in the CONTROL window.  Control will be
+returned to the WALK window or the SOURCE window depending upon
+the location where the processor stops.
+
+^^U^ntil
+Same as the Until command in the CONTROL window.  Control will be
+returned to the WALK window or the SOURCE window depending upon
+the location where the processor stops.
+
+$
+^^WALK Sub-Window Cont.^
+
+^^R^eg
+Same as the Control window Reg command.  It allows the User to
+modify the contents of the microprocessor's registers using the
+cursor keys to get from one register to another as described in
+the Emulator Executive Manual.
+
+^^I^rq
+Same as the Control window Irq command.  The Irq command toggles
+the interrupt flag in the microprocessor specific register.
+
+$
+^^WALK Sub-Window Cont.^
+
+^^T^race
+Same as the Control window Trace command.  The Trace command
+shows an assembly level Trace.
+
+$
++ HLP_HI_VAR
+^^Variable Menu.^
+
+The purpose of the VARIABLES command window is to view and modify
+'C' variables.  The variables are grouped and displayed by scope:
+
+          Global - globally defined variables.
+
+          Module - variables statically defined within a module.
+
+          Procedure - static, auto and local variables defined
+                      within a procedure.
+
+In the case of the 8051 microprocessor the variables memory type
+will also be displayed as DATA for internal and XDAT for external
+RAM.
+$
+^^Variable Menu Cont.^
+
+^"^-^"
+Changes the context to the previous stack level and transfers
+control to the SOURCE window.
+
+^"^+^"
+Changes the context to the next stack level and transfers control
+to the SOURCE window.
+
+$
+^^Variable Menu Cont.^
+
+^"^^"
+If the hi-lighted variable line is not at the top of the display
+window, move it up one line.  If the hi-lighted variable line is
+at the top of the display area, but not the top of the variable
+list, scroll the displayed variables down one line.
+
+^"^^"
+If the hi-lighted variable line is not at the bottom of the
+display area, move it down one line.  If the hi-lighted line is
+at the bottom of the display area, but not the bottom of the
+variable list, scroll the displayed variables up one line.
+
+$
+^^Variable Menu Cont.^
+
+^^<PgUp>^
+Pages the displayed variable list up one one page.
+
+^^<PgDn>^
+Pages the displayed variable list down one page.
+
+^^<Home>^
+Hi-lights the first variable in the list.
+
+^^<End>^
+Hi-lights the last variable in the list.
+$
+^^Variable Menu Cont.^
+
+^lastbr^K^
+Restores the display context to the execution context and control
+will be returned to the SOURCE window. This will reset any zoom
+status and set the level to the execution depth.  If the
+execution context is not at the beginning of a line, a message
+will be output.  If the execution context is not within a C-THRU
+module, control will be returned to the MODULE window.
+
+^^P^rocedure
+Displays the variables with the display context procedure scope.
+This includes static, auto, and local variables.  For this
+command to be effective, the display context must be in the
+active level list.
+
+$
+^^Variable Menu Cont.^
+
+^mod^U^le
+Displays the variables with display context module static scope.
+
+^^G^lobal
+Displays the variables with global scope.
+
+^^F^ind
+Finds the next occurence of the specified character string in the
+variable window.  The window can be searched in either direction.
+If a line is found with the specified string, that line is
+hi-lighted.
+
+$
+^^Variable Menu Cont.^
+
+^^A^gain
+Finds the next occurence of the specified character string in the
+variable window using the parameters last input with the Find
+command.
+
+^^C^hange
+Allows the value of the highlighted variable to be modified.
+
+^^E^xpand
+Allows the components of a complex variable type to be displayed.
+This includes pointers, array, and structures.  Control is
+transferred to the EXPAND sub-menu.
+$
+^^Variable Menu Cont.^
+
+^^<ins>^
+Inserts the hi-lighted variable in the tracked variable list and
+indicates it has been inserted by placing a line mark as the
+first character in the hi-lighted line.
+
+^^<del>^
+Deletes the hi-lighted variable from the tracked variable list
+and indicates it has been deleted by removing the line mark
+character from the hi-lighted line.
+$
++ HLP_HI_LEV
+^^Level Menu.^
+
+The purpose of the LEVEL command window is to list all function
+calls within the current execution context.  The context can be
+changed to any of the listed active levels.
+
+^"^-^"
+Changes the context to the next higher level and transfers
+control to the SOURCE window.
+
+^"^+^"
+Changes the context to the next lower level and transfers control
+to the SOURCE window.
+
+$
+^^Level Menu Cont.^
+
+^"^^"
+Hi-lights the next higher line in the level window.
+
+^"^^"
+Hi-lights the next lower line in the level window.
+
+^^<PgUp>^
+If there are more than 22 stack Levels, page the display up.
+
+^^<PgDn>^
+If there are more than 22 stack Levels, page the display down.
+$
+^^Level Menu Cont.^
+
+^^<Home>^
+Hi-lights the first stack level.
+
+^^<End>^
+Hi-lights the last stack level.
+
+^^<cr>^ or ^A^ctivate_level
+Changes the display context to the hi-lighted level and transfers
+control to the SOURCE window.
+
+$
+^^Level Menu Cont.^
+
+^lastbr^K^
+Restores the display context to the execution context and control
+will be returned to the SOURCE window. This will reset any zoom
+status and set the level to the execution depth.  If the
+execution context is not at the beginning of a line, a message
+will be output.  If the execution context is not within a C-THRU
+module, control will be returned to the MODULE window.
+
+$
++ HLP_HI_MOD
+^^Module Menu.^
+
+The purpose of the MODULE command window is to list all the
+modules in the linked program which have C-THRU debugging
+available, and to provide a method of changing the display
+context at a module or function level.
+
+^"^^"
+Moves the hi-lighted module line up one line.  If the hi-lighted
+line is at the top of the display window, but not the top of the
+module list, the display list is scrolled down one line.
+
+^"^^"
+Moves the hi-lighted module line down on line.  If the hi-lighted
+line is at the bottom of the display, but not the bottom of the
+module name list, the display list is scrolled up one line.
+
+$
+^^Module Menu Cont.^
+
+^^<PgUp>^
+Pages the displayed module list up one page.
+
+^^<PgDn>^
+Pages the displayed module list down one page.
+
+^^<Home>^
+Restores the hi-lighted module name line to the top of the module
+name list.
+
+^^<End>^
+Moves the hi-lighted module name line to the bottom of the module
+name list.
+$
+^^Module Menu Cont.^
+
+^lastbr^K^
+Restores the display context to the execution context and control
+will be returned to the SOURCE window. This will reset any zoom
+status and set the level to the execution depth.  If the
+execution context is not at the beginning of a line, a message
+will be output.  If the execution context is not within a C-THRU
+module, control will be returned to the MODULE window.
+
+^^P^ath
+Expands the module name list to include the full directory path
+name of the module.
+
+$
+^^Module Menu Cont.^
+
+^^N^o_path
+Contracts the module name list to show only the module name and
+not its full directory path name.
+
+^^<cr>^ or ^A^ctivate_module
+Changes the display context to the first line of the currently
+hi-lighted module.  Control is transferred to the SOURCE window.
+There will be no function context shown on the status line.
+
+$
+^^Module Menu Cont.^
+
+^^F^unctions
+Activates the FUNCTIONS sub-menu and hi-lights the first module
+in the function list.  The cursor keys can be used to select a
+function.  When the desired function is hi-lighted the <cr> or
+Activate function command is used to change the display context
+to the first executable source line in the selected function.
+Control is transferred to the SOURCE window.  The Esc key can be
+used to exit to the MODULE menu without activating a function.
+$
++ HLP_HI_OUT
+^^Output Menu.^
+
+The purpose of the OUTPUT command window is to display screen
+output generated by printf() or qprintf() function calls.
+
+^lastbr^K^
+Restores the display context to the execution context and control
+will be returned to the SOURCE window. This will reset any zoom
+status and set the level to the execution depth.  If the
+execution context is not at the beginning of a line, a message
+will be output.  If the execution context is not within a C-THRU
+module, control will be returned to the MODULE window.
+
+$
+^^Output Menu. Cont.^
+
+^^A^ssign_dev
+Directs output to the system printer, and/or to a specified disk
+file with an assumed file name extension of .OUT.
+
+^^E^nd_out
+Closes the output file if it has been opened and stops any more
+output going to the printer.
+$
+^^Output Menu. Cont.^
+
+^^C^lr_screen
+Blanks the Output window without destroying the Output data.  If
+the Output data has reached the maximum output size it will
+scroll the data until a blank screen is shown in the window.
+
+^^D^ev_stats
+Displays device status of Printer (Active or Inactive) and
+Output File (NULL or File Name).
+$
+^^Output Menu Cont.^
+
+^^<cursor keys>^
+Allow display of lines previously output which have been scrolled
+off the output window.
+
+$
++ HLP_HI_REG
+^^Register Menu.^
+
+The purpose of the REGISTER window is to display and allow
+modification of the 'C' internal registers.
+
+^^<up-arrow>^
+The up-arrow key selects the register above the currently
+selected register if not the top of the register list, otherwise
+select the bottom most register on the same vertical plane.
+
+^^<down-arrow>^
+The down-arrow key selects the register below the currently
+selected register if not the bottom of the register list,
+otherwise select the top most register on the column.
+
+$
+^^Register Menu Cont.^
+
+^^<right-arrow>^
+The right-arrow key selects the register to the right of the
+currently selected register if the currently selected register is
+not the right most register, otherwise select the left most
+register down one row.
+
+^^<left-arrow>^
+The left-arrow selects the register to the left of the currently
+selected register if the currently selected register is not the
+left most register, otherwise select the right most register up
+one row.
+
+$
+^^Register Menu Cont.^
+
+^^<Home>^
+The Home key selects the left top register.
+
+^^<End>^
+The End key selects the bottom right register.
+^^Keypad 7 <Home>^
+The Home key selects the left top register.
+
+^^Keypad 1 <End>^
+The End key selects the bottom right register.
+
+^^<0..9,A..F>^
+Enter new hex value for the currently selected register.
+
+$
+^^Register Menu Cont.^
+
+^lastbr^K^
+Restores the display context to the execution context and control
+will be returned to the SOURCE window. This will reset any zoom
+status and set the level to the execution depth.  If the
+execution context is not at the beginning of a line, a message
+will be output.  If the execution context is not within a C-THRU
+module, control will be returned to the MODULE window.
+
+$
++ HLP_PERF
+^^Help for Performance Analyzer.^
+
+  The commands in performance analyzer menu can be grouped
+  into two categories:
+
+  1. Commands related to definition of activities. These commands
+  are:
+
+          Remove   - To delete an activity.
+          List     - To list activities starting with a
+                     certain name or letter.
+          eDit     - To edit an activity (old or new).
+$
+
+  2. Commands related to using the defined activities. These
+  commands are:
+
+          Spatial       - To see how processor time is allocated
+                          among the specified activities.
+          Interactivity - To see how activities interact.
+
+          Timing        - To see how the execution time is
+                          distributed in time for a specified
+                          activity.
+
+  For further help on each command, enter the command and then
+  press F1.
+$
++ HLP_PEDIT
+^^Edit an activity.^
+
+  This command is used to edit an old or enter a new activity. In
+  response to the prompt, enter the name of activity to be
+  editted. You then enter edit mode. If activity
+  does not exist, a new one will be created. Use ESC key to
+  abort.
+
+  After entering edit mode, use Add_range and Delete_range
+  commands to assign ranges for the activity. Ranges can
+  be disjoint, but they have to be non-overlapping. To
+  change a range, delete it and redefine it
+  using the Add_range command.
+
+  The host storage space for activities is defined dynamically.
+  If you run out of RAM space, you will get "Out of memory"
+  message.
+$
++ HLP_PDEL
+^^Remove an activity.^
+
+  This command is used to delete an activity. Enter the name of
+  the activity to be deleted, or hit ESC key to abort delete.
+  You will be challenged for a Yes or No answer.
+
+  If you enter "all_activities" as the activity name, all defined
+  activities will be deleted. This avoids conflicts if you want
+  to load a new program for analysis.
+
+$
++ HLP_PLST
+^^List the activities.^
+
+  To search for an activity name or to list activities starting
+  with certain letters, enter the activity name or the letters
+  in response to the prompt. Use ESC key to abort this
+  operation.
+$
++ HLP_MODE1
+^^Spatial activity mode.^
+
+  Use this mode to see how the processing time is allocated
+  among a group of activities. Use:
+
+    Go      - To initialize the experiment space and execute
+              user code from a given address. Use ESC key to
+              terminate the command.
+    Continue- To execute user code without initializating the
+              experiment space. All activity counts will be
+              restored to previous values before execution.
+              Use ESC key to terminate the command.
+    Percent - To change the scale of the histogram. The range
+              of options is from 1 to 100.
+    Set-up  - To set up the activity names and initial counts.
+    Table   - To work with tabulated (exact) measurements instead
+              of the histogram.
+$
+  The activities in this mode are defined by a set of
+  address ranges. Ranges can be disjoint but non-overlapping.
+
+  Data or library references will be charged to appropriate
+  activity if the data and library address ranges are assigned
+  to a reserved activity called "data+lib".
+
+  Unassigned code or data references will be counted in
+  activity defined as "Unassigned_Refs." by default. This
+  makes "percentages" apply to real-time. All times are in
+  memory accesses.
+
+  The experiment can be terminated by:
+
+    1. pressing ESC key,
+    2. processor encountering a breakpoint, or
+    3. any preassigned activity-count reaching zero.
+$
++ HLP_MODE2
+^^Interactivity mode.^
+
+  Use this mode to see how activities interact with each other.
+  This mode is similar to spatial activity mode except that
+  unassigned code or data references are not accounted for. Use:
+    Go      - To initialize the experiment space and execute
+              user code from a given address. Use ESC key to
+              terminate the command.
+    Continue- To execute user code without initializating the
+              experiment space. All activity counts will be
+              restored to previous values before execution.
+              Use ESC key to terminate the command.
+    Percent - To change the scale of the histogram. The range
+              of options is from 1 to 100.
+    Set-up  - To set up the activity names and initial counts.
+    Table   - To work with tabulated (exact) measurements instead
+              of the histogram.
+$
+
+  The activities in this mode are usually defined by a set of
+  single bytes which signal linkage events (calls from one
+  activity to another) rather than ranges.
+
+  Unassigned references are not counted; therefore, "percentages"
+  apply only to linkage events not real-time.
+
+  The experiment can be terminated by
+
+    1. pressing ESC key,
+    2. processor encountering a breakpoint, or
+    3. any preassigned activity-count reaching zero.
+$
++ HLP_MODE3
+^^Timing mode^
+
+  Use this mode to see the time distribution of an activity.
+  The bars represent proportion of occurrences in corresponding
+  timing intervals. Use:
+    Go      - To initialize the experiment space and execute
+              user code from a given address. Use ESC key to
+              terminate the command.
+    Continue- To execute user code without initializating the
+              experiment space. All activity counts will be
+              restored to previous values before execution.
+              Use ESC key to terminate the command.
+    Percent - To change the scale of the histogram. The range
+              of options is from 1 to 100.
+    Set-up  - To set up the activity names and initial counts.
+    Table   - To work with tabulated (exact) measurements instead
+              of the histogram.
+$
+
+  In this mode, one activity is studied at a time. This activity
+  is called the "Procedure-Active". You have the option of
+  including or excluding another activity in the experiment.
+
+  Use "Include-if-active" option for an activity if it
+  is called from the activity under study; this
+  eliminates extraneous calls from non-inclusive code.
+
+  Use "Suspend-if-active" option for an activity such as an
+  interrupt that might otherwise erroneously truncate the
+  activity under study.
+
+  You also can set the time limit and
+  resolution of the experiment. These conditions are
+  set in the Set-up menu. All times are in seconds.
+$
+
+  The experiment can be terminated by
+
+    1. pressing ESC key,
+    2. processor encountering a breakpoint,
+    3. any interval-count reaching zero, or
+    4. timer reaching its preassigned limit.
+$
++ HLP_PTAB1
+^^Spatial activity table.^
+
+  Use this table to determine exactly how processing time
+  is allocated among a group of activities. Use:
+
+    Go      - To initialize the experiment space and execute
+              user code from a given address. Use ESC key to
+              terminate the command.
+    Continue- To execute user code without initializating the
+              experiment space. All activity counts will be
+              restored to previous values before execution.
+              Use ESC key to terminate the command.
+    Set-up  - To set up the activity names and initial counts.
+    Arrows  - To move the bar up and down. The only purpose for
+              the bar is to help in reading the table.
+$
+
+  All counts are in memory accesses, as follows:
+
+    Initial - assigned activity-count, default value 16,777,215
+              ($FFFFFF).
+    Present - count remaining at the end of experiment.
+
+    Delta   - difference between Initial and Present counts.
+
+    Percent - real-time allocation of corresponding activity.
+
+  The experiment can be terminated by:
+
+    1. pressing ESC key,
+    2. processor encountering a breakpoint, or
+    3. any preassigned activity-count reaching zero.
+$
++ HLP_PTAB2
+^^Interactivity table.^
+
+  Use this table to see how activities interact with each other.
+  Use:
+
+    Go      - To initialize the experiment space and execute
+              user code from a given address. Use ESC key to
+              terminate the command.
+    Cont    - To execute user code without initializating the
+              experiment space. All acticity counts will be
+              restored to previous values before execution.
+              Use ESC key to terminate the command.
+    Setup   - To set up the activity names and initial counts.
+    Arrows  - To move the bar up and down. The only purpose for
+              the bar is to help in reading the table.
+$
+
+  All counts are in memory accesses, as follows:
+
+    Initial - assigned activity-count, default value 16,777,215
+              ($FFFFFF).
+    Present - count remaining at the end of experiment.
+
+    Delta   - difference between Initial and Present counts.
+
+    Percent - proportion of assigned linkage events attributed to
+              corresponding activity.
+
+  The experiment can be terminated by:
+
+    1. pressing ESC key,
+    2. processor encountering a breakpoint, or
+    3. any preassigned activity-count reaching zero.
+$
++ HLP_PTAB3
+^^Time distribution table^
+
+  Use this table to see the time distribution of an activity.
+  Use:
+
+    Go      - To initialize the experiment space and execute
+              user code from a given address. Use ESC key to
+              terminate the command.
+    Cont    - To execute user code without initializating the
+              experiment space. All activity counts will be
+              restored to previous values before execution.
+              Use ESC key to terminate the command.
+    Setup   - To set up the activity names and initial counts.
+    Arrows  - To move the bar up and down. The only purpose for
+              the bar is to help in reading the table.
+$
+
+  All counts are in occurrences, as follows:
+
+    Initial - always set to maximum value 16,777,215 ($FFFFFF).
+
+    Present - count remaining at the end of experiment.
+
+    Delta   - difference between Initial and Present counts.
+
+    Percent - proportion of occurrences attributed to
+              corresponding timing interval.
+$
+
+  The experiment can be terminated by
+
+    1. pressing ESC key,
+    2. processor encountering a breakpoint,
+    3. any interval-count reaching zero, or
+    4. timer reaching its preassigned limit.
+$
++ HLP_PSET1
+^^Setup Experiment^
+
+  Assign  - To assign an activity and its count limit.
+
+  UpArrow - To move up in the table.
+
+  DnArrow - To move down in the table.
+
+  To remove an activity from experiment space, replace its name
+  with the reserved name "none".
+$
++ HLP_PSET2
+^^Setup Experiment^
+
+  Assign  - To assign an activity and its count limit.
+
+  UpArrow - To move up in the table.
+
+  DnArrow - To move down in the table.
+
+  To remove an activity from experiment space, replace its name
+  with the reserved name "none".
+$
++ HLP_PSET3
+^^Setup Experiment^
+
+  Procedure - To specify the name of procedure under study
+              (procedure-active).
+  Include   - To include references to another activity while the
+              procedure under study is active (include-if-active)
+
+  Suspend   - To prevent truncation by asynchronous events (such
+              as interrupts) while the procedure under study is
+              active (suspend-if-active).
+
+  Resolution- To specify the timing resolution or interval
+              (in seconds). The range is from 1 microsecond
+              to 11.9 minutes (1e-6 to 7.14e+2 seconds).
+$
+
+  Limit     - To specify a total experiment time (in seconds).
+              The range is from 10 microsecond to 305.5 hours
+              (1e-5 to 1e+6 seconds).
+$
++ HLP_LEARN
+^^Autotest Learn Window.^
+
+  Filename- To select a filename.
+            A memory buffer is assigned to the selected file and
+            all the changes  are made to this buffer.  To remove
+            a filename or to quit a file, press <space> in place
+            of a file name.
+
+  Learn   - To enable or disable "Learn" mode.
+            A file name is required before "Learn" can be enabled
+
+  Edit    - To edit a file.
+            A file name is  required before "edit" can be
+            entered. Only  the contents of the  buffer assigned
+            to the file are changed. Any file longer than 16383
+            lines or wider than 257 columns will be truncated.
+$
+^^Autotest Learn Window (continued). ^
+
+  Save    - To write the memory buffer to a file.
+            The memory buffer is written to the file specified
+            by the filename.
+
+  Macro   - To assign a CMD file to an Alt-# key.
+            Macro gives the user the capability to execute a
+            command file by pressing an Alt key and a number
+            key simultaneously from any debugger menu.
+
+$
+^^How to use Learn Mode.^
+
+  1. Use Filename command to specify a file name.
+  2. Use Learn command to enable Learn mode.
+  3. Use ESC or carriage-return to return to debugger.
+  4. Enter the key sequence to be learned.
+  5. Use the editor to add or correct keystrokes.
+  6. Use Learn command to disable "Learn" mode.
+  7. Use Save command to write changes to the specified file.
+
+$
+^^Notes:^
+
+  Once you have entered Edit Mode, F8 toggles you into and out
+  of  the  debugger for quick corrections of the most recently
+  Learned commands.
+
+  Every line is terminated with a carriage-return. Terminate
+  lines with | to eliminate carriage-returns.
+
+  Make CMD files as small as possible. Smaller files are easier
+  to generate and edit, and can  be merged into bigger files as
+  subroutines.
+$
+^^Notes: (continued) ^
+
+  LEARN.TMP file is used by Learn as a temporary storage space.
+  Avoid using this name in the debugger directory.
+
+$
++ HLP_LEDIT
+^^Editing capabilities^
+  <Home>       - Moves the cursor to the beginning of line.
+  <End>        - Moves the cursor to the end of line.
+  <Arrows>     - Moves the cursor in the direction of arrow.
+  <PgUp>       - Moves the text up by one page.
+  <PgDn>       - Moves the text down by one page.
+  <Ins>        - Toggles the character insert mode ON and OFF.
+  <Del>        - Deletes a character at cursor position.
+  <BackSpace>  - Deletes a character to the left of cursor.
+  <Tab>        - Moves cursor right 8 spaces.
+  Shift_<Tab>  - Moves cursor left 8 spaces.
+  Ctrl_<Home>  - Moves the cursor to the beginning of file.
+  Ctrl_<End>   - Moves the cursor to the end of file.
+  Ctrl_D       - Deletes the line pointed to by the cursor.
+  Ctrl_J       - Joins the line pointed to by the cursor.
+  <ESC>        - Exits Edit Mode and returns to Learn Menu.
+  <F8>         - Maintains Edit Mode and returns to debugger.
+$
++ HLP_MACRO
+^^Macro commands^
+
+  Use the Up and Down arrow keys to move to the wanted Alt key,
+  then enter a CMD file name  and press carriage-return.  Enter
+  <space> (in place of a file name) to remove the file name
+  associated with a key.
+
+$
++ HLP_RCVR
+^^Recovery Mechanism.^
+
+  During the course of a typical debug session, many commands
+  are sent from the Debugger to the control code in the EZ-PRO.
+  The control code in the EZ-PRO will also attempt to send
+  information back to the Debugger.  The Debugger and the control
+  code communicate via the RS232 cable.
+
+  The following errors are possible:
+
+      Send Timeout.
+      Receive Timeout.
+      Execution Timeout.
+      Checksum Error.
+      RS232 Error.
+$
+^^Send Timeout:^
+  Before sending commands/data to the EZ-PRO, the debugger
+  checks the status of the busy flag in the host's UART.  If
+  the busy flag does not go low after a specified amount of
+  time, a send timeout occurs.  This is an unlikely error and
+  usually indicates a faulty UART.
+
+^^Receive Timeout:^
+  The debugger expected a response from the EZ-PRO which it did
+  not receive within the specified amount of time.  Check the
+  RS232 cable, connectors, and EZ-PRO power.
+$
+^^Execution Timeout:^
+  This error can occur after a Go or Step command.  The emualtor
+  or the target has been told to start executing and the debugger
+  is not able to regain control, either with the ESC key or the
+  spacebar.
+  Causes are processor-dependent.  The emulator (or target)
+  processor may have gone to sleep; there may be another bus-
+  master preventing the processor from running; the processor may
+  have put itself into a power-down state; etc.
+
+^^Checksum Error:^
+  An incorrect checksum has been computed for the last operation.
+  This is an unlikely error and would indicate a problem with the
+  control code or the host processor in the EZ-PRO.
+$
+^^RS232 Errors:^
+  A framing error indicates a mismatch in the number of bits and
+  is usually reported when an expected stop bit is not received.
+
+  A parity error, strictly speaking, indicates that data have
+  been damaged in transmission.  It can also mean that two
+  devices have not been set to agree on parity or on word length.
+
+  An overrun indicates that data has been sent but is the
+  receiver is not able to, or is prevented from, processing it.
+
+  These are uncommon errors.  Perform a warmstart and re-issue
+  the command which caused the failure.
+$
+^^Warmstart vs Coldstart.^
+
+Warmstart and Coldstart perform the same operations except that a
+warmstart will not re-download the control code nor will it re-
+initialise the trace.
+Both functions  will reset the RS232 hardware, re-establish rs232
+communications, test the control code, test the emulator, and
+restore tables in EZ-PRO RAM.
+
+All breaks/stops remain intact after restarting.
+User-memory should be OK unless the faulty operation corrupted
+memory.
+All soft switches are still in effect.
+On some processors, the interrupt flag may be disabled.
+$
+^^Jumpers.^
+
+This option will display all hardware jumpers and switch
+configurations for this emulator.
+
+^^End_emulation.^
+
+This option will stop the emulation session.
+$
++ HLP_MAP
+^^Map.^
+
+The Map function permits the mapping of available EZ-PRO memory
+into the address space of the Target microprocessor.  The
+Memory Mapping window shows the block size, the number of
+physical blocks installed, and which of those blocks have been
+mapped to the EZ-PRO.
+
+The initial configuration of the map upon debugger load shows
+all 16 4K-byte blocks mapped to the EZ-PRO.
+$
+^^Map Responses:^
+    0 - F:  Memory blocks are numbered 0 through F.  By entering
+            a hex digit, the appropriate block number is toggled.
+            Those block numbers which are "on" have been mapped
+            to the EZ-PRO, while those that are "off" have been
+            mapped to the Target.
+
+    "R":    Resets all blocks, that is, all blocks become mapped
+            to the Target.
+
+    "S":    Selects all blocks, that is, all blocks become mapped
+            to the EZ-PRO.
+
+    return: Return to the Setup Menu.
+
+    Esc:    Return to the Setup Menu.
+$
++ HLP_MEM
+^^Memory Menu.^
+
+     View - Display or Modify memory.
+
+     Load - Load memory locations from keyboard.
+
+     Disa - Disassemble instructions from memory.
+
+     Asm  - Assemble instructions into memory.
+
+     Fill - Fill area of memory with constant value.
+
+     Copy - Copy memory from one area to another.
+
+   Output - Output data to memory-mapped port.
+$
+^^Memory Menu (continued).^
+
+     Zero - Fill area of memory with zeros.
+
+     Get  - Load memory from .h file.
+
+     Save - Save memory into .h file.
+$
++ HLP_VIEW
+^^View Command^
+
+ The  View  command  will display the contents of memory in both
+ ASCII and hexadecimal format.   The hexadecimal display will be
+ byte or word oriented depending on the byte/word mode  setting.
+
+^^WORD NOTE:^
+ If the debugger is in word mode and an even address is entered
+ the memory display will be grouped on even addresses.  If the
+ debugger is in word mode and an odd address is entered the
+ memory display will be grouped on odd addresses.
+$
+^^View Modes.^
+
+ The command has two different modes of operation:
+
+   Modify    Provides a screen oriented,  256 byte memory window
+             through  which memory may be examined and modified.
+             The  window extends approximately 128 bytes on both
+             sides of the address entered to the "From"  prompt.
+
+   Display   Provides a memory dump of a selected address range.
+             Modification of the memory is not permitted.
+$
+^^View Prompts.^
+
+ From:       Enter an expression indicating the first address to
+             be viewed.  In modify mode, this location  will  be
+             displayed in the center of the 256 byte window.  It
+             will be the first location dumped in display mode.
+
+ Through:    Press the Spacebar to select modify mode.  Display
+             mode is selected by entering  an  expression  which
+             indicates the last location to dump.  Preceding the
+             expression by a plus sign (+) causes the expression
+             to be evaluated as the number of bytes to be dumped
+             rather  than the address of the last location to be
+             dumped.
+$
+^^Modify Mode Responses:^
+
+ Del Key     Toggles between HEX and ASCII modes.  Memory may be
+             modified by pressing a hex digit or ASCII character
+             to replace the one highlighted by the cursor.
+
+ Ins Key     Permits a new address expression to be entered.
+
+ Spacebar    Selects the following hex nibble in  HEX  mode.  In
+             ASCII mode, the next ASCII character is selected.
+
+ Backspace   Selects the preceding hex nibble in HEX mode.   The
+             preceding ASCII character is selected in ASCII mode.
+
+ Esc Key     Terminates the View command.  Control  will  return
+             to the previous menu.
+$
+^^Modify Mode Responses (continued):^
+
+  Key       Moves the cursor  up.  The  byte,  word,  or  ASCII
+             character in  the  same  column  of  the  preceding
+             line will be selected.
+
+  Key       Moves the cursor down.  The byte,  word,  or  ASCII
+             character in  the  same  column  of  the  following
+             line is selected.
+
+ - Key      Moves the cursor left.  The  immediately  preceding
+             byte, word, or ASCII character is selected.
+
+ - Key      Moves the cursor right.   The immediately following
+             byte, word, or ASCII character is selected.
+$
+^^Modify Mode Responses (continued):^
+
+ Home Key    Moves the cursor to the beginning  of  the  current
+             line.
+
+ End Key     Moves the cursor to the end of the current line.
+
+ PgUp Key    Displays  the  preceding  screen  of  memory.   The
+             previous 256 bytes of memory are displayed.
+
+ PgDn Key    Displays the following screen of memory.   The next
+             256 bytes of memory are displayed.
+$
+^^Modify Mode Responses (continued):^
+
+ Ctrl Home   Moves the cursor to the  beginning  of  memory  and
+             displays the first 256 bytes.
+
+ Ctrl End    Moves the cursor to the end of memory and  displays
+             display last 256 bytes.
+
+ Ctrl PgUp   Scrolls the display toward the beginning of memory.
+             The Spacebar may be used to  pause / continue  the
+             display.  The Esc key will exit this mode.
+
+ Ctrl PgDn   Scrolls the display toward the end of memory.   The
+             Spacebar  may  be  used  to  pause / continue  the
+             display.  The Esc key will exit this mode.
+$
+^^Display Mode Responses:^
+
+ Spacebar    Pauses or continues the dump while it is scrolling.
+             Displays the next line after output has stopped.
+
+ Return      Displays the next line after output has stopped.
+
+ Esc Key     Terminates the View command.  Control  will  return
+             to the previous menu.
+$
++ HLP_LOAD
+^^Load.^
+
+The Load command is used to load individual memory locations
+with bytes or words, each byte or word being input from the
+keyboard.
+
+After an address is input, the contents of that location are
+displayed.  If byte-mode is set, the byte contents of that
+location are displayed.  If word-mode is set, the contents of
+the location are combined with the next location and displayed
+in a word format.
+
+^^BYTE NOTE:^
+If byte-mode is set, the byte contents of that location are
+displayed.
+While in byte-mode, only values in the range 0 - 255 are legal.
+Values greater than 255 will have high order bits stripped.
+$
+^^Load.^  (continued)
+
+^^WORD NOTE:^
+If word-mode is set, the contents of the location are combined
+with the next location and displayed in a word format.
+
+If the debugger is in word mode and an even address is entered
+the memory will be grouped on even addresses.  If the debugger
+is in word mode and an odd address is entered the memory will
+be grouped on odd addresses.
+$
+^^Load Responses:^
+
+      Address:    Enter an address expression.
+
+            :    Step to the previous location.  This location
+                  will be 2 less than the current location if
+                  word-mode is set.
+
+            :    Step to the next location.  This location will
+                  be 2 greater than the current location if
+                  word-mode is set.
+$
+^^Load Responses (continued):^
+
+     Spacebar:  May be used to imbed blanks within an
+                expression or, when used by itself, behaves
+                the same as the down arrow.
+
+     Return:    Accepts whatever value is currently in the value
+                window or, when used by itself, behaves
+                the same as the down arrow.
+
+     Esc Key:   Return to the Memory Menu.
+$
++ HLP_DISA
+^^Disassembly.^
+
+The disassembly command causes data stored in memory to be
+interpreted as executable instructions and displayed in
+symbolic form.
+
+The operation code is always output in its mnemonic format.
+
+The operand field is output in symbolic format if labels are
+defined, otherwise absolute addresses are output.  Operand
+qualifiers are also output.
+$
+^^Disassembly Prompts & Responses.^
+
+Prompts:   Address:   Enter an address expression.  It must be
+                      the address of the first byte of in
+                      instruction.
+
+           Count:     Specify the number of instructions to be
+                      disassembled.
+
+
+Responses: Return:    Disassemble the next instruction.
+
+           Spacebar:  Disassemble the next instruction.
+
+           Escape Key:  Return control to the Memory Menu.
+$
++ HLP_ASM
+^^Asm.^
+
+The assembly command assembles user-supplied source code
+and stores the result in memory.
+
+
+Prompts:    Origin:   Enter an address expression at which the
+                      assembled instructions will be stored in
+                      memory.
+
+Responses:  Return:   Defaults to the previous entry, if a
+                      previous entry has been made, otherwise
+                      returns to the Memory Menu.
+
+           Escape Key:   Return control to the Memory Menu.
+$
++ HLP_FILL
+^^Fill.^
+
+The Fill command is used to fill memory locations with a byte or
+word as entered from the keyboard.
+
+^^BYTE NOTE:^
+While in byte-mode, only values in the range 0 - 255 are legal.
+Values greater than 255 will have high order bits stripped.
+
+^^WORD NOTE:^
+If the debugger is in word mode and an even address is entered
+the memory will be grouped and filled on even addresses.  If the
+debugger is in word mode and an odd address is entered the
+memory will be grouped and filled on odd addresses.
+
+$
+^^Fill Prompts.^
+
+Fill allows a constant value to be stored in an entire memory
+range.
+
+Prompts:     Value:     Enter the hex byte, word, or double
+                        word constant to be loaded into the
+                        range.
+             From:      Enter the beginning memory address
+                        expression.
+
+             Through:   Enter the ending address expression.
+                        Must be greater than or equal to the
+                        From address.
+$
+^^Fill Responses.^
+
+   Escape Key:  The escape key will abort the Fill operation.
+                If aborted, the message:
+                        "Fill terminated at aaaa"
+                is output, where aaaa is the last address filled.
+$
++ HLP_COPY
+^^Copy Prompts.^
+
+The Copy command allows data to be moved from one area of memory
+to another.  This can be useful when it is necessary to move
+information from ROM to RAM.
+
+
+Prompts:   From:    Enter the starting source memory address-
+                    expression.
+
+           Through: Enter the ending source memory address-
+                    expression.
+
+           To:      Enter the beginning destination address-
+                    expression.
+                    The ending destination address is defined
+                    by the length of the source area.
+$
+^^Copy Responses:^
+
+   Escape Key:  The escape key will abort the Copy operation.
+                If aborted, the message:
+                        "Copy terminated at aaaa"
+                is output, where aaaa is the last address copied.
+$
++ HLP_OUT
+^^Output.^
+
+The Output command is used to load individual memory locations
+with bytes or words.
+
+This command is identical to the Load command except that no
+"current contents" are displayed, and only the write is per-
+formed; no read operation takes place.
+
+^^BYTE NOTE:^
+While in byte-mode, only the low-order byte of the response is
+accepted; high-order information is ignored.
+$
+^^Output.^  (cont.)
+
+^^WORD NOTE:^
+If the debugger is in word mode and an even address is entered
+the memory will be grouped and output to even addresses.  If
+the debugger is in word mode and an odd address is entered the
+memory will be grouped and output to odd addresses.
+$
+^^Output Responses:^
+
+     Address:     Enter an address-expression at which output
+                  should begin.
+
+     Escape Key:  Return to the Memory Menu.
+
+     Up Arrow:    Step to the previous location.  This location
+                  will be 2 less than the current location if
+                  word-mode is set.
+
+     Down Arrow:  Step to the next location.  This location will
+                  be 2 greater then the current location if
+                  word-mode is set.
+$
+^^Output Responses (continued):^
+
+     Spacebar: May be used to imbed blanks within an
+               expression, or, when used by itself, behaves
+               the same as the down arrow.
+
+     Return:   Accepts whatever value is currently in the
+               response window.
+$
++ HLP_ZERO
+^^Zero.^
+
+The Zero command allows the value zero to be stored in an
+entire memory range.
+
+This command is identical to the Fill command except that the
+fill byte (or word) is always zero.
+
+
+Prompts:   From:      Enter the beginning memory address-
+                      expression.
+
+           Through:   Enter the ending address-expression.
+                      It must be greater than or equal to
+                      the From address.
+$
+^^Zero Responses:^
+
+   Escape Key:  The escape key will abort the Zero operation.
+                If aborted, the message:
+                     "Zero memory terminated at aaaa"
+                is output, where aaaa is the last address zeroed.
+$
++ HLP_GET
+^^Get.^
+
+The Get command is used to load user code into memory.  The
+load file must be in modified Motorola "S" format (this type
+is generated by AALINK) or in Intel "hex" format.
+
+Any labels defined in the file will be added to the symbol
+table.  If a label is redefined, the first definition is
+maintained.
+
+
+Prompts:     File:  Enter the name of the file to be loaded.
+                    A default extension of .h is appended to
+                    the file name if no extension is specified.
+$
+^^Get Responses.^
+
+Responses:
+     Spacebar:  If entered as the first character at the prompt,
+                it will abort the command and return to the
+                Memory Menu.
+
+   Escape Key:  Abort Get and return to Memory Menu.
+                If aborted during the prompt, returns to Memory
+                Menu.
+                If aborted during the load, the following message
+                is output:
+
+         Load Halted: a bytes, b labels.
+$
++ HLP_SAVE
+^^Save.^
+
+The Save command causes user memory to be written to a disk
+file.  The Save file is written in Motorola "S" format.
+Prompts:
+
+        Filename:  Enter the name of the file to be written.
+                   The extension will default to .h if no
+                   extension is specified.
+^                   ^NOTE:^ If the save file already exists, it
+                   will be overwritten.
+
+         Symbols:  Enter Y if you want to save the symbol table
+                   to the file, or enter N otherwise.
+
+$
+^^Save Prompts (continued):^
+
+           Start:  Enter the starting address of user memory to
+                   be written to the file.
+
+         Through:  Enter the ending address of user memory to be
+                   written to the file.
+$
+
+^^Save Responses:^
+
+     Spacebar:  Clears the entry pointed to by the cursor.
+                If the starting or ending address of a memory
+                space is cleared, that memory space is not saved
+                to disk. If filename field is cleared, nothing
+                will be saved. If label field is cleared, the
+                labels wil not be saved.
+
+   Escape Key:  Will abort the Save and return to the Memory
+                Menu. If aborted during the save to disk, the
+                following message is output:
+
+      Save Halted: a bytes, b symbols, c dups.
+$
++ HLP_UNCN
+^^Unconditional.^
+
+Up to 16 unconditional frames and/or stops can be specified.
+A frame is a range of addresses, whereas a stop is a single
+address. Only 1 stop may be present within a single 16-byte
+boundary, that is, between xxx0 and xxxF.
+
+Two fields are associated with each frame-entry, one for the
+start-address and the other for the end-address.  Frames are on
+16-byte boundaries, therefore, addresses will be "lowered" or
+"raised" to the previous or next boundary, respectively.
+$
++ HLP_SYNC
+^^Sync / Trace On.^
+
+During user program execution, addressing a Sync/TraceOn marked
+address, pulses the Trace User pod SYNC signal line, and activates
+Tracing hardware.  Sync allows pulse triggering of oscilloscope's,
+logic analyzer's and user test setup's.  Trace On in conjunction
+with Trace Off provides selective trace management of user code.
+Not selecting Sync/Trace On causes all user code to be traced.  A
+๗ marks the trace display for each Trace On traced.
+
+Up to 16 entries of pulse and/or blocks may be chosen.  Pulse
+refers to a single address bounded by a nibble frame.  A nibble
+frame is defined as address bounded by $xxx0 - $xxxF.  Only one
+address per frame may selected.  Block defines a ranger of
+addresses adjusted to begin on a nibble frame $xxx0 and end on a
+nibble frame $xxxF address.  A Block may not overlay any other
+chosen Block.
+$
++ HLP_TOFF
+^^Trace Off.^
+Addressing a TraceOff marked address, stops the tracing hardware,
+while permitting continued execution by the emulation processor.
+If Sync/TraceOn selections exist, Tracing begins with the first
+TraceOn address.  If NO Sync/TraceOn selection exist, Tracing
+automatically begins with any Go command.
+
+The Trace Off feature permits entry of up to 16 marks and/or areas
+at which tracing will be disabled.  Area defines a range of
+addresses, while mark pertains to a single address.  Only 1 mark
+may be selected within a single 16-byte boundary, that is, between
+xxx0 and xxxF.
+
+Two fields are associated with each area-entry, one for the
+start-address and the other for the end-address.  Areas are on
+16-byte boundaries, therefore, addresses will be "lowered" or
+"raised" to the previous or next boundary, respectively.
+$
++ HLP_XEVT
+^^X event of XYZ.^
+Up to 16 X-event terms and/or areas may be entered.
+An area is a range of addresses, whereas a term is a single
+address. Only 1 term may be present within a single 16-byte
+boundary, that is, between xxx0 and xxxF.
+
+Areas are on 16-byte boundaries, therefore, if the entered
+start or end address is not on a boundary, it will be "lowered",
+or "raised", to the previous, or next, boundary respectively.
+
+X and Y events do not cause breaks to occur, whereas a Z event
+does.  A Z event will cause a break to occur if either of the
+following event-sequences has occurred:
+
+    An X-event, followed by a Y-event, followed by a Z-event.
+                        or
+    A Y-event, followed by a Z-event.
+$
++ HLP_YEVT
+^^Y event of YZ + XYZ.^
+Up to 16 Y-event terms and/of areas may be entered.
+An area is a range of addresses, whereas a term is a single
+address. Only 1 term may be present within a single 16-byte
+boundary, that is, between xxx0 and xxxF.
+
+Areas are on 16-byte boundaries, therefore, if the entered
+start or end address is not on a boundary, it will be "lowered",
+or "raised", to the previous, or next, boundary respectively.
+
+X and Y events do not cause breaks to occur, whereas a Z event
+does.  A Z event will cause a break to occur if either of the
+following event-sequences has occurred:
+
+    An X-event, followed by a Y-event, followed by a Z-event.
+                        or
+    A Y-event, followed by a Z-event.
+$
++ HLP_ZEVT
+^^Z event of Z + YZ + XYZ.^
+Up to 16 Z-event stops and/or frames may be entered.
+A frame is a range of addresses, whereas a stop is a single
+address. Only 1 stop may be present within a single 16-byte
+boundary, that is, between xxx0 and xxxF.
+
+Frames are on 16-byte boundaries, therefore, if the entered
+start or end address is not on a boundary, it will be "lowered",
+or "raised", to the previous, or next, boundary respectively.
+
+X and Y events do not cause breaks to occur, whereas a Z event
+does.  A Z event will cause a break to occur if either of the
+following event-sequences has occurred:
+
+    An X-event, followed by a Y-event, followed by a Z-event.
+                        or
+    A Y-event, followed by a Z-event.
+$
++ HLP_PROB
+^^Probe.^
+
+The Trace Pod includes eight probes, labeled A through H, which
+respond to TTL voltage levels.  These probes may be attached to
+various signals within the target system.  A specific pattern of
+high and low values may be selected which will cause the program
+to stop.
+
+The pattern alone may be used to cause a break or up to sixteen
+address ranges may be specified, from the BREAKS Menu, with the
+break occurring only when the pattern is true while in any one
+of the address ranges.
+$
++ HLP_DEBUG
+^^Help for Function Keys and General Input Format.^
+
+^^Function Keys^
+  The function	keys are  used to implement commands which are
+  global in  nature.   Function key  operations may be invoked
+  from any prompt or menu level of the PROM Programmer
+
+^^F1 - Help^
+  Pressing the F1 key will invoke the Help Facility.
+  Help is available at any prompt and is context-sensitive.
+$
+^^F4 - Toggle Word/Byte Mode^
+  Pressing the	F4 key	will  cause  the  Programmer to toggle
+  between word and byte mode.  When the F4 key is pressed, one
+  of the  following messages  will be displayed depending upon
+  which mode is in effect:
+
+    Word mode selected	     - or -	  Byte mode selected
+
+  When in  byte mode, memory is displayed as eight bit values.
+  Word mode  causes memory  to be  displayed  as  sixteen  bit
+  values.   Regardless of the mode, addresses always reference
+  eight bit  quantities.   When word  mode is  selected,  even
+  address values  refer to  the high  order eight bits and odd
+  values to the low order eight bits.
+$
+^^F5 - Calculator^
+  The F5 key invokes a calculator feature displayed in a pop up
+  window.   The  calculator will  evaluate and	display the
+  result of  any valid arithmetic expression.
+  The window used by the calculator is illustrated below:
+
+       ษอ CALCULATOR ออออออออออออออออออออออออออออออออออป
+       บ	  $	  7 = 1 + 2 * 3 	       บ
+       บ	  $	  9 = (1 + 2) * 3	       บ
+       บ	  $	  3 = 5 + -2		       บ
+       บ	  $	  F = (4 * 3) | (2 + 1)        บ
+       บ	  $FFFFFFFE =  -2		       บ
+       บ	  $FFFFFFFD =  NOT 2		       บ
+       บ      ENTER FORMULA >			       บ
+       ศอออออออออออออออออออออออออออออออออออออออออออออออผ
+$
+^^F5 - Calculator (continued).^
+
+  Expressions may be formed using the same operators as in the
+  assembler, including the use of parentheses or braces.
+
+  Acceptable operators are:
+     symbol function	symbol function    symbol function
+     &	    and 	AND    and	   MOD	  mod
+     *	    multiply	EQ     equal	   NE	  not equal
+     +	    add 	GE     >=	   NOT	  not
+     -	    minus	GT     >	   OR	  or
+     /	    divide	HIGH   high byte   SHL	  shift left
+     ^	    exclu. or	LE     <=	   SHR	  shift right
+     |	    or		LOW    low byte    XOR	  exclu. or
+			LT     <
+$
+^^F5 - Calculator (continued).^
+
+  Esc will exit from the calculator.  The previous contents of
+  the  area occupied  by the  calculator window will be restored
+  and control will return to the last active programmer prompt.
+
+  The calculator  will	display  the  results  of  up  to  six
+  previous calculations.   These results will be retained even
+  between uses of the calculator.
+$
+^^F6 - Symbols^
+
+  Pressing the	F6 key	invokes the Symbols Window.
+  Complete help for Symbols may be obtained by pressing the
+  F1-Help key from the Symbols Menu.
+
+^^F8 - Learn/Edit/Macro^
+
+  F8  is used to access Learn, Edit, and Macro capabilities of
+  the programmer. Learn enables the user to save keystrokes to a
+  file, Edit lets the user to edit files, and Macro allows the
+  user to assign autotest CMD files to Alt-# keys. For further
+  help on Learn, press F1-help from the Learn Menu.
+$
+^^F9 - Escape to Programmer Menu^
+
+  Pressing the F9 key returns control back to the Programmer
+  Menu. It may be invoked at any time, including when a command
+  is in progress.
+$
+^^F10 - Call Dos^
+
+  F10 is used to temporarily leave the programmer and go to DOS.
+  To return to the programmer, type "exit" at the DOS prompt.
+
+  NOTE: The  commands executed must not use the communications
+  port in  use by  the programmer.  In particular, the user must
+  not attempt to re-execute the debugger or  EPROM  programmer
+  software.
+$
+^^Programmer Prompts^
+
+  The programmer utilizes four	general types of  prompts  for
+  keyboard input.   Each type of prompt has a specific use and
+  specific input  requirements.  The following sections detail
+  the operation of the different types of prompts.
+$
+^^Menu Selections^
+
+  Menus are  used to  select programmer commands and  to obtain
+  responses to	multiple choice  questions.   Menus are of the
+  form:
+
+^    NAME>  ^A^choice ^B^choice ^C^choice ^D^choice:
+
+  Where NAME is the menu title and Achoice, Bchoice, et cetera
+  are the  available choices.	The desired choice is selected
+  by entering the capitalized, usually first, character of the
+  choice name.	 Only the capitalized letter is to be entered;
+  no carriage return is required.  Upper or lower case input is
+  acceptable.  Pressing 'E' (Exit), return, or the Esc key will
+  exit to  the previous level menu.
+  Any character entered  which is  not listed as a menu choice
+  and not one of the exit keys will be ignored.
+$
+^^Yes/No Queries^
+
+  Yes/No queries  are often used to request user confirmation.
+  They are of the form:
+
+    WARNING:  CONTROL-C, exit to DOS? (Y/N) N
+
+  Where (Y,N)  identifies this	as a  Yes/No query.   The only
+  acceptable responses are 'Y', 'y', 'N', 'n', return, or Esc.
+  Carriage return (or Esc) selects the default.
+$
+^^String Input^
+
+  String input	is used  primarily for entering filenames.  It
+  requires a  series of  characters to	be entered followed by
+  carriage return.  The input  area is highlighted to show the
+  maximum length of the input string.  Carriage return accepts
+  the entry. The BACKSPACE key may be used to edit  the  input
+  prior to pressing carraige return.  Esc will abort the  com-
+  mand in progress and return to the menu from	which  it  was
+  initiated.
+
+  Some string  input prompts provide a default response.  If a
+  default is available it will appear in the highlighted input
+  area.  Carriage return  will accept  the  default  response.
+  Any other key (except Esc)  will clear  the default from the
+  input  area and echo the character in the input area.
+$
+^^Numeric Values/Address Expressions.^
+
+  A  prompt  ending in	a  $  (dollar  sign) indicates that an
+  arithmetic  expression  is  required.   The  expression  may
+  consist of a	constant (hexadecimal) value, a symbol name, a
+  register preceded by an '@', a calculation, or a combination
+  of the above.
+
+  Preceding a register name with an '@' will cause the current
+  contents of  that register  to be used in the numeric calcu-
+  lation.
+
+$
+^^Numeric Values/Address Expressions (continued).^
+
+  The numeric  value input  area is  highlighted to illustrate
+  the  maximum	allowable  input  length.   The input must  be
+  terminated with a carriage return.  Editing may be performed
+  using the BACKSPACE key.  Esc will abort the current command
+  and return to the menu from  which it was called.
+
+  Sometimes a value will be displayed in the highlighted input
+  area.   This value  is a  default which will be used if only
+  carriage return is pressed.	Any other  key	will clear the
+  default from the input area and cause the to be echoed.
+$
++   HLP_PROG
+^^Prom programmer menu.^
+
+Options
+
+  Prom	 - For PROM related operations such as read, program,
+	   or verify.
+
+  Memory - For memory related operations such as view, copy,
+	   or fill.
+
+  Attst  - For using Autotest features of PROM programmer.
+
+
+  Quit	 - For initializing or exiting PROM programmer.
+
+$
++   HLP_PTYP
+^^Prom Type.^
+
+  Use the cursor keys to get to the desired PROM type.
+  Use ENTER or ESC to exit Type menu.
+  Different options for the same type are available for
+  the user:
+      Use STD types for standard programming algorithm.
+      Use INT types for intelligent programming algorithm
+	  which is faster than standard algorithm. However
+	  some manufacturers do not support this type. Use
+	  STD types for these applications.
+      Use QCK types for quick programming algorithm. This
+	  is faster than the others but some PROMs do not
+	  support this algorithm either.
+      Use 21V types for 21 volt, 12.5V types for 12.5 volt,
+	  and 25V types for 25 volt applications.
+$
++   HLP_PROM
+^^PROM menu.^
+
+Options
+
+  Base	       - Set the address base of the memory buffer.
+  Program      - Program the currently selected PROM.
+  Read	       - Read the currently selected PROM.
+  Type	       - Set the current PROM type.
+  Verify       - Verify the current PROM.
+  Window       - Set a window on the current PROM.
+  Home	       - Go to PROM number 0.
+  Arrow Keys   - Change address range of the PROM.
+  Memory       - Go to memory memu.
+
+$
++   HLP_PADR
+^^PROM 0 Base Address Parameter.^
+
+  The address of the data location which corresponds to the
+  first byte of PROM number zero.
+
+$
++   HLP_PWIN
+^^PROM Address Window Parameters.^
+
+  An optional window, limiting the addressable range of the
+  current  PROM. This window will be used  during all  PROM
+  read,  write,  and verify  operations.  If address window
+  is not specified,  the range	of the current PROM will be
+  used by default.
+
+$
++   HLP_ORGA
+^^Organization.^
+
+Bytes per address - Specifies the number of consecutive data
+      bytes to be viewed by the software as a single address.
+      Set to one for 8 bit bytes, two for 16 bit words, four
+      for 32 bit extended words, etc.
+
+Bytes per access - Specifies the number of PROMs to be filled
+      with consecutive data bytes. Set to one if consecutive
+      bytes are to go in one PROM, two if odd (or high order)
+      in one and even (or low order) in another, etc.
+
+$
++ HLP_VIEW
+^^View Command^
+
+ The  View  command  will display the contents of memory in both
+ ASCII and hexadecimal format.	 The hexadecimal display will be
+ byte or word oriented depending on the byte/word mode	setting.
+
+^^WORD NOTE:^
+ If the programmer is in word mode and an even address is entered
+ the memory display will be grouped on even addresses.	If the
+ programmer is in word mode and an odd address is entered the
+ memory display will be grouped on odd addresses.
+
+$
+^^View Modes.^
+
+ The command has two different modes of operation:
+
+   Modify    Provides a screen oriented,  256 byte memory window
+	     through  which memory may be examined and modified.
+	     The  window extends approximately 128 bytes on both
+	     sides of the address entered to the "From"  prompt.
+
+   Display   Provides a memory dump of a selected address range.
+	     Modification of the memory is not permitted.
+$
+^^View Prompts.^
+
+ From:	     Enter an expression indicating the first address to
+	     be viewed.  In modify mode, this location	will  be
+	     displayed in the center of the 256 byte window.  It
+	     will be the first location dumped in display mode.
+
+ Through:    Press the Space Bar to select modify mode.  Display
+	     mode is selected by entering  an  expression  which
+	     indicates the last location to dump.  Preceding the
+	     expression by a plus sign (+) causes the expression
+	     to be evaluated as the number of bytes to be dumped
+	     rather  than the address of the last location to be
+	     dumped.
+$
+^^Modify Mode Responses:^
+
+ Del Key     Toggles between HEX and ASCII modes.  Memory may be
+	     modified by pressing a hex digit or ASCII character
+	     to replace the one highlighted by the cursor.
+
+ Ins Key     Permits a new address expression to be entered.
+
+ Space Bar   Selects the following hex nibble in  HEX  mode.  In
+	     ASCII mode, the next ASCII character is selected.
+
+ Backspace   Selects the preceding hex nibble in HEX mode.   The
+	     preceding ASCII character is selected in ASCII mode.
+
+ Esc Key     Terminates the View command.  Control  will  return
+	     to the previous menu.
+$
+^^Modify Mode Responses (continued):^
+
+  Key	     Moves the cursor  up.  The  byte,	word,  or  ASCII
+	     character in  the	same  column  of  the  preceding
+	     line will be selected.
+
+  Key	     Moves the cursor down.  The byte,	word,  or  ASCII
+	     character in  the	same  column  of  the  following
+	     line is selected.
+
+ - Key      Moves the cursor left.  The  immediately  preceding
+	     byte, word, or ASCII character is selected.
+
+ - Key      Moves the cursor right.   The immediately following
+	     byte, word, or ASCII character is selected.
+$
+^^Modify Mode Responses (continued):^
+
+ Home Key    Moves the cursor to the beginning	of  the  current
+	     line.
+
+ End Key     Moves the cursor to the end of the current line.
+
+ PgUp Key    Displays  the  preceding  screen  of  memory.   The
+	     previous 256 bytes of memory are displayed.
+
+ PgDn Key    Displays the following screen of memory.	The next
+	     256 bytes of memory are displayed.
+$
+^^Modify Mode Responses (continued):^
+
+ Ctrl Home   Moves the cursor to the  beginning  of  memory  and
+	     displays the first 256 bytes.
+
+ Ctrl End    Moves the cursor to the end of memory and	displays
+	     display last 256 bytes.
+
+ Ctrl PgUp   Scrolls the display toward the beginning of memory.
+	     The Space Bar may be used to  pause / continue  the
+	     display.  The Esc key will exit this mode.
+
+ Ctrl PgDn   Scrolls the display toward the end of memory.   The
+	     Space Bar	may  be  used  to  pause / continue  the
+	     display.  The Esc key will exit this mode.
+$
+^^Display Mode Responses:^
+
+ Space Bar   Pauses or continues the dump while it is scrolling.
+	     Displays the next line after output has stopped.
+
+ Enter Key   Displays the next line after output has stopped.
+
+ Esc Key     Terminates the View command.  Control  will  return
+	     to the previous menu.
+$
++ HLP_FILL
+^^Fill.^
+
+The Fill command is used to fill memory locations with a byte or
+word as entered from the PC keyboard.
+
+^^BYTE NOTE:^
+While in byte-mode, only values in the range 0 - 255 are legal.
+Values greater than 255 will have high order bits stripped.
+
+^^WORD NOTE:^
+If the programmer is in word mode and an even address is entered
+the memory will be grouped and filled on even addresses.  If the
+programmer is in word mode and an odd address is entered the
+memory will be grouped and filled on odd addresses.
+
+$
+^^Fill Prompts.^
+
+Fill allows a constant value to be stored in an entire memory
+range.
+
+Prompts:     Value:	Enter the hex byte, word, or double
+			word constant to be loaded into the
+			range.
+	     From:	Enter the beginning memory address
+			expression.
+
+	     Through:	Enter the ending address expression.
+			Must be greater than or equal to the
+			From address.
+$
+^^Fill Responses.^
+
+   Escape Key:	The escape key will abort the Fill operation.
+		If aborted, the message:
+			"Fill terminated at aaaa"
+		is output, where aaaa is the last address filled.
+$
++ HLP_COPY
+^^Copy Prompts.^
+
+The Copy command allows data to be moved from one area of memory
+to another.
+
+
+Prompts:   From:    Enter the starting source memory address-
+		    expression.
+
+	   Through: Enter the ending source memory address-
+		    expression.
+
+	   To:	    Enter the beginning destination address-
+		    expression.
+		    The ending destination address is defined
+		    by the length of the source area.
+$
+^^Copy Responses:^
+
+   Escape Key:	The Escape key will abort the Copy operation.
+		If aborted, the message:
+			"Copy terminated at aaaa"
+		is output, where aaaa is the address of the last
+		source address copied.
+$
++ HLP_MEM
+^^Memory Menu.^
+
+      Copy   - Copy memory from one area to another.
+
+      Fill   - Fill area of memory with constant value.
+
+      Get    - Get a Hex file from disk.
+
+      Load   - Load memory locations from keyboard.
+
+      Save   - Save a Hex file to disk.
+
+      View   - Display or Modify memory.
+
+      Zero   - Fill area of memory with zeros.
+$
++ HLP_PRD
+^^Read Command.^
+
+
+  This command reads a PROM selected by TYPE command into address
+  space selected by BASE and WINDOW commands. Make sure that
+  the PROM type is correct; otherwise the PROM could be damage
+  permanently. To read the PROM, insert it in the socket and hit
+  ENTER key to continue. To abort read operation, hit ESC key.
+
+$
++ HLP_PPRG
+^^Program PROM.^
+
+
+ This command programs a PROM selected by TYPE command with the
+ data in address range selected by BASE and WINDOW commands.
+ Make sure that the TYPE of the PROM to be programmed is correct;
+ otherwise, the PROM could be damaged permanently. To program the
+ PROM, insert it in the socket and hit ENTER key to continue. To
+ abort program, hit ESC key.
+
+$
++ HLP_PVER
+^^Verify PROM.^
+
+
+ This command checks to see if PROM is blank or if the data in
+ PROM matches with data in buffer memory. Make sure the PROM
+ TYPE is correct before you continue. To verify the PROM, insert
+ it in the socket and  enter 'B' for blank verify or 'D' for
+ data verify. Hit ESC to abort verify.
+
+$
++ HLP_SET
+^^GetCtx.^
+
+The Get Context command permits the retrieval of previously
+saved context files with subsequent, automatic setup of
+programmer options.
+
+Prompts:
+	  File:  Enter the name of the context file to be
+		 retrieved.  Default extension is .ctx.
+
+Responses:
+
+   Return:  After a valid file name will cause the file to
+	    be retrieved and then return to the Setup Menu.
+ Spacebar:  Abort command and return to the Setup Menu.
+  Esc Key:  Abort command and return to the Setup Menu.
+$
+^^PutCtx.^
+
+The Put Context command saves, in a context file, any setup
+information entered or verified under the Setup Menu,
+eliminating the need to reenter this information each time
+the programmer is reloaded.
+
+During subsequent programmer sessions, issue the GetCtx command
+in order to overwrite the current programmer state.
+
+
+Prompts:  File	Enter the name of the context file into which
+		the current programmer state should be saved.
+		Default extension is ".ctx".
+$
+^^PutCtx (continued).^
+
+Responses:
+
+	 Return:  After a valid file name will cause the context
+		  to be saved and then return to the Setup Menu.
+
+       Spacebar:  Abort the command and return to the Setup Menu.
+
+	Esc Key:  Abort the command and return to the Setup Menu.
+$
++   end of help file

@@ -1,0 +1,156 @@
+trx12-B baseline with 0.097 stranded towline 300 FT cable (TWT CD - corrected)
+1			; num speeds
+130
+0.0			; alt	 - flight altitude (ft)
+89.0			; tgwt	 - target weight (lbs)
+0.70			; cd0	 - target drag coefficient
+1			; drag index - 0 use estimate , 1 use wind tunnel
+1.5			; drag_factor - correction to TRX-12 drag data
+80.5                    ; xlb    - target length (inches)
+9.0                     ; dia    - target diameter (inches)
+80.0                    ; offset - required cone angle (degrees)
+990.0                   ; max_tension - max allowable cable tension (lbs)
+15.0                    ; max_alpha - max angle of attack of canards (degrees)
+1.5			; wing area scale factor
+1			; cable_index
+2.0			; cdc_correct
+2.0			; picf_correct
+300.0			; cablen - cable length (feet)
+10.0                    ; seglen - cable analysis segment length (ft)
+1                       ; number of cable steps
+0.097                   ; dc     - cable diameter (inches)
+300.0                   ; length of cable segment (FT)
+22.8                    ; xm1    - cable weight (lbs/1000ft)
+
+uav baseline with 0.284 multimode towline
+11                      ; num speeds
+105
+115
+125
+150
+200
+225
+250
+275
+300
+325
+350
+0.0                     ; alt    - flight altitude (ft)
+60.0                    ; tgwt   - target weight (lbs)
+0.70000                 ; cd0    - target drag coefficient
+0			; drag index - 0 use estimate , 1 use wind tunnel
+1.5			; drag_factor - correction to TRX-12 drag data
+78.0			; xlb	 - target length (inches)
+9.0                     ; dia    - target diameter (inches)
+80.0			; offset - required cone angle (degrees)
+1800.0                  ; max_tension - max allowable cable tension (lbs)
+15.0                    ; max_alpha - max angle of attack of canards (degrees)
+1.0                     ; wing area scale factor
+0			; cable_index
+1.0			; cdc_correct
+1.0			; picf_correct
+300.0			; cablen - cable length (feet)
+10.0                    ; seglen - cable analysis segment length (ft)
+1                       ; number of cable steps
+0.284                   ; dc     - cable diameter (inches)
+300.0                   ; length of cable segment (FT)
+51.0                    ; xm1    - cable weight (lbs/1000ft)
+
+trx-12 baseline with 0.284 multimode towline
+2                      ; num speeds
+115
+375                     ; kcas   - flight speed (knots calibrate)
+0.284                   ; dc     - cable diameter (inches)
+10.0                    ; seglen - cable analysis segment length (ft)
+51.0                    ; xm1    - cable weight (lbs/1000ft)
+0.0                     ; alt    - flight altitude (ft)
+60.0                    ; tgwt   - target weight (lbs)
+1.00000                 ; cd0    - target drag coefficient
+0			; drag index - 0 use estimate , 1 use wind tunnel
+1.0			; drag_factor - correction to TRX-12 drag data
+78.0			; xlb	 - target length (inches)
+9.0                     ; dia    - target diameter (inches)
+80.00			; offset - required cone angle (degrees)
+1800.00                 ; max_tension - max allowable cable tension (lbs)
+15.0                    ; max_alpha - max angle of attack of canards (degrees)
+1.00                    ; wing area scale factor
+0			; cable_index
+1.0			; cdc_correct
+1.0			; picf_correct
+300.0			; cablen - cable length (feet)
+
+trx-12 extension with 0.284 multimode towline
+17                      ; num speeds
+80
+95
+105
+115
+125
+150
+200
+225
+250
+275
+300
+325
+350
+375                     ; kcas   - flight speed (knots calibrate)
+400
+425
+450
+0.284                   ; dc     - cable diameter (inches)
+10.0                    ; seglen - cable analysis segment length (ft)
+51.0                    ; xm1    - cable weight (lbs/1000ft)
+0.0                     ; alt    - flight altitude (ft)
+60.0                    ; tgwt   - target weight (lbs)
+1.00000                 ; cd0    - target drag coefficient
+0			; drag index - 0 use estimate , 1 use wind tunnel
+1.0			; drag_factor - correction to TRX-12 drag data
+91.0			; xlb	 - target length (inches)
+9.0                     ; dia    - target diameter (inches)
+80.00			; offset - required cone angle (degrees)
+1800.00                 ; max_tension - max allowable cable tension (lbs)
+15.0                    ; max_alpha - max angle of attack of canards (degrees)
+1.00                    ; wing area scale factor
+0			; cable_index
+1.0			; cdc_correct
+1.0			; picf_correct
+300.0			; cablen - cable length (feet)
+
+TRX-12 with 13 inch extension operational design
+17                      ; num speeds
+80
+95
+105
+115
+125
+150
+200
+225
+250
+275
+300
+325
+350
+375                     ; kcas   - flight speed (knots calibrate)
+400
+425
+450
+0.097                   ; dc     - cable diameter (inches)
+10.0                    ; seglen - cable analysis segment length (ft)
+22.8                    ; xm1    - cable weight (lbs/1000ft)
+0.0                     ; alt    - flight altitude (ft)
+77.0                    ; tgwt   - target weight (lbs)
+1.00000                 ; cd0    - target drag coefficient
+0			; drag index - 0 use estimate , 1 use wind tunnel
+1.0			; drag_factor - correction to TRX-12 drag data
+91.0			; xlb	 - target length (inches)
+9.0                     ; dia    - target diameter (inches)
+80.00			; offset - required cone angle (degrees)
+1500.00                 ; max_tension - max allowable cable tension (lbs)
+15.0                    ; max_alpha - max angle of attack (degrees)
+1.00                    ; wing area scale factor
+0			; cable_index
+1.0			; cdc_correct
+1.0			; picf_correct
+300.0			; cablen - cable length (feet)

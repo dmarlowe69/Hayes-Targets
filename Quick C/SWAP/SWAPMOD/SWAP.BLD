@@ -1,0 +1,38 @@
++++ PWB  [C:\C\SWAP] Rebuild all
+
+	NMAKE  /a /f C:\C\SWAP\swap.mak all
+
+Microsoft (R) Program Maintenance Utility   Version 1.20
+Copyright (c) Microsoft Corp 1988-92. All rights reserved.
+
+	ml /c /W2 /Zm /FPi /I. /Cx /nologo /FoSWAP.obj SWAP.ASM
+ Assembling: SWAP.ASM
+Assembling for C, Small memory model
+Multiple DOS memory blocks will be swapped
+Assembling for MSC
+swap() will attempt to save the program in the following order:
+-- XMS extended memory
+-- EMS expanded memory
+-- DOS disk file
+Microsoft (R) C/C++ Optimizing Compiler Version 7.00
+Copyright (c) Microsoft Corp 1984-1992. All rights reserved.
+
+cl /c /W2 /BATCH
+   /f- /Ot /Oi /Ol /Oe /Og /Gs /FoSWAPTEST.obj SWAPTEST.C
+swaptest.c
+
+	echo > NUL @swap.lrf
+	link @swap.lrf
+
+Microsoft (R) Segmented Executable Linker  Version 5.31.009 Jul 13 1992
+Copyright (C) Microsoft Corp 1984-1992.  All rights reserved.
+
+Object Modules [.obj]: SWAP.obj +
+Object Modules [.obj]: SWAPTEST.obj
+Run File [SWAP.exe]: swap.exe
+List File [nul.map]: NUL
+Libraries [.lib]:  +
+Libraries [.lib]:  +
+Libraries [.lib]: 
+Definitions File [nul.def]:  /NOI /BATCH /ONERROR:NOEXE /EXE /FAR /PACKC;
+NMAKE : loading MS-DOS extender

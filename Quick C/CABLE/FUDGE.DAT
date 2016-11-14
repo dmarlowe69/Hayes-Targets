@@ -1,0 +1,7 @@
+0.70			; cd0	 - target drag coefficient
+1			; drag index - 0 use estimate , 1 use wind tunnel
+1.5			; drag_factor - correction to TRX-12 drag data
+1.0			; wing area scale factor
+0			; cable_index
+1.0			; cdc_correct
+1.0			; picf_correct

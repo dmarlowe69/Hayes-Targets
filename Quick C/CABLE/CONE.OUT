@@ -1,0 +1,13 @@
+
+        trx-12 maximum cone angles
+fuelboom
+
+   trx-12B with 13 inch extension modified (3rd) aerodata (chassis with extensi
+		station number = 1 scale = 24.000000
+ kcas	 alpha	 beta	 delta_ec	 delta_rc	 tension	 cone angle	Z
+
+ 250.00	   0.00	   0.00	   0.00		   0.00		    0.00	   0.000	   0.00
+   0.00	   0.00	   0.00	   0.00		   0.00		    0.00	   0.000	   0.00
+  10.00	   0.00	   0.00	   0.00		   0.00		    0.00	   0.000	   0.00
+   0.70	   0.00	   0.00	   0.00		   0.00		    0.00	   0.000	   0.00
+   1.00	   0.00	   0.00	   0.00		   0.00		    0.00	   0.000	   0.00

@@ -1,0 +1,40 @@
++++ PWB  [D:\C\CABLE\CABLE\CABLE] Build all
+
+	NMAKE  /f D:\C\CABLE\CABLE\CABLE\cable.mak all
+
+Microsoft (R) Program Maintenance Utility   Version 1.40       
+Copyright (c) Microsoft Corp 1988-93. All rights reserved.
+
+	cl /c /AL /W2 /G1 /BATCH /Od /Zi /FoMSC.obj MSC.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00c    
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+msc.c
+	echo > NUL @cable.lrf
+	link @cable.lrf
+
+Microsoft (R) Segmented Executable Linker  Version 5.60.339 Dec  5 1994
+Copyright (C) Microsoft Corp 1984-1993.  All rights reserved.
+
+Object Modules [.obj]: CABLE.obj +
+Object Modules [.obj]: CABINPUT.obj +
+Object Modules [.obj]: CABCALC.obj +
+Object Modules [.obj]: CABWORK.obj +
+Object Modules [.obj]: CABPRINT.obj +
+Object Modules [.obj]: CABEXCEL.obj +
+Object Modules [.obj]: CABCHART.obj +
+Object Modules [.obj]: MENU.obj +
+Object Modules [.obj]: MSC.obj +
+Object Modules [.obj]: MOUSE.obj +
+Object Modules [.obj]: SCRDUMP.obj +
+Object Modules [.obj]: EDITOR.obj +
+Object Modules [.obj]: CABCALC2.obj +
+Object Modules [.obj]: SHELL.obj +
+Object Modules [.obj]: SWAPL.OBJ
+Run File [CABLE.exe]: cable.exe
+List File [nul.map]: NUL
+Libraries [.lib]: graphics.lib +
+Libraries [.lib]: pgchart.lib +
+Libraries [.lib]:  +
+Libraries [.lib]: 
+Definitions File [nul.def]:  /NOI /BATCH /CO /NOFA /NOPACKC /NOPACKF;

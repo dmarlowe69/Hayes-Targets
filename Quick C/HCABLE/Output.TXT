@@ -1,0 +1,24 @@
+Initializing...
+Compiling...
+d:\c\cable\hcable\hcable\airframe.c
+d:\c\cable\hcable\hcable\airframe.c(140) : warning C4136: conversion between different floating-point types
+d:\c\cable\hcable\hcable\airframe.c(143) : warning C4136: conversion between different floating-point types
+d:\c\cable\hcable\hcable\analysis.c
+d:\c\cable\hcable\hcable\analysis.c(432) : warning C4101: 'nRes' : unreferenced local variable
+d:\c\cable\hcable\hcable\datafile.c
+d:\c\cable\hcable\hcable\design.c
+d:\c\cable\hcable\hcable\design6.c
+d:\c\cable\hcable\hcable\design6.c(313) : warning C4101: 'p2' : unreferenced local variable
+d:\c\cable\hcable\hcable\designst.c
+d:\c\cable\hcable\hcable\hcable.c
+d:\c\cable\hcable\hcable\hcable.c(439) : warning C4101: 'sf' : unreferenced local variable
+d:\c\cable\hcable\hcable\hcable.c(439) : warning C4101: 'wp' : unreferenced local variable
+d:\c\cable\hcable\hcable\hcable.c(439) : warning C4101: 'wins' : unreferenced local variable
+d:\c\cable\hcable\hcable\hcable.c(439) : warning C4101: 'wm' : unreferenced local variable
+d:\c\cable\hcable\hcable\print6.c
+d:\c\cable\hcable\hcable\revs.c
+d:\c\cable\hcable\hcable\testdata.c
+Linking...
+Binding resources...
+Creating browser database...
+QCABLE.EXE - 0 error(s), 8 warning(s)

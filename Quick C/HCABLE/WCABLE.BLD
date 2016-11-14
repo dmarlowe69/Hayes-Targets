@@ -1,0 +1,90 @@
++++ PWB  [C:\C\HCABLE] Rebuild all
+
+	NMAKE  /a /f C:\C\HCABLE\WCABLE.MAK all
+
+Microsoft (R) Program Maintenance Utility   Version 1.30
+Copyright (c) Microsoft Corp 1988-93. All rights reserved.
+
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /Fohcable.obj hcable.C
+hcable.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /FoDATAFILE.obj DATAFILE.C
+datafile.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /FoAIRFRAME.obj AIRFRAME.C
+airframe.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /FoANALYSIS.obj ANALYSIS.C
+analysis.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /FoDESIGN.obj DESIGN.C
+design.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /FoDESIGN6.obj DESIGN6.C
+design6.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /FoPRINT6.obj PRINT6.C
+print6.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /FoREVS.obj REVS.C
+revs.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /FoDESIGNST.obj DESIGNST.C
+designst.c
+Microsoft (R) C/C++ Optimizing Compiler Version 8.00
+Copyright (c) Microsoft Corp 1984-1993. All rights reserved.
+
+cl /c /W2 /GA /GEf /Zp /BATCH /DWINVER=0x0300
+   /f- /Oe /Og /Os /Gs /FoTESTDATA.obj TESTDATA.C
+testdata.c
+	echo > NUL @WCABLE.lrf
+	link @WCABLE.lrf
+
+Microsoft (R) Segmented Executable Linker  Version 5.50
+Copyright (C) Microsoft Corp 1984-1993.  All rights reserved.
+
+Object Modules [.obj]: hcable.obj +
+Object Modules [.obj]: DATAFILE.obj +
+Object Modules [.obj]: AIRFRAME.obj +
+Object Modules [.obj]: ANALYSIS.obj +
+Object Modules [.obj]: DESIGN.obj +
+Object Modules [.obj]: DESIGN6.obj +
+Object Modules [.obj]: PRINT6.obj +
+Object Modules [.obj]: REVS.obj +
+Object Modules [.obj]: DESIGNST.obj +
+Object Modules [.obj]: TESTDATA.obj
+Run File [hcable.exe]: WCABLE.exe
+List File [nul.map]: NUL
+Libraries [.lib]:  +
+Libraries [.lib]: LIBW.LIB +
+Libraries [.lib]: /NOD:SLIBCE +
+Libraries [.lib]: SLIBCEWQ
+Definitions File [nul.def]: c:\msvc\BIN\cl.def /BATCH /ONERROR:NOEXE ;

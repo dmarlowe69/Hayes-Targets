@@ -1,0 +1,2319 @@
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-1
+
+
+				page 60, 132
+				
+				;   SWAP.ASM        Version 3.00    October 4, 1990
+				;
+				;   Contains code and data needed to swap most of the current program out
+				;   to extended memory, expanded memory, or disk; execute another program;
+				;   and re-load the original program back into memory.
+				;
+				;   Copyright (C) 1990 by Marty Del Vecchio
+				;   Released to the public domain for free use by all
+				;   Product is supplied as is and author disclaims all warranties,
+				;   explicit or implied, about the functionality of the source code
+				;   or object modules supplied, and shall not be held responsible
+				;   for any damages caused by use of product.
+				;
+				;   Code to parse default FCB's written and generously donated
+				;   by David E. Jenkins (jenkins@wang.com or dave.jenkins@office.wang.com).
+				;
+				;   Contributions not solicited.  Just appreciate the fact that somebody
+				;   took the time to write and comment this code.  If you have any
+				;   questions, please contact me at:
+				;
+				;   Marty Del Vecchio                   Channel 1 BBS
+				;   99 Marlboro Road                    Boston, MA
+				;   Southborough, MA  01772             (617) 354-8873
+				;   (508) 485-9718
+				;
+				;   internet:  marty@bsn.mceo.dg.com
+				;
+				;   For information about the contents of this file, see the accompanying
+				;   file SWAP.DOC.
+				;
+				
+				
+				; 'DOSSEG' gives us support for Microsoft C and Turbo C segment naming
+				; and ordering schemes
+				DOSSEG
+				
+				; Figure out which memory model we're assembling for.  Specified on
+				;  MASM command line with /D followed by either _Small, _Compact, _Medium,
+				;  or _Large.  If none specified, _Small is assumed.
+				
+				; Once the model is defined, MASM provides two definitions, @codesize
+				;  and @datasize, to determine the size of code and data pointers.  If
+				;  @codesize is 0 (Small and Compact), there is one code segment, and
+				;  code addresses are 16 bits (offset only).  If @codesize is 1 (Medium
+				;  and Large), there are multiple code segments, and code addresses are
+				;  32 bits (segment and offset).  Similarly, @datasize of 0 means one
+				;  data segment (16-bit pointers), and @datasize of 1 means multiple
+				;  data segments (32-bit pointers).
+				
+				 ELSE
+				   IFDEF _compact
+				      .MODEL Compact, C
+				   ENDIF
+				ENDIF
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-2
+
+
+				
+				; Report whether multiple DOS memory blocks will be swapped
+				
+				; Figure out which save method we are using--EMS, XMS, disk, or a
+				;  combination.
+				
+				; Specified on MASM command line with /D followed by either "xms", "ems",
+				;  "disk", or "all".  For example, to create a swap() that will try using
+				;  XMS and EMS, you would use "masm swap.asm /Dems /Dxms".
+				
+				; If none specified, it will use all.  To change the order in which swap()
+				;  attempts to save the program to different places, see the function
+				;  save_program below.
+				
+				; First, see if they want all of them...
+				ELSE
+				   ; /Dall not specified--try each individually...
+				
+				
+				
+				ENDIF
+				
+				; Now see if they declared anything--if not, it will use them all
+				
+				; Constant definitions for easier reading
+ = 0002				STDERR          equ     2           ; Standard DOS file handle for error output
+ = 0035				GET_VECTOR      equ     35h         ; DOS function to get interrupt vector
+ = 0067				EMM_INT         equ     67h         ; EMS interrupt vector
+ = 0008				EMM_NAME_LEN    equ     8           ; Length of EMS device driver name
+ = 007F				MAX_DOS_CMD     equ     127         ; Maximum DOS command-line length
+				
+				; If we will swap out all DOS memory blocks a program owns, we need a
+				;   place to store information about them
+ = 0010				MAX_EXTRA       equ     16          ; Maximum number of extra DOS allocation blocks to swap
+				
+				dos_block       struc               ; Structure for extra DOS memory blocks
+ 0000  0000			block_seg       dw      0           ; User's segment address of block
+ 0002  0000			block_size      dw      0           ; Size in paragraphs of block
+ 0004				dos_block       ends
+				
+				
+ = byte ptr			bptr            equ     byte ptr    ; Means we're loading/storing 8 bits
+ = word ptr			wptr            equ     word ptr    ; Means we're loading/storing 16 bits
+ = dword ptr			dptr            equ     dword ptr   ; Means we're loading/storing 32 bits
+				
+				
+				; All code and data must be in the code segment, which is the first segment
+				;  in all Turbo C, Turbo C++, and Microsoft C memory models.
+				
+				; If we are in the Medium or Large models, there are multiple code segments.
+				;  If this is the case, our default code segment name will be "SWAP_TEXT".
+				;  This is acceptable in most cases, except when using the Turbo C integrated
+				;  development environment.  See SWAP.DOC for details.
+				
+				; If you are using Turbo C's Integrated Development Environment, the line
+				;  right after "IF @codesize" MUST say ".CODE  _TEXT"!!!!!!!!!!!!!!!!!!!!
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-3
+
+
+				
+				 ELSE
+				
+					ELSE
+					.CODE
+					ENDIF
+				
+				 ENDIF
+				
+				; *****************************************************************************
+				; Our resident data declarations--this data will be needed after the swap
+				;  has occurred, and thus must be above the resident line
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; First, all variables that will be used by all versions assembled from
+				; this source file, regardless of what save options are selected
+				; *****************************************************************************
+ 0000  0000			ret_code    dw      0           ; Return code (to C caller) of this swap routine
+				                                ;   0 = success
+				                                ;   1 = unable to shrink DOS memory allocation
+				                                ;   2 = unable to save program to EMS
+				                                ;   3 = unable to execute requested program
+				                                ; These values must be the same as those listed
+				                                ;  in SWAP.H!!!!!!!!!
+				
+				; *****************************************************************************
+				; Variables that deal with DOS' memory allocation blocks
+ 0002  0000			old_size    dw      0           ; The old size (in paragraphs) of this program
+ 0004  0000			new_size    dw      0           ; The new "resident" size, doesn't include code/data swapped
+ 0006  0000			prog_size   dw      0           ; Size in paragraphs of saved part of program block (old_size - new_
+				size)
+ 0008  0000			total_paras dw      0           ; Size (in paragraphs) of all blocks combined
+ 000A  0000			my_psp      dw      0           ; This program's Program Segment Prefix (PSP)
+ 000C  0000			mcb_psp     dw      0           ; The PSP address in this program's memory block
+ 000E  0000			start_seg   dw      0           ; Segment address of released memory
+				
+				; If we are swapping all DOS memory blocks a program owns, we store
+				;  them in this array of structures
+				IFNDEF NOFRAG
+ 0010  0000			extra_count dw      0           ; # of extra blocks to save (not including program block)
+ 0012  0010[			dos_blocks  dos_block MAX_EXTRA dup (<>)    ; Array for extra blocks
+	   0000			
+	   0000			
+			 ]	
+				
+				ENDIF
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; Variable used during the save/restore process
+ 0052  0000			handle      dw      0           ; EMS/XMS/disk file handle
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; A temporary stack in our code segment, and associated variables
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-4
+
+
+ 0054  0000			old_sp      dw      0               ; Place to save this program's stack
+ 0056  0000			old_ss      dw      0               ;  information while executing new program
+				
+				; XMS driver needs a large stack (at least 256 bytes free when called)
+				IFDEF USE_XMS
+ 0058  0140[			new_stack   db      320 dup ('?')   ; Temporary stack we can address after swap
+	   3F			
+			 ]	
+				
+				ENDIF
+ 0198				new_sp      label   word            ; Point SP to "top" of stack
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; Variables that deal with the execution of the new program
+ 0198  0080[			prog_name   db      128 dup (0)     ; Storage for name of program to execute
+	   00			
+			 ]	
+				
+ 0218  00			cmd_pad     db      0               ; Maintain word-alignment for variables
+ 0219  00			cmd_len     db      0               ; Storage for length of command line parameters
+ 021A  0080[			cmd_line    db      128 dup (0)     ; Storage for command line parameters
+	   00			
+			 ]	
+				
+				
+ 029A				param_blk   label   byte            ; Program Parameter Block--pass to DOS on exec call
+ 029A  0000			env_seg     dw      0               ; Environment segment address, 0 means a COPY of ours
+ 029C  0219 R			cmd_ofs     dw      offset @code:cmd_len    ; Offset address of command line
+ 029E  ---- R			cmd_seg     dw      seg cmd_line    ; Segment address of command line
+ 02A0  02AE R			fcb_5C_ofs  dw      offset fcb5C    ; Far pointers to default FCB's.  Some
+ 02A2  ---- R			fcb_5C_seg  dw      seg fcb5C       ;  programs (such as DOS' CHKDSK.COM)
+ 02A4  02BE R			fcb_6C_ofs  dw      offset fcb6C    ;  depend on these being parsed from
+ 02A6  ---- R			fcb_6C_seg  dw      seg fcb6C       ;  the command line before the EXEC call
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; Variables needed to parse the command line into the default FCB's
+ 02A8  0000			c_l_length  dw      0               ; Command line length
+ 02AA  0000			si_5C       dw      0               ; Save area for pointer to cmd line arg 1
+ 02AC  0000			si_6C       dw      0               ; Save area for pointer to cmd line arg 2
+				
+				; Default FCB to be passed to PSP offset 5C (hex)
+ 02AE				fcb5C       label   byte
+ 02AE  00			fcb5C_drive db      0               ; drive
+ 02AF  0008[			fcb5C_fname db      8 dup (?)       ; file name
+	   ??			
+			 ]	
+				
+ 02B7  0003[			fcb5C_ext   db      3 dup (?)       ; extension
+	   ??			
+			 ]	
+				
+ 02BA  0004[			fcb5C_pad   db      4 dup (?)       ; unused
+	   ??			
+			 ]	
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-5
+
+
+				
+				
+				; Default FCB to be passed to PSP offset 6C (hex)
+ 02BE				fcb6C       label   byte
+ 02BE  00			fcb6C_drive db      0               ; drive
+ 02BF  0008[			fcb6C_fname db      8 dup (?)       ; file name
+	   ??			
+			 ]	
+				
+ 02C7  0003[			fcb6C_ext   db      3 dup (?)       ; extension
+	   ??			
+			 ]	
+				
+ 02CA  0004[			fcb6C_pad   db      4 dup (?)       ; unused
+	   ??			
+			 ]	
+				
+				; *****************************************************************************
+				
+ 02CE  00			exec_ret    db      0               ; Return code from executed program
+ 02CF  00			exec_pad    db      0               ; Maintain word-alignment for variables
+ 02D0  0000			restore_proc dw     0               ; Address of appropriate restore routine
+				
+				; *****************************************************************************
+				; Message to display to screen when we can't reload program
+ 02D2  0D 0A 53 57 41 50	abort_msg   db      0dh, 0ah, 'SWAP: Unable to reload program.', 0dh, 0ah
+       3A 20 55 6E 61 62	
+       6C 65 20 74 6F 20	
+       72 65 6C 6F 61 64	
+       20 70 72 6F 67 72	
+       61 6D 2E 0D 0A		
+ 02F5  0023			abort_len   dw      $ - offset @code:abort_msg
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; Next, the variables needed only for certain versions of the routine,
+				;  depending on which save/restore options are chosen
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; Variables needed only when swapping to XMS
+				IFDEF USE_XMS
+ 02F7  00000000			XMS_proc    dd      0               ; Address of XMS entry point
+				
+ 02FB				XMS_struc       label   byte        ; Structure needed to move memory with XMS
+ 02FB  00000000			XMS_size        dd      0           ; # of bytes to move (must be even)
+ 02FF  0000			XMS_from        dw      0           ; Handle of source, 0=conventional memory
+ 0301  00000000			XMS_from_addr   dd      0           ; Address of source memory
+ 0305  0000			XMS_to          dw      0           ; Handle of destionation, 0=conventional memory
+ 0307  00000000			XMS_to_addr     dd      0           ; Address of destination memory
+				ENDIF
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; Variables needed only when swapping to EMS
+				IFDEF USE_EMS
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-6
+
+
+ 030B  00			pages_used  db      0           ; # of pages of EMS used
+ 030C  45 4D 4D 58 58 58	emm_name    db      'EMMXXXX0'  ; Name of EMS device driver
+       58 30			
+				
+ 0314				EMS_struc   label   byte        ; Structure needed to move memory with EMS 4.0+
+ 0314  00000000			EMS_size    dd      0           ; # of bytes to move
+ 0318  00			EMS_from    db      0           ; Type of source memory (0 = conventional, 1 = expanded)
+ 0319  0000			EMS_from_h  dw      0           ; Source memory handle (0 = conventional)
+ 031B  0000			EMS_from_o  dw      0           ; Offset of source memory (expanded = 0-16K, conventional = 0-64K)
+ 031D  0000			EMS_from_s  dw      0           ; Segment/page of source (expanded = logical page, conventional = se
+				gment)
+ 031F  00			EMS_to      db      0           ; Type of desination memory (0 = conventional, 1 = expanded)
+ 0320  0000			EMS_to_h    dw      0           ; Destination memory handle (0 = conventional)
+ 0322  0000			EMS_to_o    dw      0           ; Offset of destination memory (expanded = 0-16K, conventional = 0-6
+				4K)
+ 0324  0000			EMS_to_s    dw      0           ; Segment/page of destination (expanded = logical page, conventional
+				 = segment)
+				
+ 0326  00000000			ems_offset  dd      0           ; Destination pointer--absolute byte offset into handle
+				ENDIF
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; Variables needed only when swapping to disk
+				IFDEF USE_DISK
+ 032A  0050[			fname       db      80 dup (0)  ; Name of the file data is saved to/read from
+	   00			
+			 ]	
+				
+ 037A  0000			paras_left  dw      0           ; temporary counter
+				ENDIF
+				; *****************************************************************************
+				
+				
+				
+				; *****************************************************************************
+				; Version-dependent code--only assemble the routine to restore the program
+				; from each media (XMS, EMS, disk) if it was specified on the command line
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				; restore_xms   Attempts to restore program from XMS extended memory
+				;
+				; Entry:        DS points to our variables
+				;               Program was saved to XMS extended memory (block referred to by handle)
+				;
+				; Return:       Carry set on error, carry clear on success
+				; *****************************************************************************
+				IFDEF USE_XMS
+ 037C				restore_xms     proc    near
+ 037C  06			                push    es
+				
+				                assume  ds:@code                    ; Tell MASM that DS points to our variables
+				
+				; First, attempt to restore the portion of the program block that was saved
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-7
+
+
+ 037D  A1 000E R		xms_prog_rest:  mov     ax, wptr start_seg          ; Released segment address
+ 0380  8E C0			                mov     es, ax
+ 0382  A1 0006 R		                mov     ax, wptr prog_size          ; Size (in paragraphs)
+				
+ 0385  33 DB			                xor     bx, bx
+ 0387  89 1E 0301 R		                mov     wptr XMS_from_addr, bx      ; Initialize XMS source
+ 038B  89 1E 0303 R		                mov     wptr XMS_from_addr + 2, bx  ;  address (offset into extended memory block)
+				
+ 038F  E8 03C4 R		                call    rest_xms_seg                ; Attempt to restore it
+				
+				IFNDEF NOFRAG
+ 0392  72 1E			                jc      xms_dealloc                 ; Carry set = error, exit
+				
+				; Next, restore the extra DOS segments
+ 0394  8B 0E 0010 R		xms_extra_rest: mov     cx, wptr extra_count    ; Number of extra blocks to save
+ 0398  E3 18			                jcxz    xms_dealloc             ; If CX = 0, we exit routine
+				
+ 039A  BF 0012 R		                mov     di, offset dos_blocks   ; DI -> array of segment/size pairs
+				
+ 039D				xms_extra_rest_loop:
+ 039D  8B 05			                mov     ax, wptr [di].block_seg
+ 039F  8E C0			                mov     es, ax                  ; ES = segment to restore
+ 03A1  8B 45 02			                mov     ax, wptr [di].block_size; AX = size in paragraphs
+ 03A4  51			                push    cx
+ 03A5  57			                push    di
+ 03A6  E8 03C4 R		                call    rest_xms_seg            ; Attempt to restore this block
+ 03A9  5F			                pop     di
+ 03AA  59			                pop     cx
+ 03AB  72 05			                jc      xms_dealloc             ; Carry flag set == error, exit
+ 03AD  83 C7 04			                add     di, size dos_block
+ 03B0  E2 EB			                loop    xms_extra_rest_loop     ; Keep going through all blocks
+				
+				ENDIF
+				
+ 03B2  D0 D3			xms_dealloc:    rcl     bl, 1                   ; Save carry flag in low bit of bl
+				
+ 03B4  8B 16 0052 R		                mov     dx, wptr handle         ; First, free XMS handle
+ 03B8  B4 0A			                mov     ah, 0Ah
+ 03BA  53			                push    bx
+ 03BB  FF 1E 02F7 R		                call    dptr XMS_proc
+ 03BF  5B			                pop     bx
+				
+ 03C0  D0 DB			                rcr     bl, 1                   ; Restore carry flag from bl low bit
+				
+ 03C2  07			restore_xms_ret:pop     es
+ 03C3  C3			                ret
+ 03C4				restore_xms     endp
+				
+				
+				; *****************************************************************************
+				; rest_xms_seg  Attempts to restore a chunk of RAM from XMS memory
+				;
+				; Entry:        ES points to the segment to restore
+				;               AX contains its length (in paragraphs)
+				;               handle holds the XMS handle to read from
+				;               XMS_from_addr contains offset into extended memory for read
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-8
+
+
+				;
+				; Return:       Carry set on error, carry clear on success
+				;               Updates XMS_from_addr for next read
+				; *****************************************************************************
+ 03C4				rest_xms_seg    proc    near
+ 03C4  1E			                push    ds
+ 03C5  06			                push    es
+				
+				; Call the XMS copy memory function to do this; fill in request block
+ 03C6  BB 0010			xms_read_size:  mov     bx, 10h                     ; AX = # of paragraphs, convert to bytes
+ 03C9  F7 E3			                mul     bx                          ; DX:AX = AX * 10h, # of bytes to read
+ 03CB  A3 02FB R		                mov     wptr XMS_size, ax           ; Store # of bytes to read
+ 03CE  89 16 02FD R		                mov     wptr XMS_size + 2, dx
+				
+ 03D2  A1 0052 R		xms_read_from:  mov     ax, wptr handle             ; Source XMS handle
+ 03D5  A3 02FF R		                mov     wptr XMS_from, ax           ;  XMS_from_addr already filled in
+				
+ 03D8  33 DB			xms_read_to:    xor     bx, bx
+ 03DA  89 1E 0305 R		                mov     wptr XMS_to, bx             ; Read into conventional memory
+ 03DE  89 1E 0307 R		                mov     wptr XMS_to_addr, bx        ; Offset of dest address
+ 03E2  8C C0			                mov     ax, es                      ; Segment of destination address
+ 03E4  A3 0309 R		                mov     wptr XMS_to_addr + 2, ax
+				
+ 03E7  BE 02FB R		do_xms_read:    mov     si, offset @code:XMS_struc  ; DS:SI -> XMS structure
+ 03EA  B4 0B			                mov     ah, 0Bh
+ 03EC  FF 1E 02F7 R		                call    dptr XMS_proc               ; Do the move
+ 03F0  3D 0001			                cmp     ax, 1
+ 03F3  75 12			                jnz     rest_xms_seg_er
+				
+ 03F5  A1 02FB R		rest_xms_seg_ok:mov     ax, wptr XMS_size           ; Retrieve length
+ 03F8  8B 16 02FD R		                mov     dx, wptr XMS_size + 2       ;  (32 bits)
+ 03FC  01 06 0301 R		                add     wptr XMS_from_addr, ax      ; Add two 32-bit values
+ 0400  11 16 0303 R		                adc     wptr XMS_from_addr + 2, dx  ; Update XMS read pointer
+ 0404  F8			                clc                                 ; Signal success
+ 0405  EB 01			                jmp     short rest_xms_seg_ret
+				
+ 0407  F9			rest_xms_seg_er:stc
+				
+ 0408				rest_xms_seg_ret:
+ 0408  07			                pop     es
+ 0409  1F			                pop     ds
+ 040A  C3			                ret
+ 040B				rest_xms_seg    endp
+				
+				ENDIF
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				; restore_ems   Attempts to restore program from EMS expanded memory
+				;
+				; Entry:        DS points to our variables
+				;               Program was saved to EMS expanded memory (block referred to by handle)
+				;
+				; Return:       Carry set on error, carry clear on success
+				; *****************************************************************************
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-9
+
+
+				IFDEF USE_EMS
+ 040B				restore_ems     proc    near
+ 040B  06			                push    es
+				
+				                assume  ds:@code                    ; Tell MASM that DS points to our variables
+				
+				; First, attempt to restore the portion of the program block that was saved
+ 040C  A1 000E R		ems_prog_rest:  mov     ax, wptr start_seg          ; Released segment address
+ 040F  8E C0			                mov     es, ax
+ 0411  A1 0006 R		                mov     ax, wptr prog_size          ; Size (in paragraphs)
+				
+ 0414  33 DB			                xor     bx, bx
+ 0416  89 1E 0326 R		                mov     wptr ems_offset, bx         ; Maintain absolute by offset
+ 041A  89 1E 0328 R		                mov     wptr ems_offset + 2, bx     ;  pointer relative to handle
+				
+ 041E  E8 0451 R		                call    rest_ems_seg                ; Attempt to restore it
+				
+				IFNDEF NOFRAG
+ 0421  72 1E			                jc      ems_dealloc                 ; Carry set = error, exit
+				
+				; Next, restore the extra DOS segments
+ 0423  8B 0E 0010 R		ems_extra_rest: mov     cx, wptr extra_count    ; Number of extra blocks to save
+ 0427  E3 18			                jcxz    ems_dealloc             ; If CX = 0, we exit routine
+				
+ 0429  BF 0012 R		                mov     di, offset dos_blocks   ; DI -> array of segment/size pairs
+				
+ 042C				ems_extra_rest_loop:
+ 042C  8B 05			                mov     ax, wptr [di].block_seg
+ 042E  8E C0			                mov     es, ax                  ; ES = segment to restore
+ 0430  8B 45 02			                mov     ax, wptr [di].block_size; AX = size in paragraphs
+ 0433  51			                push    cx
+ 0434  57			                push    di
+ 0435  E8 0451 R		                call    rest_ems_seg            ; Attempt to restore this block
+ 0438  5F			                pop     di
+ 0439  59			                pop     cx
+ 043A  72 05			                jc      ems_dealloc             ; Carry flag set == error, exit
+ 043C  83 C7 04			                add     di, size dos_block
+ 043F  E2 EB			                loop    ems_extra_rest_loop     ; Keep going through all blocks
+				
+				ENDIF
+				
+ 0441  D0 D3			ems_dealloc:    rcl     bl, 1                   ; Save carry flag in low bit of bl
+				
+ 0443  B4 45			                mov     ah, 45h                 ; Deallocate EMS memory
+ 0445  8B 16 0052 R		                mov     dx, wptr handle         ; Specify which handle
+ 0449  53			                push    bx
+ 044A  CD 67			                int     67h
+ 044C  5B			                pop     bx
+				
+ 044D  D0 DB			                rcr     bl, 1                   ; Restore carry flag from bl low bit
+				
+ 044F  07			restore_ems_ret:pop     es
+ 0450  C3			                ret
+ 0451				restore_ems     endp
+				
+				; *****************************************************************************
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-10
+
+
+				; rest_ems_seg  Attempts to restore a chunk of RAM from EMS memory
+				;
+				; Entry:        ES points to the segment to restore
+				;               AX contains its length (in paragraphs)
+				;               handle holds the EMS handle to write to
+				;               ems_offset holds the 32-bit absolute offset in expanded
+				;                memory to read this block from
+				;
+				; Return:       Carry set on error, carry clear on success
+				;               Updates ems_offset with proper offset for next read
+				; *****************************************************************************
+ 0451				rest_ems_seg    proc    near
+ 0451  1E			                push    ds
+ 0452  06			                push    es
+				
+				                assume  ds:@code                ; Tell MASM DS points to our variables
+				
+				; Call the EMS copy memory function to do this; fill in the EMS request block
+ 0453  BB 0010			ems_read_size:  mov     bx, 10h                     ; AX = # of paragraphs
+ 0456  F7 E3			                mul     bx                          ; DX:AX = AX * 10h, convert paragraphs to bytes
+ 0458  A3 0314 R		                mov     wptr EMS_size, ax           ; Store # of bytes to write
+ 045B  89 16 0316 R		                mov     wptr EMS_size + 2, dx
+				
+ 045F  33 DB			ems_read_to:    xor     bx, bx
+ 0461  88 1E 031F R		                mov     bptr EMS_to, bl             ; Copying to conventional memory (0)
+ 0465  89 1E 0320 R		                mov     wptr EMS_to_h, bx           ; Destination handle is 0 (conventional memory)
+ 0469  89 1E 0322 R		                mov     wptr EMS_to_o, bx           ; Destination offset is 0
+ 046D  8C C0			                mov     ax, es                      ; Segment of destination address is ES
+ 046F  A3 0324 R		                mov     wptr EMS_to_s, ax
+				
+ 0472  C6 06 0318 R 01		ems_read_from:  mov     bptr EMS_from, 1            ; Copying to expanded memory
+ 0477  A1 0052 R		                mov     ax, wptr handle
+ 047A  A3 0319 R		                mov     wptr EMS_from_h, ax         ; Specify EMS handle
+				
+				                ; 32-bit absolute offset for copy is in ems_offset
+				                ;  convert to EMS page:offset (16K pages) values
+ 047D  A1 0326 R		                mov     ax, wptr ems_offset         ; Load 32-byte offset
+ 0480  8B 16 0328 R		                mov     dx, wptr ems_offset + 2
+ 0484  8B D8			                mov     bx, ax                      ; Save a copy of ax (low 16 bits)
+ 0486  25 3FFF			                and     ax, 0011111111111111b       ; Get (ax & (16K - 1)), this is the offset (14 b
+				its)
+ 0489  A3 031B R		                mov     wptr EMS_from_o, ax         ; Save page offset
+ 048C  B1 0E			                mov     cl, 14
+ 048E  D3 EB			                shr     bx, cl                      ; Move low 2 bits of page into low 2 bits of bx
+ 0490  B1 02			                mov     cl, 2
+ 0492  D3 E2			                shl     dx, cl                      ; Move hi ? bits of page into dx shl 2
+ 0494  0B D3			                or      dx, bx                      ; DX = page number (combine two values)
+ 0496  89 16 031D R		                mov     wptr EMS_from_s, dx         ; Save
+				
+ 049A  A1 0314 R		                mov     ax, wptr EMS_size           ; Retrieve size of copy
+ 049D  8B 16 0316 R		                mov     dx, wptr EMS_size + 2
+ 04A1  01 06 0326 R		                add     wptr ems_offset, ax         ; Update EMS copy pointer
+ 04A5  11 16 0328 R		                adc     wptr ems_offset + 2, dx     ;  for next EMS write
+				
+ 04A9  BE 0314 R		do_ems_read:    mov     si, offset @code:EMS_struc  ; DS:SI -> EMS request structure
+ 04AC  B8 5700			                mov     ax, 5700h                   ; Function 57 (copy/exchange memory), sub 0, cop
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-11
+
+
+				y memory
+ 04AF  CD 67			                int     67h                         ; Call EMS manager
+ 04B1  0A E4			                or      ah, ah                      ; AH = 0 means success
+ 04B3  75 03			                jnz     rest_ems_seg_er             ; Not 0 means error
+				
+ 04B5  F8			rest_ems_seg_ok:clc                                 ; Signal success
+ 04B6  EB 01			                jmp     short rest_ems_seg_ret
+				
+ 04B8  F9			rest_ems_seg_er:stc
+				
+ 04B9				rest_ems_seg_ret:
+ 04B9  07			                pop     es
+ 04BA  1F			                pop     ds
+ 04BB  C3			                ret
+ 04BC				rest_ems_seg    endp
+				
+				ENDIF
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				; restore_disk  Attempts to restore program from DOS disk file
+				;
+				; Entry:        DS points to our code segment
+				;               Program was saved to DOS disk file (full path stored in fname)
+				;
+				; Return:       Carry set on error, carry clear on success
+				; *****************************************************************************
+				IFDEF USE_DISK
+ 04BC				restore_disk    proc    near
+				
+ 04BC  1E			                push    ds
+				
+				                assume  ds:@code                ; Tell MASM that DS points to our variables
+				
+ 04BD  BA 032A R		open_file:      mov     dx, offset @code:fname  ; DS:DX -> file name
+ 04C0  B8 3D42			                mov     ax, 3D42h               ; DOS function 3Dh, open file
+				                                                ;  al = open for read only, deny none
+ 04C3  CD 21			                int     21h                     ; Call DOS
+ 04C5  73 02			                jnc     open_ok                 ; Carry clear = all OK
+ 04C7  EB 3A			                jmp     short restore_disk_ret  ; Carry set, just exit with error
+				
+ 04C9  A3 0052 R		open_ok:        mov     wptr handle, ax         ; File handle returned from DOS
+				
+				; First, restore the program block contents saved to disk
+ 04CC  A1 000E R		disk_prog_rest: mov     ax, wptr start_seg      ; Get segment of program block saved
+ 04CF  8E C0			                mov     es, ax
+ 04D1  A1 0006 R		                mov     ax, wptr prog_size      ; Get size of program block saved
+ 04D4  E8 0512 R		                call    rest_disk_seg           ; Try to restore it
+ 04D7  72 25			                jc      restore_disk_er         ; Carry set == error
+				
+				IFNDEF NOFRAG
+				; Next, restore the contents of the extra blocks saved to disk
+ 04D9				disk_extra_rest:
+ 04D9  8B 0E 0010 R		                mov     cx, wptr extra_count    ; Number of extra blocks to restore
+ 04DD  E3 18			                jcxz    close_read              ; IF CX = 0, we're done restoring
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-12
+
+
+				
+ 04DF  BF 0012 R		                mov     di, offset dos_blocks   ; DI -> array of segment/size pairs
+				
+ 04E2				disk_extra_rest_loop:
+ 04E2  8B 05			                mov     ax, wptr [di].block_seg
+ 04E4  8E C0			                mov     es, ax                  ; ES = segment to restore to
+ 04E6  8B 45 02			                mov     ax, wptr [di].block_size; AX = size in paragraphs
+ 04E9  51			                push    cx
+ 04EA  57			                push    di
+ 04EB  E8 0512 R		                call    rest_disk_seg           ; Attempt to restore this block
+ 04EE  5F			                pop     di
+ 04EF  59			                pop     cx
+ 04F0  72 0C			                jc      restore_disk_er         ; Error--exit routine
+ 04F2  83 C7 04			                add     di, size dos_block
+ 04F5  E2 EB			                loop    disk_extra_rest_loop    ; Look for next DOS block
+				
+				ENDIF
+				
+ 04F7  B4 3E			close_read:     mov     ah, 3Eh                 ; Close file
+ 04F9  CD 21			                int     21h                     ; Call DOS
+				
+ 04FB  F8			restore_disk_ok:clc                             ; Signal success
+ 04FC  EB 05			                jmp     short restore_disk_ret  ;  and Exit
+				
+ 04FE				restore_disk_er:
+ 04FE  B4 3E			                mov     ah, 3Eh                 ; Error, close file first
+ 0500  CD 21			                int     21h                     ; Call DOS
+ 0502  F9			                stc                             ; Signal failure
+				
+ 0503				restore_disk_ret:
+ 0503  1F			                pop     ds                      ; Restore our DS! (error in revs 2.11 and before)
+				
+ 0504  D0 D3			                rcl     bl, 1                   ; Save carry flag in low bit of bl
+				
+ 0506  BA 032A R		                mov     dx, offset @code:fname  ; DS:DX -> file name
+ 0509  B4 41			                mov     ah, 41h                 ; DOS function 41h, delete file
+ 050B  53			                push    bx
+ 050C  CD 21			                int     21h                     ; Call DOS
+ 050E  5B			                pop     bx
+				
+ 050F  D0 DB			                rcr     bl, 1                   ; Restore carry flag from low bit of bl
+				
+ 0511  C3			                ret
+ 0512				restore_disk    endp
+				
+				; *****************************************************************************
+				; rest_disk_seg Attempts to restore a chunk of RAM from the DOS disk file
+				;
+				; Entry:        ES points to the segment to restore
+				;               AX contains its length (in paragraphs)
+				;               handle contains the file handle to read from
+				;               Program was saved to DOS disk file (fname)
+				;
+				; Return:       Carry set on error, carry clear on success
+				; *****************************************************************************
+ 0512				rest_disk_seg   proc    near
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-13
+
+
+ 0512  06			                push    es
+ 0513  1E			                push    ds
+				
+ 0514  8C C3			                mov     bx, es
+ 0516  8E DB			                mov     ds, bx                  ; DS -> segment to restore to
+				
+				                assume  ds:nothing
+				
+ 0518  2E: A3 037A R		                mov     wptr cs:paras_left, ax  ; Keep count in this variable
+				
+ 051C  3D 0800			disk_read_32k:  cmp     ax, 0800h                   ; Less than 32K left?
+ 051F  72 24			                jb      last_disk_read              ; Yes, do last read
+ 0521  2E: 81 2E 037A R 0800	                sub     wptr cs:paras_left, 0800h   ; 32K left to read
+ 0528  B4 3F			                mov     ah, 3Fh                 ; DOS function 3Fh, read file
+ 052A  2E: 8B 1E 0052 R		                mov     bx, wptr cs:handle      ; BX = handle to read from
+ 052F  B9 8000			                mov     cx, 8000h               ; Read 32K bytes
+ 0532  33 D2			                xor     dx, dx                  ; DS:DX -> buffer to read to
+ 0534  CD 21			                int     21h                     ; Call DOS
+ 0536  72 24			                jc      rest_disk_seg_er        ; Carry set = error
+				
+ 0538  8C D8			disk_read_ok:   mov     ax, ds                  ; Address next read location
+ 053A  05 0800			                add     ax, 0800h               ; It's 800h paragraphs ahead
+ 053D  8E D8			                mov     ds, ax                  ; DS -> new restore location
+ 053F  2E: A1 037A R		                mov     ax, wptr cs:paras_left  ; Expecting this above
+ 0543  EB D7			                jmp     short disk_read_32k     ; Read next 32K
+				
+ 0545  B9 0004			last_disk_read: mov     cx, 4                   ; Convert paragraphs to bytes
+ 0548  D3 E0			                shl     ax, cl
+ 054A  8B C8			                mov     cx, ax                  ; # of bytes left in cx
+ 054C  B4 3F			                mov     ah, 3Fh                 ; Read last bytes
+ 054E  2E: 8B 1E 0052 R		                mov     bx, wptr cs:handle      ; BX = handle to read from
+ 0553  33 D2			                xor     dx, dx                  ; DS:DX -> buffer to restore to
+ 0555  CD 21			                int     21h                     ; Call DOS
+ 0557  72 03			                jc      rest_disk_seg_er        ; Error reading!  Close file first
+				
+ 0559				rest_disk_seg_ok:
+ 0559  F8			                clc
+ 055A  EB 01			                jmp     short rest_disk_seg_ret
+				
+ 055C				rest_disk_seg_er:
+ 055C  F9			                stc
+				
+ 055D				rest_disk_seg_ret:
+ 055D  1F			                pop     ds
+ 055E  07			                pop     es
+ 055F  C3			                ret
+ 0560				rest_disk_seg   endp
+				
+				ENDIF
+				; *****************************************************************************
+				
+				
+				                
+				; *****************************************************************************
+				; execute_program   Execute the program specified
+				;
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-14
+
+
+				; Entry:            param_blk has been initialized
+				;                   DS points to our data
+				; Return:           puts return code in cs:exec_ret
+				; *****************************************************************************
+ 0560				execute_program proc    near                    ; Called only from inside our segment
+				
+ 0560  1E			                push    ds                      ; These are destroyed by the
+ 0561  06			                push    es                      ;  DOS EXEC call
+				
+				                assume  ds:@code                ; Tell MASM that DS points to our variables
+				
+ 0562  8C D8			exec_program:   mov     ax, ds                  ; Our path name is in CS (point DS to our segment)
+ 0564  8E C0			                mov     es, ax                  ; Our parameter block is in CS (point ES to our segm
+				ent)
+ 0566  B8 4B00			                mov     ax, 4B00h               ; Load and execute program
+ 0569  BB 029A R		                mov     bx, offset @code:param_blk
+ 056C  BA 0198 R		                mov     dx, offset @code:prog_name
+ 056F  CD 21			                int     21h                     ; Sets carry flag if error
+				                                                ; All registers destroyed
+				                                                ;  except CS:IP!
+				
+				                assume  ds:nothing              ; Tell MASM that DS doesn't point to our variables
+				
+ 0571  2E: A2 02CE R		                mov     bptr cs:exec_ret, al    ; Store EXEC code
+ 0575  72 0A			                jc      exec_err                ; Ooops
+				
+ 0577  B4 4D			get_return:     mov     ah, 4Dh                 ; DOS function to get ret code
+ 0579  CD 21			                int     21h                     ; All registers destroyed
+ 057B  2E: A2 02CE R		                mov     bptr cs:exec_ret, al    ; Store EXEC code
+ 057F  EB 07			                jmp     short exec_exit
+				
+ 0581  2E: C7 06 0000 R 0003	exec_err:       mov     wptr cs:ret_code, 3     ; Signal error on executing
+				
+ 0588  07			exec_exit:      pop     es
+ 0589  1F			                pop     ds
+				
+ 058A  C3			                ret
+				
+ 058B				execute_program endp
+				
+				
+				; *****************************************************************************
+				; err_exit          Prints error message and terminates program
+				;
+				; Entry:            Nothing.
+				; Returns:          Doesn't return--calls DOS terminate function.
+				;                   Naturally, we can't use the C runtime routines,
+				;                   since they are swapped out.
+				; *****************************************************************************
+ 058B				err_exit        proc    near                    ; Called only from inside our segment
+				
+ 058B  8C C8			                mov     ax, cs
+ 058D  8E D8			                mov     ds, ax                  ; Point DS to our data
+				
+				                assume  ds:@code                ; Tell MASM that DS points to our data
+				
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-15
+
+
+ 058F  B4 40			                mov     ah, 40h                 ; DOS function to write to file
+ 0591  BB 0002			                mov     bx, STDERR              ; Write to standard error handle
+ 0594  8B 0E 02F5 R		                mov     cx, wptr abort_len      ; CX = length of message
+ 0598  BA 02D2 R		                mov     dx, offset @code:abort_msg  ; DS:DX = message
+ 059B  CD 21			                int     21h
+				
+ 059D  B8 4CFF			                mov     ax, 4CFFh           ; Exit, return code 255 decimal (FF hex)
+ 05A0  CD 21			                int     21h                 ; Exit to DOS, no return
+				
+ 05A2				err_exit        endp
+				
+				
+				; *****************************************************************************
+				; do_exec           Calls the execute routine, then restores program
+				;
+				; Entry:            Nothing
+				; Returns:          Since it is called from the non-resident area, it
+				;                   can only return if the program is restored completely.
+				; *****************************************************************************
+ 05A2				do_exec         proc
+ 05A2  E8 0560 R		                call    near ptr execute_program    ; Execute the specified program
+ 05A5  73 06			                jnc     re_size                     ; No carry, OK
+				
+ 05A7  C7 06 0000 R 0003	exec_er:        mov     wptr ret_code, 3        ; Signal error
+				
+ 05AD  8E 06 000A R		re_size:        mov     es, wptr my_psp         ; Get our PSP address
+ 05B1  8B 1E 0002 R		                mov     bx, wptr old_size       ; Increase back to old size
+ 05B5  B4 4A			                mov     ah, 4Ah                 ; DOS function 4Ah = resize
+ 05B7  CD 21			                int     21h
+ 05B9  72 23			                jc      resize_err              ; Carry clear = all OK
+				
+				IFNDEF NOFRAG
+				; If necessary, allocate all extra DOS memory blocks our program owned
+				
+ 05BB  8B 0E 0010 R		                mov     cx, wptr extra_count    ; CX = number of extra DOS blocks
+ 05BF  E3 20			                jcxz    restore_prog            ; If zero, don't bother
+ 05C1  BF 0012 R		                mov     di, offset dos_blocks   ; DI -> array of addresses/sizes
+				
+ 05C4  06			                push    es
+				
+ 05C5				alloc_extra_loop:
+ 05C5  8B 5D 02			                mov     bx, wptr [di].block_size; BX = old size
+ 05C8  B4 48			                mov     ah, 48h                 ; DOS function to allocate memory block
+ 05CA  51			                push    cx
+ 05CB  57			                push    di
+ 05CC  CD 21			                int     21h
+ 05CE  5F			                pop     di
+ 05CF  59			                pop     cx
+ 05D0  72 0C			                jc      resize_err              ; Unlikely error
+				
+ 05D2  3B 05			check_alloc:    cmp     ax, wptr [di].block_seg ; Is it the same as the origignal segment address?
+ 05D4  75 08			                jnz     resize_err              ; Nope.  We could do some fancy tricks here,
+				                                                ;  but for the most part it's not necessary.
+				
+ 05D6  83 C7 04			                add     di, size dos_block      ; Point to next entry
+ 05D9  E2 EA			                loop    alloc_extra_loop        ; Keep going through extra blocks
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-16
+
+
+				
+ 05DB  07			                pop     es
+				ENDIF
+ 05DC  EB 03			                jmp     short restore_prog
+				
+ 05DE  E8 058B R		resize_err:     call    near ptr err_exit       ; Can't return, exit to DOS
+				
+ 05E1  FF 16 02D0 R		restore_prog:   call    wptr restore_proc       ; Restore program from disk
+ 05E5  72 F7			                jc      resize_err              ; Carry set if error
+				                                                ; If no error, it returns
+				                                                ;  down to restored code
+ 05E7  C3			                ret
+ 05E8				do_exec         endp
+				
+				; *****************************************************************************
+				; *****************************************************************************
+				;ALIGN 10h		 ; Aligns next code item on paragraph boundary
+				                ; para_align is a proc instead of just a data
+				                ;  item because the ALIGN directive in MASM only
+				                ;  applies to code items, not data items!
+ 05E8				para_align      proc    near
+ 05E8  0010[			new_mcb         db      16 dup (0)          ; DOS will put MCB of released memory here
+	   00			
+			 ]	
+				
+ 05F8				para_align      endp
+				; *****************************************************************************
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; Everything after here is only needed BEFORE we change our allocation size.
+				;  Everything below this line will be (temporarily) swapped out of memory,
+				;  and thus cannot be used once we shrink our memory allocation.
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				;   swap        The routine that does it all
+				;
+				;   Callable by a C program, takes these parameters (regardless
+				;     of which swap options chosen at assembly time, because
+				;     C calling conventions let us ignore parameters to the
+				;     right if we want to):
+				;
+				;   swap_both:
+				;       prog        Full path name of program to execute
+				;       cmdline     Command-line parameters for program to execute
+				;       return      Pointer to byte for return code of exec'd program
+				;       save_file   Full path name of file in which to save program image (if disk is to be used)
+				;
+				;   Depending on the memory model used, the pointers to the
+				;   parameters each occupy 2 bytes or 4 bytes on the stack.
+				;   If there is only one data segment (Small and Medium), each
+				;   value is a 2-byte near pointer, with DS assumed as the segment
+				;   register.  If there are multiple data segments (Compact and
+				;   Large), each value is a 4-byte far pointer, with segment and
+				;   offset values each pushed on the stack.
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-17
+
+
+				;
+				;   The function is declared with 4 parameters, regardless of whether
+				;   disk swapping is being included.  This is because the file name
+				;   parameter is the last on the parameter list, which C lets us
+				;   ignore if we want.
+				;
+				;   The swap() routine does not check the program name or command
+				;   line to verify that a legal command has been requested--that's
+				;   the caller's responsibility!
+				;
+				; *****************************************************************************
+				
+								public	swap
+				
+ 05F8				swap			 proc	 prog:PTR, cmdline:PTR, return:PTR, save_file:PTR
+				
+ 05FB  56			                push    si                      ; Save registers needed 
+ 05FC  57			                push    di                      ;  by the caller
+ 05FD  06			                push    es
+ 05FE  1E			                push    ds
+				
+ 05FF  8C C8			point_segs:     mov     ax, cs                  ; Point ES to our segment
+ 0601  8E C0			                mov     es, ax                  ;  for copying of parameters
+				
+				; *****************************************************************************
+ 0603				get_name:       ; Copy program name to our variable, all versions
+				
+				; If multiple data segments, load DS:SI from stack.  Else, just load SI
+				IF @datasize
+ 0603  1E			                push    ds                      ; Save segment register
+ 0604  C5 76 04			                lds     si, dptr prog           ; Load 32-bit far pointer
+				ENDIF                                           ; DS:SI -> program name from caller
+				
+ 0607  BF 0198 R		                mov     di, offset @code:prog_name  ; ES:DI -> our storage area
+				
+ 060A  AC			name_loop:      lodsb                           ; Fetch next byte
+ 060B  AA			                stosb                           ; Save next byte
+ 060C  0A C0			                or      al, al                  ; Was it 0 (end of string)?
+ 060E  75 FA			                jnz     name_loop               ; No, get next one
+				
+				IF @datasize
+ 0610  1F			                pop     ds                      ; Pop DS if it was pushed above
+				ENDIF
+				; *****************************************************************************
+				
+				; *****************************************************************************
+ 0611				get_cmd:        ; Copy command line to our variable, all versions
+				
+				; If multiple data segments, load DS:SI from stack.  Else, just load SI
+				IF @datasize
+ 0611  1E			                push    ds                      ; Save segment register
+ 0612  C5 76 08			                lds     si, dptr cmdline        ; Load 32-bit far pointer
+				ENDIF                                           ; DS:SI -> command line from caller
+				                
+ 0615  BF 021A R		                mov     di, offset @code:cmd_line   ; ES:DI -> our storage area
+ 0618  32 C9			                xor     cl, cl                  ; Keep track of length in cl
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-18
+
+
+				
+ 061A  AC			cmd_loop:       lodsb                           ; Fetch next byte from DS:SI
+ 061B  0A C0			                or      al, al                  ; Was it 0 (end of string)?
+ 061D  74 08			                jz      cmd_end                 ; Yes, we're done
+ 061F  AA			                stosb                           ; No, store byte
+ 0620  FE C1			                inc     cl                      ; Increment length
+ 0622  80 F9 7F			                cmp     cl, MAX_DOS_CMD         ; Are we at maximum cmd length?
+ 0625  75 F3			                jnz     cmd_loop                ; Nope, keep going
+				
+ 0627  26: C6 05 0D		cmd_end:        mov     bptr es:[di], 0dh       ; Put CR at end of cmd line
+ 062B  2E: 88 0E 0219 R		                mov     bptr cs:cmd_len, cl     ; Store command-line length
+				
+				IF @datasize
+ 0630  1F			                pop     ds                      ; Pop DS if it was pushed above
+				ENDIF
+				; *****************************************************************************
+				; Set up the default FCBs at 5Ch and 6Ch in the PSP
+				;  Code provided by David E. Jenkins
+ 0631  1E			                push    ds                      ; Save caller's DS
+				
+ 0632  8C C8			                mov     ax, cs                  ; Point DS to our
+ 0634  8E D8			                mov     ds, ax                  ;  variables
+				
+				                assume  ds:@code                ; Tell MASM that DS points to our variables
+				;
+				;   Locate the first two command line arguments
+				;
+ 0636  1E			                push    ds                      ; Copy ds into es
+ 0637  07			                pop     es                      ;  "   "   "   "
+ 0638  BF 021A R		                mov     di, offset @code:cmd_line   ; Point to command line in CS
+ 063B  A0 0219 R		                mov     al, bptr cmd_len            ; load the command line length
+ 063E  32 E4			                xor     ah, ah
+ 0640  40			                inc     ax                      ; Include the CR in the length
+ 0641  A3 02A8 R		                mov     wptr c_l_length, ax     ; Save the command line length
+ 0644  03 C7			                add     ax, di                  ; Point to end of command line
+ 0646  A3 02AA R		                mov     wptr si_5c, ax          ; default to just after command line
+ 0649  A3 02AC R		                mov     wptr si_6c, ax          ;    "    "   "     "      "     "
+ 064C  80 3E 0219 R 00		                cmp     bptr cmd_len, 0         ; Is there anything to parse?
+ 0651  74 26			                jz      args_located            ; if not then args have been located
+				
+ 0653  8B 0E 02A8 R		                mov     cx, wptr c_l_length     ; Load the command line length
+ 0657  B0 20			                mov     al, ' '                 ; We must find the first non-blank
+ 0659  F3/ AE			                repe    scasb                   ; Go until we find it or run out
+ 065B  0B C9			                or      cx, cx                  ; Did we run out (CX = 0)?
+ 065D  74 1A			                jz      args_located            ; Yes--then args have been located
+				
+ 065F  4F			                dec     di                      ; Move back to the right one
+ 0660  41			                inc     cx                      ;  "    "   "   "    "    "
+ 0661  89 3E 02AA R		                mov     wptr si_5c, di          ; Save the location of arg 1
+ 0665  F2/ AE			                repne   scasb                   ; Find the next space (between arg1,2)
+ 0667  0B C9			                or      cx, cx                  ; Did we run out
+ 0669  74 0E			                jz      args_located            ; If so then args have been located
+				
+ 066B  4F			                dec     di                      ; Move back to the left one
+ 066C  41			                inc     cx                      ;  "    "   "   "    "   "
+ 066D  F3/ AE			                repe    scasb                   ; Now find next non-blank (arg 2)
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-19
+
+
+ 066F  0B C9			                or      cx, cx                  ; Did we run out
+ 0671  74 06			                jz      args_located            ; If so then args have been located
+				
+ 0673  4F			                dec     di                      ; Move back to the right one
+ 0674  41			                inc     cx                      ;  "    "   "   "    "    "
+ 0675  89 3E 02AC R		                mov     wptr si_6c,di           ; Save location of arg 2
+				
+ 0679				args_located:
+				; parse the first argument into the first FCB
+				
+ 0679  8B 36 02AA R		                mov     si, wptr si_5c                  ; Point to the first argument
+ 067D  BF 02AE R		                mov     di, offset @code:fcb5C_drive    ; Point to the unopened FCB
+ 0680  B4 29			                mov     ah, 29h                 ; Parse file name function
+ 0682  B0 00			                mov     al, 00h                 ; Do it like COMMAND.COM does it
+ 0684  CD 21			                int     21h                     ; go for it
+				
+				; parse the second argument into the second FCB
+ 0686  8B 36 02AC R		                mov     si, wptr si_6c                  ; Point to the second argument
+ 068A  BF 02BE R		                mov     di, offset @code:fcb6c_drive    ; point to the unopened FCB
+ 068D  B4 29			                mov     ah, 29h                 ; Parse file name function
+ 068F  B0 00			                mov     al, 00h                 ; Do it like COMMAND.COM does it
+ 0691  CD 21			                int     21h                     ; go for it
+				
+ 0693  1F			                pop     ds                      ; Restore caller's DS
+				
+				; *****************************************************************************
+				; Get the file name from the command line, if this version needs it
+				IFDEF USE_DISK
+ 0694				get_file:
+				
+				; If multiple data segments, load DS:SI, else just load SI
+				IF @datasize
+ 0694  1E			                push    ds                      ; Save segment register
+ 0695  C5 76 10			                lds     si, dptr save_file      ; Load 32-bit pointer
+				ENDIF                                           ; DS:SI -> swap file name from caller
+				
+ 0698  BF 032A R		                mov     di, offset @code:fname  ; ES:DI -> our storage area
+				
+ 069B  B4 60			resolve:        mov     ah, 60h                 ; DOS INTERNAL function to resolve file name to full
+				 path name
+ 069D  CD 21			                int     21h                     ; Stores complete path at ES:DI--we need it after EX
+				EC in case
+				                                                ;  current drive or directory have changed
+				                                                ; Ignore file name error here--it
+				                                                ;  will be caught in save_disk if need be
+				
+				IF @datasize
+ 069F  1F			                pop     ds                      ; Pop DS if it was pushed above
+				ENDIF
+				
+				ENDIF           ; IFDEF disk
+				; *****************************************************************************
+				; We have the parameters--let's go
+				; *****************************************************************************
+				
+ 06A0  2E: C7 06 0000 R 0000	                mov     wptr cs:ret_code, 0     ; Initialize swap's return code
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-20
+
+
+ 06A7  2E: C6 06 02CE R 00	                mov     cs:exec_ret, 0          ; Initialize exec's return code
+				
+ 06AD  8C D0			save_stack:     mov     ax, ss
+ 06AF  2E: A3 0056 R		                mov     wptr cs:old_ss, ax      ; Save current SS
+ 06B3  8B C4			                mov     ax, sp
+ 06B5  2E: A3 0054 R		                mov     wptr cs:old_sp, ax      ; Save current SP
+				
+ 06B9  8C C8			our_stack:      mov     ax, cs                  ; Our stack is in our CS
+ 06BB  FA			                cli                             ; Disable interrupts
+ 06BC  8E D0			                mov     ss, ax
+ 06BE  BC 0198 R		                mov     sp, offset @code:new_sp ; Set new stack
+ 06C1  FB			                sti                             ; Re-enable interrupts
+				
+ 06C2  06			save_regs:      push    es                      ; Save needed registers
+ 06C3  1E			                push    ds                      ; This is the caller's DS!
+ 06C4  55			                push    bp
+				
+ 06C5  8C C8			                mov     ax, cs
+ 06C7  8E D8			                mov     ds, ax                  ; Point DS to our data
+				
+				                assume  ds:@code                ; Tell MASM that DS points to our variables
+				
+ 06C9  B4 51			save_info:      mov     ah, 51h                 ; DOS function 51h, get PSP
+ 06CB  CD 21			                int     21h                     ; Call DOS
+ 06CD  8B C3			                mov     ax, bx                  ; ax = PSP
+ 06CF  A3 000A R		                mov     wptr my_psp, ax         ; Save in cs: addressable location
+ 06D2  48			                dec     ax                      ; PSP-1 = MCB for this mem block
+ 06D3  8E C0			                mov     es, ax
+ 06D5  26: A1 0001		                mov     ax, es:[0001h]          ; Get PSP address--should be same!
+ 06D9  3B 06 000A R		                cmp     ax, wptr my_psp         ; All kosher?
+ 06DD  74 08			                jz      psp_ok                  ; Yes
+				
+ 06DF  C7 06 0000 R 0001	psp_error:      mov     wptr ret_code, 1        ; No, pass return code
+ 06E5  EB 49			                jmp     short exit_swap         ; Exit
+				
+ 06E7  E8 0755 R		psp_ok:         call    near ptr calc_size      ; Calc size to keep, save
+				
+ 06EA  E8 0821 R		try_save:       call    near ptr save_program   ; Write program to disk
+ 06ED  73 08			                jnc     shrink_mem              ; Carry flag set on error
+				
+ 06EF  C7 06 0000 R 0002	no_save:        mov     wptr ret_code, 2        ; Error--set return code
+ 06F5  EB 39			                jmp     short exit_swap         ; Exit routine on error
+				
+ 06F7  B4 4A			shrink_mem:     mov     ah, 4Ah                 ; DOS 4Ah--modify memory allocation
+ 06F9  8E 06 000A R		                mov     es, wptr my_psp         ; Point to PSP again
+ 06FD  8B 1E 0004 R		                mov     bx, wptr new_size       ; new_size was figured in calc_size
+ 0701  CD 21			                int     21h                     ; Call DOS to shrink size
+ 0703  72 20			                jc      no_shrink               ; Carry set = error
+				
+				IFNDEF NOFRAG
+				; If necessary, free all extra DOS memory blocks our program owns
+				
+ 0705  8B 0E 0010 R		                mov     cx, wptr extra_count    ; CX = number of extra DOS blocks
+ 0709  E3 22			                jcxz    exec_prog               ; If zero, don't bother
+ 070B  BF 0012 R		                mov     di, offset dos_blocks   ; DI -> array of addresses/sizes
+				
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-21
+
+
+ 070E  06			                push    es
+				
+ 070F				free_extra_loop:
+ 070F  8B 05			                mov     ax, wptr [di].block_seg
+ 0711  8E C0			                mov     es, ax                  ; ES = DOS memory segment to free
+ 0713  B4 49			                mov     ah, 49h                 ; DOS function to free memory block
+ 0715  51			                push    cx
+ 0716  57			                push    di
+ 0717  CD 21			                int     21h
+ 0719  5F			                pop     di
+ 071A  59			                pop     cx
+ 071B  72 08			                jc      no_shrink               ; Unlikely error
+ 071D  83 C7 04			                add     di, size dos_block      ; Point to next entry
+ 0720  E2 ED			                loop    free_extra_loop         ; Keep going through extra blocks
+				
+ 0722  07			                pop     es
+				ENDIF
+				
+ 0723  EB 08			                jmp     short exec_prog
+				
+				; *****************************************************************************
+				; Any routine called or data referred to after this point MUST be located
+				;  in this source file BEFORE the variable new_mcb below!
+				; *****************************************************************************
+				
+ 0725  C7 06 0000 R 0001	no_shrink:      mov     wptr ret_code, 1        ; Carry = couldn't shrink block
+ 072B  EB 03			                jmp     short exit_swap         ; Should delete file here!
+				
+ 072D  E8 05A2 R		exec_prog:      call    do_exec                 ; This code is resident, and can
+				                                                ;  be found above the resident line
+				
+				; do_exec execute the routine AND restores the program!
+				
+ 0730  5D			exit_swap:      pop     bp                      ; Restore saved registers
+ 0731  1F			                pop     ds                      ; This is the caller's DS!
+ 0732  07			                pop     es
+				
+				                assume  ds:nothing              ; Tell MASM DS doesn't point to our variables
+				
+ 0733  2E: A1 0056 R		prev_stack:     mov     ax, wptr cs:old_ss      ; Restore original stack
+ 0737  FA			                cli
+ 0738  8E D0			                mov     ss, ax
+ 073A  2E: 8B 26 0054 R		                mov     sp, wptr cs:old_sp
+ 073F  FB			                sti
+				
+				; Giving user exec's return code.  It could be a 16- or 32-bit pointer
+				IF @datasize
+ 0740  1E			                push    ds
+ 0741  C5 76 0C			                lds     si, dptr return         ; Load 32-bit pointer
+				ENDIF                                           ; DS:SI -> return code variable
+				                
+ 0744  2E: A0 02CE R		                mov     al, bptr cs:exec_ret    ; Store exec's return code
+ 0748  88 04			                mov     bptr [si], al           ;  at address specified by caller
+				
+				IF @datasize
+ 074A  1F			                pop     ds                      ; Pop DS if pushed above
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-22
+
+
+				ENDIF
+				
+ 074B  1F			                pop     ds
+ 074C  07			                pop     es
+ 074D  5F			                pop     di
+ 074E  5E			                pop     si
+ 074F  2E: A1 0000 R		                mov     ax, wptr cs:ret_code    ; Give return code
+ 0754  C3			                ret
+ 0755				swap			 endp
+				
+				; *****************************************************************************
+				; *****************************************************************************
+				; calc_size     Calculates the total size (in paragraphs) of all DOS blocks
+				;               owned by this program plus the amount of the initial program
+				;               allocation block we can swap out.
+				;
+				; Entry:        DS points to our variables
+				;               ES points to DOS Memory Control Block for our program
+				;
+				; Return:       old_size, start_seg, new_size, total_paras, extra_count initialized
+				; *****************************************************************************
+ 0755				calc_size       proc    near                    ; Called only from inside our segment
+				
+ 0755  06			                push    es
+				
+				                assume  ds:@code                ; Tell MASM that DS points to our variables
+				
+ 0756  26: A1 0003		                mov     ax, es:[0003h]          ; Get # paragraphs allocated
+				                                                ;  in this memory block
+ 075A  A3 0002 R		                mov     wptr old_size, ax       ; Save old size of program
+ 075D  8C CB			                mov     bx, cs                  ; BX = segment of our code
+ 075F  B8 05E8 R		                mov     ax, offset @code:new_mcb; Last address to keep
+ 0762  B1 04			                mov     cl, 4                   ; new_mcb is para aligned
+ 0764  D3 E8			                shr     ax, cl                  ; AX = ofs new_mcb / 16
+ 0766  40			                inc     ax
+ 0767  03 D8			                add     bx, ax
+ 0769  89 1E 000E R		                mov     wptr start_seg, bx      ; Segment of released memory
+ 076D  2B 1E 000A R		                sub     bx, wptr my_psp         ; BX = size to keep in paragraphs
+ 0771  89 1E 0004 R		                mov     wptr new_size, bx       ; Save new, smaller size
+ 0775  A1 0002 R		                mov     ax, wptr old_size
+ 0778  2B C3			                sub     ax, bx
+ 077A  A3 0006 R		                mov     wptr prog_size, ax      ; ax = size of program block to swap out
+ 077D  A3 0008 R		                mov     wptr total_paras, ax    ; ax = total paragraphs
+				
+				IFNDEF NOFRAG
+				; Now loop through all subsequent MCBs looking for blocks that we own (if
+				;  the MCB's "owner" (PSP) matches us (our PSP).  Right now ES points to
+				;  our MCB.  The MCB has three fields of interest:
+				;
+				;   Offset  Size    Description
+				;   -------------------------------------------------------------------------
+				;   0000h   Byte    Chain flag: 'M' (4Dh) if not last, 'Z' (5Ah) if last block in chain
+				;   0001h   Word    PSP segment of owner, 0000h if free memory
+				;   0003h   Word    Size of memory block in paragraphs, NOT including this MCB!
+				
+ 0780  C7 06 0010 R 0000	find_extras:    mov     wptr extra_count, 0     ; Initialize count
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-23
+
+
+ 0786  8B 1E 000A R		                mov     bx, wptr my_psp         ; Use bx to hold PSP for easy comparisons
+ 078A  BF 0012 R		                mov     di, offset dos_blocks   ; di = pointer to storage area
+				
+ 078D  26: 80 3E 0000 5A	check_next_mcb: cmp     bptr es:[0000h], 'Z'    ; Is this the last block?
+ 0793  74 32			                jz      calc_size_ret           ; Yup
+				
+ 0795  8C C0			next_mcb2:      mov     ax, es                  ; ax = this MCB
+ 0797  26: 8B 0E 0003		                mov     cx, wptr es:[0003h]     ; cx = size of this mcb
+ 079C  03 C1			                add     ax, cx
+ 079E  40			                inc     ax                      ; ax = addres of next MCB
+ 079F  8E C0			                mov     es, ax                  ; ES -> next MCB
+				
+ 07A1  26: 39 1E 0001		my_block:       cmp     wptr es:[0001h], bx     ; Does it match my PSP?
+ 07A6  75 E5			                jnz     check_next_mcb          ; Nope, move along
+				
+ 07A8  FF 06 0010 R		is_my_block:    inc     wptr extra_count        ; One more extra block
+ 07AC  83 3E 0010 R 10		                cmp     wptr extra_count, MAX_EXTRA
+ 07B1  77 14			                ja      calc_size_ret           ; Too many blocks--just exit
+				
+ 07B3  40			is_my_block2:   inc     ax                      ; Was MCB, now is address of segment
+ 07B4  89 05			                mov     wptr [di].block_seg, ax ; Store segment address
+ 07B6  26: 8B 0E 0003		                mov     cx, wptr es:[0003h]     ; Get size in paragraphs
+ 07BB  89 4D 02			                mov     wptr [di].block_size, cx; Store size
+ 07BE  01 0E 0008 R		                add     wptr total_paras, cx    ; Increment total
+ 07C2  83 C7 04			                add     di, size dos_block      ; Next index (move pointer)
+ 07C5  EB C6			                jmp     short check_next_mcb
+				ENDIF
+				
+ 07C7  07			calc_size_ret:  pop     es
+ 07C8  C3			                ret
+				
+ 07C9				calc_size       endp
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; xms_installed     Checks to see if XMS driver (himem.sys) is loaded
+				;
+				; Entry:            No assumptions--can be called by user
+				; Return:           1 if XMS driver is load, 0 if not
+				; *****************************************************************************
+				IFDEF USE_XMS
+								public	xms_installed
+ 07C9				xms_installed	 proc							 ; Called by user also!
+				
+ 07C9  1E			                push    ds                  ; Save all "important" registers
+ 07CA  56			                push    si
+ 07CB  06			                push    es
+ 07CC  57			                push    di
+				
+ 07CD  B8 4300			                mov     ax, 4300h           ; Multiplex code for XMS driver, load check function
+ 07D0  CD 2F			                int     2Fh                 ; Call multiplex interrupt
+ 07D2  3C 80			                cmp     al, 80h             ; al = 80h means XMS driver IS loaded
+ 07D4  75 14			                jnz     no_xms              ; Nope, not there
+				
+ 07D6  B8 4310			yes_xms:        mov     ax, 4310h               ; Get address of entry point
+ 07D9  CD 2F			                int     2Fh                     ; Returns address in ES:BX
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-24
+
+
+ 07DB  2E: 89 1E 02F7 R		                mov     wptr cs:XMS_proc, bx
+ 07E0  2E: 8C 06 02F9 R		                mov     wptr cs:XMS_proc + 2, es
+ 07E5  B8 0001			                mov     ax, 1                   ; Return 1, XMS installed
+ 07E8  EB 02			                jmp     short xms_ret
+				
+ 07EA  33 C0			no_xms:         xor     ax, ax              ; Return 0, XMS not installed
+				
+ 07EC  5F			xms_ret:        pop     di
+ 07ED  07			                pop     es
+ 07EE  5E			                pop     si
+ 07EF  1F			                pop     ds
+ 07F0  C3			                ret
+				
+ 07F1				xms_installed	 endp
+				ENDIF
+				; *****************************************************************************
+				
+				; *****************************************************************************
+				; ems4_installed    Checks to see if EMS 4.0 or above driver is loaded
+				;
+				; Entry:            No assumptions--can be called by user
+				; Return:           1 if EMS 4.0 driver is load, 0 if not
+				; *****************************************************************************
+				IFDEF USE_EMS
+								public	ems4_installed
+ 07F1				ems4_installed	proc							 ; Called by user also!
+				
+ 07F1  1E			                push    ds                      ; Save "important" registers
+ 07F2  56			                push    si
+ 07F3  06			                push    es
+ 07F4  57			                push    di
+				
+				
+ 07F5  B4 35			get_emm_vector: mov     ah, GET_VECTOR          ; Get EMM interrupt vector
+ 07F7  B0 67			                mov     al, 67h                 ; EMM accessed through Int 67h
+ 07F9  CD 21			                int     21h                     ; Call DOS to get vector
+ 07FB  BF 000A			                mov     di, 0ah                 ; vector + di = name
+ 07FE  8C C8			                mov     ax, cs
+ 0800  8E D8			                mov     ds, ax                  ; DS:SI -> EMM device driver name
+ 0802  BE 030C R		                mov     si, offset @code:emm_name   ; Compare with EMM device name
+ 0805  B9 0008			                mov     cx, EMM_NAME_LEN
+ 0808  FC			                cld
+ 0809  F3/ A6			                repe    cmpsb                   ; Compare bytes
+ 080B  75 0D			                jnz     ems_no                  ; Same?  If not, EMS installed
+				
+ 080D  B4 46			ems_yes:        mov     ah, 46h                 ; Get EMM version number
+ 080F  CD 67			                int     67h                     ; Returns BCD in al
+ 0811  3C 40			                cmp     al, 40h                 ; Look only at high 4 bits
+ 0813  72 05			                jb      ems_no                  ; Version not high enough--return 0
+				
+ 0815  B8 0001			ems4_yes:       mov     ax, 1                   ; EMS installed, return 1
+ 0818  EB 02			                jmp     short ems_ret
+				
+ 081A  33 C0			ems_no:         xor     ax, ax                  ; EMS not installed, return 0
+				
+ 081C  5F			ems_ret:        pop     di
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-25
+
+
+ 081D  07			                pop     es
+ 081E  5E			                pop     si
+ 081F  1F			                pop     ds
+ 0820  C3			                ret
+				
+ 0821				ems4_installed	endp
+				ENDIF
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				; save_program      Try to save in XMS/EMS/disk.
+				;
+				; Entry:            DS points to our variables
+				;
+				; Returns:          Success:  carry flag clear
+				;                   Failure:  carry flag set
+				; *****************************************************************************
+ 0821				save_program    proc    near            ; Called only from inside our segment
+				
+ 0821  56			                push    si              ; Save registers
+ 0822  57			                push    di
+ 0823  1E			                push    ds
+ 0824  06			                push    es
+				
+				; Now figure out which routines to call, based on command-line definitions
+				; To change the order in which swap() attempts to swap, change the order
+				;  of these three conditional blocks.
+				   
+				
+				; *****************************************************************************
+				IFDEF USE_XMS
+ 0825  E8 083D R		                call    save_xms        ; Try saving to XMS extended memory
+ 0828  73 0D			                jnc     save_ok         ; Carry clear == success, all done
+				ENDIF
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				IFDEF USE_EMS
+ 082A  E8 08F1 R		                call    save_ems        ; Try saving to EMS expanded memory
+ 082D  73 08			                jnc     save_ok       ; Carry clear == success, all done
+				ENDIF
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				IFDEF USE_DISK
+ 082F  E8 09CA R		                call    save_disk       ; Try saving to DOS disk file
+ 0832  73 03			                jnc     save_ok         ; Carry clear == success, all done
+				ENDIF
+				; *****************************************************************************
+				
+ 0834  F9			save_er:        stc                     ; Couldn't save anywhere, return error
+ 0835  EB 01			                jmp     short save_ret
+				
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-26
+
+
+ 0837  F8			save_ok:        clc                     ; Saved successfully, return OK
+				
+ 0838  07			save_ret:       pop     es              ; Restore registers
+ 0839  1F			                pop     ds
+ 083A  5F			                pop     di
+ 083B  5E			                pop     si
+				
+ 083C  C3			                ret
+ 083D				save_program    endp
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				; Version-dependent code--only assemble the routine to save the program
+				; to each place if it was requested on the command line
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				; save_xms      Attempts to save program to XMS extended memory
+				;
+				; Entry:        DS points to our variables
+				;
+				; Return:       Carry set on error, carry clear on success
+				;               If successful, updates restore_proc with the address of
+				;               the XMS restore routine
+				; *****************************************************************************
+				IFDEF USE_XMS
+ 083D				save_xms        proc    near
+				
+				                assume  ds:@code                ; Tell MASM DS points to our variables
+				
+ 083D  E8 07C9 R						call	xms_installed			 ; Check if XMS installed
+ 0840  0B C0			                or      ax, ax                  ; Returns 0 if not installed
+ 0842  75 02			                jnz     xms_inst                ; AX != 0, XMS installed
+ 0844  EB 59			                jmp     short save_xms_er       ; AX == 0, XMS not installed
+				
+ 0846  8B 16 0008 R		xms_inst:       mov     dx, wptr total_paras    ; dx = total # of paragraphs to write
+ 084A  B1 06			                mov     cl, 6                   ; Convert Paragraphs to kilobytes
+ 084C  D3 EA			                shr     dx, cl                  ; dx = dx / 64
+ 084E  42			                inc     dx                      ; dx = kilobytes needed (plus 1 for safety)
+				
+ 084F  B4 09			xms_alloc:      mov     ah, 09h                 ; XMS function 09, allocate extended memory block
+ 0851  FF 1E 02F7 R		                call    dptr XMS_proc           ; Call XMS entry point directly
+ 0855  3D 0001			                cmp     ax, 1                   ; AX = 1 on success
+ 0858  75 45			                jnz     save_xms_er             ; Allocation unsuccessful, error
+				
+ 085A  89 16 0052 R		xms_alloc_ok:   mov     wptr handle, dx         ; Save returned handle in DX
+				
+				; First, attempt to save the portion of the program block
+ 085E  A1 000E R		xms_prog_save:  mov     ax, wptr start_seg      ; Released segment address
+ 0861  8E C0			                mov     es, ax
+ 0863  A1 0006 R		                mov     ax, wptr prog_size      ; Size (in paragraphs) of program block to save
+ 0866  33 DB			                xor     bx, bx
+ 0868  89 1E 0307 R		                mov     wptr XMS_to_addr, bx    ; Initialize XMS destination
+ 086C  89 1E 0309 R		                mov     wptr XMS_to_addr + 2, bx;  address (offset into extended memory block)
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-27
+
+
+				
+ 0870  E8 08AA R		                call    save_xms_seg            ; Attempt to save the program block
+ 0873  72 20			                jc      write_error             ; Carry set = failure, return
+				
+				IFNDEF NOFRAG
+				; Next, save the extra DOS segments
+ 0875  8B 0E 0010 R		xms_extra_save: mov     cx, wptr extra_count    ; Number of extra blocks to save
+ 0879  E3 27			                jcxz    save_xms_ok             ; If CX = 0, we exit routine
+				
+ 087B  BF 0012 R		                mov     di, offset dos_blocks   ; DI -> array of segment/size pairs
+				
+ 087E				xms_extra_save_loop:
+ 087E  8B 05			                mov     ax, wptr [di].block_seg
+ 0880  8E C0			                mov     es, ax                  ; ES = segment to save
+ 0882  8B 45 02			                mov     ax, wptr [di].block_size; AX = size in paragraphs
+ 0885  51			                push    cx
+ 0886  57			                push    di
+ 0887  E8 08AA R		                call    save_xms_seg            ; Attempt to save this block
+ 088A  5F			                pop     di
+ 088B  59			                pop     cx
+ 088C  72 07			                jc      write_error             ; Carry flag set == error
+ 088E  83 C7 04			                add     di, size dos_block
+ 0891  E2 EB			                loop    xms_extra_save_loop     ; Keep going through all blocks
+				
+				ENDIF
+ 0893  EB 0D			                jmp     short save_xms_ok
+				
+ 0895  8B 16 0052 R		write_error:    mov     dx, wptr handle             ; Free allocated handle
+ 0899  B4 0A			                mov     ah, 0Ah
+ 089B  FF 1E 02F7 R		                call    dptr XMS_proc               ; Falls through to failure code
+				
+ 089F  F9			save_xms_er:    stc
+ 08A0  EB 07			                jmp     short save_xms_ret
+				
+ 08A2  C7 06 02D0 R 037C R	save_xms_ok:    mov     wptr restore_proc, offset @code:restore_xms     ; Initialize pointer
+ 08A8  F8			                clc                                                     ;  to restore routine
+				
+ 08A9  C3			save_xms_ret:   ret
+ 08AA				save_xms        endp
+				
+				
+				; *****************************************************************************
+				; save_xms_seg  Attempts to save a chunk of RAM to XMS memory
+				;
+				; Entry:        ES points to the segment to save
+				;               AX contains its length (in paragraphs)
+				;               handle holds the XMS handle to write to
+				;               XMS_to_addr contains offset into extended memory for write
+				;
+				; Return:       Carry set on error, carry clear on success
+				;               Updates XMS_to_addr for next write
+				; *****************************************************************************
+ 08AA				save_xms_seg    proc    near
+ 08AA  1E			                push    ds
+ 08AB  06			                push    es
+				
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-28
+
+
+				; Call the XMS copy memory function to do this; fill in the XMS request block
+ 08AC  BB 0010			xms_write_size: mov     bx, 10h                     ; AX = # of paragraphs
+ 08AF  F7 E3			                mul     bx                          ; DX:AX = AX * 10h, convert paragraphs to bytes
+ 08B1  A3 02FB R		                mov     wptr XMS_size, ax           ; Store # of bytes to write
+ 08B4  89 16 02FD R		                mov     wptr XMS_size + 2, dx
+				
+ 08B8  33 DB			xms_write_from: xor     bx, bx
+ 08BA  89 1E 02FF R		                mov     wptr XMS_from, bx           ; 0 means from conventional memory
+ 08BE  89 1E 0301 R		                mov     wptr XMS_from_addr, bx      ; Offset of source address is 0
+ 08C2  8C C0			                mov     ax, es                      ; Segment of source address is ES
+ 08C4  A3 0303 R		                mov     wptr XMS_from_addr + 2, ax
+				
+ 08C7  A1 0052 R		xms_write_to:   mov     ax, wptr handle             ; Destination XMS handle
+ 08CA  A3 0305 R		                mov     wptr XMS_to, ax             ;  XMS_to_addr already filled in
+				
+ 08CD  BE 02FB R		do_xms_write:   mov     si, offset @code:XMS_struc  ; DS:SI -> XMS request structure
+ 08D0  B4 0B			                mov     ah, 0Bh                     ; Function B, copy memory
+ 08D2  FF 1E 02F7 R		                call    dptr XMS_proc               ; Do the memory copy move
+ 08D6  3D 0001			                cmp     ax, 1                       ; AX = 1 means success
+ 08D9  75 12			                jnz     save_xms_seg_er             ; Success, all done!
+				
+ 08DB  A1 02FB R		save_xms_seg_ok:mov     ax, wptr XMS_size           ; Retrieve length
+ 08DE  8B 16 02FD R		                mov     dx, wptr XMS_size + 2       ;  (32 bits)
+ 08E2  01 06 0307 R		                add     wptr XMS_to_addr, ax        ; Add two 32-bit values
+ 08E6  11 16 0309 R		                adc     wptr XMS_to_addr + 2, dx    ; Update XMS write pointer
+ 08EA  F8			                clc                                 ; Signal success
+ 08EB  EB 01			                jmp     short save_xms_seg_ret
+				
+ 08ED  F9			save_xms_seg_er:stc
+				
+ 08EE				save_xms_seg_ret:
+ 08EE  07			                pop     es
+ 08EF  1F			                pop     ds
+ 08F0  C3			                ret
+ 08F1				save_xms_seg    endp
+				
+				ENDIF
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				; save_ems      Attempts to save program to EMS 4.0 expanded memory
+				;
+				; Entry:        DS points to our variables
+				;
+				; Return:       Carry set on error, carry clear on success
+				;               If successful, updates restore_proc with the address of
+				;               the EMS restore routine
+				; *****************************************************************************
+				IFDEF USE_EMS
+ 08F1				save_ems        proc    near
+				
+				                assume  ds:@code                ; Tell MASM DS points to our variables
+				
+ 08F1  E8 07F1 R						call	ems4_installed		 ; Check if EMS 4.0 installed
+ 08F4  0B C0			                or      ax, ax                  ; AX = 0 if not installed
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-29
+
+
+ 08F6  75 02			                jnz     ems_inst                ; AX != 0, ems installed
+ 08F8  EB 63			                jmp     short save_ems_er       ; AX = 0, no EMS, error!
+				
+ 08FA  8B 1E 0008 R		ems_inst:       mov     bx, wptr total_paras    ; Total # of paragraphs we need
+ 08FE  B1 0A			                mov     cl, 10                  ; Convert Paragraphs to 16K pages
+ 0900  D3 EB			                shr     bx, cl
+ 0902  43			                inc     bx                      ; BX = pages needed
+ 0903  88 1E 030B R		                mov     bptr pages_used, bl     ; Save for later use
+				
+ 0907  B4 43			                mov     ah, 43h                 ; EMM function 43h, allocate
+ 0909  CD 67			                int     67h
+ 090B  0A E4			                or      ah, ah                  ; OK return code?
+ 090D  74 02			                jz      ems_alloc_ok            ; Yes, skip ahead
+ 090F  EB 4C			                jmp     short save_ems_er       ; No, not enough EMS
+				
+ 0911  89 16 0052 R		ems_alloc_ok:   mov     wptr handle, dx         ; Returned handle in DX
+				
+				; First, attempt to save the portion of the program block
+ 0915  A1 000E R		ems_prog_save:  mov     ax, wptr start_seg      ; Released segment address
+ 0918  8E C0			                mov     es, ax
+ 091A  A1 0006 R		                mov     ax, wptr prog_size      ; Size (in paragraphs) of program block to save
+				
+ 091D  33 DB			                xor     bx, bx
+ 091F  89 1E 0326 R		                mov     wptr ems_offset, bx     ; Maintain absolute byte offset
+ 0923  89 1E 0328 R		                mov     wptr ems_offset + 2, bx ;  pointer into handle
+				
+ 0927  E8 095F R		                call    save_ems_seg            ; Attempt to save the program block
+				
+ 092A  72 20			                jc      save_ems_fail           ; Carry set = failure, return
+				
+				IFNDEF NOFRAG
+				; Next, save the extra DOS segments
+ 092C  8B 0E 0010 R		ems_extra_save: mov     cx, wptr extra_count    ; Number of extra blocks to save
+ 0930  E3 22			                jcxz    save_ems_ok             ; If CX = 0, we exit routine
+				
+ 0932  BF 0012 R		                mov     di, offset dos_blocks   ; DI -> array of segment/size pairs
+				
+ 0935				ems_extra_save_loop:
+ 0935  8B 05			                mov     ax, wptr [di].block_seg
+ 0937  8E C0			                mov     es, ax                  ; ES = segment to save
+ 0939  8B 45 02			                mov     ax, wptr [di].block_size; AX = size in paragraphs
+ 093C  51			                push    cx
+ 093D  57			                push    di
+ 093E  E8 095F R		                call    save_ems_seg            ; Attempt to save this block
+ 0941  5F			                pop     di
+ 0942  59			                pop     cx
+ 0943  72 07			                jc      save_ems_fail           ; Carry flag set == error
+ 0945  83 C7 04			                add     di, size dos_block
+ 0948  E2 EB			                loop    ems_extra_save_loop     ; Keep going through all blocks
+				ENDIF
+ 094A  EB 08			                jmp     short save_ems_ok
+				
+ 094C  8B 16 0052 R		save_ems_fail:  mov     dx, wptr handle         ; Failure--free handle
+ 0950  B4 45			                mov     ah, 45h
+ 0952  CD 67			                int     67h                     ; Falls through to failure code
+				
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-30
+
+
+ 0954  C7 06 02D0 R 040B R	save_ems_ok:    mov     wptr restore_proc, offset @code:restore_ems     ; Initialize pointer
+ 095A  F8			                clc                                                     ;  to restore routine
+ 095B  EB 01			                jmp     short save_ems_ret
+				
+ 095D  F9			save_ems_er:    stc
+				
+ 095E  C3			save_ems_ret:   ret
+ 095F				save_ems        endp
+				
+				; *****************************************************************************
+				; save_ems_seg  Attempts to save a chunk of RAM to EMS memory
+				;
+				; Entry:        ES points to the segment to save
+				;               AX contains its length (in paragraphs)
+				;               handle holds the EMS handle to write to
+				;               ems_offset holds the 32-bit absolute offset in expanded
+				;                memory to write this block to
+				;
+				; Return:       Carry set on error, carry clear on success
+				;               Updates ems_offset with proper offset for next write
+				; *****************************************************************************
+ 095F				save_ems_seg    proc    near
+ 095F  1E			                push    ds
+ 0960  06			                push    es
+				
+				                assume  ds:@code                ; Tell MASM DS points to our variables
+				
+				; Call the EMS copy memory function to do this; fill in the eMS request block
+ 0961  BB 0010			ems_write_size: mov     bx, 10h                     ; AX = # of paragraphs
+ 0964  F7 E3			                mul     bx                          ; DX:AX = AX * 10h, convert paragraphs to bytes
+ 0966  A3 0314 R		                mov     wptr EMS_size, ax           ; Store # of bytes to write
+ 0969  89 16 0316 R		                mov     wptr EMS_size + 2, dx
+				
+ 096D  33 DB			ems_write_from: xor     bx, bx
+ 096F  88 1E 0318 R		                mov     bptr EMS_from, bl           ; Copying from conventional memory (0)
+ 0973  89 1E 0319 R		                mov     wptr EMS_from_h, bx         ; Source handle is 0 (conventional memory)
+ 0977  89 1E 031B R		                mov     wptr EMS_from_o, bx         ; Source offset is 0
+ 097B  8C C0			                mov     ax, es                      ; Segment of source address is ES
+ 097D  A3 031D R		                mov     wptr EMS_from_s, ax
+				
+ 0980  C6 06 031F R 01		ems_write_to:   mov     bptr EMS_to, 1              ; Copying to expanded memory
+ 0985  A1 0052 R		                mov     ax, wptr handle
+ 0988  A3 0320 R		                mov     wptr EMS_to_h, ax           ; Specify EMS handle
+				
+				                ; 32-bit absolute offset for copy is in ems_offset
+				                ;  convert to EMS page:offset (16K pages) values
+ 098B  A1 0326 R		                mov     ax, wptr ems_offset         ; Load 32-byte offset
+ 098E  8B 16 0328 R		                mov     dx, wptr ems_offset + 2
+ 0992  8B D8			                mov     bx, ax                      ; Save a copy of ax (low 16 bits)
+ 0994  25 3FFF			                and     ax, 0011111111111111b       ; Get (ax & (16K - 1)), this is the offset (14 b
+				its)
+ 0997  A3 0322 R		                mov     wptr EMS_to_o, ax           ; Save page offset
+ 099A  B1 0E			                mov     cl, 14
+ 099C  D3 EB			                shr     bx, cl                      ; Move low 2 bits of page into low 2 bits of bx
+ 099E  B1 02			                mov     cl, 2
+ 09A0  D3 E2			                shl     dx, cl                      ; Move hi ? bits of page into dx shl 2
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-31
+
+
+ 09A2  0B D3			                or      dx, bx                      ; DX = page number (combine two values)
+ 09A4  89 16 0324 R		                mov     wptr EMS_to_s, dx           ; Save
+				
+ 09A8  A1 0314 R		                mov     ax, wptr EMS_size           ; Retrieve size of copy
+ 09AB  8B 16 0316 R		                mov     dx, wptr EMS_size + 2
+ 09AF  01 06 0326 R		                add     wptr ems_offset, ax         ; Update EMS copy pointer
+ 09B3  11 16 0328 R		                adc     wptr ems_offset + 2, dx     ;  for next EMS write
+				
+ 09B7  BE 0314 R		do_ems_write:   mov     si, offset @code:EMS_struc  ; DS:SI -> EMS request structure
+ 09BA  B8 5700			                mov     ax, 5700h                   ; Function 57 (copy/exchange memory), sub 0, cop
+				y memory
+ 09BD  CD 67			                int     67h                         ; Call EMS manager
+ 09BF  0A E4			                or      ah, ah                      ; AH = 0 means success
+ 09C1  75 03			                jnz     save_ems_seg_er             ; Not 0 means error
+				
+ 09C3  F8			save_ems_seg_ok:clc                                 ; Signal success
+ 09C4  EB 01			                jmp     short save_ems_seg_ret
+				
+ 09C6  F9			save_ems_seg_er:stc
+				
+ 09C7				save_ems_seg_ret:
+ 09C7  07			                pop     es
+ 09C8  1F			                pop     ds
+ 09C9  C3			                ret
+ 09CA				save_ems_seg    endp
+				ENDIF
+				; *****************************************************************************
+				
+				
+				; *****************************************************************************
+				; save_disk     Attempts to save program to DOS disk file
+				;
+				; Entry:        DS points to our variables
+				;
+				; Return:       Carry set on error, carry clear on success
+				;               If successful, updates restore_proc with the address of
+				;               the disk restore routine
+				; *****************************************************************************
+				IFDEF USE_DISK
+ 09CA				save_disk       proc    near
+ 09CA  06			                push    es
+				
+				                assume  ds:@code                ; Tell MASM DS points to our variables
+				
+ 09CB  BA 032A R		creat_file:     mov     dx, offset @code:fname  ; DS:DX -> file name
+ 09CE  B4 3C			                mov     ah, 3Ch                 ; Create/truncate file
+ 09D0  B9 0002			                mov     cx, 02h                 ; Create a hidden file
+ 09D3  CD 21			                int     21h                     ; Call DOS
+ 09D5  72 4C			                jc      save_disk_er            ; Carry set, couldn't create file
+				
+ 09D7  A3 0052 R		creat_ok:       mov     wptr handle, ax         ; Save handle returned by DOS
+				
+				; First, attempt to save the portion of the program block
+ 09DA  A1 000E R		disk_prog_save: mov     ax, wptr start_seg      ; Released segment address
+ 09DD  8E C0			                mov     es, ax
+ 09DF  A1 0006 R		                mov     ax, wptr prog_size      ; Size (in paragraphs) of program block
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-32
+
+
+ 09E2  E8 0A26 R		                call    save_disk_seg           ; Attempt to save the program block
+ 09E5  72 20			                jc      disk_write_er           ; Carry flag set == error
+				
+				IFNDEF NOFRAG
+				; Next, save the extra DOS segments
+ 09E7				disk_extra_save:
+ 09E7  8B 0E 0010 R		                mov     cx, wptr extra_count    ; Number of extra blocks to save
+ 09EB  E3 25			                jcxz    save_disk_ok            ; If CX = 0, we exit routine
+				
+ 09ED  BF 0012 R		                mov     di, offset dos_blocks   ; DI -> array of segment/size pairs
+				
+ 09F0				disk_extra_save_loop:
+ 09F0  8B 05			                mov     ax, wptr [di].block_seg
+ 09F2  8E C0			                mov     es, ax                  ; ES = segment to save
+ 09F4  8B 45 02			                mov     ax, wptr [di].block_size; AX = size in paragraphs
+ 09F7  51			                push    cx
+ 09F8  57			                push    di
+ 09F9  E8 0A26 R		                call    save_disk_seg           ; Attempt to save this block
+ 09FC  5F			                pop     di
+ 09FD  59			                pop     cx
+ 09FE  72 07			                jc      disk_write_er           ; Carry flag set == error
+ 0A00  83 C7 04			                add     di, size dos_block
+ 0A03  E2 EB			                loop    disk_extra_save_loop    ; Keep going through all blocks
+				
+				ENDIF
+ 0A05  EB 0B			                jmp     short save_disk_ok
+				
+				
+ 0A07  B4 3E			disk_write_er:  mov     ah, 3Eh                 ; Close file first
+ 0A09  8B 1E 0052 R		                mov     bx, wptr handle
+ 0A0D  CD 21			                int     21h
+ 0A0F  F9			                stc
+ 0A10  EB 12			                jmp     short save_disk_ret
+				
+				
+ 0A12  B4 3E			save_disk_ok:   mov     ah, 3Eh                 ; 3eh = close file
+ 0A14  8B 1E 0052 R		                mov     bx, wptr handle
+ 0A18  CD 21			                int     21h
+ 0A1A  C7 06 02D0 R 04BC R	                mov     wptr restore_proc, offset @code:restore_disk    ; Initialize pointer
+ 0A20  F8			                clc                                                     ;  to restore routine
+ 0A21  EB 01			                jmp     short save_disk_ret
+				
+ 0A23  F9			save_disk_er:   stc
+				
+ 0A24  07			save_disk_ret:  pop     es
+ 0A25  C3			                ret
+ 0A26				save_disk       endp
+				
+				
+				; *****************************************************************************
+				; save_disk_seg Attempts to save a chunk of RAM to DOS disk file
+				;
+				; Entry:        ES points to the segment to save
+				;               AX contains its length (in paragraphs)
+				;               handle holds the file handle to write to
+				;
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-33
+
+
+				;
+				; Return:       Carry set on error, carry clear on success
+				; *****************************************************************************
+ 0A26				save_disk_seg   proc    near
+ 0A26  1E			                push    ds
+ 0A27  06			                push    es
+ 0A28  57			                push    di
+				
+				                assume  ds:@code
+				
+ 0A29  A3 037A R		                mov     wptr paras_left, ax     ; Used to count paras written
+ 0A2C  8C C3			                mov     bx, es
+ 0A2E  8E DB			                mov     ds, bx                  ; DS -> segment to write
+				
+				                assume  ds:nothing
+				
+ 0A30  3D 0800			disk_write_32k: cmp     ax, 0800h               ; paras_left less than 32K?
+ 0A33  72 24			                jb      finish_disk_write       ; Yes, exit
+ 0A35  2E: 81 2E 037A R 0800	                sub     wptr cs:paras_left, 800h; We will write 32K bytes now
+				
+ 0A3C  B4 40			                mov     ah, 40h                 ; DOS function to write to file
+ 0A3E  2E: 8B 1E 0052 R		                mov     bx, wptr cs:handle      ; BX = file handle to write to
+ 0A43  B9 8000			                mov     cx, 8000h               ; Write 32K bytes
+ 0A46  33 D2			                xor     dx, dx                  ; DS:DX is buffer to write
+ 0A48  CD 21			                int     21h                     ; Write data to file
+ 0A4A  72 23			                jc      save_disk_seg_er        ; This write failed--escape
+				
+ 0A4C  8C D8			disk_write_ok:  mov     ax, ds                  ; Move write pointer in memory
+ 0A4E  05 0800			                add     ax, 800h                ; We just wrote 1K paragraphs
+ 0A51  8E D8			                mov     ds, ax
+ 0A53  2E: A1 037A R		                mov     ax, wptr cs:paras_left  ; AX checked above
+ 0A57  EB D7			                jmp     short disk_write_32k    ; Loop on next 32K
+				
+ 0A59				finish_disk_write:
+ 0A59  B1 04			                mov     cl, 4                   ; AX = # paragraphs left to write
+ 0A5B  D3 E0			                shl     ax, cl                  ; Paragraphs to bytes
+ 0A5D  8B C8			                mov     cx, ax
+ 0A5F  B4 40			                mov     ah, 40h                 ; 40h = write to file
+ 0A61  2E: 8B 1E 0052 R		                mov     bx, wptr cs:handle      ; BX = file handle to write to
+ 0A66  33 D2			                xor     dx, dx                  ; DS:DX = buffer
+ 0A68  CD 21			                int     21h                     ; Call DOS
+ 0A6A  72 03			                jc      save_disk_seg_er        ; Carry set, error (close file first)
+				
+ 0A6C				save_disk_seg_ok:
+				
+ 0A6C  F8			                clc
+ 0A6D  EB 01			                jmp     short save_disk_seg_ret
+				
+ 0A6F				save_disk_seg_er:
+ 0A6F  F9			                stc
+				
+ 0A70				save_disk_seg_ret:
+ 0A70  5F			                pop     di
+ 0A71  07			                pop     es
+ 0A72  1F			                pop     ds
+				
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Page     1-34
+
+
+ 0A73  C3			                ret
+ 0A74				save_disk_seg   endp
+				
+				
+				
+				ENDIF
+				; *****************************************************************************
+				
+				END
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Symbols-1
+
+
+Structures and Records:
+
+                N a m e                 Width   # fields
+                                        Shift   Width   Mask    Initial
+
+DOS_BLOCK  . . . . . . . . . . .  	0004	0002
+  BLOCK_SEG  . . . . . . . . . .  	0000
+  BLOCK_SIZE . . . . . . . . . .  	0002
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+DGROUP . . . . . . . . . . . . .  	GROUP
+  _DATA  . . . . . . . . . . . .  	0000	WORD	PUBLIC	'DATA'
+_TEXT  . . . . . . . . . . . . .  	0A74	WORD	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+ABORT_LEN  . . . . . . . . . . .  	L WORD	02F5	_TEXT
+ABORT_MSG  . . . . . . . . . . .  	L BYTE	02D2	_TEXT
+ALLOC_EXTRA_LOOP . . . . . . . .  	L NEAR	05C5	_TEXT
+ARGS_LOCATED . . . . . . . . . .  	L NEAR	0679	_TEXT
+
+BPTR . . . . . . . . . . . . . .  	TEXT  byte ptr		
+
+calc_size  . . . . . . . . . . .  	N PROC	0755	_TEXT	Global	Length = 0074
+CALC_SIZE_RET  . . . . . . . . .  	L NEAR	07C7	_TEXT
+CHECK_ALLOC  . . . . . . . . . .  	L NEAR	05D2	_TEXT
+CHECK_NEXT_MCB . . . . . . . . .  	L NEAR	078D	_TEXT
+CLOSE_READ . . . . . . . . . . .  	L NEAR	04F7	_TEXT
+CMDLINE  . . . . . . . . . . . .  	TEXT  DWORD PTR [BP]+8		
+CMD_END  . . . . . . . . . . . .  	L NEAR	0627	_TEXT
+CMD_LEN  . . . . . . . . . . . .  	L BYTE	0219	_TEXT
+CMD_LINE . . . . . . . . . . . .  	L BYTE	021A	_TEXT	Length = 0080
+CMD_LOOP . . . . . . . . . . . .  	L NEAR	061A	_TEXT
+CMD_OFS  . . . . . . . . . . . .  	L WORD	029C	_TEXT
+CMD_PAD  . . . . . . . . . . . .  	L BYTE	0218	_TEXT
+CMD_SEG  . . . . . . . . . . . .  	L WORD	029E	_TEXT
+CREAT_FILE . . . . . . . . . . .  	L NEAR	09CB	_TEXT
+CREAT_OK . . . . . . . . . . . .  	L NEAR	09D7	_TEXT
+C_L_LENGTH . . . . . . . . . . .  	L WORD	02A8	_TEXT
+
+DISK_EXTRA_REST  . . . . . . . .  	L NEAR	04D9	_TEXT
+DISK_EXTRA_REST_LOOP . . . . . .  	L NEAR	04E2	_TEXT
+DISK_EXTRA_SAVE  . . . . . . . .  	L NEAR	09E7	_TEXT
+DISK_EXTRA_SAVE_LOOP . . . . . .  	L NEAR	09F0	_TEXT
+DISK_PROG_REST . . . . . . . . .  	L NEAR	04CC	_TEXT
+DISK_PROG_SAVE . . . . . . . . .  	L NEAR	09DA	_TEXT
+DISK_READ_32K  . . . . . . . . .  	L NEAR	051C	_TEXT
+DISK_READ_OK . . . . . . . . . .  	L NEAR	0538	_TEXT
+DISK_WRITE_32K . . . . . . . . .  	L NEAR	0A30	_TEXT
+DISK_WRITE_ER  . . . . . . . . .  	L NEAR	0A07	_TEXT
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Symbols-2
+
+
+DISK_WRITE_OK  . . . . . . . . .  	L NEAR	0A4C	_TEXT
+DOS_BLOCKS . . . . . . . . . . .  	L DWORD	0012	_TEXT	Length = 0010
+DO_EMS_READ  . . . . . . . . . .  	L NEAR	04A9	_TEXT
+DO_EMS_WRITE . . . . . . . . . .  	L NEAR	09B7	_TEXT
+do_exec  . . . . . . . . . . . .  	N PROC	05A2	_TEXT	Global	Length = 0046
+DO_XMS_READ  . . . . . . . . . .  	L NEAR	03E7	_TEXT
+DO_XMS_WRITE . . . . . . . . . .  	L NEAR	08CD	_TEXT
+DPTR . . . . . . . . . . . . . .  	TEXT  dword ptr		
+
+EMM_INT  . . . . . . . . . . . .  	NUMBER	0067	
+EMM_NAME . . . . . . . . . . . .  	L BYTE	030C	_TEXT
+EMM_NAME_LEN . . . . . . . . . .  	NUMBER	0008	
+ems4_installed . . . . . . . . .  	N PROC	07F1	_TEXT	Global	Length = 0030
+EMS4_YES . . . . . . . . . . . .  	L NEAR	0815	_TEXT
+EMS_ALLOC_OK . . . . . . . . . .  	L NEAR	0911	_TEXT
+EMS_DEALLOC  . . . . . . . . . .  	L NEAR	0441	_TEXT
+EMS_EXTRA_REST . . . . . . . . .  	L NEAR	0423	_TEXT
+EMS_EXTRA_REST_LOOP  . . . . . .  	L NEAR	042C	_TEXT
+EMS_EXTRA_SAVE . . . . . . . . .  	L NEAR	092C	_TEXT
+EMS_EXTRA_SAVE_LOOP  . . . . . .  	L NEAR	0935	_TEXT
+EMS_FROM . . . . . . . . . . . .  	L BYTE	0318	_TEXT
+EMS_FROM_H . . . . . . . . . . .  	L WORD	0319	_TEXT
+EMS_FROM_O . . . . . . . . . . .  	L WORD	031B	_TEXT
+EMS_FROM_S . . . . . . . . . . .  	L WORD	031D	_TEXT
+EMS_INST . . . . . . . . . . . .  	L NEAR	08FA	_TEXT
+EMS_NO . . . . . . . . . . . . .  	L NEAR	081A	_TEXT
+EMS_OFFSET . . . . . . . . . . .  	L DWORD	0326	_TEXT
+EMS_PROG_REST  . . . . . . . . .  	L NEAR	040C	_TEXT
+EMS_PROG_SAVE  . . . . . . . . .  	L NEAR	0915	_TEXT
+EMS_READ_FROM  . . . . . . . . .  	L NEAR	0472	_TEXT
+EMS_READ_SIZE  . . . . . . . . .  	L NEAR	0453	_TEXT
+EMS_READ_TO  . . . . . . . . . .  	L NEAR	045F	_TEXT
+EMS_RET  . . . . . . . . . . . .  	L NEAR	081C	_TEXT
+EMS_SIZE . . . . . . . . . . . .  	L DWORD	0314	_TEXT
+EMS_STRUC  . . . . . . . . . . .  	L BYTE	0314	_TEXT
+EMS_TO . . . . . . . . . . . . .  	L BYTE	031F	_TEXT
+EMS_TO_H . . . . . . . . . . . .  	L WORD	0320	_TEXT
+EMS_TO_O . . . . . . . . . . . .  	L WORD	0322	_TEXT
+EMS_TO_S . . . . . . . . . . . .  	L WORD	0324	_TEXT
+EMS_WRITE_FROM . . . . . . . . .  	L NEAR	096D	_TEXT
+EMS_WRITE_SIZE . . . . . . . . .  	L NEAR	0961	_TEXT
+EMS_WRITE_TO . . . . . . . . . .  	L NEAR	0980	_TEXT
+EMS_YES  . . . . . . . . . . . .  	L NEAR	080D	_TEXT
+ENV_SEG  . . . . . . . . . . . .  	L WORD	029A	_TEXT
+err_exit . . . . . . . . . . . .  	N PROC	058B	_TEXT	Global	Length = 0017
+execute_program  . . . . . . . .  	N PROC	0560	_TEXT	Global	Length = 002B
+EXEC_ER  . . . . . . . . . . . .  	L NEAR	05A7	_TEXT
+EXEC_ERR . . . . . . . . . . . .  	L NEAR	0581	_TEXT
+EXEC_EXIT  . . . . . . . . . . .  	L NEAR	0588	_TEXT
+EXEC_PAD . . . . . . . . . . . .  	L BYTE	02CF	_TEXT
+EXEC_PROG  . . . . . . . . . . .  	L NEAR	072D	_TEXT
+EXEC_PROGRAM . . . . . . . . . .  	L NEAR	0562	_TEXT
+EXEC_RET . . . . . . . . . . . .  	L BYTE	02CE	_TEXT
+EXIT_SWAP  . . . . . . . . . . .  	L NEAR	0730	_TEXT
+EXTRA_COUNT  . . . . . . . . . .  	L WORD	0010	_TEXT
+
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Symbols-3
+
+
+FCB5C  . . . . . . . . . . . . .  	L BYTE	02AE	_TEXT
+FCB5C_DRIVE  . . . . . . . . . .  	L BYTE	02AE	_TEXT
+FCB5C_EXT  . . . . . . . . . . .  	L BYTE	02B7	_TEXT	Length = 0003
+FCB5C_FNAME  . . . . . . . . . .  	L BYTE	02AF	_TEXT	Length = 0008
+FCB5C_PAD  . . . . . . . . . . .  	L BYTE	02BA	_TEXT	Length = 0004
+FCB6C  . . . . . . . . . . . . .  	L BYTE	02BE	_TEXT
+FCB6C_DRIVE  . . . . . . . . . .  	L BYTE	02BE	_TEXT
+FCB6C_EXT  . . . . . . . . . . .  	L BYTE	02C7	_TEXT	Length = 0003
+FCB6C_FNAME  . . . . . . . . . .  	L BYTE	02BF	_TEXT	Length = 0008
+FCB6C_PAD  . . . . . . . . . . .  	L BYTE	02CA	_TEXT	Length = 0004
+FCB_5C_OFS . . . . . . . . . . .  	L WORD	02A0	_TEXT
+FCB_5C_SEG . . . . . . . . . . .  	L WORD	02A2	_TEXT
+FCB_6C_OFS . . . . . . . . . . .  	L WORD	02A4	_TEXT
+FCB_6C_SEG . . . . . . . . . . .  	L WORD	02A6	_TEXT
+FIND_EXTRAS  . . . . . . . . . .  	L NEAR	0780	_TEXT
+FINISH_DISK_WRITE  . . . . . . .  	L NEAR	0A59	_TEXT
+FNAME  . . . . . . . . . . . . .  	L BYTE	032A	_TEXT	Length = 0050
+FREE_EXTRA_LOOP  . . . . . . . .  	L NEAR	070F	_TEXT
+
+GET_CMD  . . . . . . . . . . . .  	L NEAR	0611	_TEXT
+GET_EMM_VECTOR . . . . . . . . .  	L NEAR	07F5	_TEXT
+GET_FILE . . . . . . . . . . . .  	L NEAR	0694	_TEXT
+GET_NAME . . . . . . . . . . . .  	L NEAR	0603	_TEXT
+GET_RETURN . . . . . . . . . . .  	L NEAR	0577	_TEXT
+GET_VECTOR . . . . . . . . . . .  	NUMBER	0035	
+
+HANDLE . . . . . . . . . . . . .  	L WORD	0052	_TEXT
+
+IS_MY_BLOCK  . . . . . . . . . .  	L NEAR	07A8	_TEXT
+IS_MY_BLOCK2 . . . . . . . . . .  	L NEAR	07B3	_TEXT
+
+LAST_DISK_READ . . . . . . . . .  	L NEAR	0545	_TEXT
+
+MAX_DOS_CMD  . . . . . . . . . .  	NUMBER	007F	
+MAX_EXTRA  . . . . . . . . . . .  	NUMBER	0010	
+MCB_PSP  . . . . . . . . . . . .  	L WORD	000C	_TEXT
+MY_BLOCK . . . . . . . . . . . .  	L NEAR	07A1	_TEXT
+MY_PSP . . . . . . . . . . . . .  	L WORD	000A	_TEXT
+
+NAME_LOOP  . . . . . . . . . . .  	L NEAR	060A	_TEXT
+NEW_MCB  . . . . . . . . . . . .  	L BYTE	05E8	_TEXT	Length = 0010
+NEW_SIZE . . . . . . . . . . . .  	L WORD	0004	_TEXT
+NEW_SP . . . . . . . . . . . . .  	L WORD	0198	_TEXT
+NEW_STACK  . . . . . . . . . . .  	L BYTE	0058	_TEXT	Length = 0140
+NEXT_MCB2  . . . . . . . . . . .  	L NEAR	0795	_TEXT
+NO_SAVE  . . . . . . . . . . . .  	L NEAR	06EF	_TEXT
+NO_SHRINK  . . . . . . . . . . .  	L NEAR	0725	_TEXT
+NO_XMS . . . . . . . . . . . . .  	L NEAR	07EA	_TEXT
+
+OLD_SIZE . . . . . . . . . . . .  	L WORD	0002	_TEXT
+OLD_SP . . . . . . . . . . . . .  	L WORD	0054	_TEXT
+OLD_SS . . . . . . . . . . . . .  	L WORD	0056	_TEXT
+OPEN_FILE  . . . . . . . . . . .  	L NEAR	04BD	_TEXT
+OPEN_OK  . . . . . . . . . . . .  	L NEAR	04C9	_TEXT
+OUR_STACK  . . . . . . . . . . .  	L NEAR	06B9	_TEXT
+
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Symbols-4
+
+
+PAGES_USED . . . . . . . . . . .  	L BYTE	030B	_TEXT
+PARAM_BLK  . . . . . . . . . . .  	L BYTE	029A	_TEXT
+PARAS_LEFT . . . . . . . . . . .  	L WORD	037A	_TEXT
+para_align . . . . . . . . . . .  	N PROC	05E8	_TEXT	Global	Length = 0010
+POINT_SEGS . . . . . . . . . . .  	L NEAR	05FF	_TEXT
+PREV_STACK . . . . . . . . . . .  	L NEAR	0733	_TEXT
+PROG . . . . . . . . . . . . . .  	TEXT  DWORD PTR [BP]+4		
+PROG_NAME  . . . . . . . . . . .  	L BYTE	0198	_TEXT	Length = 0080
+PROG_SIZE  . . . . . . . . . . .  	L WORD	0006	_TEXT
+PSP_ERROR  . . . . . . . . . . .  	L NEAR	06DF	_TEXT
+PSP_OK . . . . . . . . . . . . .  	L NEAR	06E7	_TEXT
+
+RESIZE_ERR . . . . . . . . . . .  	L NEAR	05DE	_TEXT
+RESOLVE  . . . . . . . . . . . .  	L NEAR	069B	_TEXT
+restore_disk . . . . . . . . . .  	N PROC	04BC	_TEXT	Global	Length = 0056
+RESTORE_DISK_ER  . . . . . . . .  	L NEAR	04FE	_TEXT
+RESTORE_DISK_OK  . . . . . . . .  	L NEAR	04FB	_TEXT
+RESTORE_DISK_RET . . . . . . . .  	L NEAR	0503	_TEXT
+restore_ems  . . . . . . . . . .  	N PROC	040B	_TEXT	Global	Length = 0046
+RESTORE_EMS_RET  . . . . . . . .  	L NEAR	044F	_TEXT
+RESTORE_PROC . . . . . . . . . .  	L WORD	02D0	_TEXT
+RESTORE_PROG . . . . . . . . . .  	L NEAR	05E1	_TEXT
+restore_xms  . . . . . . . . . .  	N PROC	037C	_TEXT	Global	Length = 0048
+RESTORE_XMS_RET  . . . . . . . .  	L NEAR	03C2	_TEXT
+rest_disk_seg  . . . . . . . . .  	N PROC	0512	_TEXT	Global	Length = 004E
+REST_DISK_SEG_ER . . . . . . . .  	L NEAR	055C	_TEXT
+REST_DISK_SEG_OK . . . . . . . .  	L NEAR	0559	_TEXT
+REST_DISK_SEG_RET  . . . . . . .  	L NEAR	055D	_TEXT
+rest_ems_seg . . . . . . . . . .  	N PROC	0451	_TEXT	Global	Length = 006B
+REST_EMS_SEG_ER  . . . . . . . .  	L NEAR	04B8	_TEXT
+REST_EMS_SEG_OK  . . . . . . . .  	L NEAR	04B5	_TEXT
+REST_EMS_SEG_RET . . . . . . . .  	L NEAR	04B9	_TEXT
+rest_xms_seg . . . . . . . . . .  	N PROC	03C4	_TEXT	Global	Length = 0047
+REST_XMS_SEG_ER  . . . . . . . .  	L NEAR	0407	_TEXT
+REST_XMS_SEG_OK  . . . . . . . .  	L NEAR	03F5	_TEXT
+REST_XMS_SEG_RET . . . . . . . .  	L NEAR	0408	_TEXT
+RETURN . . . . . . . . . . . . .  	TEXT  DWORD PTR [BP]+12		
+RET_CODE . . . . . . . . . . . .  	L WORD	0000	_TEXT
+RE_SIZE  . . . . . . . . . . . .  	L NEAR	05AD	_TEXT
+
+save_disk  . . . . . . . . . . .  	N PROC	09CA	_TEXT	Global	Length = 005C
+SAVE_DISK_ER . . . . . . . . . .  	L NEAR	0A23	_TEXT
+SAVE_DISK_OK . . . . . . . . . .  	L NEAR	0A12	_TEXT
+SAVE_DISK_RET  . . . . . . . . .  	L NEAR	0A24	_TEXT
+save_disk_seg  . . . . . . . . .  	N PROC	0A26	_TEXT	Global	Length = 004E
+SAVE_DISK_SEG_ER . . . . . . . .  	L NEAR	0A6F	_TEXT
+SAVE_DISK_SEG_OK . . . . . . . .  	L NEAR	0A6C	_TEXT
+SAVE_DISK_SEG_RET  . . . . . . .  	L NEAR	0A70	_TEXT
+save_ems . . . . . . . . . . . .  	N PROC	08F1	_TEXT	Global	Length = 006E
+SAVE_EMS_ER  . . . . . . . . . .  	L NEAR	095D	_TEXT
+SAVE_EMS_FAIL  . . . . . . . . .  	L NEAR	094C	_TEXT
+SAVE_EMS_OK  . . . . . . . . . .  	L NEAR	0954	_TEXT
+SAVE_EMS_RET . . . . . . . . . .  	L NEAR	095E	_TEXT
+save_ems_seg . . . . . . . . . .  	N PROC	095F	_TEXT	Global	Length = 006B
+SAVE_EMS_SEG_ER  . . . . . . . .  	L NEAR	09C6	_TEXT
+SAVE_EMS_SEG_OK  . . . . . . . .  	L NEAR	09C3	_TEXT
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Symbols-5
+
+
+SAVE_EMS_SEG_RET . . . . . . . .  	L NEAR	09C7	_TEXT
+SAVE_ER  . . . . . . . . . . . .  	L NEAR	0834	_TEXT
+SAVE_FILE  . . . . . . . . . . .  	TEXT  DWORD PTR [BP]+16		
+SAVE_INFO  . . . . . . . . . . .  	L NEAR	06C9	_TEXT
+SAVE_OK  . . . . . . . . . . . .  	L NEAR	0837	_TEXT
+save_program . . . . . . . . . .  	N PROC	0821	_TEXT	Global	Length = 001C
+SAVE_REGS  . . . . . . . . . . .  	L NEAR	06C2	_TEXT
+SAVE_RET . . . . . . . . . . . .  	L NEAR	0838	_TEXT
+SAVE_STACK . . . . . . . . . . .  	L NEAR	06AD	_TEXT
+save_xms . . . . . . . . . . . .  	N PROC	083D	_TEXT	Global	Length = 006D
+SAVE_XMS_ER  . . . . . . . . . .  	L NEAR	089F	_TEXT
+SAVE_XMS_OK  . . . . . . . . . .  	L NEAR	08A2	_TEXT
+SAVE_XMS_RET . . . . . . . . . .  	L NEAR	08A9	_TEXT
+save_xms_seg . . . . . . . . . .  	N PROC	08AA	_TEXT	Global	Length = 0047
+SAVE_XMS_SEG_ER  . . . . . . . .  	L NEAR	08ED	_TEXT
+SAVE_XMS_SEG_OK  . . . . . . . .  	L NEAR	08DB	_TEXT
+SAVE_XMS_SEG_RET . . . . . . . .  	L NEAR	08EE	_TEXT
+SHRINK_MEM . . . . . . . . . . .  	L NEAR	06F7	_TEXT
+SI_5C  . . . . . . . . . . . . .  	L WORD	02AA	_TEXT
+SI_6C  . . . . . . . . . . . . .  	L WORD	02AC	_TEXT
+START_SEG  . . . . . . . . . . .  	L WORD	000E	_TEXT
+STDERR . . . . . . . . . . . . .  	NUMBER	0002	
+swap . . . . . . . . . . . . . .  	N PROC	05F8	_TEXT	Global	Length = 015D
+
+TOTAL_PARAS  . . . . . . . . . .  	L WORD	0008	_TEXT
+TRY_SAVE . . . . . . . . . . . .  	L NEAR	06EA	_TEXT
+
+USE_DISK . . . . . . . . . . . .  	NUMBER	0001	
+USE_EMS  . . . . . . . . . . . .  	NUMBER	0001	
+USE_XMS  . . . . . . . . . . . .  	NUMBER	0001	
+
+WPTR . . . . . . . . . . . . . .  	TEXT  word ptr		
+WRITE_ERROR  . . . . . . . . . .  	L NEAR	0895	_TEXT
+
+XMS_ALLOC  . . . . . . . . . . .  	L NEAR	084F	_TEXT
+XMS_ALLOC_OK . . . . . . . . . .  	L NEAR	085A	_TEXT
+XMS_DEALLOC  . . . . . . . . . .  	L NEAR	03B2	_TEXT
+XMS_EXTRA_REST . . . . . . . . .  	L NEAR	0394	_TEXT
+XMS_EXTRA_REST_LOOP  . . . . . .  	L NEAR	039D	_TEXT
+XMS_EXTRA_SAVE . . . . . . . . .  	L NEAR	0875	_TEXT
+XMS_EXTRA_SAVE_LOOP  . . . . . .  	L NEAR	087E	_TEXT
+XMS_FROM . . . . . . . . . . . .  	L WORD	02FF	_TEXT
+XMS_FROM_ADDR  . . . . . . . . .  	L DWORD	0301	_TEXT
+XMS_INST . . . . . . . . . . . .  	L NEAR	0846	_TEXT
+xms_installed  . . . . . . . . .  	N PROC	07C9	_TEXT	Global	Length = 0028
+XMS_PROC . . . . . . . . . . . .  	L DWORD	02F7	_TEXT
+XMS_PROG_REST  . . . . . . . . .  	L NEAR	037D	_TEXT
+XMS_PROG_SAVE  . . . . . . . . .  	L NEAR	085E	_TEXT
+XMS_READ_FROM  . . . . . . . . .  	L NEAR	03D2	_TEXT
+XMS_READ_SIZE  . . . . . . . . .  	L NEAR	03C6	_TEXT
+XMS_READ_TO  . . . . . . . . . .  	L NEAR	03D8	_TEXT
+XMS_RET  . . . . . . . . . . . .  	L NEAR	07EC	_TEXT
+XMS_SIZE . . . . . . . . . . . .  	L DWORD	02FB	_TEXT
+XMS_STRUC  . . . . . . . . . . .  	L BYTE	02FB	_TEXT
+XMS_TO . . . . . . . . . . . . .  	L WORD	0305	_TEXT
+XMS_TO_ADDR  . . . . . . . . . .  	L DWORD	0307	_TEXT
+Microsoft (R) Macro Assembler Version 5.10                  3/11/93 15:53:17
+                                                             Symbols-6
+
+
+XMS_WRITE_FROM . . . . . . . . .  	L NEAR	08B8	_TEXT
+XMS_WRITE_SIZE . . . . . . . . .  	L NEAR	08AC	_TEXT
+XMS_WRITE_TO . . . . . . . . . .  	L NEAR	08C7	_TEXT
+
+YES_XMS  . . . . . . . . . . . .  	L NEAR	07D6	_TEXT
+
+@CODE  . . . . . . . . . . . . .  	TEXT  _TEXT		
+@CODESIZE  . . . . . . . . . . .  	TEXT  0		
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@DATASIZE  . . . . . . . . . . .  	TEXT  1		
+@FILENAME  . . . . . . . . . . .  	TEXT  swap		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+_COMPACT . . . . . . . . . . . .  	TEXT  		
+
+
+   1890 Source  Lines
+   1890 Total   Lines
+    263 Symbols
+
+  46620 + 371353 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

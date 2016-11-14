@@ -1,0 +1,28 @@
+PWB-GENERATED FILE: DO NOT MODIFY
+[shared-]
+	version=3
+	project="D:\C\CABLE\HCABLE\QCABLE.MAK"
+	buildmode=2
+[edit-]
+	srch=getch
+	fSrchRe=0
+	rpl=_WINDOWS
+	src=WINDOWS
+	fRplRe=26368
+[pwb]
+	screen=50 80
+	winstyle=7
+	file="<COMPILE>Build Results" 1 1 1 1
+	wnd=c 1 0 49 80 0 0
+	file="<SEARCH>Search Results" 1 1 1 1
+	wnd=c 1 0 49 80 0 0
+	file="<PRINT>Print Results" 1 1 1 1
+	wnd=c 0 0 0 0 0 0
+	file="<RECORD>Record" 1 1 1 1
+	wnd=c 0 0 0 0 0 0
+	file="<CLIPBOARD>Clipboard" 1 1 1 1
+	wnd=c 0 0 0 0 0 0
+	file="<pwbhelp>Help" 1 1 1 1
+	wnd=c 1 0 19 80 0 0
+	file="<browse>Browser Output" 1 1 1 1
+	wnd=c 0 0 0 0 0 0

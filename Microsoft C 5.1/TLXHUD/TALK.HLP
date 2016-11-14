@@ -1,0 +1,21 @@
+
+syntax:
+
+        talk [options]
+
+options:
+
+        /?      help    (this screen)
+		-?
+
+		/HELP
+		-HELP
+
+		/COM=x	set comm port defined by x
+		-COM=x
+
+		/COM1	set comm port 1
+		-COM1
+
+		/COM2	set comm port 2
+		-COM2

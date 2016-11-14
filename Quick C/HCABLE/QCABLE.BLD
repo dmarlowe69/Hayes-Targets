@@ -1,0 +1,59 @@
++++ PWB  [C:\C\HCABLE] Rebuild 
+
+	NMAKE  /a /f C:\C\HCABLE\QCABLE.MAK 
+
+Microsoft (R) Program Maintenance Utility   Version 1.30
+Copyright (c) Microsoft Corp 1988-93. All rights reserved.
+
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c AIRFRAME.C
+airframe.c
+airframe.c(140) : warning C4136: conversion between different floating-point types
+airframe.c(143) : warning C4136: conversion between different floating-point types
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c ANALYSIS.C
+analysis.c
+analysis.c(432) : warning C4101: 'nRes' : unreferenced local variable
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c DATAFILE.C
+datafile.c
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c DESIGN.C
+design.c
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c DESIGN6.C
+design6.c
+design6.c(313) : warning C4101: 'p2' : unreferenced local variable
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c DESIGNST.C
+designst.c
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c HCABLE.C
+hcable.c
+hcable.c(439) : warning C4101: 'wins' : unreferenced local variable
+hcable.c(439) : warning C4101: 'wm' : unreferenced local variable
+hcable.c(439) : warning C4101: 'sf' : unreferenced local variable
+hcable.c(439) : warning C4101: 'wp' : unreferenced local variable
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c PRINT6.C
+print6.c
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c REVS.C
+revs.c
+	cl /nologo /G2 /Mq /W3 /Zi /Od /D "_DEBUG" /FR /Fd"QCABLE.PDB"  /c TESTDATA.C
+testdata.c
+	echo >NUL @QCABLE.CRF
+	link /NOLOGO /NOD /PACKC:57344 /ALIGN:16 /ONERROR:NOEXE /CO @QCABLE.CRF
+Object Modules [.obj]: /NOLOGO /NOD /PACKC:57344 /ALIGN:16 /ONERROR:NOEXE /CO AIRFRAME.OBJ +
+Object Modules [.obj]: ANALYSIS.OBJ +
+Object Modules [.obj]: DATAFILE.OBJ +
+Object Modules [.obj]: DESIGN.OBJ +
+Object Modules [.obj]: DESIGN6.OBJ +
+Object Modules [.obj]: DESIGNST.OBJ +
+Object Modules [.obj]: HCABLE.OBJ +
+Object Modules [.obj]: PRINT6.OBJ +
+Object Modules [.obj]: REVS.OBJ +
+Object Modules [.obj]: TESTDATA.OBJ +
+Object Modules [.obj]: 
+Run File [AIRFRAME.exe]: QCABLE.EXE
+List File [c:QCABLE.map]: nul
+Libraries [.lib]: c:\msvc\lib\+
+Libraries [.lib]: c:\msvc\mfc\lib\+
+Libraries [.lib]: c:\msvc\lib\+
+Libraries [.lib]: oldnames libw slibcewq
+Definitions File [nul.def]: C:\MSVC\BIN\CL.DEF;
+	rc /nologo /k QCABLE.EXE
+	bscmake @C:\TMP\nm000025.
+Microsoft Browser Database Maintenance Utility Version 2.50
+Copyright (c) Microsoft Corp 1990-1993. All rights reserved.
