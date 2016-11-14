@@ -1,0 +1,113 @@
+
+---------------------------------------
+Loading: c:\ORCAD\ORCADEXE\LIBARCH.EXE
+With Parameters:  TLXNEW.SCH TLXNEW.SRC
+---------------------------------------
+Library Archive"   V4.10    14-OCT-91"
+(C)Copyright 1985,1986,1987,1988,1989,1990 OrCAD       ALL RIGHTS RESERVED.
+Reading Configuration Data File: SDT.BCF
+Reading Library: C:\ORCAD\ORCADESP\SDT\LIBRARY\DENTON.LIB
+Reading Library: C:\ORCAD\ORCADESP\SDT\LIBRARY\JMA.LIB
+Reading Library: C:\ORCAD\ORCADESP\SDT\LIBRARY\PCBDEV.LIB
+Reading Library: C:\ORCAD\ORCADESP\SDT\LIBRARY\TTL.LIB
+Reading Library: C:\ORCAD\ORCADESP\SDT\LIBRARY\DEVICE.LIB
+Reading Library: C:\ORCAD\ORCADESP\SDT\LIBRARY\ANALOG.LIB
+Opening "TLXNEW.SCH"
+Opening "6040.SCH"
+Opening "CUSTOM.SCH"
+Opening "001-1234.SCH"
+Opening "DECODER.SCH"
+Opening "POWER.SCH"
+Opening "SERVO.SCH"
+Opening "SIGNAL.SCH"
+Opening "ALTITUDE.SCH"
+Opening "REMTRON.SCH"
+Opening "FILTERB.SCH"
+Opening "TLXNEW.SCH"
+Scanning Parts in "TLXNEW.SCH"
+Opening "TLXNEW.SCH"
+Scanning Parts in "6040.SCH"
+Opening "6040.SCH"
+Scanning Parts in "CUSTOM.SCH"
+Opening "CUSTOM.SCH"
+Scanning Parts in "001-1234.SCH"
+Opening "001-1234.SCH"
+Scanning Parts in "DECODER.SCH"
+Opening "DECODER.SCH"
+Scanning Parts in "POWER.SCH"
+Opening "POWER.SCH"
+Scanning Parts in "SERVO.SCH"
+Opening "SERVO.SCH"
+Scanning Parts in "SIGNAL.SCH"
+Opening "SIGNAL.SCH"
+Scanning Parts in "ALTITUDE.SCH"
+Opening "ALTITUDE.SCH"
+Scanning Parts in "REMTRON.SCH"
+Opening "REMTRON.SCH"
+Scanning Parts in "FILTERB.SCH"
+Opening "FILTERB.SCH"
+Archiving Library Devices...
+HEADER 13X2
+HEADER 10X2
+HEADER 5X2 
+CON AT62  
+HEADER 17X2
+ULN2803A   
+HEADER 22X2
+GND POWER  
+21       
+08
+221
+RESISTOR
+CAPACITOR
+NPN      
+DIODE
+VOLTAGE REGULATOR
+LM124            
+DIODE ZENER
+RESISTOR VAR
+RTD1        
+RTE2
+MS2 
+MS4
+MS3
+MS6
+MS19
+TBLOCK
+                                                  
+
+---------------------------------------
+Loading: c:\ORCAD\ORCADEXE\COMPOSER.EXE
+With Parameters:  .\TLXNEW.SRC TLXNEW.LIB
+---------------------------------------
+OrCAD Symbol Library Compiler   V4.10     14-OCT-91
+(C)Copyright 1985,1986,1987,1988,1989,1990 OrCAD       ALL RIGHTS RESERVED.
+
+HEADER 13X2
+HEADER 10X2
+HEADER 5X2
+CON AT62
+HEADER 17X2
+ULN2803A
+HEADER 22X2
+GND POWER
+21
+08
+221
+RESISTOR
+CAPACITOR
+NPN
+DIODE
+VOLTAGE REGULATOR
+LM124
+DIODE ZENER
+RESISTOR VAR
+RTD1
+RTE2
+MS2
+MS4
+MS3
+MS6
+MS19
+TBLOCK
+Writing the device library...

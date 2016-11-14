@@ -1,0 +1,3 @@
+pmi enable = y
+suspend delay = 31
+hdd delay = 31

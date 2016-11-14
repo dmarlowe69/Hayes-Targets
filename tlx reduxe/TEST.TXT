@@ -1,0 +1,116 @@
+tlx
+TLX Height Keeping Control System
+TLX AUTOPILOT
+init_systems
+a_d_config
+d_a_config
+AUTOPILOT Init
+Preset 7f
+KP 66
+KV 4c
+KI 33
+KS  5
+MR 66
+count   avg_alt alt_err dev     kp_alterr       ht_rate kv_htrt alt_sum int_accel        wing
+ 0        1f      60      20           0           0           0               0    0      bf    
+ 0        27      58      28           0           0           0               0    0      bf    
+ 0        31      4e      32           0           0           0               0    0      bf    
+ 0        3d      42      3e           0           0           0               0    0      bf    
+ 0        45      3a      46           0           0           0               0    0      bf    
+ 0        4c      33      4d           0           0           0               0    0      bf    
+ 0        53      2c      54           0           0           0               0    0      bf    
+ 0        58      27      59           0           0           0               0    0      bf    
+ 0        5d      22      5e           0           0           0               0    0      bf    
+ 0        61      1e      62           0           0           0               0    0      bf    
+ 0        65      1a      66           0           0           0               0    0      bf    
+ 0        68      17      69           0           0           0               0    0      bf    
+ 0        6b      14      6c           0           0           0               0    0      bf    
+ 0        6d      12      6e           0           0           0               0    0      bf    
+ 0        6f      10      70           0           0           0               0    0      bf    
+ 0        71       e      72           0           0           0               0    0      bf    
+ 0        73       c      74           0           0           0               0    0      bf    
+ 0        74       b      75           0           0           0               0    0      bf    
+ 0        75       a      76           0           0           0               0    0      bf    
+ 0        76       9      77           0           0           0               0    0      bf    
+ 0        77       8      78           0           0           0               0    0      bf    
+ 0        78       7      79           0           0           0               0    0      bf    
+ 0        79       6      7a           0           0           0               0    0      bf    
+ 0        79       6      7a           0           0           0               0    0      bf    
+ 0        7a       5      7b           0           0           0               0    0      bf    
+ 0        7a       5      7b           0           0           0               0    0      bf    
+ 0        7b       4      7c           0           0           0               0    0      bf    
+ 0        7b       4      7c           0           0           0               0    0      bf    
+ 0        7b       4      7c           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    
+ 0        7c       3      7d           0           0           0               0    0      bf    

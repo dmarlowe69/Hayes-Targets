@@ -1,0 +1,23 @@
+From: 	Denton Marlowe[COMPUSERVE:73410,3516]
+Sent: 	Monday, October 25, 1999 10:11 PM
+To: 	'kEVIN F. SMITH'
+Subject: 	RadAlt and other stuff
+
+Hi Kevin,
+
+Please pass a copy of this on the Larry ( I need his email address)
+
+1.	I talked to ray mark today about the RadAlt. The flight test this weekend went very well. He is going to send me the latest serial interface program he has for the radar altimeter. He is also going to look at writing a "simulator" for the rad alt that would allow the input of altitude on a console and have serial data, with the same packet structure and timing come out of the serial port. This will be useful in testing. As I am writing the sensor drivers, I plan to tackle this one as well.
+
+2.	I have checked the based address of the analog board and 0x0300 is ok, it is mapped for general PC-104 usage.
+
+3.	On the analog diver code I sent, I left a statement out of the D/A output routines, the dummy read to address BASE+5 to cause the output latch to update. This has been fixed. I'll email a more up to date copy today sometime.
+
+4.	I need an electronic copy of the ICD being generated, so that I can add my comments as I go. We can email this document back and forth as well gel on things.
+
+5.	I need the exact frequency ranges required for the servo. I need to get the clock counter programmed with at least something close.
+
+6.	We did not talk much about the hardware part of the control station. The existing Cockpit display. This is the remote indicator that clamps on the wind screen of the towing aircraft (99% being Lear Jet). As the size of the unit must not grow an inch (due to safety factors of blocking the pilots view) and the fact that the unit is in the glare of the sun, part of the time, the unit needs to be of a similar if not exact design. The current unit is analog driven. Since we have to package the RF modem and its power supply for the aircraft, why don't we just add the PC-104 CPU and analog card in the unit as well. The PC-104 would connect to the modem on one of its come ports, and the host laptop would be on the other. There would be a pass through protocol between the com ports and the analog card could be used to drive the cockpit display.
+
+We could also add some "fail safe" buttons to allow recovery of the target in the event the laptop crashes. Something to think about.
+

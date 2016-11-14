@@ -1,0 +1,37 @@
+This PC SmartLink IV disk has a number of utilities and programs that
+will make your programming easier.  The following is a description for
+each of the files.
+
+BIN2HEX.EXE - for CAMBASIC and STD-BASIC users.
+
+  BIN2HEX converts a binary file into an INTEL HEX file.  This is useful
+  for converting a MS-DOS .COM and other binary files into a downloadable
+  form.
+
+  You can run BIN2HEX without parameters to see a list of options.
+
+  Inside SmartLINK IV, select the TRANSFER | DOWNLOAD dialog box,
+  specify the file name, select the INTEL HEX file format and then start the
+  transfer.  SmartLINK IV interprets the INTEL HEX files, converts into
+  BASIC's POKE statements and then transfer to the target system.
+
+MAKBDATA.COM - for CAMBASIC and STD-BASIC users.
+
+  MAKBDAT converts .COM and other binary files into BASIC DATA statements.
+  These DATA statements can then be merged into your program.  Your program
+  then can POKE the data into memory or assign it to a variable.
+
+  You can run MAKBDATA without parameters to see a list of options.
+
+SLDISK.BAS - for CAMBASIC and STD-BASIC users.
+
+  Example program shows how to save data to the disk using SmartLink IV.
+
+SL.EXE
+
+  PC SmartLink IV executable program.  Refer to manual for operating
+  instructions.
+
+README.DOC
+
+  This is the file that you are reading.

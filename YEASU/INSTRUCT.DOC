@@ -1,0 +1,861 @@
+YAESU EEPROM PROGRAMMING SOFTWARE
+VERSION 2.2
+
+
+The programs on the YAESU  programming diskette require an IBM PC/AT
+or PS/2 compatible computer with at least 128k RAM running IBM or MS DOS 2.0
+or above, one 360k floppy drive, a monochrome or color monitor and one serial
+port (COM1).  You also need a printer if you want to print hard copy of the
+data.
+
+IMPORTANT!  Do not work directly from this original YAESU programming diskette!
+Make a copy of it and use the copy when programming the transceiver.  Keep the
+original in a safe place in case you need to make another copy of it later.
+The manuals that came with your computer should explain how to make a copy of
+a diskette, using the DISKCOPY command from DOS.
+
+The YAESU  programming diskette (VER 2.20) contains the following files for
+FTH-2008/7008/FTH-2009/7009 and FTH-2070 radios:
+
+
+     INSTRUCT.DOC - A text file containing a copy of these instructions
+
+     2070.EXE -     The EEPROM programming program
+
+     CE2.EXE -      Programming editor for FTH-2008 and FTH-7008
+
+     CE2.HLP -      Help files for CE2.EXE command program
+
+     2008.CH -         parameter data for FTH-2008
+
+     7008.CH -         parameter data for FTH-7008
+
+     2009.CH -         parameter data for FTH-2009
+
+     7009.CH -         parameter data for FTH-7009
+
+
+
+You can use the software to create and edit data files without having to
+connect the computer to the transceiver.  However, before connecting a
+transceiver for programming or cloning, turn off your computer and the
+transceiver, and connect the Programming Interface Box to the computer and the
+transceiver as shown on page 2-12 of the FTH-2070 Service Manual.  Then
+restart the computer.  Turning off the equipment during interconnect avoids
+damage to the electronics.
+
+
+
+
+
+FTH-2070
+
+THESE INSTRUCTIONS ARE FOR VERSION 1.40 SOFTWARE FOR ALL FTH-2070'S
+
+              TO-DATE THERE HAVE BEEN TWO VERSIONS OF THE FTH-2070
+              RADIOS AND TWO VERSIONS OF THE PROGRAMMING SOFTWARE.
+              THIS LATEST SOFTWARE, VERSION 1.40 WILL PROGRAM BOTH
+              VERSIONS OF THE FTH-2070 RADIOS SO IF YOU HAVE THE OLD
+              VERSION OF SOFTWARE YOU SHOULD USE IT TO MAKE A COPY OF
+              THIS VERSION AND USE ONLY THIS NEW VERSION TO PROGRAM
+              RADIOS.
+
+                         ********** CAUTION **********
+
+              THE ONLY WAY TO DETERMINE WHICH VERSION OF RADIO YOU
+              HAVE IS TO DOWNLOAD THE "COMMON DATA" FROM THE RADIO
+              BEFORE YOU TRY TO PROGRAM IT. IF YOU TRY TO PROGRAM
+              THE RADIO WITH THE WRONG COMMON DATA BEFORE DOWNLOADING
+              THE COMMON DATA FROM THE RADIO, YOU WILL PROBABLY
+              DESTROY THE COMMON DATA IN THE RADIO AND YOU WILL GET AN
+              "ERR 2" MESSAGE ON THE RADIO LCD.  THE "ERR 2" MESSAGE
+              WILL REMAIN ON THE LCD UNTIL SUCH TIME THAT THE RADIO
+              ACCEPTS PROGRAMMING.
+
+              IN THE EARLY VERSION FTH-2070 RADIOS THE COMMON DATA
+              FREQUENCY BANDS WERE:
+
+                     VHF: 150 - 170 MHz   UHF: 450 - 470 MHz
+
+              THE CURRENT VERSION FTH-2070 RADIOS WILL SHOW THE
+              FOLLOWING FREQUENCIES IN THE COMMON DATA:
+
+                     VHF: 134 - 174 MHz   UHF: 400 - 500 MHz
+
+              YOU MUST HAVE THE CORRECT FREQUENCY BAND INCLUDED
+              IN THE COMMON DATA FOR THE RADIO TO ACCEPT THE PROGRAM!
+
+                         PLEASE NOTE *****************
+
+              IF YOU DO NOT HAVE THE CORRECT COMMON DATA IN THE RADIO
+              AND DOWNLOAD YOUR PROGRAM, THE CHANNEL DATA WILL BE LOST
+              WHEN YOU CORRECT THE COMMON DATA!!! IT CANNOT BE SAVED
+              AND WILL BE LOST WHEN YOU CHANGE ANY OF THE COMMON DATA.
+
+
+
+                        ********* C A U T I O N *********
+
+              IT IS BEST TO DOWNLOAD THE COMMON DATA FROM THE RADIO TO
+              DETERMINE WHICH VERSION OF RADIO YOU HAVE, IF THERE IS ANY
+              DOUBT ON THIS MATTER BEFORE ATTEMPTING THE PROGRAMMING OF
+              THE RADIO!
+
+When ready to run the program (after booting DOS), place your COPY of the
+YAESU diskette (NOT the original!) in drive A or B, and log onto that drive
+(type A: or B: and press [ENTER]).  Then type YAESU and press [ENTER].  You
+should be greeted by the Main Menu screen, as shown below.  Contact YAESU
+U.S.A.  for assistance if required.  See end of INSTRUCT.DOC file for phone
+numbers and FAX number.
+
+
+                          (Main Menu Screen)
+
+     Press the corresponding [F] key to program the desired radio.
+
+     [F1] FTH-2070
+
+     [F2] FTH-2008
+
+     [F3] FTH-7008
+
+     [F4] FTH-2009
+
+     [F5] FTH-7009
+
+     [F6] Print to screen, INSTRUCT.DOC file.
+
+     [F7] Print a hard copy of INSTRUCT.DOC file.
+
+     [F8] Quit to DOS
+
+If you press [F1] you will see the following FTH-2070 screen.
+
+
+                            YAESU FTH-2070
+                          EEPROM DATA EDITOR
+
+
+                    [1]  Add/Change Channel Data
+
+                    [2]  View/Change Common Data
+
+                    [3]  Send Data to Transceiver
+
+                    [4]  Read Data from Transceiver
+
+                    [5]  Load Channel Data from Disk
+
+                    [6]  Save Channel Data to Disk
+
+                    [7]  Display/Print All Data
+
+                    [8]  Quit
+
+                         Select a number [ ]
+
+
+The YAESU FTH-2070 EEPROM DATA EDITOR screen:
+
+This screen offers you a choice of the main features of the program by pressing
+a number from 1 to 8, and is self-explanatory.  However, a few general comments
+may be helpful; you will always return to this screen after completing one of
+the actions listed, and can then select another feature, or Quit [8].  When
+finished with the program, always use the Quit [8] selection of the YAESU
+FTH-2070 EEPROM DATA EDITOR - don't turn off the power switch or disconnect the
+cables to the transceiver until after the program has been exited.  When you
+select the Quit [8] option, you will be asked to confirm quitting [Y] before
+the program exits back to the DOS prompt.
+
+                        ********* NOTE *********
+
+To Put the FTH-2070 into the programming/clone mode you need to hold
+down the PRI button while turning the radio on.
+
+
+WHICH SELECTION TO CHOOSE FIRST:
+
+If you have a customer's transceiver connected to the computer, you may want
+to upload the data and save it to disk before doing anything else.  Choose
+Read Data from Transceiver [4], and follow the prompts.  If an error message
+is displayed when attempting to upload the data, check your cables, Programming
+Interface Box and power supply carefully.  After uploading the data from the
+transceiver, save it to disk [6] right away as described below (under "Save
+Channel Data to Disk").
+
+If no FTH-2070 is connected to the computer and you just want to view or edit
+data files already on the disk, choose YAESU FTH-2070 EEPROM DATA EDITOR, Load
+Channel Data from Disk [5].  You will be asked for the name of the file to
+load, which MUST be the name of a channel data file already on the disk.  The
+only such file provided on the original diskette is TEST2070, but you will be
+adding your own files.  To see a list of all files, type a period [.] and
+[ENTER] when ask for the file name.  This will display all current files, you
+may then select and type the name of the file you want to load.  If an error
+message appears during loading, either no file could be found on the disk with
+that name, or the file data was corrupted since it was last saved.  If the data
+was corrupted you will have to build a new file from scratch, or enter another
+file name.  We suggest you erase any corrupted files from the disk to avoid
+confusion.  Just enter DEL filename.ext at the DOS prompt.
+
+If you have an unprogrammed transceiver connected, or if you have no existing
+data file to load for editing, you can create new data to be saved on the disk
+before downloading to a transceiver.  Just proceed to the next paragraph.
+
+
+CREATING AND EDITING CHANNEL DATA:
+
+If you want to work with existing data from the transceiver or a data file,
+you should have loaded it as described.  Now select [1] from the YAESU FTH-2070
+EEPROM DATA EDITOR to edit or to create a new set of channel data.  A screen
+like the following will appear (this one appears after loading TEST2070, the
+supplied data file):
+
+                                                       ______________
+          Add/Change Channel Data            ___________  KEY HELP  _________
+                                             _                              _
+                                             _ [ESC] = Quit to Main Menu    _
+                                             _                              _
+VHF: 134-174 MHz         UHF: 400-500 MHz    _ [PgDn] next page [PgUp] prev _
+                                             _                              _
+VHF REF: 5.00 KHz        UHF REF: 12.50 KHz  _ [SPACE] Erase/Restore Channel_
+                                             _                              _
+Tone Option: None                            _                              _
+                                             _ Entry Fmt: 2 Digits (00-63)  _
+                                             _                              _
+                                             ________________________________
+
+
+                   CTCSS   Opt             CTCSS    Opt        Hi/Low
+Ch  Name  RX Freq.  DEC    DEC    TX Freq.  ENC     ENC  Burst  Pwr   TxTimer
+01  VHFL  134.0000  OFF    -----  134.0000  OFF     ---  OFF    HIGH   OFF
+02  VHFM  154.0000  32     -----  154.0000  32      ---  OFF    HIGH   OFF
+03  VHFH  174.0000  OFF    -----  174.0000  OFF     ---  OFF    HIGH   OFF
+11  UHFL  450.0000  OFF    -----  450.0000  OFF     ---  OFF    HIGH   OFF
+12  UHFM  460.0000  32     -----  460.0000  32      ---  OFF    HIGH   OFF
+13  UHFH  470.0000  OFF    -----  470.0000  OFF     ---  OFF    HIGH   OFF
+14  WX    162.5500  0FF    -----  TX OFF    ---     ---  ---    ----   ---
+--  ----  ---.----  ---    -----  ---.----  ---     ---  ---    ----   ---
+             .                       .
+             .                       .
+             .                       .
+--  ----  ---.----  ---    -----  ---.----  ---     ---  ---    ----   ---
+
+
+The items at the upper left; Band limits, VHF and UHF REF: and Tone Option are
+Common Data items that you may need to refer to when making entries in the
+channel table, for example, if the VHF Ref is 5.00 KHz, all frequencies entered
+must be multiples of 5 KHz.  If no tone option is installed, the "Opt DEC" and
+"Opt ENC" fields in the table are not used.  You cannot change Common Data
+settings from this screen.
+
+The KEY HELP box at the upper right shows the functions that are available to
+you at any given moment.  The contents of this box change according to the
+location of the cursor in the table, so you will need to watch this box while
+becoming familiar with the channel editor.  The last line in the box, "Entry
+Fmt", shows the type of data that is expected to be entered in the field where
+the cursor is presently located.  For example, when the editing screen is first
+selected, the cursor is in the "Ch" (Channel Number) field, which can accept
+two digits between 00 and 63.  Notice that the space bar can be used to
+erase an entire line (one channel's data) in the table.  The data can be
+restored by just pressing the space bar again.  To program receive only, as
+shown in Ch 14 above, move cursor to the TX Freq position, after receive data
+has been entered, and press space bar, TX OFF will be shown on the Tx Freq
+line.  This function can be toggled with the space bar.
+
+Press the up, down, left and right arrow keys on the PC's keypad to move the
+cursor around the table (if you have a numeric keypad you may have to press the
+Num Lock key to switch the keypad from numeric to cursor movement mode).
+
+Each of the sixteen lines in the editing table represents one channel, with
+the columns indicating the current setting of each parameter that can be set
+for that channel.  Hyphens indicate that a channel or parameter is not
+currently being used.
+
+NOTE:  When a transceiver is to be programmed with more than sixteen channels,
+after setting up the display for the first sixteen, press the PgDn or PgUp key
+to edit the next sixteen channels, and again to return to the previously-
+displayed channels.  The table will be cleared, but don't worry, the first
+sixteen channels are held in memory.  When you have entered all of the channel
+data desired, confirm that it is correct and then press the [Esc] key to return
+to the Main Menu.
+
+
+SAVING DATA TO DISK:
+
+You can save data to a disk file at any time by selecting [6] from the YAESU
+FTH-2070 EEPROM DATA EDITOR.  You MUST do this if you have just edited the
+channel tables data and want to be able to use the data, as changed, again
+later, but we also suggest you do this as soon as you have uploaded data from a
+transceiver (so you will be able to restore it if a problem develops later).
+You will be asked for file name to save to.  This can be any valid DOS file
+name, but we recommend you choose a name that you will be able to recognize
+later.  Be careful not to select a name that already exists.
+
+
+SENDING DATA TO THE TRANSCEIVER:
+
+After editing data and saving it to a file on disk, you can download it to a
+transceiver.  If the cables are not connected, you should select Quit [8] from
+the YAESU FTH-2070 EEPROM DATA EDITOR (after making sure you have saved any
+edited data to a file), and then turn off the computer to connect the
+Programming Interface Box, Transceiver and cables.  Then restart the program,
+reload the saved file from disk (YAESU FTH-2070 EEPROM DATA EDITOR selection
+[5]), and then send the data to the Transceiver (YAESU FTH-2070 EEPROM DATA
+EDITOR selection [3]).  After a few seconds for data translation (to the
+"clone" format required by the EEPROM), you should see a message reminding you
+to set the transceiver to the CLONE mode.  Then press any key (except Esc) to
+start the download.  If an error message is displayed when attempting to
+download the data, check your cables, Programming Interface Box and power
+supply carefully.  Any key will return you to the YAESU FTH-2070 EEPROM DATA
+EDITOR, where you can try again.  To program another transceiver with the same
+data, you can change the cable connection without having to turn off the
+computer and restart the program.  CAUTION: Make sure the CLONE switch is OFF
+when changing the connector.
+
+
+EDITING COMMON DATA:
+
+Common data here means those parameters which affect all channels in the
+transceiver.  Some of these can be easily changed: TX (transmitter) Time-
+Out, Timeout resume (the minimum delay after time-out before transmission can
+resume), Battery power saver (pulsed receiver monitoring), TX lock-out
+(transmitter inhibit by presence of a carrier).  The FTH-2070 frequency
+coverage and IF can be changed ONLY by changes within the radio.  PLL steps can
+be changed by highlighting the VHF or UHF Ref: and toggling, using the space
+bar.
+
+The changeable common data parameters can be edited by selecting [2] from the
+YAESU FTH-2070 EEPROM DATA EDITOR.  The following screen will appear, with one
+of the parameters highlighted.
+
+
+          View/Change Common Data
+                                                [ESC] = Return to Menu
+                                                [SPACE] = Increment (or
+                                                ON/OFF)
+                                                [BKSPC] = Decrement
+                                                [TAB] = next field
+
+     TX Time-out:  60s        Time-out Resume:   0s
+
+     Power Saver: OFF         TX Lock-out OFF
+
+     Tone Option: None
+
+
+     VHF: 134-174 MHz*        UHF: 400-500 MHz*
+
+     IF: 45.00 MHz
+
+     VHF Ref:  5.00 KHz       UHF Ref: 12.50 KHz
+
+     VHF Prescaler: 1/64      UHF Prescaler: 1/64
+
+      * MUST USE THESE FREQUENCIES WHEN ON CURRENT MODEL FTH-2070 RADIOS
+
+Use the SPACE bar to toggle switchable parameters on and off, or with the
+Backspace key to step through numeric selections (numbers are not entered
+directly).  When finished, press [Esc] to return to the YAESU FTH-2070 EEPROM
+DATA EDITOR.  Remember to save any changes to disk.
+
+
+LISTING DATA TO SCREEN OR PRINTER:
+
+If you want to have a printed copy of a set of data, or if you just want to
+view data without making any changes, select [7] from the YAESU FTH-2070 EEPROM
+DATA EDITOR.  After a few seconds for conversion of the data to "cloning"
+format, a screen appears describing your options (print to screen or disk, 5
+screen pages).  Just press any key (except [Esc]) to move from one page to the
+next.  The last two pages are a hex dump of the data as it would appear in the
+EEPROM, with a checksum at the end of the last page.  To print a displayed page
+on the printer, if you have a PC keyboard with the PrtSc key also serving as an
+asterisk key, press and hold the Shift key while pressing PrtSc.  Otherwise, if
+you have an enhanced AT keyboard, just press the Print Screen key (near the
+upper right).
+
+
+*******************************************************************************
+
+
+
+
+
+FTH-2008/2009/7008/7009
+
+THESE INSTRUCTIONS ARE FOR YAESU CE2 PROGRAM EDITOR
+VERSION  1.20
+
+Programming of these radios is a relatively simple task but
+you must follow the proper sequence to properly program the
+radio.  It is assumed that you have booted your computer from
+your own DOS disk or hard disk.  This disc is not a bootable
+system disk.  After you have booted DOS, place this disc in the A:
+or B: drive and type in A: or B: and press [ENTER].  You should
+be at the A:\> or B:\> prompt.
+
+The CE2 program automatically configures your COM1 serial port for
+the proper baud rate, parity, etc. and is not set up to program
+the radio through any other port other than COM1.
+
+To start the program you should type YAESU at the A:\> or B:\> prompt
+and press [ENTER].  The Main Menu Screen will be displayed.  You can
+now select FTH-2008/7008 or FTH-2009/7009 as required.
+
+Printing of this file from the Main Menu Screen assumes you are using a
+parallel printer, as the COM1 serial port is being used for connection
+of the Program Interface Box.
+
+After several informational screens, note the Function Key listing at the
+bottom of your screen.  You should also note that [F1] is listed as the help
+key and will provide on screen help at any point in the programming
+procedure.  Don't be afraid to use it whenever you have a question at a
+particular point in the programming process.
+
+When saving your channel data to disk it is recommended to use a DOS file
+extension of .ch as these will be automatically added to the menu selection
+when (F3) diskload is used.
+
+
+
+            HARDWARE -- FRB-2 PROGRAMMER INTERFACE
+
+The FRB-2 will need to be connected to your COM1 serial port
+on your computer and the interconnecting cable connected to
+the microphone input jack on the radio.  Proper power must
+also be connected to the FRB-2.  There is an on/off switch on
+the back of the unit and when it is turned on the Red LED
+indicator will light.  Keep the radio turned off until you
+have all other connections completed and ready to go.  The
+FRB-2 can be used in programming the FTH-2070 by use of a
+special cable for connecting the FRB-2 to the FTH-2070.
+Instructions and a kit, part # TRB-20701, with parts to
+construct this cable is available through the YAESU U.S.A.
+parts department, (213)-404-4847.
+
+You will need to remove the rubber cover from over the PTT
+switch/monitor switch for programming the FTH-2008/7008.  This
+will expose a small slide switch.  To program the radio this
+slide switch must be in the DOWN (toward the bottom of the
+radio) position and kept in this position until all programming
+is completed.  Follow the prompts in the editor as far as
+transferring data either to or from the radio ROM.
+
+When programming is completed turn the radio off and be sure to
+move the slide switch to the UP position, replace the rubber
+cover, and the radio should be ready for use.
+
+
+
+
+-------------------------------------------------------------------------------
+         Type <CE2> EEPROM DATA EDITOR HELP FILE
+     Copyright (c) 1989/07/27 by YAESU MUSEN Co., Ltd.
+----------------------------------------------------------
+
+
+PRIORITY CHANNEL SELECTION/UNHIDE CHANNEL DATA:
+
+Select a channel for Priority Monitoring.  The channel may be
+either displayed or hidden (it will become unhidden).  Only
+one channel can be selected, so the previous Priority
+selection will be cancelled when the new one is selected.  Two
+angle brackets (">>") indicate the current selection.
+
+Up/Down Arrows: Choose a channel.
+Space Bar:      Activate the chosen channel for Priority.
+
+NOTE! If Priority Monitoring (in Common Data) is disabled,
+"__" is displayed, and a Priority Channel cannot be selected.
+Other channel data can still be edited after pressing the
+Arrow Keys, but Common Data must be edited first to enable
+the Priority feature.
+
+
+EDIT CHANNEL NUMBER FOR DISPLAY ON THE TRANSCEIVER:
+
+The Space Bar or keys 0 - 9 can be pressed to enter either
+a blank and a number, two numbers (up to 99), or two blanks.
+If two blanks are entered, the Transceiver will assign and
+display a serial channel number (01-15) for this channel
+automatically.
+
+Arrow Keys: Change field (no change in Channel Number).
+Space Bar:  Input a blank.
+0 - 9:      Input a digit.
+Backspace:  Erase last input key.
+Enter Key:  Accept displayed input.
+Esc Key:    Cancel displayed input.
+
+
+EDIT RECEIVE FREQUENCY/HIDE OR UNHIDE CHANNEL DATA:
+
+Use keys 0 - 9 to enter the desired receiving frequency, and
+press the Enter key to accept.  If the frequency does not
+match the Channel Step parameter (in Common Data), it will be
+adjusted to the nearest valid step.  You do not need to enter
+all 7 digits: empty digits to the right are zero-filled.
+
+Pressing [.] (period) after several digits forces them to MHz.
+
+Pressing only the Space Bar without entering a number toggles
+the data for the entire channel between hidden and unhidden
+(except the first channel, which cannot be hidden).  Hidden
+channels display "--" in place of field entries, and are not
+used for operation (although they are still stored in hidden
+form for possible recall later).
+
+Arrow Keys: Change field (before or after editing Frequency).
+Space Bar:  Hide/Unhide entire channel (line).
+0 - 9:      Input a digit.
+[.]:        Set last three (or fewer) digits as MHz.
+Backspace:  Erase digit to the left, or cancel entry.
+Enter Key:  Accept displayed frequency, with zero-fill.
+Esc Key:    Cancel and return to previous frequency.
+
+
+TOGGLE TONE SQUELCH DECODER, AND SET CTCSS FREQUENCY:
+
+Press the Space Bar to toggle the decoder on/off, or press
+[ENTER] to display the Tone Select window, from which you may
+select a frequency with the Arrow Keys (press [ENTER] again
+to accept, or Esc to cancel).
+
+If you know the CTCSS frequency you want, you can enter it
+directly with the 0 - 9 and [_] (underscore) keys.  When the
+desired CTCSS frequency is displayed, press [ENTER] to accept.
+If the frequency was invalid (not among the standard tones),
+the Tone Select Window will appear as described above, with
+the nearest valid frequency pre-selected.
+
+Turning the CTCSS Decoder off also turns off BCLO if its
+"tone" mode was enabled.
+
+Arrow Keys: Change field, or select in Tone Select window.
+Space Bar:  Toggle Decoder on/off (except during selection).
+0 - 9, [_]: Direct tone frequency entry (leading [_] = low-Q).
+Backspace:  Delete digit to left during direct entry.
+Enter Key:  Display Tone Select Window, and accept entry/
+            selection.
+Esc Key:    Cancel input or selection.
+
+
+BUSY CHANNEL LOCK-OUT CARRIER-TONE-OFF TOGGLE:
+
+The Space Bar (or Backspace Key) toggles the BCLO selection
+between Carrier Control, Tone Control, or off.  If the CTCSS
+Decoder was off, selecting Tone controlled BCLO will turn it
+on, and the tone frequency will be displayed in the CTCSS Dec
+field to the left of this one.
+
+Arrow Keys: Change field.
+Space Bar, Backspace:  Toggle BCLO mode.
+
+
+SCAN STOP/SKIP TOGGLE:
+
+If scanning is enabled in the Common Data, the Space Bar
+selects whether this channel will be included in scanning, or
+be skipped over.
+
+If "____" is displayed in this field, scanning is disabled in
+the Common Data, and no selection is possible unless Common
+Data is first edited to enable scanning.
+
+
+POWER SAVER ON/OFF TOGGLE:
+
+Press the Space Bar to toggle the automatic Power Saver
+feature on and off.  When on, the transceiver draws less
+current from the battery by turning itself off periodically
+during squelched monitoring on this channel, to prolong
+battery charge life.  The Saving Interval (off time) can be
+set in the Common Data.
+
+Arrow Keys: Change fields after setting on/off.
+Space Bar:  Toggle on/off.
+
+NOTE! If "___" appears in the Power Save field, Power Saving
+      has been disabled (in Common Data).  You must edit the
+      Common Data to enable it before setting this field.
+
+
+ENTER TRANSMIT FREQUENCY, AND ENABLE/DISABLE TRANSMISSION:
+
+Use keys 0 - 9 to enter the desired transmitting frequency,
+and press the [ENTER] key to accept.  If the frequency does not
+match the Channel Step parameter (in Common Data), it will be
+adjusted to the nearest valid step.  You do not need to enter
+all 7 digits: empty digits to the right are zero-filled.
+
+Pressing [.] (period) after several digits forces them to MHz.
+
+Pressing only the Space Bar without entering a number toggles
+the this channel's transmit capability on and off (when off,
+previously set transmitting parameters are hidden until the
+transmitter is again enabled for this channel).
+
+Arrow Keys: Change field (before or after Editing Freq.)
+Space Bar:  Enable/Disable Transmission on this channel.
+0 - 9:      Input a digit.
+[.]:        Set last three (or fewer) digits to MHz.
+Backspace:  Erase digit to the left, or cancel entry.
+Enter Key:  Accept displayed frequency, with zero-fill.
+Esc Key:    Cancel and return to previous frequency.
+
+
+TOGGLE TONE SQUELCH ENCODER, AND SET CTCSS FREQUENCY:
+
+Press the Space Bar to toggle the Encoder on/off, or press
+[ENTER] to display the Tone Select window, from which you may
+select a frequency with the Arrow Keys (pressing [ENTER] again
+to accept, or [Esc] to cancel).
+
+If you know the CTCSS frequency you want, you can enter it
+directly with the 0 - 9 and [_] (underscore) keys (entering
+a number or [_] forces the Encoder on).  When the display
+shows the desired CTCSS frequency, press [ENTER] to accept.
+If the frequency was invalid (not among the standard tones)
+the Tone Select Window will appear as mentioned above.
+
+NOTE! if the channel is hidden when you make an entry, it
+will be unhidden. Edit the Rx Freq field to hide it again.
+
+
+Arrow Keys: Change field, or select in Tone Select window.
+Space Bar:  Toggle Encoder on/off (except during selection).
+0 - 9, [_]: Direct tone frequency entry (leading [_]= low-Q).
+Backspace:  Delete digit to left during direct entry.
+Enter Key:  Display Tone Select Window, and accept entry/
+            selection.
+Esc Key:    Cancel input or selection.
+
+
+TRANSMIT POWER HIGH/LOW TOGGLE:
+
+Press the Space Bar to toggle the transmitter power between
+high and low.  If transmission on this channel was disabled,
+it will now be enabled.
+
+Arrow Keys: Change fields after selection.
+Space Bar:  Toggle high/low.
+
+
+TRANSMIT TIME-OUT TIMER ON/OFF TOGGLE:
+
+Press the Space Bar to toggle the Transmit Time-Out Timer on
+and off.  When on, the transmitting time on this channel is
+limited to the Tx Time-Out Time set in Common Data (1/2, 1, 2
+or 3 minutes).
+
+Arrow Keys: Change fields after setting on/off.
+Space Bar:  Toggle on/off.
+
+NOTE! If "___" appears in the Tx Timer field, the Time-Out
+      Timer has been disabled (in Common Data).  You must edit
+      the Common Data to enable it before setting this field.
+
+
+FILE SELECTION WINDOW:
+
+Select a filename (lower-case letters) or subdirectory
+(upper-case, in angle brackets <>) using the Arrow Keys, and
+then the [ENTER] Key to accept your selection.  If you selected
+a subdirectory, the window contents will be replaced with
+that subdirectory's contents, from which you can select again.
+
+You can also enter a new drive letter or filespec directly.
+Pressing alphanumeric keys activates the filespec line editor
+along the bottom of the window.  You can use wildcards ("*" or
+"?") to display only certain files (eg., B:\CHDATA\*.CH and
+Enter displays only files with the "CH" extension in the
+CHDATA subdirectory on drive B).  Tab returns you to the upper
+half of the selection window.
+
+(at any time in Selection Window)
+Enter Key:  Accept selection.
+Esc Key:    Cancel operation and return to Channel Editor.
+Tab Key:    Switch between Selection Window and line editor.
+
+(for selection in upper part of window)
+Arrow Keys: Select filename/subdirectory.
+Home Key:   Jump to first selection on screen.
+End Key:    Jump to last selection on screen.
+PageDown:   Jump down one page (for large directories).
+PageUp:     Jump up one page (for large directories).
+
+
+(for filespec editor at bottom of window)
+Delete:     Delete character under cursor.
+Backspace:  Delete character to left.
+Insert:     Toggle insert/overwrite modes.
+
+
+READ ROM: TRANSFER DATA BETWEEN TRANSCEIVER'S EEPROM AND PC
+
+The Space Bar is used to proceed with the transfer operation
+after ensuring the hardware is set up for the transfer.
+To cancel and return to the Channel Editor, press the [Esc]
+Key instead.
+
+The status of the transfer operation will be displayed when
+finished (a few seconds after pressing the Space Bar).
+
+NOTE! Press the [Esc] Key if the system appears to hang.  Then
+make sure the power indicator on the interface box is on,
+and check the cables for a connection problem.
+
+
+WRITE ROM: TRANSFER DATA BETWEEN PC AND TRANSCEIVER' EEPROM
+
+The Space Bar is used to proceed with the transfer operation
+after ensuring the hardware is set up for the transfer.
+To cancel and return to the Channel Editor, press the [Esc]
+Key instead.
+
+The status of the transfer operation will be displayed when
+finished (a few seconds after pressing the Space Bar).
+
+NOTE! Press the [Esc] Key if the system appears to hang.  Then
+make sure the power indicator on the interface box is on,
+and check the cables for a connection problem.
+
+
+EDIT COMMON DATA PARAMETERS:
+
+Use the Arrow Keys to select the parameter to edit. Then use
+the Space Bar or Backspace Key to toggle among all possible
+settings for that parameter.  When all parameters are set as
+desired, press the [Esc] Key to return to the Channel Editor.
+
+Channel Scan:
+Enable/disable scanning.
+
+[PRI] Key:
+Enable/disable the function of the [PRI] key.  When enabled,
+user can activate/de-activate Priority monitoring.
+
+Pwr-On Priority:
+When enabled, Priority monitoring is active when radio is
+switched on.
+
+Scan-Stop Resume:
+"5s timer" selection causes scanning to resume after a
+5-second pause.  "Carrier" selection causes scanning to
+resume after squelch closes.
+
+PTT During Scan:
+"Pause" causes PTT to pause scanner only (PTT must be pushed
+again to transmit).  "Pause & Tx" allows one push of the PTT
+to both pause scanning and activate the transmitter.
+
+Tx Time-Out:
+Transmitter Time-Out Timer enabled (to or limit length of
+transmissions) or disabled.
+
+Tx Time-Out Time:
+Maximum length of transmission (30 sec, 1 min, 2 min or 3
+min) when Tx Time-Out Timer (above) is enabled.
+
+Time-Out Resume:
+Minimum time to wait (none, or 6, 20 or 60 sec) after Tx
+Time-Out before transmitter can be reactivated.
+
+Tx Carrier Delay:
+When the CTCSS option is installed and active and this
+feature is enabled, releasing the PTT switch will leave
+the transmitter active (without modulation) for an extra
+400ms, eliminating the squelch tail at the receiving end.
+
+Power Save:
+Sets the "sleep/awake" ratio for the power save function.
+The "awake" time is either 30 or 300 ms (selected in hard-
+ware).  The "sleep" time is 1 to 15 times the selected
+"awake" time.  Select "Disabled" if the power save function
+is not desired.
+
+Beep:
+When enabled, pressing a key on the radio produces a beep
+in the loudspeaker.
+
+Alert Tone:
+The "3 seconds" choice causes the Alert tone to sound in
+the loudspeaker for 3 seconds whenever a call is received.
+The "Reset or Tx" choice causes the Alert tone to continue
+sounding until the operator presses the RES/MON key or PTT.
+
+RES/MON:
+Select "Toggle" to cause the monitor function of the RES/MON
+button (when held for more than 1/2-sec) to toggle the
+squelch open and then closed (by pressing again).  Select
+"Momentary" to cause the squelch to be opened for monitoring
+only while the RES/MON button is depressed.
+
+
+HARDWARE ENVIRONMENT COMMON PARAMETER EDITING:
+
+CAUTION: Do not change Hardware Environment Parameters
+unless you are certain that the transceiver hardware is
+suitable for the new value.  For example, the Power Save Time
+MUST NOT be set to less than the PLL lockup time (or the
+receiver will NEVER be enabled!).
+
+Use the Arrow Keys to select the parameter to edit.  Then use
+the Space Bar or Backspace Key to toggle among all possible
+settings for that parameter (except the numeric "IF" entry).
+When all parameters are set as desired, press the Esc Key to
+return to the Common Data Editor.
+
+"IF" (Intermediate Frequency) entries are made with the
+0 - 9 keys and Backspace Key.  Press the [ENTER] Key to accept
+your entry, or [Esc] to cancel.
+
+
+MAKE A NEW SUBDIRECTORY ON CURRENT PATH:
+
+Input the name of the new subdirectory (up to 8 characters),
+then press [Enter].  Press [Esc] or [F8] to cancel if you change
+your mind.
+
+Backspace: Delete character to left of cursor
+Delete:    Delete character above cursor
+Insert:    Toggle Insert/Overwrite mode (Insert is default,
+           Overwrite has block cursor)
+
+
+REMOVE THE NAMED (OR POINTED-TO) SUBDIRECTORY:
+
+Only empty child directories from the current subdirectory
+can be removed.  In the file list, the inverse box can be
+positioned with the arrows to select a subdirectory to
+remove, by pressing [F4].  If the file list selection is not
+a subdirectory, a box will appear in which you can enter
+the name of the subdirectory to be removed.  This name must
+be the same as one of the subdirectories displayed in the
+file list, and any files in that subdirectory must have
+already been deleted.
+
+Backspace: Delete character to left of cursor
+Delete:    Delete character above cursor
+Insert:    Toggle Insert/Overwrite mode (Insert is default,
+           Overwrite has block cursor)
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+Should you have any difficulties with this programming please contact:
+
+YAESU U.S.A.
+Cerritos, CA
+Customer Service: 1-800-633-4455
+             FAX: 1-213-404-1210 (ATTN: Customer Service)
+
+YAESU U.S.A.
+Cincinnati, OH
+Field Service Manager's office: 1-513-779-1257
+
+-------------------------------------------------------------------------------
+
+End of INSTRUCT.DOC file.

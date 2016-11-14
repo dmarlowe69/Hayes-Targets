@@ -1,0 +1,5 @@
+1 'Example of STR$ function
+5 PI = 3.14159
+10 DEGREES = 45
+20 RADIANS = DEGREES * PI / 180
+30 PRINT TAN(RADIANS)

@@ -1,0 +1,5 @@
+1 'Example of TIME$ statement
+10 TIME$ = "02:03:04"
+20 PRINT TIME$(0)
+30 DELAY 1
+40 PRINT TIME$(0)

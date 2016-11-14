@@ -1,0 +1,261 @@
+`F  1.00 TLXIFACE
+`B "0" "0" "B" "     June 19, 1992" "" "" 
+"" ""
+""
+""
+""
+""
+`P S "GND"
+`P S "VCC"
+`E JMA.LIB
+`E PCBDEV.LIB
+`E TTL.LIB
+`E DEVICE.LIB
+`E ANALOG.LIB
+`I R "1N4002" PCBDEV.LIB "DIODE" AD641CA0  D1  [1]
+"DO7" "" "" "" "" "" "" "" 
+"DO7"
+( "ANODE" "1" P ) ( "CATHODE" "2" P ) 
+`I R "100MFD" PCBDEV.LIB "CAPACITOR POL" AE04033C  C1  [1]
+"CK16" "" "" "" "" "" "" "" 
+"CK16"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "1.5MFD" PCBDEV.LIB "CAPACITOR POL" AD641CBB  C2  [1]
+"CK05" "" "" "" "" "" "" "" 
+"CK05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "1.5MFD" PCBDEV.LIB "CAPACITOR" AD641CC1  C3  [1]
+"CK05" "" "" "" "" "" "" "" 
+"CK05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "1.5MFD" PCBDEV.LIB "CAPACITOR POL" AD641CBA  C4  [1]
+"CK05" "" "" "" "" "" "" "" 
+"CK05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "SN7405" TTL.LIB "7405" AD6378C6  U2  [110000]
+"14DIP300" "" "" "" "" "" "" "" 
+"14DIP300"
+( "I_A" "1" I ) ( "I_B" "3" I ) ( "I_C" "5" I ) ( "I_D" "9" I ) 
+( "I_E" "11" I ) ( "I_F" "13" I ) ( "O_A" "2" C ) ( "O_B" "4" C ) ( "O_C" "6" C ) 
+( "O_D" "8" C ) ( "O_E" "10" C ) ( "O_F" "12" C ) ( "VCC" "14" S ) ( "GND" "7" S ) 
+`I R "1N4002" PCBDEV.LIB "DIODE" AD641CC0  D2  [1]
+"DO7" "" "" "" "" "" "" "" 
+"DO7"
+( "ANODE" "1" P ) ( "CATHODE" "2" P ) 
+`I R "1N4002" PCBDEV.LIB "DIODE" AD641CBD  D3  [1]
+"DO7" "" "" "" "" "" "" "" 
+"DO7"
+( "ANODE" "1" P ) ( "CATHODE" "2" P ) 
+`I R "44 CON" PCBDEV.LIB "CONNECTOR EDGE44" AD641CBC  J1  [1]
+"44EPAD" "" "" "" "" "" "" "" 
+"44EPAD"
+( "1" "1" P ) ( "2" "2" P ) ( "3" "3" P ) ( "4" "4" P ) 
+( "5" "5" P ) ( "6" "6" P ) ( "7" "7" P ) ( "8" "8" P ) ( "9" "9" P ) 
+( "10" "10" P ) ( "11" "11" P ) ( "12" "12" P ) ( "13" "13" P ) ( "14" "14" P ) 
+( "15" "15" P ) ( "16" "16" P ) ( "17" "17" P ) ( "18" "18" P ) ( "19" "19" P ) 
+( "20" "20" P ) ( "21" "21" P ) ( "22" "22" P ) ( "A" "23" P ) ( "B" "24" P ) 
+( "C" "25" P ) ( "D" "26" P ) ( "E" "27" P ) ( "F" "28" P ) ( "G" "29" P ) 
+( "H" "30" P ) ( "J" "31" P ) ( "K" "32" P ) ( "L" "33" P ) ( "M" "34" P ) 
+( "N" "35" P ) ( "P" "36" P ) ( "R" "37" P ) ( "S" "38" P ) ( "T" "39" P ) 
+( "U" "40" P ) ( "V" "41" P ) ( "W" "42" P ) ( "X" "43" P ) ( "Z" "44" P ) 
+`I R "40" PCBDEV.LIB "R" AD641CA1  R1  [1]
+"RL32" "" "" "" "" "" "" "" 
+"RL32"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "250OHM" PCBDEV.LIB "R" AD641CC3  R4  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "250OHM" PCBDEV.LIB "R" AD641CC5  R5  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "250OHM" PCBDEV.LIB "R" AD641CC6  R6  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "250OHM" PCBDEV.LIB "R" AD641CC8  R8  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "250OHM" PCBDEV.LIB "R" AD641CC9  R9  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "330K" PCBDEV.LIB "R" AD641CA4  R10  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "680" PCBDEV.LIB "R" AD641CA5  R11  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "20K" PCBDEV.LIB "R" AD641CA3  R13  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "3K" PCBDEV.LIB "R" AD641CA7  R14  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "20K" PCBDEV.LIB "RESISTOR VAR" AD641CBE  R15  [1]
+"RV100" "" "" "" "" "" "" "" 
+"RV100"
+( "A" "1" P ) ( "B" "3" P ) ( "WIPER" "2" P ) 
+`I R "10K" PCBDEV.LIB "R" AD641CAA  R16  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "470" PCBDEV.LIB "R" AD641CAB  R17  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "3K" PCBDEV.LIB "R" AD641CA8  R18  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "250" PCBDEV.LIB "R" AE04033D  R19  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10K" PCBDEV.LIB "R-PACK" AD6378CB  R20  [1]
+"16DIP300" "" "" "" "" "" "" "" 
+"16DIP300"
+( "R1" "1" P ) ( "R1" "16" P ) ( "R2" "2" P ) ( "R2" "15" P ) 
+( "R3" "3" P ) ( "R3" "14" P ) ( "R4" "4" P ) ( "R4" "13" P ) ( "R5" "5" P ) 
+( "R5" "12" P ) ( "R6" "6" P ) ( "R6" "11" P ) ( "R7" "7" P ) ( "R7" "10" P ) 
+( "R8" "8" P ) ( "R8" "9" P ) 
+`I R "10K" PCBDEV.LIB "R-PACK" AD6378CC  R21  [1]
+"16DIP300" "" "" "" "" "" "" "" 
+"16DIP300"
+( "R1" "1" P ) ( "R1" "16" P ) ( "R2" "2" P ) ( "R2" "15" P ) 
+( "R3" "3" P ) ( "R3" "14" P ) ( "R4" "4" P ) ( "R4" "13" P ) ( "R5" "5" P ) 
+( "R5" "12" P ) ( "R6" "6" P ) ( "R6" "11" P ) ( "R7" "7" P ) ( "R7" "10" P ) 
+( "R8" "8" P ) ( "R8" "9" P ) 
+`I R "10K" PCBDEV.LIB "R-PACK" AD6378CD  R22  [1]
+"16DIP300" "" "" "" "" "" "" "" 
+"16DIP300"
+( "R1" "1" P ) ( "R1" "16" P ) ( "R2" "2" P ) ( "R2" "15" P ) 
+( "R3" "3" P ) ( "R3" "14" P ) ( "R4" "4" P ) ( "R4" "13" P ) ( "R5" "5" P ) 
+( "R5" "12" P ) ( "R6" "6" P ) ( "R6" "11" P ) ( "R7" "7" P ) ( "R7" "10" P ) 
+( "R8" "8" P ) ( "R8" "9" P ) 
+`I R "10K" PCBDEV.LIB "R" AD641CB7  R23  [1]
+"RL05" "" "" "" "" "" "" "" 
+"RL05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10K" PCBDEV.LIB "R" AD641CB8  R24  [1]
+"RL05" "" "" "" "" "" "" "" 
+"RL05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10K" PCBDEV.LIB "R" AD641CB9  R25  [1]
+"RL05" "" "" "" "" "" "" "" 
+"RL05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "250OHM" PCBDEV.LIB "R" AE04AAC8  R3  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "250OHM" PCBDEV.LIB "R" AD641CC7  R7  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "2.7K" PCBDEV.LIB "R" AD641CA9  R26  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "470" PCBDEV.LIB "R" AD641CA6  R12  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "LM7812" JMA.LIB "LM78XX" AE362FF7  VR1  []
+"TO220H" "" "" "" "" "" "" "" 
+"TO220H"
+( "2" "2" I ) ( "3" "3" I ) ( "1" "1" I ) 
+`I R "LM7805" JMA.LIB "LM78XX" AE362FF8  VR2  []
+"TO220H" "" "" "" "" "" "" "" 
+"TO220H"
+( "2" "2" I ) ( "3" "3" I ) ( "1" "1" I ) 
+`I R "-12CONV" JMA.LIB "DDR2812DT" AD641C9F  U1  [1]
+"24DIP600" "" "" "" "" "" "" "" 
+"24DIP600"
+( "+28 IN" "1" I ) ( "+28 IN" "2" I ) ( "+12VDC" "11" I ) ( "+12VDC" "12" I ) 
+( "-12VDC" "7" I ) ( "-12VDC" "8" I ) ( "COM IN" "23" O ) ( "COM IN" "24" I ) ( "COM OUT" "9" O ) 
+( "COM OUT" "10" I ) 
+`I R "LM339" ANALOG.LIB "LM339" AD6378C4  U3  [1100]
+"14DIP300" "" "" "" "" "" "" "" 
+"14DIP300"
+( "+IN_A" "7" I ) ( "+IN_B" "5" I ) ( "+IN_C" "9" I ) ( "+IN_D" "11" I ) 
+( "-IN_A" "6" I ) ( "-IN_B" "4" I ) ( "-IN_C" "8" I ) ( "-IN_D" "10" I ) ( "OUT_A" "1" C ) 
+( "OUT_B" "2" C ) ( "OUT_C" "14" C ) ( "OUT_D" "13" C ) ( "V+_A" "3" P ) ( "V-_A" "12" P ) 
+`I R "2N222A" PCBDEV.LIB "NPN EBC" AE37B646  Q1  [1]
+"TO52" "" "" "" "" "" "" "" 
+"TO52"
+( "EMITTER" "1" P ) ( "BASE" "2" I ) ( "COLLECTOR" "3" P ) 
+`I R "270" PCBDEV.LIB "R" AD641CA2  R2  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`J ( R D1 1 P ) ( R J1 23 P ) 
+`J ( R D1 2 P ) ( R U1 1 I ) ( R U1 2 I ) ( R C1 1 P ) 
+( R R1 1 P ) 
+`J ( R U2 7 S ) ( R R2 2 P ) ( R U1 9 O ) ( R U1 10 I ) 
+( R R3 1 P ) ( R C2 2 P ) ( R R5 1 P ) ( R R4 1 P ) ( R R6 1 P ) 
+( R VR1 "2" I ) ( R R7 1 P ) ( R R8 1 P ) ( R C3 2 P ) ( R R9 1 P ) 
+( R VR2 "2" I ) ( R C4 2 P ) ( R U3 12 P ) ( R J1 3 P ) ( R R15 3 P ) 
+( R Q1 1 P ) ( R D2 1 P ) ( R D3 1 P ) ( R R26 1 P ) ( R U1 24 I ) 
+( R U1 23 O ) ( R C1 2 P ) ( P S "GND" ) 
+`J ( R U2 14 S ) ( R R24 2 P ) ( R R23 2 P ) ( R J1 7 P ) 
+( R J1 5 P ) ( R VR2 "3" I ) ( R R20 1 P ) ( P S "VCC" ) ( R C4 1 P ) 
+( R R21 1 P ) ( R R22 1 P ) ( R R10 1 P ) ( R R14 2 P ) ( R R15 1 P ) 
+( R R18 1 P ) ( R U3 3 P ) ( R R16 1 P ) ( R R25 2 P ) 
+`J ( R R20 16 P ) ( R R20 15 P ) ( R J1 8 P ) 
+`J ( R R21 16 P ) ( R R21 15 P ) ( R J1 34 P ) 
+`J ( R R22 16 P ) ( R R22 15 P ) ( R J1 12 P ) 
+`J ( R J1 31 P ) ( R R20 2 P ) ( R R20 3 P ) 
+`J ( R J1 35 P ) ( R R21 2 P ) ( R R21 3 P ) 
+`J ( R R22 2 P ) ( R J1 13 P ) ( R R22 3 P ) 
+`J ( R R1 2 P ) ( R VR1 "1" I ) ( R C2 1 P ) 
+`J ( R R20 14 P ) ( R R20 13 P ) ( R J1 9 P ) 
+`J ( R R21 14 P ) ( R R21 13 P ) ( R J1 36 P ) 
+`J ( R R22 14 P ) ( R R22 13 P ) ( R J1 14 P ) 
+`J ( R J1 32 P ) ( R R20 4 P ) ( R R20 5 P ) 
+`J ( R J1 37 P ) ( R R21 4 P ) ( R R21 5 P ) 
+`J ( R R22 4 P ) ( R J1 15 P ) ( R R22 5 P ) 
+`J ( R U1 7 I ) ( R J1 2 P ) ( R U1 8 I ) 
+`J ( R R20 12 P ) ( R R20 11 P ) ( R J1 10 P ) 
+`J ( R R21 12 P ) ( R R21 11 P ) ( R J1 38 P ) 
+`J ( R R22 12 P ) ( R R22 11 P ) ( R J1 16 P ) 
+`J ( R J1 33 P ) ( R R20 6 P ) ( R R20 7 P ) 
+`J ( R J1 39 P ) ( R R21 6 P ) ( R R21 7 P ) 
+`J ( R R22 6 P ) ( R J1 17 P ) ( R R22 7 P ) 
+`J ( R R20 10 P ) ( R R20 9 P ) ( R J1 11 P ) 
+`J ( R R21 10 P ) ( R R21 9 P ) ( R J1 40 P ) 
+`J ( R R22 10 P ) ( R R22 9 P ) ( R J1 18 P ) 
+`J ( R J1 24 P ) ( R R20 8 P ) ( R R23 1 P ) 
+`J ( R J1 25 P ) ( R R21 8 P ) ( R R24 1 P ) 
+`J ( R R22 8 P ) ( R R25 1 P ) ( R J1 26 P ) 
+`J ( R U1 11 I ) ( R U1 12 I ) ( R R2 1 P ) 
+`J ( R VR1 "3" I ) ( R J1 1 P ) ( R VR2 "1" I ) ( R C3 1 P ) 
+( R J1 4 P ) 
+`J ( R R3 2 P ) ( R J1 22 P ) 
+`J ( R R4 2 P ) ( R J1 21 P ) 
+`J ( R R5 2 P ) ( R J1 19 P ) 
+`J ( R R6 2 P ) ( R J1 44 P ) 
+`J ( R R7 2 P ) ( R J1 43 P ) 
+`J ( R R8 2 P ) ( R J1 42 P ) 
+`J ( R R9 2 P ) ( R J1 41 P ) 
+`J ( R J1 29 P ) ( R R11 1 P ) 
+`J ( R J1 28 P ) ( R R12 1 P ) 
+`J ( R R17 1 P ) ( R J1 6 P ) 
+`J ( R R19 1 P ) ( R J1 20 P ) 
+`J ( R R10 2 P ) ( R R13 2 P ) ( R Q1 2 I ) 
+`J ( R R11 2 P ) ( R Q1 3 P ) 
+`J ( R R12 2 P ) ( R D2 2 P ) ( R U3 6 I ) 
+`J ( R J1 30 P ) ( R U2 1 I ) 
+`J ( R U2 2 C ) ( R R13 1 P ) 
+`J ( R J1 27 P ) ( R U3 1 C ) ( R R14 1 P ) 
+`J ( R U3 7 I ) ( R R15 2 P ) 
+`J ( R R16 2 P ) ( R R26 2 P ) ( R U3 4 I ) 
+`J ( R R17 2 P ) ( R D3 2 P ) ( R U3 5 I ) 
+`J ( R R18 2 P ) ( R U3 2 C ) ( R U2 3 I ) 
+`J ( R R19 2 P ) ( R U2 4 C ) 

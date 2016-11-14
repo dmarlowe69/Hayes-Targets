@@ -1,0 +1,2 @@
+1 'Example 2 of CONFIG PIO
+10 CONFIG PIO &110,1,1,0,0,1

@@ -1,0 +1,164 @@
+( { OrCAD/PCB II Netlist Format
+T L X  S E R V O  D R I V E R                 Revised:      June  4, 1992
+0 0 1 - 0 0 0 0                               Revision: 1
+H A Y E S  T A R G E T S
+
+
+
+
+
+Time Stamp - }
+ ( 8EB015CD RL07 R2 10K
+  ( 1 N00007 )
+  ( 2 GND )
+ )
+ ( 91ACFDA1 RL07 R3 10K
+  ( 1 GND )
+  ( 2 N00009 )
+ )
+ ( 91ACFDA2 RL07 R7 10K
+  ( 1 N00014 )
+  ( 2 GND )
+ )
+ ( 8EB015D1 RL07 R8 10K
+  ( 1 N00015 )
+  ( 2 GND )
+ )
+ ( 8EB015C2 RL07 R15 10K
+  ( 1 N00004 )
+  ( 2 N00005 )
+ )
+ ( 8EB015C1 RL07 R19 10K
+  ( 1 N00003 )
+  ( 2 N00002 )
+ )
+ ( ACE55DFD CK05 C4 10MFD
+  ( 1 N00002 )
+  ( 2 GND )
+ )
+ ( ACE55DFE CK05 C5 10MFD
+  ( 1 N00001 )
+  ( 2 GND )
+ )
+ ( 8EB015C3 RL07 R14 130K
+  ( 1 N00010 )
+  ( 2 N00003 )
+ )
+ ( 91ACFDA0 RL07 R18 130K
+  ( 1 N00012 )
+  ( 2 N00005 )
+ )
+ ( 8EB015C6 RV100 R20 1MEG
+  ( 1 N00012 )
+  ( 2 N00005 )
+  ( 3 N00005 )
+ )
+ ( 91ACFD9C RV100 R4 20K
+  ( 1 GND )
+  ( 2 N00009 )
+  ( 3 N00009 )
+ )
+ ( 8EB015C0 RL07 R16 24K
+  ( 1 GND )
+  ( 2 N00002 )
+ )
+ ( 8EB015BF RL07 R17 24K
+  ( 1 N00002 )
+  ( 2 N00001 )
+ )
+ ( 8EB015DF CK05 C1 270PFD
+  ( 1 N00003 )
+  ( 2 N00002 )
+ )
+ ( ACDFBC52 CK05 C2 3.3MFD
+  ( 1 N00004 )
+  ( 2 GND )
+ )
+ ( 8EB015CF RL07 R1 30K
+  ( 1 N00006 )
+  ( 2 N00007 )
+ )
+ ( 8EE893C1 RL07 R6 30K
+  ( 1 N00013 )
+  ( 2 N00014 )
+ )
+ ( 8EB015C5 RL07 R10 30K
+  ( 1 N00001 )
+  ( 2 N00012 )
+ )
+ ( 8EB015C4 RL07 R13 30K
+  ( 1 N00001 )
+  ( 2 N00010 )
+ )
+ ( 8EB015CE RL07 R5 330K
+  ( 1 N00009 )
+  ( 2 N00008 )
+ )
+ ( 8EB015D2 RL07 R9 330K
+  ( 1 N00015 )
+  ( 2 N00011 )
+ )
+ ( ACE55DFC CK05 C3 50MFD
+  ( 1 N00001 )
+  ( 2 GND )
+ )
+ ( 8EB015BE RL07 R11 5K
+  ( 1 N00011 )
+  ( 2 N00012 )
+ )
+ ( 8EB015BD RL07 R12 5K
+  ( 1 N00008 )
+  ( 2 N00010 )
+ )
+ ( A83DAE68 JPAD-1 P7 GND7
+  ( A GND )
+ )
+ ( 91ACFD9D 14DIP300 U1 LM124
+  ( 1 N00008 )
+  ( 2 N00009 )
+  ( 3 N00007 )
+  ( 4 N00001 )
+  ( 5 ?1 )
+  ( 6 ?2 )
+  ( 7 ?3 )
+  ( 8 ?4 )
+  ( 9 ?5 )
+  ( 10 ?6 )
+  ( 11 GND )
+  ( 12 N00014 )
+  ( 13 N00015 )
+  ( 14 N00011 )
+ )
+ ( 91C891B9 TO3-5A U2 LM12CLK
+  ( 1 N00002 )
+  ( 2 N00004 )
+  ( 3 N00001 )
+  ( 4 GND )
+  ( 5 N00003 )
+ )
+ ( 91ACFD9F TO3-5A U3 LM12CLK
+  ( 1 N00010 )
+  ( 2 N00012 )
+  ( 3 N00001 )
+  ( 4 GND )
+  ( 5 N00005 )
+ )
+ ( 91B2A69A JPAD-1 P1 PAD
+  ( A N00006 )
+ )
+ ( 91B2A69B JPAD-1 P2 PAD
+  ( A N00013 )
+ )
+ ( 91B2A699 JPAD-1 P3 PAD
+  ( A GND )
+ )
+ ( 91B2A698 JPAD-1 P4 PAD
+  ( A N00001 )
+ )
+ ( 91B2A697 JPAD-2 P5 PAD
+  ( A N00003 )
+ )
+ ( 91B2A696 JPAD-2 P6 PAD
+  ( A N00005 )
+ )
+)

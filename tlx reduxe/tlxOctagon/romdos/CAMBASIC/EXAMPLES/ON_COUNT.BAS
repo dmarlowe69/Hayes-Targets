@@ -1,0 +1,16 @@
+1 'Example of CLEAR COUNT, CONFIG COUNT, COUNT, ON COUNT, RESUME COUNT, RETURN COUNT, START COUNT AND STOP COUNT statements
+10 CONFIG PIO &100,0,1,1,1,1
+20 CLEAR COUNT 4:'Make sure counter 4 is cleared in the beginning
+30 CONFIG COUNT 4,&100,2,10,AUTO:'Use counter 4, monitor I/O address &100, bit 2, branch when count 10, reset counter when preset value 10 is reached
+40 ON COUNT 4 GOSUB ..COUNTER4
+50 START COUNT 4
+60 FLAG = 0
+70 ..IDLE 
+80 X = COUNT(4):'Read number of high to low transitiona at counter 4
+90 IF FLAG = 0 AND X = 5 THEN STOP COUNT 4:DELAY .5:RESUME COUNT 4:FLAG=1
+100 GOTO ..IDLE
+110 ..COUNTER4
+120 STOP COUNT 4
+130 PRINT "BIT 2 OF I/O ADDRESS &100 HAS 10 HIGH TO LOW TRANSITIONS"
+140 RESUME COUNT 4
+150 RETURN COUNT

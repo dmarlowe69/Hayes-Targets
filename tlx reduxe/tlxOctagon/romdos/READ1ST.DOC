@@ -1,0 +1,22 @@
+This diskette has the programs necessary to make the 6040 card a self
+bootable system.  Refer to your operators manual for operating instructions.
+
+QUICKVID.DOC describes usage for using QuickBasic without a video card.
+
+Subdirectory \DEMO contains an example ROMDOS bootable disk for programming
+into SSD1.
+
+Subdirectory \DOS has files unique to this version of ROM-DOS.
+
+Subdirectory \DISPLAY has files necessary to use the BOB (Octagon's break out
+board) with a keypad and display.  Read DISPLAY.DOC for usage information.
+
+Subdirectory \UTILS has files unique to the 6040 card.  These include .SYS
+files, setup program, and utility programs.
+
+Subdirectory \EXAMPLES has example files for the 6040.
+
+Subdirectory \EXTBIOS has programs to build/program a new BIOS into the 6040.
+
+Subdirectory \CAMBASIC has programs and examples associated with CAMBASIC.
+

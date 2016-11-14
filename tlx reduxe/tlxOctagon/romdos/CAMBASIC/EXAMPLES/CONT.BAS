@@ -1,0 +1,7 @@
+1 'Example of CONT command
+10 A = 1
+20 PRINT A;"";
+30 INC A
+35 DELAY 1
+40 IF A < 20 THEN GOTO 20
+50 END

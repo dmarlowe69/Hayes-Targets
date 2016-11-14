@@ -1,0 +1,140 @@
+ #define BASE 0x0300			// base address of I/O board
+
+ void Lamp_ON(void)
+ {
+	outp(BASE+5,01001111b);
+	outp(BASE+4,11111111b);
+	inp(BASE+5);
+ }
+ void Aux_ON(void)
+ {
+	outp(BASE+5,11001111b);
+	outp(BASE+4,11111111b);
+	inp(BASE+5);
+ }
+void Lamp_OFF(void)
+ {
+	outp(BASE+5,01000000b);
+	outp(BASE+4,00000000b);
+	inp(BASE+5);
+ }
+ void Aux_ON(void)
+ {
+	outp(BASE+5,11000000b);
+	outp(BASE+4,00000000b);
+	inp(BASE+5);
+ }
+ void A_D_Init(void)
+ {
+	outp(BASE+11,00001101b);
+ }
+ unsigned int Read_Thermouple()
+ {
+ unsigned long input;
+ unsigned int input_value;
+
+	input = Read_A_D(0);
+	if(input == INVAILD) {
+		}
+	input_value = (unsigned int)(input);
+	return(input_value);
+ }
+
+ unsigned int Read_Alternator_Prior_to_Lamp()
+ {
+	input = Read_A_D(1);
+	if(input == INVAILD) {
+		}
+	input_value = (unsigned int)(input);
+	return(input_value);
+ }
+ unsigned int Read_Pump()
+ {
+ 	input = Read_A_D(2);
+	if(input == INVAILD) {
+		}
+	input_value = (unsigned int)(input);
+	return(input_value);
+}
+ unsigned int Read_Battery_Voltage()
+ {
+	input = Read_A_D(3);
+	if(input == INVAILD) {
+		}
+	input_value = (unsigned int)(input);
+	return(input_value);
+
+ }
+ unsigned int Read_Accelerometer()
+ {
+	input = Read_A_D(4);
+	if(input == INVAILD) {
+		}
+	input_value = (unsigned int)(input);
+	return(input_value);
+ }
+
+ unsigned int Read_Modem_Signal_Strenght()
+ {
+	input = Read_A_D(5);
+	if(input == INVAILD) {
+		}
+	input_value = (unsigned int)(input);
+	return(input_value);
+ }
+
+ unsigned int Read_Radar_Altitude()
+ {
+	input = Read_A_D(6);
+	if(input == INVAILD) {
+		}
+	input_value = (unsigned int)(input);
+	return(input_value);
+ }
+
+ unsigned int Read_Alternator_Voltage()
+ {
+	input = Read_A_D(7);
+	if(input == INVAILD) {
+		}
+	input_value = (unsigned int)(input);
+	return(input_value);
+ }
+
+
+ #define TIME_OUT 65536
+ #define INVALID  65536
+ unsigned long Read_A_D(unsigned char channel)
+ {
+ unsigned long input;                      /* local variable for input data */
+ unsigned lomg time_out;                   /* time out counter */
+
+	// Write A/D Channel to MUX Control
+	outp(BASE+2,channel);
+	outp(BASE+3,channel);
+	// Start Conversion
+	outp(BASE,0);	
+	
+	time_out = 0;                   /* set time out */
+
+	while( (inp(BASE+8) & 0x80) ) {
+		time_out++; 		/* increment time out */
+		if(time_out>TIME_OUT) {
+			return(INVALID);
+			}						/* conversion time out */
+		}
+
+ #if !defined(DATA_16)
+
+        input = ( inpw(BASE) ) & 0000ffff;
+					/* input and mask high nibble */
+ #else
+
+        input = inp(BASE) | (inp(BASE+1)<<8) & 0000ffff;
+                        
+ #endif
+
+	return(input);                  /* return value to caller */
+			
+ }
+

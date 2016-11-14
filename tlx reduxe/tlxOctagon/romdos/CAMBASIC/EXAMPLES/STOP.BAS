@@ -1,0 +1,7 @@
+1 'Example of STOP statement
+10 A = 1
+20 PRINT A;"";
+25 IF A = 8 THEN STOP
+30 INC A
+40 IF A < 20 THEN GOTO 20
+50 END

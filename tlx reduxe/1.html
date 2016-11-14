@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD W3 HTML//EN">
+<HTML>
+<HEAD>
+
+<META content=text/html;charset=iso-8859-1 http-equiv=Content-Type><!DOCTYPE HTML PUBLIC "-//W3C//DTD W3 HTML//EN">
+<META content='"MSHTML 4.72.3110.7"' name=GENERATOR>
+</HEAD>
+<BODY bgColor=#ffffff>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=Arial size=2><B>-----Original Message-----</B><BR><B>From: 
+</B>Ray Mark &lt;<A 
+href="mailto:ray@cambriancontrols.freeserve.co.uk">ray@cambriancontrols.freeserve.co.uk</A>&gt;<BR><B>To: 
+</B>Roger Brum &lt;<A 
+href="mailto:rogerb@meggittdefense.com">rogerb@meggittdefense.com</A>&gt;<BR><B>Date: 
+</B>13 October 1999 17:15<BR><B>Subject: </B>Radalt serial data 
+protocol<BR><BR></DIV></FONT>
+<DIV><FONT color=#000000 size=2>Roger,</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT>&nbsp;</DIV>
+<DIV><FONT color=#000000 size=2>The radalt serial output stream is as 
+follows.</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT>&nbsp;</DIV>
+<DIV><FONT size=2>Two packets of data are transmitted asynchronously, at approx 
+10Hz, although this rate varies with height and lock status. Each packet 
+contains 8 bytes configured thus :-</FONT></DIV>
+<DIV><FONT size=2></FONT>&nbsp;</DIV>
+<DIV><FONT size=2>first packet:-</FONT></DIV>
+<DIV><FONT size=2></FONT>&nbsp;</DIV>
+<DIV><FONT color=#000000 size=2>Byte 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; decimal 
+1</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; decimal 
+35</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; range high 
+byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; range low 
+byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+signal level high byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT><FONT size=2>Byte 
+6&nbsp;&nbsp;&nbsp;&nbsp; signal level low byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 7&nbsp;&nbsp;&nbsp;&nbsp; checksum high 
+byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 8&nbsp;&nbsp;&nbsp; checksum low 
+byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT>&nbsp;</DIV>
+<DIV><FONT color=#000000 size=2>The checksum is the XOR of bytes 3 to 6 
+inclusive.</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT>&nbsp;</DIV>
+<DIV><FONT color=#000000 size=2>second packet</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT>&nbsp;</DIV>
+<DIV><FONT color=#000000 size=2>
+<DIV><FONT color=#000000 size=2>Byte 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; decimal 
+1</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; decimal 
+36</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; raw 
+pressure high byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; raw 
+pressure low byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gain 
+setting</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT><FONT size=2>Byte 
+6&nbsp;&nbsp;&nbsp;&nbsp; signal quality indication</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 7&nbsp;&nbsp;&nbsp;&nbsp; checksum high 
+byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2>Byte 8&nbsp;&nbsp;&nbsp; checksum low 
+byte</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT>&nbsp;</DIV>
+<DIV><FONT color=#000000 size=2>
+<DIV><FONT color=#000000 size=2>The checksum is the XOR of bytes 3 to 6 
+inclusive.</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT>&nbsp;</DIV>
+<DIV><FONT color=#000000 size=2>You need only look at packet one, bytes 3 &amp; 
+4, which contain the range value. If the unit is out of lock, it sets this value 
+to zero.</FONT></DIV>
+<DIV><FONT color=#000000 size=2></FONT>Range is scaled 100mm per bit.( 6 times 
+better resolution than analog output!)</DIV>
+<DIV>Baud rate is 9600, one stop bit, no parity.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT color=#000000 
+size=2></FONT>&nbsp;</DIV></FONT></DIV></FONT></DIV></BODY></HTML>

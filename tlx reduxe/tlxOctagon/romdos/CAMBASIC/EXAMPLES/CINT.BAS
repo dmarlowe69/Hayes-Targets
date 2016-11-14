@@ -1,0 +1,7 @@
+1 'Example of CINT function
+10 PRINT "  N","INT(N)","CINT(N)","FIX(N)":PRINT
+20 FOR M = 1 TO 6
+30 READ N
+40 PRINT N,INT(N),CINT(N),FIX(N)
+50 NEXT M
+60 DATA 99.3,99.5,99.7,-99.3,-99.5,-99.7

@@ -1,0 +1,117 @@
+'        This software, including source code, is provided at no cost.  It
+'        is intended to be used for tutorial and demo purposes, and therefore,
+'        no warranty of any kind, express or implied is provided.  Under no
+'        circumstances whatsoever shall Octagon Systems Corporation be held
+'        liable for any damages, including any lost profits, lost savings,
+'        or other incidental or consequential damages arising from the use
+'        of, or inability to use, this software.
+
+'       Octagon Systems Corporation (TM)
+'       6510 W. 91st. Ave.
+'       Westminster, CO  80030
+
+' This routine tests the Bios keyboard and display routine using direct
+' interrupt calls. This is useful since QuickBasic 4.5 PRINT and INKEY$
+' routines do not behave themselves and will not print when running without
+' a monitor.
+
+'To compile this program using QuickBasic 4.5, use the command line
+
+'  qb an-0050 /l
+
+' make sure to use the /L option to pull in the library
+
+
+' ******  Use this example when an Octagon PC compatible card is using the
+' ******  COM1 serial link as the main console device.
+
+
+DECLARE FUNCTION KEYHIT$ ()
+DECLARE FUNCTION INKEY2$ ()
+DECLARE SUB PRINTS (a$)
+
+'$INCLUDE: 'QB.BI'            ' Include file with INTERRUPT and RegType defs.
+
+CRLF$ = CHR$(10) + CHR$(13)   ' Define end of line string
+
+' First display an opening string using PRINTS
+
+CALL PRINTS(CRLF$ + "USE 'CALL PRINTS' FOR ALL OUTPUTS." + CRLF$)
+
+CALL PRINTS("PRESS A SERIES OF KEYS, ENDING WITH THE ENTER KEY." + CRLF$)
+CALL PRINTS("USE 'KEYHIT$' AND 'INKEY2$' FUNCTIONS TO GET THE KEYS." + CRLF$)
+
+' Loop until the enter key (CR = 13) is pressed,
+' Test for and get the key using INKEY2$ and KEYHIT$.
+
+a$ = ""
+WHILE (a$ <> CHR$(13))        ' while not at end of line print characters
+  IF (KEYHIT$ <> "") THEN     ' if a key was pressed
+    a$ = INKEY2$              ' go get the key
+    PRINTS (a$)               ' and print it out
+  END IF
+WEND
+CALL PRINTS(CRLF$)
+
+END
+
+FUNCTION INKEY2$
+'
+' Go get a key from the Bios keyboard buffer using the Bios keyboard
+' interrupt.
+' Returns "" if no key is present
+' else returns ascii character pressed.
+'
+DIM inregs AS RegType, outregs AS RegType
+
+IF (ASC(KEYHIT$) <> 0) THEN
+  inregs.ax = 0
+  CALL INTERRUPT(&H16, inregs, outregs)           ' Bios key return int
+  INKEY2$ = CHR$(outregs.ax AND &HFF)             ' return ascii character
+ELSE
+  INKEY2$ = ""
+END IF
+
+END FUNCTION
+
+FUNCTION KEYHIT$
+'
+' Check if keyboard has been pressed using Bios interrupt.
+' Returns 0 if no key has been pressed.
+' or the ascii key pressed.
+' NOTE: This does not remove the key from the buffer. Use GETKEY
+'       for doing that.
+'
+DIM inregs AS RegType, outregs AS RegType
+CONST zflag = &H40
+
+  inregs.ax = &H100
+  CALL INTERRUPT(&H16, inregs, outregs)         ' Bios key status int.
+
+  IF ((outregs.flags AND zflag) <> 0) THEN      ' If zero flag set
+    KEYHIT$ = CHR$(0)                           ' then no key present
+  ELSE
+    KEYHIT = CHR$(outregs.ax AND &HFF)          ' Key is present, return
+  END IF                                        ' value but don't remove
+                              ' from keyboard buffer.
+END FUNCTION
+
+SUB PRINTS (a$)
+
+DEFINT C,I
+
+' This routine prints a string using the Bios write TTY (INT 10H subfunc 0EH)
+' Input to this routine is a string.
+'
+DIM inregs AS RegType, outregs AS RegType
+
+FOR i = 1 TO LEN(a$)                    ' For each character in the string
+  ch = ASC(MID$(a$, i, 1))              ' extract the character.
+  inregs.ax = &HE00 + ch                ' Set the subfunction code and
+  inregs.bx = 1                         ' and character to display.
+  CALL INTERRUPT(&H10, inregs, outregs) ' Then generate the interrupt.
+NEXT i
+
+END SUB
+
+

@@ -1,0 +1,10 @@
+
+
+			Printing using Quick Basic programs
+
+Quick Basic normally tests if a display adapter card (ie CGA, EGA) 
+is present when an .EXE is started up. For systems using COM1 as the main
+console, the Quick Basic PRINT statement will not work.  A program in the 
+\DISPLAY subdirectory, called AN-0050, shows how to print out and recieve
+characters from COM1.  The PRINTS function allows you to print a string
+out of the COM1 serial port.

@@ -1,0 +1,314 @@
+`F  1.00 DIGAPC6
+`B "1" "1" "B" "    March 21, 1996" "0 0 1 -  0 3 8 0" "001" 
+"SCHEMATIC, CIRCUIT BOARD, APC-6" "H  A  Y  E  S    T  A  R  G  E  T  S  "
+""
+""
+""
+""
+`P S "GND"
+`P S "VCC"
+`P S "VDD"
+`P S "VSS"
+`E LADDER.LIB
+`E DENTON.LIB
+`E ANALOG1.LIB
+`E ANALOG2.LIB
+`E ANALOG3.LIB
+`E ANALOG4.LIB
+`E JTEMP.LIB
+`E PCBDEV.LIB
+`E JMA.LIB
+`E CMOS.LIB
+`E SHAPES.LIB
+`E TTL.LIB
+`E DEVICE.LIB
+`E ANALOG.LIB
+`I R "MC7812BT" DENTON.LIB "LM78XX" D5297384  VR1  []
+"to220hlh" "" "" "" "" "" "" "" 
+"TO220HLH"
+( "2" "2" I ) ( "3" "3" I ) ( "1" "1" I ) 
+`I R "MC7805BT" DENTON.LIB "LM78XX" D5297385  VR2  []
+"to220hlh" "" "" "" "" "" "" "" 
+"TO220HLH"
+( "2" "2" I ) ( "3" "3" I ) ( "1" "1" I ) 
+`I R "3.3/.5W" PCBDEV.LIB "R" D529738F  R2  [1]
+"RL20" "RC20GF3R3J" "" "" "" "" "" "" 
+"RL20"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "3.3/.5W" PCBDEV.LIB "R" D5297390  R3  [1]
+"RL20" "RC20GF3R3J" "" "" "" "" "" "" 
+"RL20"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "3.3/.5W" PCBDEV.LIB "R" D5297391  R4  [1]
+"RL20" "RC20GF3R3J" "" "" "" "" "" "" 
+"RL20"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "LZ-24H" JMA.LIB "LZ SPDT" D5297392  K1  [1]
+"LZ-JMA" "" "" "" "" "" "" "" 
+"LZ-JMA"
+( "COMMON" "5" P ) ( "NC" "1" P ) ( "NO" "2" P ) ( "COIL1" "3" P ) 
+( "COIL2" "4" P ) 
+`I R "LZ-24H" JMA.LIB "LZ SPDT" D5297393  K2  [1]
+"LZ-JMA" "" "" "" "" "" "" "" 
+"LZ-JMA"
+( "COMMON" "5" P ) ( "NC" "1" P ) ( "NO" "2" P ) ( "COIL1" "3" P ) 
+( "COIL2" "4" P ) 
+`I R "LZ-24H" JMA.LIB "LZ SPDT" D5297394  K3  [1]
+"LZ-JMA" "" "" "" "" "" "" "" 
+"LZ-JMA"
+( "COMMON" "5" P ) ( "NC" "1" P ) ( "NO" "2" P ) ( "COIL1" "3" P ) 
+( "COIL2" "4" P ) 
+`I R "LZ-24H" JMA.LIB "LZ SPDT" D5297395  K4  [1]
+"LZ-JMA" "" "" "" "" "" "" "" 
+"LZ-JMA"
+( "COMMON" "5" P ) ( "NC" "1" P ) ( "NO" "2" P ) ( "COIL1" "3" P ) 
+( "COIL2" "4" P ) 
+`I R "P1" JMA.LIB "PAD" D52973A4  +28  [1]
+"jpad-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P2" JMA.LIB "PAD" D52973A5  GND  [1]
+"jpad-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P14" JMA.LIB "PAD" D52973A6  +5V/TEMP  [1]
+"jpad-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P15" JMA.LIB "PAD" D52973A7  +5V/TEST  [1]
+"jpad-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P3" JMA.LIB "PAD" D529739D  F1  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P4" JMA.LIB "PAD" D529739E  F2  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P5" JMA.LIB "PAD" D529739F  F3  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P6" JMA.LIB "PAD" D52973A0  F4  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "A6" JMA.LIB "PAD" D5297366  P8  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "A5" JMA.LIB "PAD" D5297365  P7  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "BS2-IC" JMA.LIB "BS2-IC" 3E31EDBD  CPU1  [1]
+"24DIP600" "" "" "" "" "" "" "" 
+"24DIP600"
+( "TX" "1" I ) ( "RX" "2" I ) ( "ATN" "3" I ) ( "GND" "4" I ) 
+( "P1" "6" I ) ( "P2" "7" I ) ( "VDD" "24" S ) ( "VSS" "12" S ) ( "P0" "5" B ) 
+( "P3" "8" B ) ( "P4" "9" B ) ( "P5" "10" B ) ( "P6" "11" B ) ( "P8" "13" B ) 
+( "P9" "14" B ) ( "P10" "15" B ) ( "P11" "16" B ) ( "P12" "17" B ) ( "P13" "18" B ) 
+( "P14" "19" B ) ( "P15" "20" B ) ( "+5V" "21" B ) ( "RES" "22" B ) ( "GND" "23" B ) 
+`I R "HOSTPORT" JMA.LIB "CONNECTOR 9D" 3E31EDC1  J1  [1]
+"DB9F" "" "" "" "" "" "" "" 
+"DB9F"
+( "1" "1" P ) ( "2" "2" P ) ( "3" "3" P ) ( "4" "4" P ) 
+( "5" "5" P ) ( "6" "6" P ) ( "7" "7" P ) ( "8" "8" P ) ( "9" "9" P ) 
+`I R ".01" PCBDEV.LIB "CAPACITOR" 3E4AA7AC  C6  [1]
+"CK06" "" "" "" "" "" "" "" 
+"CK06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R ".01" PCBDEV.LIB "CAPACITOR" 3E4AA7AD  C7  [1]
+"CK06" "" "" "" "" "" "" "" 
+"CK06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R ".01" PCBDEV.LIB "CAPACITOR" 3E4AA7AE  C8  [1]
+"CK06" "" "" "" "" "" "" "" 
+"CK06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R ".01" PCBDEV.LIB "CAPACITOR" 3E4AA7AF  C9  [1]
+"CK06" "" "" "" "" "" "" "" 
+"CK06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R ".01" PCBDEV.LIB "CAPACITOR" 3E4AA7B0  C10  [1]
+"CK06" "" "" "" "" "" "" "" 
+"CK06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R ".01" PCBDEV.LIB "CAPACITOR" 3E4AA7B1  C11  [1]
+"CK06" "" "" "" "" "" "" "" 
+"CK06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R ".01" PCBDEV.LIB "CAPACITOR" 3E4AA7AA  C5  [1]
+"CK06" "" "" "" "" "" "" "" 
+"CK06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R ".01" PCBDEV.LIB "CAPACITOR" 3E4AA7AB  C12  [1]
+"CK06" "" "" "" "" "" "" "" 
+"CK06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R ".001" PCBDEV.LIB "CAPACITOR" 3E4AA7B2  C1  [1]
+"CK06" "" "" "" "" "" "" "" 
+"CK06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "47/35VDC" PCBDEV.LIB "CAPACITOR POL" D529737C  C2  [1]
+"CPLUS60" "199D476X0035FE2" "" "" "" "" "" "" 
+"CPLUS60"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10/25VDC" PCBDEV.LIB "CAPACITOR POL" D529737D  C3  [1]
+"CPLUS06" "199D106X0016CA1" "" "" "" "" "" "" 
+"CPLUS06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10/25VDC" PCBDEV.LIB "CAPACITOR POL" D529737E  C4  [1]
+"CPLUS06" "199D106X0016CA1" "" "" "" "" "" "" 
+"CPLUS06"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "0" PCBDEV.LIB "JUMPER" D5297361  JP1  [1]
+"JMPR" "" "" "" "" "" "" "" 
+"JMPR"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "0" PCBDEV.LIB "JUMPER" D5297362  JP2  [1]
+"JMPR" "" "" "" "" "" "" "" 
+"JMPR"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "3.3/.5W" PCBDEV.LIB "R" 1DDD4F58  R5  [1]
+"RL20" "RC20GF3R3J" "" "" "" "" "" "" 
+"RL20"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "3.3/.5W" PCBDEV.LIB "R" 1DDD4F56  R6  [1]
+"RL20" "RC20GF3R3J" "" "" "" "" "" "" 
+"RL20"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "A6" JMA.LIB "PAD" 3E31EDBF  P9  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "A6" JMA.LIB "PAD" 3E31EDC0  P10  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P11" JMA.LIB "PAD" D52973A3  TEMP  [1]
+"jpad-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P12" JMA.LIB "PAD" D52973A2  TEMP/SW  [1]
+"jpad-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P13" JMA.LIB "PAD" D52973A1  TEMP/SIG  [1]
+"jpad-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "ULN2803A" JMA.LIB "ULN-2803A" D5297397  U1  [1]
+"18DIP300" "" "" "" "" "" "" "" 
+"18DIP300"
+( "A1" "1" P ) ( "A2" "2" P ) ( "A3" "3" P ) ( "A4" "4" P ) 
+( "A5" "5" P ) ( "A6" "6" P ) ( "A7" "7" P ) ( "A8" "8" P ) ( "GND" "9" P ) 
+( "B1" "18" P ) ( "B2" "17" P ) ( "B3" "16" P ) ( "B4" "15" P ) ( "B5" "14" P ) 
+( "B6" "13" P ) ( "B7" "12" P ) ( "B8" "11" P ) ( "TST" "10" P ) 
+`I R "LZ-24H" JMA.LIB "LZ SPDT" 1DDD4F59  K5  [1]
+"LZ-JMA" "" "" "" "" "" "" "" 
+"LZ-JMA"
+( "COMMON" "5" P ) ( "NC" "1" P ) ( "NO" "2" P ) ( "COIL1" "3" P ) 
+( "COIL2" "4" P ) 
+`I R "4.7K" PCBDEV.LIB "R-PACK" 3E31EDBE  R1  [1]
+"16DIP300" "" "" "" "" "" "" "" 
+"16DIP300"
+( "R1" "1" P ) ( "R1" "16" P ) ( "R2" "2" P ) ( "R2" "15" P ) 
+( "R3" "3" P ) ( "R3" "14" P ) ( "R4" "4" P ) ( "R4" "13" P ) ( "R5" "5" P ) 
+( "R5" "12" P ) ( "R6" "6" P ) ( "R6" "11" P ) ( "R7" "7" P ) ( "R7" "10" P ) 
+( "R8" "8" P ) ( "R8" "9" P ) 
+`I R "P15" JMA.LIB "PAD" 3E4E4FB4  AUX2  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P16" JMA.LIB "PAD" 3E4E4FB3  AUX3  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P14" JMA.LIB "PAD" 3E4E4FB5  AUX1  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P17" JMA.LIB "PAD" 3E4AA758  FUEL  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P14" JMA.LIB "PAD" 3E4AA756  SQ4  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P15" JMA.LIB "PAD" D529739C  SQ3  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P16" JMA.LIB "PAD" 3E4AA757  SQ2  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`I R "P17" JMA.LIB "PAD" D529739B  SQ1  [1]
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "I/O" "1" B ) 
+`J ( R +28 1 B ) ( R C1 1 P ) ( R VR1 "1" I ) ( R C2 1 P ) 
+( R R2 2 P ) ( R R3 2 P ) ( R R4 2 P ) ( R R5 2 P ) ( R R6 2 P ) 
+( R JP1 1 P ) 
+`J ( R JP1 2 P ) ( R JP2 2 P ) ( R K1 3 P ) ( R K2 3 P ) 
+( R U1 10 P ) ( R K3 3 P ) ( R K4 3 P ) ( R K5 3 P ) 
+`J ( R JP2 1 P ) ( R VR1 "3" I ) ( R VR2 "1" I ) ( R C3 1 P ) 
+`J ( R C1 2 P ) ( R GND 1 B ) ( R C6 2 P ) ( R C5 2 P ) 
+( R C7 2 P ) ( R C8 2 P ) ( R C9 2 P ) ( R C10 2 P ) ( R C11 2 P ) 
+( R C12 2 P ) ( R C2 2 P ) ( R VR1 "2" I ) ( R C3 2 P ) ( R VR2 "2" I ) 
+( R J1 5 P ) ( R C4 2 P ) ( R U1 9 P ) ( P S "GND" ) ( R CPU1 4 I ) 
+( R K1 1 P ) ( R K2 1 P ) ( R K3 1 P ) ( R K4 1 P ) ( R K5 1 P ) 
+`J ( R +5V/TEMP 1 B ) ( R +5V/TEST 1 B ) ( R VR2 "3" I ) ( R C4 1 P ) 
+( P S "VCC" ) ( R CPU1 21 B ) 
+`J ( R AUX1 1 B ) ( R U1 13 P ) 
+`J ( R AUX2 1 B ) ( R U1 12 P ) 
+`J ( R AUX3 1 B ) ( R U1 11 P ) 
+`J ( R FUEL 1 B ) ( R K5 5 P ) 
+`J ( R SQ4 1 B ) ( R K4 5 P ) 
+`J ( R SQ3 1 B ) ( R K3 5 P ) 
+`J ( R SQ2 1 B ) ( R K2 5 P ) 
+`J ( R SQ1 1 B ) ( R K1 5 P ) 
+`J ( R CPU1 24 S ) ( P S "VDD" ) 
+`J ( R J1 2 P ) ( R CPU1 1 I ) 
+`J ( R J1 3 P ) ( R CPU1 2 I ) 
+`J ( R J1 4 P ) ( R CPU1 3 I ) 
+`J ( R F1 1 B ) ( R C5 1 P ) ( R R1 1 P ) 
+`J ( R R1 16 P ) ( R CPU1 5 B ) 
+`J ( R CPU1 20 B ) ( R U1 1 P ) 
+`J ( R U1 18 P ) ( R K1 4 P ) 
+`J ( R F2 1 B ) ( R C6 1 P ) ( R R1 2 P ) 
+`J ( R R1 15 P ) ( R CPU1 6 I ) 
+`J ( R CPU1 19 B ) ( R U1 2 P ) 
+`J ( R U1 17 P ) ( R K2 4 P ) 
+`J ( R F3 1 B ) ( R C7 1 P ) ( R R1 3 P ) 
+`J ( R R1 14 P ) ( R CPU1 7 I ) 
+`J ( R CPU1 18 B ) ( R U1 3 P ) 
+`J ( R U1 16 P ) ( R K3 4 P ) 
+`J ( R K1 2 P ) ( R R2 1 P ) 
+`J ( R F4 1 B ) ( R C8 1 P ) ( R R1 4 P ) 
+`J ( R R1 13 P ) ( R CPU1 8 B ) 
+`J ( R CPU1 17 B ) ( R U1 4 P ) 
+`J ( R U1 15 P ) ( R K4 4 P ) 
+`J ( R P7 1 B ) ( R C9 1 P ) ( R R1 5 P ) 
+`J ( R R1 12 P ) ( R CPU1 9 B ) 
+`J ( R CPU1 16 B ) ( R U1 5 P ) 
+`J ( R U1 14 P ) ( R K5 4 P ) 
+`J ( R P8 1 B ) ( R C10 1 P ) ( R R1 6 P ) 
+`J ( R R1 11 P ) ( R CPU1 10 B ) 
+`J ( R CPU1 15 B ) ( R U1 6 P ) 
+`J ( R P9 1 B ) ( R C11 1 P ) ( R R1 7 P ) 
+`J ( R R1 10 P ) ( R CPU1 11 B ) 
+`J ( R CPU1 14 B ) ( R U1 7 P ) 
+`J ( R R1 8 P ) ( R P10 1 B ) ( R C12 1 P ) 
+`J ( R R1 9 P ) ( R CPU1 12 B ) 
+`J ( R CPU1 13 B ) ( R U1 8 P ) 
+`J ( P S "VSS" ) ( R CPU1 12 S ) 
+`J ( R K2 2 P ) ( R R3 1 P ) 
+`J ( R K3 2 P ) ( R R4 1 P ) 
+`J ( R K4 2 P ) ( R R5 1 P ) 
+`J ( R TEMP 1 B ) ( R TEMP/SW 1 B ) ( R TEMP/SIG 1 B ) 
+`J ( R K5 2 P ) ( R R6 1 P ) 

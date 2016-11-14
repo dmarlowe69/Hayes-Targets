@@ -1,0 +1,8 @@
+10 'Basic 16 Key Demo Program
+20 CONFIG PIO &100,0,1,1,1,0
+30 CONFIG KEYPAD$ &102,0,8
+40 ON KEYPAD$ GOSUB ..Key_interrupt
+50 GOTO 50
+60 ..Key_interrupt
+70 PRINT KEYPAD$(0)
+80 RETURN KEYPAD$

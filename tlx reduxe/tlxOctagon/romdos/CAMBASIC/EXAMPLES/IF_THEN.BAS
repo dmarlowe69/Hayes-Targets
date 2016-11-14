@@ -1,0 +1,5 @@
+1 'Example of IF ..THEN ..ELSE
+10 IF X = 1 THEN Y = 2:GOTO ..LABEL1
+20 IF X = 2 THEN Y = 3 ELSE Y = 4
+30 ..LABEL1
+40 PRINT X,Y

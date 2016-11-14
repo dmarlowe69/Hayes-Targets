@@ -1,0 +1,184 @@
+`F  1.00 SERVOAMP
+`B "1" "1" "A" "     June  4, 1992" "0 0 1 - 0 0 0 0" "1" 
+"T L X  S E R V O  D R I V E R" "H A Y E S  T A R G E T S"
+""
+""
+""
+""
+`P S "GND"
+`E PCBDEV.LIB
+`E JMA.LIB
+`E CMOS.LIB
+`E SHAPES.LIB
+`E TTL.LIB
+`E DEVICE.LIB
+`E ANALOG.LIB
+`I R "20K" PCBDEV.LIB "RESISTOR VAR" 91ACFD9C  R4  [1]
+"RV100" "" "" "" "" "" "" "" 
+"RV100"
+( "A" "1" P ) ( "B" "3" P ) ( "WIPER" "2" P ) 
+`I R "30K" PCBDEV.LIB "R" 8EB015CF  R1  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10K" PCBDEV.LIB "R" 8EB015CD  R2  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10K" PCBDEV.LIB "RESISTOR" 91ACFDA1  R3  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "330K" PCBDEV.LIB "R" 8EB015CE  R5  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "30K" PCBDEV.LIB "R" 8EE893C1  R6  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10K" PCBDEV.LIB "RESISTOR" 91ACFDA2  R7  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10K" PCBDEV.LIB "R" 8EB015D1  R8  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10K" PCBDEV.LIB "R" 8EB015C2  R15  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "130K" PCBDEV.LIB "R" 8EB015C3  R14  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "30K" PCBDEV.LIB "R" 8EB015C4  R13  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "5K" PCBDEV.LIB "R" 8EB015BD  R12  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "5K" PCBDEV.LIB "R" 8EB015BE  R11  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "30K" PCBDEV.LIB "R" 8EB015C5  R10  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "270PFD" PCBDEV.LIB "CAP" 8EB015DF  C1  [1]
+"CK05" "" "" "" "" "" "" "" 
+"CK05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10K" PCBDEV.LIB "R" 8EB015C1  R19  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "PAD" JMA.LIB "PAD" 91B2A696  P6  []
+"JPAD-2" "" "" "" "" "" "" "" 
+"JPAD-2"
+( "A" "A" B ) 
+`I R "PAD" JMA.LIB "PAD" 91B2A697  P5  []
+"JPAD-2" "" "" "" "" "" "" "" 
+"JPAD-2"
+( "A" "A" B ) 
+`I R "PAD" JMA.LIB "PAD" 91B2A698  P4  []
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "A" "A" B ) 
+`I R "PAD" JMA.LIB "PAD" 91B2A699  P3  []
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "A" "A" B ) 
+`I R "PAD" JMA.LIB "PAD" 91B2A69A  P1  []
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "A" "A" B ) 
+`I R "PAD" JMA.LIB "PAD" 91B2A69B  P2  []
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "A" "A" B ) 
+`I R "330K" PCBDEV.LIB "R" 8EB015D2  R9  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "LM124" ANALOG.LIB "LM124" 91ACFD9D  U1  [1001]
+"14dip300" "" "" "" "" "" "" "" 
+"14DIP300"
+( "IN+_A" "3" I ) ( "IN+_B" "5" I ) ( "IN+_C" "10" I ) ( "IN+_D" "12" I ) 
+( "IN-_A" "2" I ) ( "IN-_B" "6" I ) ( "IN-_C" "9" I ) ( "IN-_D" "13" I ) ( "OUT_A" "1" O ) 
+( "OUT_B" "7" O ) ( "OUT_C" "8" O ) ( "OUT_D" "14" O ) ( "V+_A" "4" I ) ( "V-_A" "11" I ) 
+`I R "LM12CLK" JMA.LIB "LM12" 91ACFD9F  U3  [1]
+"TO3-5A" "" "" "" "" "" "" "" 
+"TO3-5A"
+( "PLUS INPUT" "1" I ) ( "MINUS INPUT" "2" I ) ( "V+" "3" I ) ( "V-" "4" I ) 
+( "OUTPUT" "5" O ) 
+`I R "LM12CLK" JMA.LIB "LM12" 91C891B9  U2  [1]
+"TO3-5A" "" "" "" "" "" "" "" 
+"TO3-5A"
+( "PLUS INPUT" "1" I ) ( "MINUS INPUT" "2" I ) ( "V+" "3" I ) ( "V-" "4" I ) 
+( "OUTPUT" "5" O ) 
+`I R "1MEG" PCBDEV.LIB "POT" 8EB015C6  R20  [1]
+"RV100" "" "" "" "" "" "" "" 
+"RV100"
+( "A" "1" P ) ( "B" "3" P ) ( "WIPER" "2" P ) 
+`I R "130K" PCBDEV.LIB "RESISTOR" 91ACFDA0  R18  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "GND7" JMA.LIB "PAD" A83DAE68  P7  []
+"JPAD-1" "" "" "" "" "" "" "" 
+"JPAD-1"
+( "A" "A" B ) 
+`I R "24K" PCBDEV.LIB "R" 8EB015C0  R16  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "24K" PCBDEV.LIB "R" 8EB015BF  R17  [1]
+"RL07" "" "" "" "" "" "" "" 
+"RL07"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "3.3MFD" PCBDEV.LIB "CAPACITOR POL" ACDFBC52  C2  [1]
+"CK05" "" "" "" "" "" "" "" 
+"CK05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10MFD" PCBDEV.LIB "CAPACITOR POL" ACE55DFD  C4  [1]
+"CK05" "" "" "" "" "" "" "" 
+"CK05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "50MFD" PCBDEV.LIB "CAPACITOR POL" ACE55DFC  C3  [1]
+"CK05" "" "" "" "" "" "" "" 
+"CK05"
+( "1" "1" P ) ( "2" "2" P ) 
+`I R "10MFD" PCBDEV.LIB "CAPACITOR POL" ACE55DFE  C5  [1]
+"CK05" "" "" "" "" "" "" "" 
+"CK05"
+( "1" "1" P ) ( "2" "2" P ) 
+`J ( R C5 1 P ) ( R P4 "A" B ) ( R U1 4 I ) ( R R13 1 P ) 
+( R R10 1 P ) ( R C3 1 P ) ( R U2 3 I ) ( R R17 2 P ) ( R U3 3 I ) 
+`J ( R C1 2 P ) ( R R19 2 P ) ( R R17 1 P ) ( R C4 1 P ) 
+( R R16 2 P ) ( R U2 1 I ) 
+`J ( R C1 1 P ) ( R R19 1 P ) ( R U2 5 O ) ( R P5 "A" B ) 
+( R R14 2 P ) 
+`J ( R P3 "A" B ) ( R P7 "A" B ) ( P S "GND" ) ( R C3 2 P ) 
+( R R3 1 P ) ( R R2 2 P ) ( R R4 1 P ) ( R R7 2 P ) ( R R8 2 P ) 
+( R U1 11 I ) ( R U3 4 I ) ( R C4 2 P ) ( R R16 1 P ) ( R C2 2 P ) 
+( R C5 2 P ) ( R U2 4 I ) 
+`J ( R C2 1 P ) ( R R15 1 P ) ( R U2 2 I ) 
+`J ( R R15 2 P ) ( R U3 5 O ) ( R P6 "A" B ) ( R R20 2 P ) 
+( R R20 3 P ) ( R R18 2 P ) 
+`J ( R P1 "A" B ) ( R R1 1 P ) 
+`J ( R R1 2 P ) ( R R2 1 P ) ( R U1 3 I ) 
+`J ( R U1 1 O ) ( R R5 2 P ) ( R R12 1 P ) 
+`J ( R R3 2 P ) ( R R4 2 P ) ( R R5 1 P ) ( R U1 2 I ) 
+( R R4 3 P ) 
+`J ( R R14 1 P ) ( R R13 2 P ) ( R R12 2 P ) ( R U3 1 I ) 
+`J ( R R11 1 P ) ( R U1 14 O ) ( R R9 2 P ) 
+`J ( R R11 2 P ) ( R R10 2 P ) ( R R20 1 P ) ( R U3 2 I ) 
+( R R18 1 P ) 
+`J ( R P2 "A" B ) ( R R6 1 P ) 
+`J ( R R6 2 P ) ( R R7 1 P ) ( R U1 12 I ) 
+`J ( R R8 1 P ) ( R R9 1 P ) ( R U1 13 I ) 

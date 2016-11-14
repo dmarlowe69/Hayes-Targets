@@ -1,0 +1,133 @@
+DTFM DECODER                                  Revised:  February  4, 1993
+001-0251                                      Revision: 
+Bill Of Materials             February    4, 1993     7:34:18     Page    1
+
+ Item  Quantity  Reference                 Part           
+_______________________________________________________
+
+    1       1    C1                        .001MFD 100V   
+
+    2       1    C2                        33MFD 33V      
+
+    3       6    C3,C4,C7,C8,C9,C10        6.8MFD 35V     
+
+    4       2    C5,C6                     .01MFD 200V    
+
+    5       6    D1,D2,D3,D4,D5,D6         1N4002         
+
+    6       1    JP1                       HEADER 13X2    
+
+    7       1    P1                        PRO-D          
+
+    8       1    P2                        D              
+
+    9       1    P3                        PRO-C          
+
+   10       1    P4                        C              
+
+   11       1    P5                        PRO-B          
+
+   12       1    P6                        B              
+
+   13       1    P7                        PRO-A          
+
+   14       1    P8                        A              
+
+   15       1    P9                        PRO-P          
+
+   16       1    P10                       #              
+
+   17       1    P11                       PRO-O          
+
+   18       1    P12                       *              
+
+   19       1    P13                       PRO-N          
+
+   20       1    P14                       0              
+
+   21       1    P15                       PRO-M          
+
+   22       1    P16                       9              
+
+   23       1    P17                       PRO-H          
+
+   24       1    P18                       8              
+
+   25       1    P19                       PRO-G          
+
+   26       1    P20                       7              
+
+   27       1    P21                       PRO-F          
+DTFM DECODER                                  Revised:  February  4, 1993
+001-0251                                      Revision: 
+Bill Of Materials             February    4, 1993     7:34:18     Page    2
+
+ Item  Quantity  Reference                 Part           
+_______________________________________________________
+
+
+   28       1    P22                       6              
+
+   29       1    P23                       PRO-E          
+
+   30       1    P24                       5              
+
+   31       1    P25                       PRO-L          
+
+   32       1    P26                       4              
+
+   33       1    P27                       PRO-K          
+
+   34       1    P28                       3              
+
+   35       1    P29                       PRO-J          
+
+   36       1    P30                       2              
+
+   37       1    P31                       PRO-I          
+
+   38       1    P32                       1              
+
+   39       1    P33                       +12Vdc         
+
+   40       1    P34                       GND            
+
+   41       1    P35                       +28Vdc         
+
+   42       1    P36                       +5Vdc          
+
+   43       1    P37                       SIG GND        
+
+   44       1    P38                       SIG IN         
+
+   45       1    R1                        47K .25 WATT   
+
+   46       4    R2,R4,R5,R6               2.2K .25 WATT  
+
+   47       1    R3                        1MEG .25 WATT  
+
+   48       1    U1                        SSI75T202-IP   
+
+   49       1    U2                        CD4081BF       
+
+   50       1    U3                        CD4514BE       
+
+   51       1    U4                        ULN-2803A      
+
+   52       1    U5                        ULN2803A       
+
+   53       4    U6,U7,U8,U9               LS7220         
+
+DTFM DECODER                                  Revised:  February  4, 1993
+001-0251                                      Revision: 
+Bill Of Materials             February    4, 1993     7:34:18     Page    3
+
+ Item  Quantity  Reference                 Part           
+_______________________________________________________
+
+   54       1    VR1                       MC7812BT       
+
+   55       1    VR2                       MC7805BT       
+
+   56       1    Y1                        3.58MHZ        
+
