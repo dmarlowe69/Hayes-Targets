@@ -1,0 +1,82 @@
+REM *************************************************************************
+REM
+REM     SUBROUTINE TO PICK A MONFILAMENT CABLE BASED ON STRENGTH
+REM
+REM *************************************************************************
+REM     MONOFILMENT CABLE
+REM *************************************************************************
+lookupmono:
+        I4 = 2
+        D4 = D2
+        TYPES$ = "MONO"
+        GOTO lookupcab
+REM *************************************************************************
+REM     STRANDED CABLE
+REM *************************************************************************
+lookupstrand:
+        I4 = 1
+        D4 = D1
+        TYPES$ = "1X7"
+REM *************************************************************************
+lookupcab:
+        I3 = 0
+        FOR I1 = 1 TO 100
+        IF T2 * F0 < S(I1, I4) AND D(I1, I4) >= D4 THEN GOTO X4650
+        IF S(I1, I4) = 999 THEN I1 = 999
+        GOTO X4670
+X4650:  I3 = I1
+        I1 = 999
+X4670:  NEXT I1
+        IF I3 <> 0 THEN GOTO X4720
+        PRINT "CABLE CAPABILITY EXCEEDED"
+        D = 999
+        RETURN
+X4720:  D = D(I3, I4)
+        S = S(I3, I4)
+        M1 = M(I3, I4)
+        IF I4 = 1 THEN C = .007 ELSE C = .0057
+REM        C = C / 2!
+        RETURN
+REM *************************************************************************
+REM
+REM     SUBROUTINE TO RETURN MONIFILAMENT CABLE PARAMETERS
+REM
+REM *************************************************************************
+REM              MONOFILMENT CABLE
+REM *************************************************************************
+GETMONO:
+        I4 = 2: I2 = 1: S = 0
+        GOTO GETSTRENGTH
+REM *************************************************************************
+REM                STRANDED CABLE
+REM *************************************************************************
+GETSTRAND:
+        I4 = 1: I2 = 1: S = 0
+REM *************************************************************************
+GETSTRENGTH:
+        D0$ = "0"
+        IF D(I2, I4) = D THEN S = S(I2, I4): GOTO GOTSTRENGTH
+        IF D(I2, I4) = 999 THEN I2 = 999: GOTO NOSTRENGTH
+        I2 = I2 + 1
+        GOTO GETSTRENGTH
+REM *************************************************************************
+NOSTRENGTH:
+        IF D0$ = "0" THEN GOTO nocable
+        S = 9999
+        IF I4 = 1 THEN M1 = D * D * 330 / 144 * 1000 ELSE M1 = D * D * 384 / 144 * 1000
+        IF I4 = 1 THEN C = .007 ELSE C = .0057
+REM        C = C / 2!
+        RETURN
+nocable:
+        IF I4 = 1 THEN PRINT "STRANDED ";  ELSE PRINT "MONOFILAMENT ";
+        PRINT "CABLE DIAMETER "; D; " NOT ON FILE"
+        S = 9999
+        RETURN
+REM *************************************************************************
+GOTSTRENGTH:
+        S = S(I2, I4)
+        M1 = M(I2, I4)
+        IF I4 = 1 THEN C = .007 ELSE C = .0057
+        RETURN
+REM *************************************************************************
+

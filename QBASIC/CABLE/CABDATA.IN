@@ -1,0 +1,109 @@
+REM *************************************************************************
+REM
+REM          LOAD ARRAYS WITH CABLE SPECIFICATION ON FILE
+REM
+REM *************************************************************************
+REM
+REM               READ MONIFILAMENT CABLE DATA FROM FILE
+REM           DIAMETER (INCHES),RTS (LBS),WEIGHT/1000FT,STATUS
+REM
+REM *************************************************************************
+READMONO:
+    I1 = 1
+    cabledata$ = directory$ + "mono.dat"
+    OPEN cabledata$ FOR INPUT AS #1
+READMONO1:
+    INPUT #1, D(I1, 2), S(I1, 2), M(I1, 2), CF, CD, ELONGATION, TYPE$, STAT$
+    IF DEBUG THEN PRINT D(I1, 2), S(I1, 2), M(I1, 2), CF, CD, ELONGATION, TYPE$, STAT$
+    IF STAT$ = "INACTIVE" THEN GOTO READMONO1
+    IF STAT$ = "END" THEN CLOSE #1: RETURN
+    I1 = I1 + 1
+    GOTO READMONO1
+REM *************************************************************************
+REM
+REM               READ STRANDED CABLE DATA FROM FILE
+REM           DIAMETER (INCHES),RTS (LBS),WEIGHT/1000FT,STATUS
+REM
+REM *************************************************************************
+READSTRAND:
+    I1 = 1
+    cabledata$ = directory$ + "strand.dat"
+    OPEN cabledata$ FOR INPUT AS #1
+READSTRAND1:
+    INPUT #1, D(I1, 1), S(I1, 1), M(I1, 1), CF, CD, ELONGATION, TYPE$, STAT$
+    IF DEBUG THEN PRINT D(I1, 1), S(I1, 1), M(I1, 1), CF, CD, ELONGATION, TYPE$, STAT$
+    IF STAT$ = "INACTIVE" THEN GOTO READSTRAND1
+    IF STAT$ = "END" THEN CLOSE #1: RETURN
+    I1 = I1 + 1
+    GOTO READSTRAND1
+REM *************************************************************************
+REM
+REM     read design data from data file
+REM
+REM*************************************************************************
+READFILE:
+        DATA$ = ""
+        INPUT "ENTER INPUT DATA FILE NAME"; DATA$
+        IF DATA$ = "" GOTO READFILE
+        DATA$ = directory$ + DATA$ + ".CAB"
+        OPEN DATA$ FOR INPUT AS #1
+        A0$ = "0"
+        J1 = 0
+        INPUT #1, PROJECT$, DESIGN$, TARGET$, M, CD0, G, S0, L, J1, SEGLENGTH, D1, D2
+        PRINT PROJECT$, DESIGN$, TARGET$, M, CD0, G, S0, L, J1, SEGLENGTH, D1, D2
+        INPUT #1, opt$
+        PRINT opt$
+        I1 = 1
+        INPUT #1, D(I1, 3), L(I1), TYPE$(I1)
+        PRINT D(I1, 3), L(I1), TYPE$(I1)
+READFILE1:
+        I1 = I1 + 1
+        INPUT #1, D(I1, 3), L(I1), TYPE$(I1)
+        PRINT D(I1, 3), L(I1), TYPE$(I1)
+        IF D(I1, 3) = 999 THEN GOTO READFILE2
+        L(I1) = L(I1) + L(I1 - 1)
+        GOTO READFILE1
+READFILE2:
+        I = I1 - 1
+        CLOSE #1
+        RETURN
+REM*************************************************************************
+REM
+REM     WRITE OUT DESIGN DATA TO A FILE
+REM
+REM*************************************************************************
+WRITEFILE:
+        DATA$ = ""
+        INPUT "ENTER OUTPUT DATA FILE NAME"; DATA$
+        IF DATA$ = "" THEN GOTO WRITEFILE
+        DATA$ = directory$ + DATA$ + ".CAB"
+        OPEN DATA$ FOR OUTPUT AS #1
+        PRINT #1, PROJECT$; ","; DESIGN$; ","; TARGET$; ","; M; ","; C0; ","; G; ","; S0;
+        PRINT #1, L; ","; J1; ","; SEGLENGTH; ","; D1; ","; D2
+        PRINT #1, opt$
+        PRINT #1, D(1, 3); ","; L(1); ","; TYPE$(1)
+        FOR I1 = 2 TO I
+        PRINT #1, D(I1, 3); ","; L(I1) - L(I1 - 1); ","; TYPE$(I1)
+        NEXT I1
+        PRINT #1, "999,999,999"
+        CLOSE #1
+        RETURN
+REM *************************************************************************
+REM *************************************************************************
+REM
+REM               READ SPECTRA CABLE DATA FROM FILE
+REM           DIAMETER (INCHES),RTS (LBS),WEIGHT/1000FT,STATUS
+REM
+REM *************************************************************************
+READSPECTRA:
+    I1 = 1
+    cabledata$ = directory$ + "SPECTRA.dat"
+    OPEN cabledata$ FOR INPUT AS #1
+READSPECTRA1:
+    INPUT #1, D(I1, 1), S(I1, 1), M(I1, 1), CF, CD, ELONGATION, TYPE$, STAT$
+    IF DEBUG THEN PRINT D(I1, 1), S(I1, 1), M(I1, 1), CF, CD, ELONGATION, TYPE$, STAT$
+    IF STAT$ = "INACTIVE" THEN GOTO READSTRAND1
+    IF STAT$ = "END" THEN CLOSE #1: RETURN
+    I1 = I1 + 1
+    GOTO READSPECTRA1
+

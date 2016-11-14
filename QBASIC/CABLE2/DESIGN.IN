@@ -1,0 +1,197 @@
+REM**************************************************************************
+REM
+REM              ROUTINE TO DESIGN A CABLE
+REM
+REM**************************************************************************
+DESIGN:
+        I = 0
+        J = 0
+        L0 = 0: droop = 0: X = 0: W = 0: V = 0
+        D6 = .5: N6 = 0: D7 = .625: N7 = 0
+REM *************************************************************************
+        GOSUB TARGETLOADS
+        T2 = T(0)
+REM**************************************************************************
+        PRINT
+        PRINT "                    TOW CABLE STEADY STATE DESIGN"
+        PRINT "                            LILL METHOD"
+        PRINT
+        PRINT "   DIA        LENGTH    TENSION   ANGLE";
+        PRINT "    SF     FC    SEG WT      REVS"
+        PRINT "  (IN)         (FT)      (LBS)    (DEG)";
+        PRINT "          (IN)   (LBS)     SEG  ACCUM"
+        PRINT
+        PRINT " TARGET"; TAB(24); " ";
+        PRINT USING "####"; T(0);
+        PRINT TAB(33); " ";
+        PRINT USING "##.##"; P(0) * 57.3
+REM *************************************************************************
+        IF MID$(DESIGN$, 1, 3) = "TLX" THEN D1 = .097
+        IF MID$(DESIGN$, 1, 3) = "TLX" THEN P1 = 50
+        IF DESIGN$ = "MTR-101" THEN D1 = .097
+        IF DESIGN$ = "MTR-101" THEN P1 = 50
+       
+        D = D1
+      
+        IF D1 = 0 THEN GOSUB lookupmono ELSE GOSUB lookupstrand
+        IF D = 999 THEN GOTO DESIGNEND
+        GOTO DESIGNLOOP
+REM *************************************************************************
+X1380:
+        IF MID$(DESIGN$, 1, 3) = "TLX" AND I = 1 THEN D1 = .064
+        IF MID$(DESIGN$, 1, 3) = "TLX" AND I = 1 THEN P1 = 100
+        IF MID$(DESIGN$, 1, 3) = "TLX" AND I = 2 THEN D1 = .044
+REM        IF MID$(DESIGN$, 1, 3) = "TLX" AND I = 1 THEN D1 = .097
+REM        IF MID$(DESIGN$, 1, 3) = "TLX" AND I = 1 THEN P1 = 100
+REM        IF MID$(DESIGN$, 1, 3) = "TLX" AND I = 2 THEN D1 = .097
+        IF DESIGN$ = "MTR-101" AND I = 1 THEN D1 = .064
+        IF DESIGN$ = "MTR-101" AND I = 1 THEN P1 = 100
+        IF DESIGN$ = "MTR-101" AND I = 2 THEN D1 = .044
+        IF D2 <> 0 THEN GOSUB lookupmono ELSE GOSUB lookupstrand
+        IF D = 999 GOTO DESIGNEND
+REM *************************************************************************
+DESIGNLOOP:
+        I = I + 1
+        M0 = M1 * SEGLENGTH / 1000
+        V0 = D * D * SEGLENGTH * 12
+X1440:  L0 = L0 + SEGLENGTH
+        p0 = ATN(TZ / TX)
+REM        IF P(I - 1) - p0 < .0005 THEN p0 = P(I - 1)
+        W = W + M0
+        V = V + V0
+        droop = droop + SEGLENGTH * SIN(p0)
+        X = X + SEGLENGTH * COS(p0)
+        IF L0 > L OR V > S0 THEN GOTO X2310
+REM *************************************************************************
+REM
+REM     new coefficient data per trx-12 study
+REM
+REM *************************************************************************
+        cdc0 = 2!
+REM     GOTO dskipnewcoff
+        IF DESIGN$ <> "TLX" THEN GOTO dskipnewcoff
+        mn = v1 * SIN(p0) / 1116.89
+        cdc0 = 1.17 + .25 * mn - .25 * mn * mn + .625 * mn * mn * mn
+        cdc0 = NEWCDC0
+        mach = v1 / 1116.89
+        cmac = mach * COS(p0)
+        IF cmac <= .4 THEN picf = .038 - .0425 * cmac
+        IF cmac > .4 THEN picf = .013 + .0395 * (cmac - .85) ^ 2
+REM        C = (picf / 3.1416) / 2!
+        C = (picf / 3.1416)
+        C = C / NEWCF
+dskipnewcoff:
+REM ************************************************************************
+        L1 = D * SEGLENGTH * Q * cdc0 * SIN(p0) ^ 2 * COS(p0) / 12
+        D3 = D * SEGLENGTH * Q * (cdc0 * SIN(p0) ^ 3 + 3.1416 * C) / 12
+        TX = TX + D3
+        TZ = TZ + M0 - L1
+        T2 = SQR(TX * TX + TZ * TZ)
+        IF I = 1 AND p0 < Y1 AND Y1 > 0 THEN GOTO X1630
+        IF I = 1 AND L0 > P1 AND Y1 = 0 AND D1 <> 0 AND P1 <> 0 THEN GOTO X1630
+        IF DESIGN$ = "TLX" AND I = 2 AND L0 > P1 THEN GOTO X1630
+        IF DESIGN$ = "MTR-101" AND I = 2 AND L0 > P1 THEN GOTO X1630
+        IF T2 < (S / F0) THEN GOTO X1440
+X1630:  L0 = L0 - SEGLENGTH
+        TX = TX - D3
+        TZ = TZ - M0 + L1
+        W = W - M0
+        M(I, 3) = W
+        V = V - V0
+        droop = droop - SEGLENGTH * SIN(p0)
+        X = X - SEGLENGTH * COS(p0)
+        IF L0 > 0 THEN GOTO X1740
+        I = I - 1
+        GOTO X1380
+X1740:  T(I) = SQR(TX * TX + TZ * TZ)
+        P(I) = p0
+        L(I) = L0
+        D(I, 3) = D
+        D(I, 4) = C
+        F(I) = S / T(I)
+        S(I, 3) = S
+        TYPE$(I) = TYPES$
+        GOSUB FLANGE
+        C(I) = C1
+        W(I) = N6
+        PRINT ; " ";
+        PRINT USING "#.###"; D;
+        IF D(I, 4) = .007 THEN PRINT " 1 X 7";
+        PRINT TAB(13); " ";
+        PRINT USING "#####"; L(I) - L(I - 1);
+        PRINT TAB(24); " ";
+        PRINT USING "####"; T(I);
+        PRINT TAB(33); " ";
+        PRINT USING "##.##"; P(I) * 57.3;
+        PRINT TAB(40); " ";
+        PRINT USING "##.##"; F(I);
+        PRINT TAB(48); " ";
+        PRINT USING "#.###"; C(I);
+        PRINT TAB(55); " ";
+        PRINT USING "###.##"; M(I, 3) - M(I - 1, 3);
+        PRINT TAB(64); " ";
+        PRINT USING "#####"; W(I) - W(I - 1);
+        PRINT TAB(71); " ";
+        PRINT USING "#####"; W(I)
+        GOTO X1380
+REM *************************************************************************
+REM
+REM           OUTPUT FINAL CABLE STEP PARAMETERS
+REM
+REM *************************************************************************
+X2310:  L(I) = L0 - SEGLENGTH
+        T(I) = T2
+        P(I) = p0
+        W = W - M0
+        M(I, 3) = W
+        V = V - V0
+        droop = droop - SEGLENGTH * SIN(p0)
+        X = X - SEGLENGTH * COS(p0)
+        D(I, 3) = D
+        D(I, 4) = C
+        S = S - 15
+        S(I, 3) = S
+        F(I) = S / T(I)
+        TYPE$(I) = TYPES$
+        GOSUB FLANGE
+        C(I) = C1
+        W(I) = N6
+        PRINT ; " ";
+        PRINT USING "#.###"; D;
+        IF D(I, 4) = .007 THEN PRINT " 1 X 7";
+        PRINT TAB(13); " ";
+        PRINT USING "#####"; L(I) - L(I - 1);
+        PRINT TAB(24); " ";
+        PRINT USING "####"; T(I);
+        PRINT TAB(33); " ";
+        PRINT USING "##.##"; P(I) * 57.3;
+        PRINT TAB(40); " ";
+        PRINT USING "##.##"; F(I);
+        PRINT TAB(48); " ";
+        PRINT USING "#.###"; C(I);
+        PRINT TAB(55); " ";
+        PRINT USING "###.##"; M(I, 3) - M(I - 1, 3);
+        PRINT TAB(64); " ";
+        PRINT USING "#####"; W(I) - W(I - 1);
+        PRINT TAB(71); " ";
+        PRINT USING "#####"; W(I)
+REM******************************************************
+DESIGNEND:
+        PRINT
+        PRINT "CABLE WEIGHT (LBS):";
+        PRINT USING "####.#"; W;
+        PRINT TAB(35); "VOLUME (CUBIC INCHES):";
+        PRINT USING "####.#"; V
+        PRINT "CABLE DROOP  (FT) :";
+REM         PRINT USING "######"; droop * 1.25;
+        PRINT USING "######"; droop;
+        PRINT TAB(35); "DESIGN LENGTH (FT)   :";
+        PRINT USING "######"; L(I)
+        PRINT "CABLE TRAIL  (FT) :";
+        PRINT USING "######"; X;
+        PRINT TAB(35); "CABLE REVS :";
+        PRINT USING "######"; W(I)
+        RETURN
+
+REM *************************************************************************
+

@@ -1,0 +1,54 @@
+
+
+              TLX MISSION PROFILE SUBSEQUENT PRESENTATION  04-18-1989
+
+ CABLE LENGTH:20000 FT       GROUND SPEED:250 KNOTS        PRESET: 20 FT
+ CABLE DELAY: 47.4 SECONDS                       TURN BANK ANGLE: 25 DEGREES
+ PRESENTATION START:20000 YARDS                  TARGET POPUP RANGE:1000 YARDS
+
+-------------------------------------------------------------------------
+ PROFILE  TLX RANGE  A/C RANGE  PASS TIME        REMARKS
+  TIME      YARDS     NM
+-------------------------------------------------------------------------
+                    25.0                    TURN IN FOR PRESENTATION
+
+ 0: 0: 0            23.0                    TURN COMPLETE
+                                            STAGE 1:START DESCENT
+                                            AT 500FPM TO STAGE 2
+
+ 0: 1: 4            18.6                    STAGE 2 ALT
+                                            DESCEND AT 200FPM TO STAGE 3
+
+ 0: 1:34            16.5                    STAGE 3 ALT:
+                                            DESCEND TO STAGE 4 AT 100FPM
+
+ 0: 2:22            13.2                    STAGE 4 ALT:
+                                            A/C STRAIGHT AND LEVEL
+
+ 0: 3: 9             9.9                    TLX STABLE AT PRESET ALT
+                                            MAKE FINAL ALTITUDE ADJUST
+
+ 0: 3:56   20000     6.6                    TLX STABLE AT PRESENTATION ALT
+
+ 0: 4:32   15000     4.1                    SHIP CALL RANGE
+
+ 0: 5: 7   10000     1.6      0: 0: 0       SHIP CALL RANGE:START A/C CLOCK
+
+ 0: 5:22    8000     0.7      0: 0:14       SHIP CALL RANGE
+
+ 0: 5:24    7700     0.5      0: 0:16       SHIP CALL RANGE: A/C CLIMB TO
+                                            STAGE 1 ALT AT 2500 FPM AND
+                                            PRESENTATION AIRSPEED
+
+ 0: 5:36    6000    -0.3      0: 0:28       SHIP CALL RANGE
+
+ 0: 6:11    1000    -2.8      0: 1: 4       SHIP CALL RANGE: COMMAND TLX
+                                            INTO RECOVERY MODE
+
+ 0: 6:18       0    -3.3      0: 1:11       TLX OVER SHIP
+                                            AT  316 FT  without target popup
+                                            AT  449 FT  with target popup
+
+
+-------------------------------------------------------------------------
+TOTAL TIME FOR PRESENTATION TO START OF NEXT PASS  0:15:49  

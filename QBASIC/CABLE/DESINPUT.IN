@@ -1,0 +1,172 @@
+REM *************************************************************************
+REM
+REM                 CABLE DESIGN INPUT DATA
+REM
+REM *************************************************************************
+INPUTDATA:
+        D0$ = "0"
+        PRINT "OPTIONS:"
+        PRINT " DESIGN - DESIGN A TOW CABLE"
+        PRINT " DATA - ANALYSIS CABLE DESIGN DATA FROM DATA STATEMENTS"
+        PRINT " FILE - ANALYSIS CABLE DESIGN DATA FROM FILE"
+        PRINT " AGAIN - REPEAT DESIGN ANALYSIS WITH SAME INPUT DATA"
+        PRINT " QUIT - EXIT PROGRAM"
+        INPUT "OPTION: "; USER$: USER$ = UCASE$(USER$)
+        IF USER$ = "DESIGN" THEN GOTO INPUTDESIGN
+        IF USER$ = "DATA" THEN GOSUB READDATA: function$ = "ANALYSIS": RETURN
+        IF USER$ = "TEST" THEN GOSUB TESTDATA: function$ = "DESIGN": RETURN
+        IF USER$ = "FILE" THEN GOSUB READFILE:  function$ = "ANALYSIS": RETURN
+        IF USER$ = "AGAIN" THEN function$ = "ANALYSIS": RETURN
+        IF USER$ = "QUIT" THEN RETURN
+        GOTO INPUTDATA
+REM *************************************************************************
+INPUTDESIGN:
+        INPUT "PROJECT NAME "; PROJECT$: PROJECT$ = UCASE$(PROJECT$)
+REM *************************************************************************
+INDESIGN:
+        function$ = "DESIGN"
+        PRINT "LTC-2 , LTC-6 , MTR-101 OR TLX"
+        INPUT "DESIGN NAME "; design$: design$ = UCASE$(design$)
+        IF design$ = "TLX" THEN GOTO INTARGET
+        IF design$ = "LTC-6" THEN GOTO INTARGET
+        IF design$ = "LTC-2" THEN GOTO INTARGET
+        IF design$ = "MTR-101" THEN GOTO INTARGET
+        GOTO INDESIGN
+REM *************************************************************************
+INTARGET:
+        PRINT "TLX-1 OR TLX-IR OR TLX-FUSE OR TLX-19 or TLX-29"
+        INPUT "TARGET NAME "; TARGET$: TARGET$ = UCASE$(TARGET$)
+REM *************************************************************************
+        INPUT "WEIGHT (LBS), CD (DRAG COEFFICIENT) ,G LOADING "; M, CD0, G
+REM *************************************************************************
+        INPUT "TARGET SPOOL VOLUME (CUBIC INCHES) OR DIAMETER (IN) "; S0
+        IF S0 = 9 THEN S0 = 268
+        IF S0 = 7 OR S0 = 7.125 THEN S0 = 171
+REM *************************************************************************
+        INPUT "REQUIRED CABLE LENGHT (FEET) , AIRSPEED (KIAS) , SAFETY FACTOR "; L, K, F0
+        INPUT "CABLE ANALYSIS STEP LENGTH ( 1 - 25 FT)"; SEGLENGTH
+        IF SEGLENGTH <= 0 OR SEGLENGTH > 25 THEN SEGLENGTH = 10
+REM *************************************************************************
+XSTARTSTRAND:
+        INPUT "STRANDED LEADER CABLE DIAMETER (INCHES) (ZERO IF NONE) "; D1
+        IF D1 = 0 THEN GOTO STARTMONO
+        D = D1
+        GOSUB GETSTRAND
+        IF S = 9999 THEN GOTO XSTARTSTRAND
+        INPUT "CUT OFF ANGLE (DEGREES) OR LEADER LENGTH (FEET) "; P1
+        IF P1 > 100 OR P1 = 0 THEN Y1 = 0 ELSE Y1 = P1 / 57.29577951#
+REM *************************************************************************
+XSTARTMONO:
+        INPUT "STARTING MONOFILAMENT DIAMETER (INCHES) (ZERO IF NONE) "; D2
+        IF D2 = 0 THEN RETURN
+        D = D2
+        GOSUB GETMONO
+        IF S = 9999 THEN GOTO STARTMONO
+        RETURN
+REM *************************************************************************
+REM
+REM     CUT CABLE TO FLY LENGTH
+REM
+REM *************************************************************************
+SCOPEIT:
+        PRINT "CABLE DESIGN LENGTH"; L(I)
+        INPUT "ENTER CABLE FLY LENGTH"; SCOPE
+        I1 = 1
+2160    IF L(I1) >= SCOPE THEN GOTO 2200
+        I1 = I1 + 1
+        IF I1 > I THEN PRINT "CABLE FLY LENGTH TOO LONG": GOTO SCOPEIT
+        GOTO 2160
+2200    L(I1) = SCOPE
+        I = I1
+        RETURN
+REM *************************************************************************
+REM
+REM     TEST INPUT DATA FOR DESIGN
+REM
+REM *************************************************************************
+TESTDATA:
+        opt$ = "ONEWAY"
+        design$ = "LTC-6"
+        TARGET$ = "TPT-3"
+        M = 88.5: CD0 = .34: G = 1
+        S0 = 268
+        L = 30000: K = 300: F0 = 1.7
+        SEGLENGTH = 10
+        D2 = .024
+        D1 = .035
+        P1 = 390
+        IF P1 > 100 OR P1 = 0 THEN Y1 = 0 ELSE Y1 = P1 / 57.29577951#
+        RETURN
+REM *************************************************************************
+REM
+REM     READ A DESIGN FROM DATA STATEMENTS
+REM
+REM *************************************************************************
+READDATA:
+        READ PROJECT$, design$, TARGET$, M, CD0, G, L, J, SEGLENGTH, D1, D2
+        READ opt$
+X3380:  I1 = 1
+        READ D(I1, 3), L(I1), TYPE$(I1)
+        IF D(I1, 3) = 999 THEN GOTO X3540
+X3410:  I1 = I1 + 1
+        READ D(I1, 3), L(I1), TYPE$(I1)
+        IF D(I1, 3) = 999 THEN GOTO X3460
+        L(I1) = L(I1) + L(I1 - 1)
+        GOTO X3410
+X3460:  I = I1 - 1
+        FOR I1 = 1 TO I
+        PRINT D(I1, 3), L(I1), TYPE$(I1)
+        NEXT I1
+        PRINT "USE THIS CABLE (Y/N)? ";
+        INPUT A0$
+        IF A0$ <> "Y" THEN GOTO X3380
+
+X3540:  RETURN
+REM *************************************************************************
+REM
+REM     CABLE ANALYSIS PARAMETERS
+REM
+REM *************************************************************************
+        DATA "699K1-4144"
+        DATA "TLX"
+        DATA "TLX WITHOUT POD",68.00,.368,1,18300,0,10,.097,0
+        DATA "TWOWAY"
+REM *************************************************************************
+        DATA 0.097,50,1X7
+        DATA .055,5200,1X7
+        DATA .064,4400,1X7
+        DATA .076,4000,1X7
+        DATA 999,999,END
+REM *************************************************************************
+REM CONSTANT DIAMETER CABLE
+REM DATA .076,15000,999,999
+REM *************************************************************************
+REM ACCO P/N 54-8333-2111
+REM DATA .097,50,.064,50,.055,3000,.064,4400,.076,5600,.087,5200
+REM DATA 999,999
+REM *************************************************************************
+REM FLIGHT INTERNATION;FLIGHT TEST CABLE
+REM DATA .097,100,.070,3000,.076,2900,999,999
+REM *************************************************************************
+REM FLIGHT INTERNATION;FLIGHT TEST CABLE
+REM DATA .097,20,.064,20,.059,1300,.064,2200,.070,2500,.076,2500
+REM DATA .082,2400,.087,2200,.092,2400,.097,500,999,999
+REM *************************************************************************
+REM FLIGHT INTERNATION;FLIGHT TEST CABLE
+DATA .097,50
+DATA .064,50
+REM DATA .044,6400
+DATA .050,3100
+DATA .059,1500
+DATA .064,2600
+DATA .070,3000
+DATA .076,2900
+DATA .097,3000,999,999
+REM *************************************************************************
+REM BRITISH CABLE
+REM DATA .097,50,.064,50,.055,6100,.064,4400,.076,5600,.087,2300,999,999
+REM DATA .097,50,.055,5200,.064,4400,.076,5600,.087,2300,999,999
+DATA 999,999
+REM *************************************************************************
+END
+

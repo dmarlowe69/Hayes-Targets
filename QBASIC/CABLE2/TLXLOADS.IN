@@ -1,0 +1,96 @@
+REM *************************************************************************
+REM
+REM                      TARGET LOADS
+REM
+REM *************************************************************************
+TARGETLOADS:
+
+REM        IF TARGET$ = "TRX-9" THEN GOTO trx9loads
+        IF DESIGN$ = "TLX" THEN GOTO tlxloads
+        IF DESIGN$ = "TLXX" THEN GOTO tlxloads
+        
+        V1 = K * 1.69
+        q = .5 * .002378 * V1 * V1
+        A = 3.1416 * (9! / 2) ^ 2
+        TZ = M * G
+        C0 = CD0
+        TX = C0 * q * A / 144
+        T(0) = SQR(TX * TX + TZ * TZ)
+        P(0) = ATN(TZ / TX)
+        T2 = TX
+        T3 = TZ
+        RETURN
+
+REM *************************************************************************
+REM
+REM                      TARGET LOADS
+REM             WINGS 60.0 IN**2 ASPECT RATIO 6.0
+REM
+REM *************************************************************************
+tlxloads:
+REM        IF TARGET$ = "TLX-1" THEN W0 = -8: M = 68: CD0 = .3974: CLDELTA = .156425: CD0WNG = .006736: CDIWNG = .0006667#
+REM        IF TARGET$ = "TLX-1" THEN W0 = -8: M = 68: CD0 = .4335: CLDELTA = .156425: CD0WNG = .006736: CDIWNG = .0006667#
+REM         IF TARGET$ = "TLX-1" THEN W0 = -8: M = 68: CD0 = .4335: CLDELTA = .18771: CD0WNG = .006736: CDIWNG = .0008#
+        IF TARGET$ = "TLX-1" THEN W0 = -8: M = 68: CD0 = .4696: CLDELTA = .18771: CD0WNG = .006736: CDIWNG = .0008#
+
+REM         IF TARGET$ = "TLX-1" THEN W0 = -8: M = 68: CD0 = .36127: CLDELTA = .31285: CD0WNG = .006736: CDIWNG = .0013334#
+        IF TARGET$ = "TLX-IR" THEN W0 = -8: M = 126: CD0 = .36127 + .1082: CLDELTA = .31285: CD0WNG = .006736: CDIWNG = .0013334#
+        IF TARGET$ = "TLX-IRM" THEN W0 = -8: M = 126: CD0 = .36127 + .1082 + .192: CLDELTA = .31285: CD0WNG = .006736: CDIWNG = .0013334#
+        IF TARGET$ = "TLX-FUSE" THEN W0 = -8: M = 84: CD0 = .36127 + .1082: CLDELTA = .31285: CD0WNG = .006736: CDIWNG = .0013334#
+        IF TARGET$ = "TLX-19" THEN W0 = -8: M = 63: CD0 = .36127 + .1082: CLDELTA = .31285: CD0WNG = .006736: CDIWNG = .0013334#
+        IF TARGET$ = "TLX-29" THEN W0 = -8: M = 60: CD0 = .36127 + .1082: CLDELTA = .31285: CD0WNG = .006736: CDIWNG = .0013334#
+        IF TARGET$ = "TLX-SIR" THEN W0 = -8: M = 217: CD0 = .44411 + .12189: CLDELTA = .31285: CD0WNG = .01067: CDIWNG = .008088#
+        IF TARGET$ = "TLX-SIR2" THEN W0 = -8: M = 122: CD0 = .36127 + 1.1659: CLDELTA = .31285: CD0WNG = .006736: CDIWNG = .0013334#
+        PRINT TARGET$; " ";
+        INPUT "enter wing angle"; W0
+        V1 = K * 1.689
+        q = .5 * .002378 * V1 * V1
+        A = 3.1416 * (8.91 / 2) ^ 2
+        C2 = (CLDELTA * W0 * q * A / 144)
+        TZ = M * G - C2
+        C0 = CD0 + CD0WNG + (CDIWNG * W0 ^ 2)
+        TX = C0 * q * A / 144
+        T(0) = SQR(TX * TX + TZ * TZ)
+        P(0) = ATN(TZ / TX)
+        T2 = TX
+        T3 = TZ
+        RETURN
+
+REM *************************************************************************
+trx9loads:
+        xt = 0!
+        yt = .375
+        CNA = 16.415
+        XCP = 1.4167
+
+        V1 = K * 1.689
+        q = .5 * .002378 * V1 * V1
+        A = (3.1416 * (8.91 / 2) ^ 2) / 144!
+      
+        theta = 0
+        FOR ijk = 0 TO 100 STEP 1
+                C2 = -CNA * theta * q * A
+                TX = CD0 * q * A
+                temp = (M - C2) / TX
+                P(0) = ATN(temp)
+                temp = P(0) - theta
+                xtp = xt + yt / TAN(temp)
+
+                temp = ((M - C2) * (M - C2)) + (TX * TX)
+                T(0) = SQR(temp)
+
+                temp1 = TX * XCP * SIN(theta)
+                temp = P(0) - theta
+                temp2 = T(0) * SIN(temp) * xtp
+                temp3 = -CNA * q * A * XCP * COS(theta)
+                thetap = (temp1 - temp2) / temp3
+       
+                theta = thetap
+       
+        NEXT ijk
+
+        TZ = M - C2
+        T2 = TX
+        T3 = TZ
+        RETURN
+

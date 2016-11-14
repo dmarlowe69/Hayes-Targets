@@ -1,0 +1,116 @@
+REM *************************************************************************
+REM
+REM                     CABLE ANALYSIS
+REM
+REM *************************************************************************
+CABLELOADS:
+REM *************************************************************************
+REM
+REM     INITIALIZE VARIABLES
+REM
+REM *************************************************************************
+        L0 = 0
+        droop = 0
+        X = 0
+        W = 0
+        V = 0
+        I1 = 1
+        P2 = 0
+        FAC$ = "STD"
+REM *************************************************************************
+REM
+REM     ANALYSIS LOOP
+REM
+REM *************************************************************************
+ANALYSISLOOP:
+        L0 = L0 + SEGLENGTH: PRINT ".";
+REM *************************************************************************
+REM
+REM     DETERMINE CABLE ANGLE OF ATTACK
+REM
+REM *************************************************************************
+        IF FAC$ <> "STD" THEN GOTO X2990
+
+        IF L0 < 200 THEN GOTO X2960
+        p0 = SQR((M1 * SEGLENGTH / 1000) / (.5 * .002378 * D * SEGLENGTH / 12)) / V1
+REM     IF L0 > 2000 THEN P2 = 1
+        IF P2 <> 0 THEN GOTO X2920
+        P1 = ATN(TZ / TX)
+        IF ABS(p0 - P1) < .0005 THEN GOTO X2920 ELSE GOTO X2960
+REM     PRINT #3, L0, P0, P1
+X2920:  P1 = p0
+        P2 = 1
+        GOTO X2991
+REM *************************************************************************
+X2960:  p0 = ATN(TZ / TX)
+        P1 = ATN(T3 / T2)
+        GOTO X2991
+REM *************************************************************************
+X2990:
+        p0 = ATN(TZ / TX): P1 = ATN(T3 / T2)
+X2991:
+        IF L0 > L(I1) THEN GOTO NEXTSEG
+        D = D(I1, 3): TYPE$ = TYPE$(I1)
+REM *************************************************************************
+REM
+REM     GET CABLE PARAMETERS FOR THIS SEGMENT
+REM
+REM *************************************************************************
+        IF TYPE$ = "1X7" THEN GOSUB GETSTRAND: GOTO GOTCABLE
+        IF TYPE$ = "MONO" THEN GOSUB GETMONO: GOTO GOTCABLE
+        PRINT "CABLE TYPE NOT FOUND"; TYPE$: END
+REM *************************************************************************
+REM
+REM     new coefficient data per trx-12 study
+REM
+REM *************************************************************************
+GOTCABLE:
+        cdc0 = 2!
+REM        IF DESIGN$ <> "TLX" THEN GOTO askipnewcoff
+        mn = V1 * SIN(p0) / 1116.89
+        cdc0 = 1.17 + .25 * mn - .25 * mn * mn + .625 * mn * mn * mn
+        cdc0 = NEWCDC0
+        mach = V1 / 1116.89
+        cmac = mach * COS(p0)
+        IF cmac <= .4 THEN picf = .038 - .0425 * cmac
+        IF cmac > .4 THEN picf = .013 + .0395 * (cmac - .85) ^ 2
+        c = (picf / 3.1416)
+        c = c / NEWCF
+REM        IF ABS(p0) < .174532925# THEN C = C / 1.5
+askipnewcoff:
+REM        cdc0 = 1!
+REM        c = c / 3
+REM *************************************************************************
+REM        sigma = EXP(-.00003 * droop - 3.04E-15 * droop ^ 3)
+REM        IF DESIGN$ = "TLX" THEN Q = .5 * (.002378 * sigma) * V1 * V1
+
+        SEGWEIGHT = M1 * SEGLENGTH / 1000
+        SEGLIFT = D * SEGLENGTH * Q * cdc0 * SIN(p0) ^ 2 * COS(p0) / 12
+        SEGDRAG = D * SEGLENGTH * Q * (cdc0 * SIN(p0) ^ 3 + 3.141592654# * c) / 12
+        TZ = TZ + SEGWEIGHT - SEGLIFT
+        TX = TX + SEGDRAG
+
+        L2 = D * SEGLENGTH * Q * cdc0 * SIN(P1) ^ 2 * COS(P1) / 12
+        D4 = D * SEGLENGTH * Q * (cdc0 * SIN(P1) ^ 3 + 3.141592654# * c) / 12
+        T3 = T3 + SEGWEIGHT - L2
+        T2 = T2 + D4
+
+        droop = droop + SEGLENGTH * SIN(P1)
+        X = X + SEGLENGTH * COS(P1)
+        W = W + SEGWEIGHT
+
+        V = V + D * D * SEGLENGTH * 12
+        GOTO ANALYSISLOOP
+
+REM *************************************************************************
+NEXTSEG:
+        L0 = L0 - SEGLENGTH
+        M(I1, 3) = W
+        T(I1) = SQR(TX * TX + TZ * TZ)
+        P(I1) = p0
+        S(I1, 3) = S
+        F(I1) = S / T(I1)
+        I1 = I1 + 1
+        IF I1 > I THEN RETURN ELSE GOTO ANALYSISLOOP
+REM *************************************************************************
+

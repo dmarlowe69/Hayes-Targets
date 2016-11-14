@@ -1,0 +1,80 @@
+REM *************************************************************************
+REM
+REM                   SELECT DESIGN OPTIONS
+REM
+REM *************************************************************************
+designopt:
+PRINT "YOUR OPTIONS ARE:"
+PRINT " (C) New Skin Friction Coefficient Scale factor"
+PRINT " (D) New Cross Flow Coefficient "
+PRINT " (P) PRINT OUT (M) SELECT MONOFILAMENT (V) NEW AIRSPEED "
+PRINT " (N) NEW SAFETY FACTOR (R) select stranded (S) exit (T) ABORT RUN"
+PRINT " (W) WRITE DESIGN TO FILE";
+INPUT I$: I$ = UCASE$(I$)
+        IF I$ = "F" THEN GOSUB WRITEFILE: GOTO designopt
+        IF I$ = "T" THEN RETURN
+        IF I$ = "P" THEN GOTO printit
+        IF I$ = "M" THEN GOTO STARTMONO
+        IF I$ = "R" THEN GOTO STARTSTRAND
+        IF I$ = "S" THEN RETURN
+        IF I$ = "L" THEN GOTO NEWLENGTH
+        IF I$ = "V" THEN GOTO NEWSPEED
+        IF I$ = "W" THEN GOTO WRITEIT
+        IF I$ = "N" THEN GOTO NEWSAFETY ELSE GOTO designopt
+        IF I$ = "D" THEN GOTO NEWCROSS
+        IF I$ = "C" THEN GOTO NEWSKIN
+REM *************************************************************************
+REM
+REM     print out cable design
+REM
+REM *************************************************************************
+printit:
+        IF design$ = "TLX" THEN GOSUB designprt: GOTO designopt
+        GOSUB print6: GOTO designopt
+REM *************************************************************************
+REM
+REM     input initial stranded cable diameter
+REM
+REM *************************************************************************
+STARTSTRAND:
+        INPUT "STRANDED LEADER CABLE DIAMETER (INCHES) (ZERO IF NONE) "; D1
+        IF D1 = 0 THEN GOTO TRYAGAIN
+        D = D1
+        GOSUB lookupstrand
+        IF S = 9999 THEN GOTO STARTSTRAND
+        INPUT "CUT OFF ANGLE (DEGREES) OR LEADER LENGTH (FEET) "; P1
+        IF P1 > 100 OR P1 = 0 THEN Y1 = 0 ELSE Y1 = P1 / 57.29577951#
+        GOTO TRYAGAIN
+REM *************************************************************************
+REM
+REM     input initial mono cable diameter
+REM
+REM *************************************************************************
+STARTMONO:
+        INPUT "STARTING MONOFILAMENT DIAMETER (INCHES) (ZERO IF NONE) "; D2
+        IF D2 = 0 THEN GOTO TRYAGAIN
+        D = D2
+        GOSUB lookupmono
+        IF S = 9999 THEN GOTO STARTMONO
+        GOTO TRYAGAIN
+REM *************************************************************************
+REM
+REM     enter new design parameters
+REM
+REM *************************************************************************
+NEWSPEED:  INPUT "ENTER NEW AIRSPEED (KIAS)"; K: GOTO TRYAGAIN
+NEWSAFETY: INPUT "ENTER NEW SAFETY FACTOR"; F0: GOTO TRYAGAIN
+NEWLENGTH: INPUT "ENTER NEW LENGTH:"; L: GOTO TRYAGAIN
+WRITEIT:   GOSUB WRITEFILE: GOTO TRYAGAIN
+NEWSKIN: INPUT "ENTER NEW CF:"; NEWCF: GOTO TRYAGAIN
+NEWCROSS: INPUT "ENTER NEW CDC:"; NEWCDC0: GOTO TRYAGAIN
+REM *************************************************************************
+REM
+REM     run design with new parameters
+REM
+REM *************************************************************************
+TRYAGAIN:
+        IF design$ = "LTC-6" THEN GOSUB DESIGN6 ELSE GOSUB design
+        GOTO designopt
+REM *************************************************************************
+

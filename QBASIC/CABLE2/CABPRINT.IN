@@ -1,0 +1,119 @@
+REM *************************************************************************
+REM
+REM     print out design
+REM
+REM *************************************************************************
+designprt:
+        INPUT "(S)creen or (P)rinter"; dev$: dev$ = UCASE$(dev$)
+        IF dev$ <> "S" AND dev$ <> "P" AND dev$ <> "F" THEN GOTO designprt
+        IF dev$ = "S" THEN OPEN "SCRN:" FOR OUTPUT AS #3
+        IF dev$ = "P" THEN OPEN "LPT1:" FOR OUTPUT AS #3
+        IF dev$ = "F" THEN INPUT "enter output file name"; file$: file$ = file$ + ".prn"
+        IF dev$ = "F" THEN OPEN file$ FOR OUTPUT AS #3
+        GOSUB cableout
+        IF dev$ = "P" THEN PRINT #3, CHR$(12);
+        CLOSE #3
+        RETURN
+REM *************************************************************************
+REM
+REM          SUBROUTINE TO PRINT OUT CABLE DESIGN
+REM
+REM *************************************************************************
+cableout:
+        PRINT #3,
+        PRINT #3,
+        PRINT #3,
+        PRINT #3,
+        PRINT #3, "                   TOW CABLE STEADY STATE ANALYSIS"
+        PRINT #3, "                            LILL METHOD"
+        PRINT #3,
+        PRINT #3, "DATE "; DATE$; "  "; PROJECT$
+
+        IF D1 = 0 THEN GOTO skipseg
+        PRINT #3, "FIRST SEGMENT IS 1 X 7 STRANDED CABLE : CUT-OFF ANGLE (DEG): ";
+        PRINT #3, USING "##.##"; P(1) * 57.3
+        PRINT #3, "STRANDED CF: 0.007"; "  ";
+REM         PRINT #3, USING "##.####"; C
+        PRINT #3, USING "##.####"; c
+skipseg:
+        PRINT #3, "CD0:  2"; "  ";
+        PRINT #3, USING "##.##"; Cdc0
+        IF D2 <> 0 THEN PRINT #3, "MONOFILMENT CF: 0.0057" ELSE PRINT #3,
+        PRINT #3, "ANALYSIS DESIGN STEP LENGTH: "; SEGLENGTH
+        PRINT #3,
+
+        PRINT #3, "TARGET:"; TARGET$; TAB(30); "WEIGHT (LBS):"; TAB(60); M
+        PRINT #3, "AIRSPEED (KIAS):"; TAB(20); K, "DRAG COEFFICIENT "; TAB(60);
+        PRINT #3, USING "#.###"; C0
+        PRINT #3, "WING ANGLE (DEG): "; W0;
+        PRINT #3, TAB(30); " ";
+        PRINT #3, "TARGET LIFT (LBS):";
+        PRINT #3, USING "####.##"; C2
+
+        F0 = 999
+        FOR I1 = 1 TO I
+        IF F(I1) < F0 THEN F0 = F(I1)
+        NEXT I1
+
+        PRINT #3, "SAFETY FACTOR:"; TAB(20);
+        PRINT #3, USING "##.##"; F0;
+        PRINT #3, TAB(30); "G FACTOR:"; TAB(60); G
+
+        PRINT #3,
+        PRINT #3, "   DIA    LENGTH    TENSION         ";
+        PRINT #3, "SAFETY FACTOR    ANGLE      SEG WT"
+        PRINT #3, "   (IN)    (FT)      (LBS)";
+        PRINT #3, "                           (DEG)      (LBS)"
+        PRINT #3,
+        PRINT #3, " TARGET"; TAB(20); " ";
+        PRINT #3, USING "####"; T(0);
+        PRINT #3, TAB(54); " ";
+        PRINT #3, USING "##.##"; P(0) * 57.3
+
+REM *************************************************************************
+        I1 = 1
+        PRINT #3, TAB(37); " ";
+        PRINT #3, USING "##.##"; S(I1, 3) / T(I1 - 1);
+        PRINT #3, TAB(45); " ";
+        PRINT #3, USING "###.#"; (1 / (S(I1, 3) / T(I1 - 1))) * 100;
+        PRINT #3, "%"
+
+        FOR I1 = 1 TO I
+        PRINT #3, ; " ";
+        PRINT #3, USING "#.###"; D(I1, 3);
+        IF D(I1, 4) = .007 THEN PRINT #3, " 1 X 7";
+        PRINT #3, TAB(8); " ";
+        PRINT #3, USING "#####"; L(I1) - L(I1 - 1);
+        PRINT #3, TAB(20); " ";
+        PRINT #3, USING "####"; T(I1);
+        PRINT #3, TAB(27); " ";
+        PRINT #3, USING "####"; S(I1, 3);
+        PRINT #3, " "; "RTS";
+        PRINT #3, TAB(37); " ";
+        PRINT #3, USING "##.##"; F(I1);
+        PRINT #3, TAB(45); " ";
+        PRINT #3, USING "###.#"; (1 / F(I1)) * 100;
+        PRINT #3, "%";
+        PRINT #3, TAB(54); " ";
+        PRINT #3, USING "##.##"; P(I1) * 57.3;
+        PRINT #3, TAB(65); " ";
+        PRINT #3, USING "###.##"; M(I1, 3) - M(I1 - 1, 3)
+         NEXT I1
+REM *************************************************************************
+        PRINT #3,
+        PRINT #3, "CABLE WEIGHT (LBS):";
+        PRINT #3, USING "####.#"; W;
+        PRINT #3, TAB(35); "VOLUME (CUBIC INCHES):";
+        PRINT #3, USING "####.#"; V
+        PRINT #3, "CABLE DROOP  (FT) :";
+        PRINT #3, USING "######"; droop;
+        PRINT #3, TAB(35); "DESIGN LENGTH (FT)   :";
+        PRINT #3, USING "######"; L(I)
+        PRINT #3, "CABLE TRAIL  (FT) :";
+        PRINT #3, USING "######"; X
+        PRINT #3,
+        PRINT #3,
+        RETURN
+
+REM *************************************************************************
+
