@@ -1,0 +1,164 @@
+'file: tlxirv0.bs2
+'TLX IR APC-6 CONTROLLER OPERATION PROGRAM
+'Version 1.0 Mar 17,1997
+
+'Revisions Notes:
+'	1. New
+
+OUTS = %0000000000000000
+DIRS = %0010011111111111
+
+TELEM		VAR	OUT13
+TMPIN 		CON 	13
+
+TSTPIN		CON	12
+TST		VAR	IN12
+
+TEMPIN		CON	11
+TEMP		VAR	IN11
+
+FUELPIN		CON	8
+FUEL		VAR	OUT8
+
+flag1		var	word
+FIRE		var	word
+F1		VAR 	IN15
+F2		VAR	IN14
+ONESEC		CON	1000
+FIVESEC		CON	5000
+TENSEC		CON	10000
+TWENTYSEC	CON 	20000
+
+' PowerUp Banner
+  debug "TLX IR APC-6 CONTROLLER",CR
+  debug "Version 1.0 Mar 17,1997",CR
+
+CheckTST:
+' Check TST input
+'Uncomment Next Line For Unit Debugging
+'  Goto BuiltInTest
+  IF TST=0 THEN BuiltInTest
+
+Start:  
+'Initialize Ignitor Port counters
+flag1 = 0
+
+'Check for Fire command at power up
+CHECK:
+  IF F1=0 THEN ERROR
+  GOTO IDLE
+
+'Blink TM until all commands OFF
+ERROR:
+  debug "error - F1 On",CR
+  LOW TMPIN
+  PAUSE ONESEC
+  HIGH TMPIN
+  PAUSE ONESEC
+  LOW TMPIN
+  GOTO CHECK
+
+'Idle loop - check for Flare Commands
+IDLE:
+  IF F1=0 THEN FLAR1
+  GOTO IDLE
+
+'Ignitor Operation
+FLAR1:
+  debug ? flag1 
+  OUTS = %0000000000000000
+
+  HIGH TMPIN
+  HIGH FUELPIN
+  debug "Fuel On",CR 
+  PAUSE FIVESEC
+  LOW TMPIN
+
+  FIRE=FLAG1
+  HIGH FIRE
+  debug "ignition!",CR
+  PAUSE ONESEC
+  LOW FIRE
+  GOTO WAITSWITCH1
+
+WAITSWITCH1:
+  debug "wait",CR
+  IF F1=1 THEN FUELOFF
+  HIGH TMPIN
+  PAUSE ONESEC
+  IF TEMP=1 THEN HOT
+  debug "No Temp!",CR
+  LOW TMPIN
+  PAUSE ONESEC
+HOT:
+  GOTO WAITSWITCH1
+
+FUELOFF:
+  LOW FUELPIN
+  debug "Fuel off",CR 
+INCREMENT:
+  LOW TMPIN  
+  PAUSE FIVESEC
+  FLAG1 = FLAG1 + 1
+  debug "ready",CR
+  IF FLAG1 > 7 THEN RESET1
+  GOTO IDLE
+
+RESET1:
+  debug "reset ignitor counter",CR
+  FLAG1 = 0
+  GOTO IDLE
+
+' BIT - Built-In-Test
+BuiltInTest:
+  debug "Built In Test",CR
+  OUTS = %0000000000000000
+
+  debug "Ignition Test",CR
+  FOR FIRE=0 to 7
+  Debug ? FIRE	
+  HIGH FIRE
+  HIGH TMPIN
+  PAUSE FIVESEC
+  LOW FIRE
+  LOW TMPIN
+  PAUSE FIVESEC
+  NEXT
+
+  debug "Fuel Test",CR
+  HIGH FUELPIN
+  debug "Fuel On",CR 
+  PAUSE FIVESEC
+  LOW FUELPIN
+  debug "Fuel off",CR 
+
+  debug "TEMP Test",CR
+  IF TEMP=1 THEN TestHot
+  debug "Temp Low",CR
+  GOTO TestFx
+TestHot:
+  debug "Temp High",CR
+
+TestFx:
+  debug "F1 Test",CR
+  IF F1=0 THEN TestF1
+  debug "F1 off",CR
+  GOTO TestFy
+TestF1:
+  debug "F1 On",CR
+
+TestFy:
+  debug "F2 Test",CR
+  IF F2=0 THEN TestF2
+  debug "F2 Off",CR
+  GOTO TestOver
+TestF2:
+  debug "F2 On",CR
+
+TestOver:
+  debug "End of Test Sequence",CR
+  IF TST=0 THEN BuiltInTest
+  debug "End of Built in Test",CR
+'Uncomment Next Line For Unit Debugging
+'  Goto CheckTST
+  GOTO Start	
