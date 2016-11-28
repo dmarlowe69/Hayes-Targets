@@ -1,0 +1,243 @@
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  6/93 *
+                                         AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS   
+                                                 CONERR - INPUT ERROR CHECKING
+
+
+ ERROR CODES - N* DENOTES THE NUMBER OF OCCURENCES OF EACH ERROR
+
+ A - UNKNOWN VARIABLE NAME
+
+ B - MISSING EQUAL SIGN FOLLOWING VARIABLE NAME
+
+ C - NON-ARRAY VARIABLE HAS AN ARRAY ELEMENT DESIGNATION - (N)
+
+ D - NON-ARRAY VARIABLE HAS MULTIPLE VALUES ASSIGNED
+
+ E - ASSIGNED VALUES EXCEED ARRAY DIMENSION
+
+ F - SYNTAX ERROR
+
+     ******************************  INPUT DATA CARDS  ******************************
+
+   1 CASEID  TGX-HRT                                                                 
+   2  $FLTCON                                                                        
+   3          NMACH=1.,                                                              
+   4          MACH=.41,                                                              
+   5          NALPHA=7.,                                                             
+   6          ALPHA=0.,-0.5,-1.,-1.5,-2.0,-2.5,-3.0,                                 
+   7          BETA=0.0,                                                              
+   8          PHI=0.0,                                                               
+   9          ALT=0.0,                                                               
+  10  $END                                                                           
+  11  $REFQ                                                                          
+  12          XCG=41.18,                                                             
+  13          LREF=9.0,                                                              
+  14          SREF=63.61725,                                                         
+  15          BLAYER=NATURAL,                                                           ** SUBSTITUTING NUMERIC FOR NAME NATURAL
+  16          RHR=1300.0,                                                            
+  17          SCALE=1.0,                                                             
+  18  $END                                                                           
+  19  $AXIBOD                                                                        
+  20          XO=0.000,                                                              
+  21          TNOSE=OGIVE,                                                              ** SUBSTITUTING NUMERIC FOR NAME OGIVE
+  22          LNOSE=12.68,                                                           
+  23          DNOSE=9.0,                                                             
+  24          BNOSE=3.5,                                                             
+  25          TRUNC=.FALSE.,                                                         
+  26          LCENTR=63.0,                                                           
+  27          DCENTR=9.0,                                                            
+  28          TAFT=OGIVE,                                                               ** SUBSTITUTING NUMERIC FOR NAME OGIVE
+  29          LAFT=11.5,                                                             
+  30          DAFT=6.0,                                                              
+  31          DEXIT=0.,                                                              
+  32  $END                                                                           
+  33  $FINSET1                                                                       
+  34          SECTYP=NACA,                                                              ** SUBSTITUTING NUMERIC FOR NAME NACA
+  35          SSPAN= 4.5, 11.93,                                                     
+  36          CHORD= 20.38, 0.000,                                                   
+  37          XLE=  58.8,                                                            
+  38          SWEEP= 70.0,90.0,                                                      
+  39          STA=0.,0.,                                                             
+  40          NPANEL=6.0,                                                            
+  41          PHIF= 30.,90.,150.,210.,270.,330.,                                     
+  42          GAM= 0.0,0.0,0.0,0.0,0.0,0.0,                                          
+  43  $END                                                                           
+  44 PLOT                                                                            
+  45 DERIV DEG                                                                       
+  46 NO LAT                                                                          
+  47 NACA 1 4 0002                                                                   
+  48 DIM IN                                                                          
+  49 BUILD                                                                           
+  50 NEXT CASE                                                                       
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  6/93 *                                   CASE   1
+                                         AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   1
+                                                          CASE INPUTS
+
+FOLLOWING ARE THE CARDS INPUT FOR THIS CASE
+
+ CASEID  TGX-HRT                                                                 
+  $FLTCON                                                                        
+          NMACH=1.,                                                              
+          MACH=.41,                                                              
+          NALPHA=7.,                                                             
+          ALPHA=0.,-0.5,-1.,-1.5,-2.0,-2.5,-3.0,                                 
+          BETA=0.0,                                                              
+          PHI=0.0,                                                               
+          ALT=0.0,                                                               
+  $END                                                                           
+  $REFQ                                                                          
+          XCG=41.18,                                                             
+          LREF=9.0,                                                              
+          SREF=63.61725,                                                         
+          BLAYER=1.,                                                             
+          RHR=1300.0,                                                            
+          SCALE=1.0,                                                             
+  $END                                                                           
+  $AXIBOD                                                                        
+          XO=0.000,                                                              
+          TNOSE=1.,                                                              
+          LNOSE=12.68,                                                           
+          DNOSE=9.0,                                                             
+          BNOSE=3.5,                                                             
+          TRUNC=.FALSE.,                                                         
+          LCENTR=63.0,                                                           
+          DCENTR=9.0,                                                            
+          TAFT=1.,                                                               
+          LAFT=11.5,                                                             
+          DAFT=6.0,                                                              
+          DEXIT=0.,                                                              
+  $END                                                                           
+  $FINSET1                                                                       
+          SECTYP=1.,                                                             
+          SSPAN= 4.5, 11.93,                                                     
+          CHORD= 20.38, 0.000,                                                   
+          XLE=  58.8,                                                            
+          SWEEP= 70.0,90.0,                                                      
+          STA=0.,0.,                                                             
+          NPANEL=6.0,                                                            
+          PHIF= 30.,90.,150.,210.,270.,330.,                                     
+          GAM= 0.0,0.0,0.0,0.0,0.0,0.0,                                          
+  $END                                                                           
+ PLOT                                                                            
+ DERIV DEG                                                                       
+ NO LAT                                                                          
+ NACA 1 4 0002                                                                   
+ DIM IN                                                                          
+ BUILD                                                                           
+ NEXT CASE                                                                       
+
+THE BOUNDARY LAYER IS ASSUMED TO DEVELOP NATURALLY OVER ALL COMPONENTS OF THE CONFIGURATION
+
+THE INPUT UNITS ARE IN INCHES, THE SCALE FACTOR IS   1.0000
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  6/93 *                                   CASE   1
+                                         AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   2
+                                                             TGX-HRT                                                               
+                                          BODY ALONE STATIC AERODYNAMIC CHARACTERISTICS
+
+
+ -------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+  MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+ NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+             FT        FT/SEC    LB/IN**2     DEG R      1/FT        DEG      DEG      IN**2     IN       IN        IN         IN
+   .41         .00     457.67   1.470E+01     518.67   2.898E+06       .00      .00    63.617    9.000    9.000    41.180       .000
+
+
+                                                                       ------------------ DERIVATIVES (PER DEGREE) -----------------
+           ------ LONGITUDINAL -----       --- LATERAL DIRECTIONAL ---          LONGITUDINAL             LATERAL DIRECTIONAL
+   ALPHA      CN       CM       CA           CY      CLN      CLL             CNA         CMA         CYB        CLNB        CLLB
+
+   -3.00     -.114    -.449     .260         .000     .000     .000        4.693E-02   1.462E-01  -1.974E-02  -1.557E-01   0.000E+00
+   -2.50     -.091    -.375     .260         .000     .000     .000        4.407E-02   1.474E-01  -2.114E-02  -1.552E-01   0.000E+00
+   -2.00     -.070    -.301     .260         .000     .000     .000        4.113E-02   1.486E-01  -2.249E-02  -1.548E-01   0.000E+00
+   -1.50     -.050    -.227     .260         .000     .000     .000        3.810E-02   1.497E-01  -2.378E-02  -1.545E-01   0.000E+00
+   -1.00     -.032    -.152     .260         .000     .000     .000        3.507E-02   1.508E-01  -2.493E-02  -1.541E-01   0.000E+00
+    -.50     -.015    -.076     .260         .000     .000     .000        3.207E-02   1.518E-01  -2.581E-02  -1.538E-01   0.000E+00
+     .00      .000     .000     .260         .000     .000     .000        2.911E-02   1.527E-01  -2.615E-02  -1.537E-01   0.000E+00
+
+                                            ALPHA      CL       CD     CL/CD   X-C.P.
+
+                                            -3.00    -.100     .266    -.378    3.929
+                                            -2.50    -.080     .264    -.304    4.104
+                                            -2.00    -.061     .262    -.233    4.296
+                                            -1.50    -.044     .261    -.167    4.505
+                                            -1.00    -.028     .261    -.106    4.733
+                                             -.50    -.013     .260    -.050    4.977
+                                              .00     .000     .260     .000    5.247
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  6/93 *                                   CASE   1
+                                         AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   3
+                                                             TGX-HRT                                                               
+                                         FIN 1 ALONE STATIC AERODYNAMIC CHARACTERISTICS
+
+
+ -------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+  MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+ NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+             FT        FT/SEC    LB/IN**2     DEG R      1/FT        DEG      DEG      IN**2     IN       IN        IN         IN
+   .41         .00     457.67   1.470E+01     518.67   2.898E+06       .00      .00    63.617    9.000    9.000    41.180       .000
+
+
+                                                                       ------------------ DERIVATIVES (PER DEGREE) -----------------
+           ------ LONGITUDINAL -----       --- LATERAL DIRECTIONAL ---          LONGITUDINAL             LATERAL DIRECTIONAL
+   ALPHA      CN       CM       CA           CY      CLN      CLL             CNA         CMA         CYB        CLNB        CLLB
+
+   -3.00     -.356    1.189     .069                                       1.274E-01  -4.267E-01                                 
+   -2.50     -.293     .979     .069                                       1.245E-01  -4.167E-01                                 
+   -2.00     -.232     .773     .069                                       1.216E-01  -4.067E-01                                 
+   -1.50     -.171     .572     .069                                       1.187E-01  -3.966E-01                                 
+   -1.00     -.113     .376     .069                                       1.158E-01  -3.864E-01                                 
+    -.50     -.056     .185     .069                                       1.128E-01  -3.761E-01                                 
+     .00      .000     .000     .069                                       1.099E-01  -3.658E-01                                 
+
+                                            ALPHA      CL       CD     CL/CD   X-C.P.
+
+                                            -3.00    -.352     .088   -3.998   -3.341
+                                            -2.50    -.290     .082   -3.528   -3.339
+                                            -2.00    -.229     .077   -2.958   -3.337
+                                            -1.50    -.170     .074   -2.299   -3.336
+                                            -1.00    -.112     .071   -1.567   -3.334
+                                             -.50    -.055     .070    -.790   -3.332
+                                              .00     .000     .069     .000   -3.330
+                                        THE USAF AUTOMATED MISSILE DATCOM * REV  6/93 *                                   CASE   1
+                                         AERODYNAMIC METHODS FOR MISSILE CONFIGURATIONS                                    PAGE   4
+                                                             TGX-HRT                                                               
+                                             STATIC AERODYNAMICS FOR BODY-FIN SET 1
+
+
+ -------------------------------- FLIGHT CONDITIONS ------------------------------   ------------- REFERENCE DIMENSIONS ------------
+  MACH    ALTITUDE   VELOCITY   PRESSURE  TEMPERATURE  REYNOLDS   SIDESLIP   ROLL      REF.      REF. LENGTH     MOMENT REF. CENTER
+ NUMBER                                                 NUMBER      ANGLE    ANGLE     AREA     LONG.    LAT.     LONG.    VERTICAL
+             FT        FT/SEC    LB/IN**2     DEG R      1/FT        DEG      DEG      IN**2     IN       IN        IN         IN
+   .41         .00     457.67   1.470E+01     518.67   2.898E+06       .00      .00    63.617    9.000    9.000    41.180       .000
+
+
+                                                                       ------------------ DERIVATIVES (PER DEGREE) -----------------
+           ------ LONGITUDINAL -----       --- LATERAL DIRECTIONAL ---          LONGITUDINAL             LATERAL DIRECTIONAL
+   ALPHA      CN       CM       CA           CY      CLN      CLL             CNA         CMA         CYB        CLNB        CLLB
+
+   -3.00     -.793    1.750     .326         .000     .000     .000        2.908E-01  -6.434E-01                                 
+   -2.50     -.650    1.434     .327         .000     .000     .000        2.818E-01  -6.225E-01                                 
+   -2.00     -.512    1.128     .328         .000     .000     .000        2.727E-01  -6.011E-01                                 
+   -1.50     -.378     .833     .329         .000     .000     .000        2.632E-01  -5.792E-01                                 
+   -1.00     -.248     .548     .329         .000     .000     .000        2.547E-01  -5.605E-01                                 
+    -.50     -.123     .272     .329         .000     .000     .000        2.483E-01  -5.484E-01                                 
+     .00      .000     .000     .330         .000     .000     .000        2.431E-01  -5.401E-01                                 
+
+                                            ALPHA      CL       CD     CL/CD   X-C.P.
+
+                                            -3.00    -.775     .367   -2.112   -2.206
+                                            -2.50    -.635     .355   -1.789   -2.205
+                                            -2.00    -.500     .346   -1.446   -2.205
+                                            -1.50    -.369     .338   -1.090   -2.205
+                                            -1.00    -.243     .333    -.728   -2.209
+                                             -.50    -.120     .330    -.363   -2.215
+                                              .00     .000     .330     .000   -2.222
+
+                                               PANEL DEFLECTION ANGLES (DEGREES)
+                                        FIN SET   FIN 1      FIN 2      FIN 3      FIN 4
+                                                  FIN 5      FIN 6      FIN 7      FIN 8
+                                           1        .00        .00        .00        .00
+                                                    .00        .00
+ 
+ 
+ 
+*** END OF JOB ***
